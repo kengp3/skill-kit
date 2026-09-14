@@ -1,4 +1,4 @@
-# simple-skills
+# skill-kit
 
 個人維護的 Skills（AI 技能）集合。每個技能可獨立安裝、使用；透過 `npx skills add` 選擇需要的技能，也可一次安裝全部。
 
@@ -10,31 +10,31 @@
 
 ## 安裝
 
-需要 Node.js 與 npm。以下 `OWNER` 是佔位符，請換成實際 GitHub 擁有者；本儲存庫尚未設定遠端，以下不是已發布的安裝網址。
+需要 Node.js 與 npm。儲存庫：[kengp3/skill-kit](https://github.com/kengp3/skill-kit)。
 
 在要使用技能的專案內執行：
 
 ```bash
 # 互動安裝；多個技能時可選擇清單
-npx skills add OWNER/simple-skills --agent codex
+npx skills add kengp3/skill-kit --agent codex
 
 # 僅列出可用技能
-npx skills add OWNER/simple-skills --list
+npx skills add kengp3/skill-kit --list
 
 # 安裝指定技能
-npx skills add OWNER/simple-skills --skill project-setting --agent codex
+npx skills add kengp3/skill-kit --skill project-setting --agent codex
 
 # 安裝全部技能到 Codex
-npx skills add OWNER/simple-skills --skill '*' --agent codex
+npx skills add kengp3/skill-kit --skill '*' --agent codex
 ```
 
 預設安裝到目前專案；要安裝到使用者層級可加 `--global`。目前只有一個技能，安裝工具可能直接選取它；新增技能後由工具提供多選流程。參數詳見 [Skills CLI 官方文件](https://github.com/vercel-labs/skills)。
 
-尚未發布時，可在另一個暫存專案用本機路徑驗證：
+本機開發時，可在另一個暫存專案用儲存庫的實際路徑驗證：
 
 ```bash
-npx skills add /absolute/path/to/simple-skills --list
-npx skills add /absolute/path/to/simple-skills --skill project-setting --agent codex
+npx skills add /absolute/path/to/skill-kit --list
+npx skills add /absolute/path/to/skill-kit --skill project-setting --agent codex
 ```
 
 ## 使用 project-setting
