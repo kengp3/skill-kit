@@ -6,6 +6,7 @@
 
 | 技能 | 用途 | 額外需求 |
 | --- | --- | --- |
+| [define-task](skills/define-task/SKILL.md) | 釐清模糊或高返工成本的任務，整理目標、背景、材料、邊界與完成條件 | 無額外執行依賴或初始化步驟 |
 | [project-setting](skills/project-setting/SKILL.md) | 管理專案文件位置與命名，支援 PRD、spec、plan、ADR、research 及自訂類型 | Python 3.9+、Git、macOS/Linux；Codex Hook 需逐專案初始化與信任 |
 
 ## 安裝
@@ -28,7 +29,7 @@ npx skills add kengp3/skill-kit --skill project-setting --agent codex
 npx skills add kengp3/skill-kit --skill '*' --agent codex
 ```
 
-預設安裝到目前專案；要安裝到使用者層級可加 `--global`。目前只有一個技能，安裝工具可能直接選取它；新增技能後由工具提供多選流程。參數詳見 [Skills CLI 官方文件](https://github.com/vercel-labs/skills)。
+預設安裝到目前專案；要安裝到使用者層級可加 `--global`。互動安裝時可選擇需要的技能，也可透過 `--skill define-task` 僅安裝任務定義技能。參數詳見 [Skills CLI 官方文件](https://github.com/vercel-labs/skills)。
 
 本機開發時，可在另一個暫存專案用儲存庫的實際路徑驗證：
 
@@ -36,6 +37,14 @@ npx skills add kengp3/skill-kit --skill '*' --agent codex
 npx skills add /absolute/path/to/skill-kit --list
 npx skills add /absolute/path/to/skill-kit --skill project-setting --agent codex
 ```
+
+## 使用 define-task
+
+安裝後可請求：
+
+> 使用 $define-task，幫我把這個需求整理成可以交給 AI 或同事執行的任務摘要。
+
+技能會先判斷目前是思考、探索、決策或執行階段，再決定是否需要完整摘要；單純文字潤飾不會自動擴充為任務定義。它可獨立使用，不依賴 project-setting，也不會安裝 Hook。
 
 ## 使用 project-setting
 
