@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 import sys
 import subprocess
@@ -81,6 +82,46 @@ class HookTest(unittest.TestCase):
         self.assertTrue((self.root / 'AGENTS.md').read_text().startswith('Existing instructions'))
         h.install(self.root, 'codex')
         self.assertTrue((self.root / '.codex/hooks.json').exists())
+
+    def test_windows_command_and_upgrade_preserve_other_hooks(self):
+        subprocess.run(['git', 'init', '-q', str(self.root)], check=True)
+        h.install(self.root, 'codex')
+        config_path = self.root / '.codex/hooks.json'
+        config = json.loads(config_path.read_text())
+        handler = config['hooks']['PreToolUse'][0]['hooks'][0]
+        self.assertIn('commandWindows', handler)
+        command = handler.pop('commandWindows')
+        self.assertTrue(command.startswith('py -3 -X utf8 -c "'))
+        # Execute the Windows bootstrap as Python on this host; shell/native OS
+        # compatibility still requires the same test on Windows.
+        code = command.split(' -c "', 1)[1][:-1]
+        child = self.root / '中文 subdir'
+        child.mkdir()
+        event = {'hook_event_name': 'PreToolUse', 'cwd': str(child),
+                 'tool_name': 'apply_patch', 'tool_input': {'command':
+                 '*** Begin Patch\n*** Add File: login.plan.md\n+中文\n*** End Patch'}}
+        launcher = command if os.name == 'nt' else [sys.executable, '-X', 'utf8', '-c', code]
+        result = subprocess.run(launcher, shell=os.name == 'nt', cwd=child,
+                                input=json.dumps(event), capture_output=True, text=True,
+                                encoding='utf-8', check=True)
+        output = json.loads(result.stdout)['hookSpecificOutput']
+        self.assertIn('login.plan.md', output['updatedInput']['command'])
+        self.assertEqual(output['permissionDecision'], 'allow')
+        self.assertEqual(c.routes(self.root)['中文 subdir/login.plan.md'], 'docs/plans/login.plan.md')
+        if os.name != 'nt':
+            posix = subprocess.run(handler['command'], shell=True, cwd=child,
+                                   input=json.dumps({'hook_event_name': 'SessionStart'}),
+                                   capture_output=True, text=True, encoding='utf-8', check=True)
+            self.assertIn('文件規範', json.loads(posix.stdout)['hookSpecificOutput']['additionalContext'])
+        extra = {'matcher': 'Bash', 'hooks': [{'type': 'command', 'command': 'echo keep'}]}
+        config['hooks']['PreToolUse'].append(extra)
+        config_path.write_text(json.dumps(config))
+        h.install(self.root, 'codex')
+        h.install(self.root, 'codex')
+        groups = json.loads(config_path.read_text())['hooks']['PreToolUse']
+        self.assertEqual(len(groups), 2)
+        self.assertEqual(groups[1], extra)
+        self.assertEqual(groups[0]['hooks'][0]['commandWindows'], command)
 
     def test_install_requires_git_root_before_mutation(self):
         with self.assertRaises(ValueError):

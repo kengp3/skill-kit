@@ -1,13 +1,17 @@
 """Project document destinations. Python standard library only."""
 import argparse
 from contextlib import contextmanager
-import fcntl
 import fnmatch
 import json
 import os
 from pathlib import Path
 import re
 import tempfile
+
+try:
+    import msvcrt
+except ImportError:
+    msvcrt = None
 
 CONFIG = 'project-setting.json'
 STATE = '.project-setting/routes.json'
@@ -146,13 +150,24 @@ def route_lock(root):
     lock = folder / 'routes.lock'
     if lock.is_symlink():
         raise ValueError('狀態鎖不可是符號連結')
-    with lock.open('a') as stream:
+    with lock.open('a+b') as stream:
         # ponytail: one lock per project; split only if measured contention warrants it.
-        fcntl.flock(stream, fcntl.LOCK_EX)
+        if msvcrt is not None:
+            # Lock byte zero, including on an empty file. Contention fails closed
+            # immediately so the hook does not exceed its execution timeout.
+            stream.seek(0)
+            msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(stream, fcntl.LOCK_EX)
         try:
             yield
         finally:
-            fcntl.flock(stream, fcntl.LOCK_UN)
+            if msvcrt is not None:
+                stream.seek(0)
+                msvcrt.locking(stream.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                fcntl.flock(stream, fcntl.LOCK_UN)
 
 
 def render(root, rule, slug=None, identifier=None):
@@ -260,7 +275,7 @@ def main():
     root = project_root(args.root)
     try:
         if args.action == 'init':
-            result = initialize(root, json.loads(Path(args.config).read_text()) if args.config else None)
+            result = initialize(root, json.loads(Path(args.config).read_text(encoding='utf-8')) if args.config else None)
         elif args.action == 'show':
             result = read_config(root)
         elif args.action == 'configure':

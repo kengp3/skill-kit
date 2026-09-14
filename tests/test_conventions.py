@@ -1,5 +1,8 @@
 import importlib.util
 import json
+import subprocess
+import sys
+from unittest import mock
 from pathlib import Path
 import tempfile
 import unittest
@@ -15,6 +18,36 @@ class ConventionsTest(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name).resolve()
+
+    def test_import_without_fcntl_and_lock_release_on_failure(self):
+        code = "import sys; sys.modules['fcntl'] = None; sys.path.insert(0, " + repr(str(SCRIPT.parent)) + "); import conventions"
+        result = subprocess.run([sys.executable, '-c', code], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        # Simulate the Windows lock API here; the full suite exercises the real
+        # selected backend when run on Windows.
+        backend = mock.Mock(LK_NBLCK=2, LK_UNLCK=0)
+        with mock.patch.object(self.c, 'msvcrt', backend):
+            with self.assertRaisesRegex(RuntimeError, 'body failed'):
+                with self.c.route_lock(self.root):
+                    raise RuntimeError('body failed')
+            self.assertEqual([call.args[1:] for call in backend.locking.call_args_list],
+                             [(2, 1), (0, 1)])
+            backend.locking.reset_mock()
+            backend.locking.side_effect = OSError('busy')
+            with self.assertRaises(OSError):
+                with self.c.route_lock(self.root):
+                    self.fail('must not enter an unlocked section')
+            self.assertEqual(backend.locking.call_count, 1)
+
+    def test_real_lock_released_after_exception(self):
+        with self.assertRaises(RuntimeError):
+            with self.c.route_lock(self.root):
+                raise RuntimeError('release on exit')
+        code = ("import sys; sys.path.insert(0, " + repr(str(SCRIPT.parent)) +
+                "); import conventions as c; c.remember(" + repr(str(self.root)) +
+                ", 'login.plan.md', 'docs/plans/login.plan.md')")
+        subprocess.run([sys.executable, '-c', code], check=True, timeout=5)
+        self.assertEqual(self.c.routes(self.root), {'login.plan.md': 'docs/plans/login.plan.md'})
 
     def test_init_custom_preserved_and_five_defaults(self):
         self.c.initialize(self.root)

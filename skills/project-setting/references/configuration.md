@@ -1,10 +1,14 @@
 # 設定與整合
 
-本次已驗收 Codex。Claude Code 依使用者要求跳過；其轉接程式僅通過本地回放，尚未完成實際平台驗證，預設不安裝。
+Codex 已完成 macOS 實際平台驗收；Windows 相容程式已補齊，原生平台驗收尚未完成。Claude Code 依使用者要求跳過；其轉接程式僅通過本地回放，尚未完成實際平台驗證，預設不安裝。
 
 ## 執行條件
 
-Python 3.9+、Git；macOS/Linux shell。Windows hook 命令尚未適配。整個技能目錄可獨立複製，沒有套件依賴。安裝器把兩支腳本複製到專案 `.project-setting/runtime/`，後續不依賴開發儲存庫。路由別名 `.project-setting/routes.json` 不提交；runtime、JSON、專案指令與 hook 設定可版本控制。
+Python 3.9+、Git。macOS/Linux 使用 `python3`；Windows 使用 `py -3 -X utf8`（需安裝 Python launcher）。Codex 設定以 `commandWindows` 指定 Windows 啟動命令，原有 `command` 保留給 macOS/Linux。Windows 命令以 Python 取得 Git 根目錄，不依賴 Bash，支援從專案子目錄啟動。整個技能目錄可獨立複製，沒有套件依賴。安裝器把兩支腳本複製到專案 `.project-setting/runtime/`，後續不依賴開發儲存庫。路由別名 `.project-setting/routes.json` 不提交；runtime、JSON、專案指令與 hook 設定可版本控制。
+
+Windows 檔案鎖使用標準庫 `msvcrt`，macOS/Linux 使用 `fcntl`；Windows 鎖忙碌時停止本次操作，可稍後重試，不會無鎖寫入。JSON 設定以 UTF-8 讀寫。Windows 原生 Codex、PowerShell/cmd 啟動與檔案系統行為仍需實機驗收；本機 bootstrap 回放與模擬鎖 API 測試不等於 Windows 驗收。
+
+更新既有專案時重跑 `hooks.py install --platform codex --root PROJECT`，安裝器會更新 runtime，並將完全符合舊版輸出的 Hook 註冊補上 Windows 命令。手動改過的註冊保留，需人工檢查是否與新增註冊重複。更新後到 `/hooks` 重新審查與信任。
 
 ## JSON
 
@@ -52,8 +56,15 @@ Codex updatedInput 必須搭配 allow，仍須遵守宿主的沙箱與權限；�
 - 無效設定、目的地衝突或路徑越界停止該操作並明確回報；不自動遷移歷史文件。
 - 尚未支援文件內容章節與範本驗證，也不宣稱 hook 是完整檔案系統隔離邊界。
 
+## 本次相容性驗證
+
+2026-09-15 在 macOS 執行 `python3 -m unittest discover -s tests -q`：26 項通過。涵蓋缺少 fcntl 時載入、Windows 鎖 API 模擬、鎖失敗不進入寫入區段、例外後跨程序重新取得實際鎖、Windows bootstrap 從中文與空白子目錄回放、原有 shell 命令與舊註冊升級。
+
+原生 Windows 可在開發儲存庫執行 `py -3 -X utf8 -m unittest discover -s tests -q`；既有符號連結防護測試需要建立符號連結的權限。之後仍須在受信任的 Codex 專案中驗證 SessionStart 與建立→讀取→修改流程。本次沒有 Windows 執行環境，尚未完成這兩項驗收。
+
 ## 查證來源
 
+- [Python msvcrt](https://docs.python.org/3/library/msvcrt.html)：Windows byte-range locking，鎖失敗以 OSError 回報。
 - [Codex hooks](https://learn.chatgpt.com/docs/hooks)：PreToolUse updatedInput、additionalContext、信任與工具覆蓋。
 - [Claude hooks](https://code.claude.com/docs/en/hooks)：完整 input 替換、權限與上下文回傳。
 - [Claude settings](https://code.claude.com/docs/en/settings)：專案設定範圍。

@@ -7,19 +7,20 @@ description: Initialize, customize, explain, or troubleshoot a project's documen
 
 在專案根目錄以 `project-setting.json` 定義文件位置。技能管理設定；專案指令與 hook 讓後續第三方技能也套用它。
 
-本次已驗收 Codex。Claude Code 依使用者要求跳過；其轉接程式僅通過本地回放，尚未完成實際平台驗證，預設不安裝。
+Codex 已完成 macOS 實際平台驗收；Windows 相容程式已補齊，原生平台驗收尚未完成。Claude Code 依使用者要求跳過；其轉接程式僅通過本地回放，尚未完成實際平台驗證，預設不安裝。
 
 ## 初始化
 
 1. 確認使用者指定的專案根目錄、已有設定與平台指令。已有 Git 儲存庫以其根目錄為界；沒有 Git 時先說明 hook 安裝目前需要 Git，不自行建立儲存庫。
    若發現舊版 `project-conventions.json`、`.project-conventions/` 或舊 Hook 註冊，先說明需要遷移並保留原設定與狀態；目前沒有自動遷移，不直接並裝新版。
-2. 使用隨技能附帶的腳本（下文 SCRIPT 指本技能 scripts/ 下實際絕對路徑）：
+2. Windows 先確認 `py -3 --version` 為 Python 3.9+，以下 `python3` 指令改用 `py -3 -X utf8`；Git 與 Python launcher 必須在 Codex 的執行環境可用。macOS/Linux 使用 `python3`。
+   使用隨技能附帶的腳本（下文 SCRIPT 指本技能 scripts/ 下實際絕對路徑）：
    `python3 SCRIPT/conventions.py --root PROJECT init`
    使用者提供 JSON 時加 `--config FILE`。已有設定不覆寫。
 3. 依使用者實際使用的平台執行：
    `python3 SCRIPT/hooks.py install --platform codex --root PROJECT`
    或 `--platform claude`。只安裝要求的平台，保留既有指令與設定。
-4. Codex 既有 `.codex/config.toml` 保持原樣；確認 `[features]` 下 `hooks = true`。若使用者原本設為 false，先告知這會停用整合，依使用者啟用意圖調整，保留其他設定。在 `/hooks` 審查並信任新增 hook，再開始新工作階段。Claude 從專案 root 開始新工作階段。設定檔存在不等於已成功載入；用一次建立→讀取→修改確認。
+4. Codex 既有 `.codex/config.toml` 保持原樣；確認 `[features]` 下 `hooks = true`。若使用者原本設為 false，先告知這會停用整合，依使用者啟用意圖調整，保留其他設定。在 `/hooks` 審查並信任新增 hook，再開始新工作階段。Claude 從專案 root 開始新工作階段。既有專案更新時重新執行 install，以更新 runtime 及補入 `commandWindows`；更新後重新審查 Hook。設定檔存在不等於已成功載入；用一次建立→讀取→修改確認。
 
 ## 解讀與調整
 

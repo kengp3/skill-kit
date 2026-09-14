@@ -103,7 +103,7 @@ def route_event(root, platform, event):
                     previous_source = source if operation == 'Update File' else None
                 target = destination(source, 'write' if operation in ('Add File', 'Move to') else 'read', create=operation == 'Add File')
                 if target != source:
-                    target = str(Path(target).relative_to(cwd)) if Path(target).is_relative_to(cwd) else target
+                    target = Path(target).relative_to(cwd).as_posix() if Path(target).is_relative_to(cwd) else Path(target).as_posix()
                 lines[index] = prefix + target + (ending or '')
         updated = {**data, 'command': ''.join(lines)}
     else:
@@ -120,7 +120,7 @@ def route_event(root, platform, event):
 
 def install(root, platform):
     root = Path(root).resolve()
-    git = subprocess.run(['git', '-C', str(root), 'rev-parse', '--show-toplevel'], capture_output=True, text=True)
+    git = subprocess.run(['git', '-C', str(root), 'rev-parse', '--show-toplevel'], capture_output=True, text=True, encoding='utf-8')
     if git.returncode or Path(git.stdout.strip()).resolve() != root:
         raise ValueError('Hook 安裝需要 Git 專案根目錄；尚未修改任何檔案')
     runtime = root / '.project-setting/runtime'
@@ -160,10 +160,29 @@ def install(root, platform):
     command = 'python3 "$(git rev-parse --show-toplevel)/.project-setting/runtime/hooks.py" hook --platform ' + platform
     for event, matcher in (('SessionStart', None), ('SubagentStart', None), ('PreToolUse', '^(apply_patch|Bash)$' if platform == 'codex' else '^(Write|Read|Edit|Bash)$')):
         groups = config.setdefault('hooks', {}).setdefault(event, [])
-        group = {'hooks': [{'type': 'command', 'command': command, 'timeout': 10}]}
+        handler = {'type': 'command', 'command': command, 'timeout': 10}
+        if platform == 'codex':
+            # Static Python code avoids shell expansion and quoting project paths.
+            # run_path needs the installed scripts directory on sys.path.
+            bootstrap = (
+                "import pathlib,runpy,subprocess,sys; "
+                "root=subprocess.check_output(['git','rev-parse','--show-toplevel']).decode('utf-8').strip(); "
+                "script=pathlib.Path(root)/'.project-setting/runtime/hooks.py'; "
+                "sys.path.insert(0,str(script.parent)); "
+                "sys.argv=[str(script),'hook','--platform','codex']; "
+                "runpy.run_path(str(script),run_name='__main__')"
+            )
+            handler['commandWindows'] = 'py -3 -X utf8 -c "' + bootstrap + '"'
+        group = {'hooks': [handler]}
         if matcher:
             group['matcher'] = matcher
-        if group not in groups:
+        # Upgrade only the exact registration emitted by the previous installer.
+        legacy = {'hooks': [{'type': 'command', 'command': command, 'timeout': 10}]}
+        if matcher:
+            legacy['matcher'] = matcher
+        if legacy in groups:
+            groups[groups.index(legacy)] = group
+        elif group not in groups:
             groups.append(group)
     c.atomic_json(config_path, config)
     if platform == 'codex':
