@@ -4,7 +4,6 @@ import json
 from pathlib import Path
 import re
 import shutil
-import subprocess
 import sys
 
 import conventions as c
@@ -120,9 +119,8 @@ def route_event(root, platform, event):
 
 def install(root, platform):
     root = Path(root).resolve()
-    git = subprocess.run(['git', '-C', str(root), 'rev-parse', '--show-toplevel'], capture_output=True, text=True, encoding='utf-8')
-    if git.returncode or Path(git.stdout.strip()).resolve() != root:
-        raise ValueError('Hook 安裝需要 Git 專案根目錄；尚未修改任何檔案')
+    if c.read_config(root) is None:
+        raise ValueError('Hook 安裝需要 project-setting.json；請先初始化，尚未修改任何檔案')
     runtime = root / '.project-setting/runtime'
     if (root / '.project-setting').is_symlink() or runtime.is_symlink():
         raise ValueError('執行目錄不可是符號連結')
@@ -156,34 +154,47 @@ def install(root, platform):
         source = Path(__file__).parent / filename
         if source.resolve() != target.resolve():
             shutil.copyfile(source, target)
-    # Resolve from this file's installed location at runtime; no machine-specific absolute paths.
-    command = 'python3 "$(git rev-parse --show-toplevel)/.project-setting/runtime/hooks.py" hook --platform ' + platform
+    # Discover the nearest configured project without machine-specific paths.
+    bootstrap = (
+        "import pathlib,runpy,sys; "
+        "cwd=pathlib.Path.cwd().resolve(); "
+        "root=next((p for p in (cwd,*cwd.parents) if (p/'project-setting.json').exists()),None); "
+        "root is not None or sys.exit('project-setting.json not found'); "
+        "script=root/'.project-setting/runtime/hooks.py'; "
+        "script.is_file() or sys.exit('project-setting hook runtime not found'); "
+        "sys.path.insert(0,str(script.parent)); "
+        "sys.argv=[str(script),'hook','--platform','" + platform + "']; "
+        "runpy.run_path(str(script),run_name='__main__')"
+    )
+    command = 'python3 -c "' + bootstrap + '"'
+    # Match only registrations emitted by older installers, including Windows.
+    legacy_command = 'python3 "$(git rev-parse --show-toplevel)/.project-setting/runtime/hooks.py" hook --platform ' + platform
+    legacy_bootstrap = (
+        "import pathlib,runpy,subprocess,sys; "
+        "root=subprocess.check_output(['git','rev-parse','--show-toplevel']).decode('utf-8').strip(); "
+        "script=pathlib.Path(root)/'.project-setting/runtime/hooks.py'; "
+        "sys.path.insert(0,str(script.parent)); "
+        "sys.argv=[str(script),'hook','--platform','codex']; "
+        "runpy.run_path(str(script),run_name='__main__')"
+    )
     for event, matcher in (('SessionStart', None), ('SubagentStart', None), ('PreToolUse', '^(apply_patch|Bash)$' if platform == 'codex' else '^(Write|Read|Edit|Bash)$')):
         groups = config.setdefault('hooks', {}).setdefault(event, [])
         handler = {'type': 'command', 'command': command, 'timeout': 10}
         if platform == 'codex':
-            # Static Python code avoids shell expansion and quoting project paths.
-            # run_path needs the installed scripts directory on sys.path.
-            bootstrap = (
-                "import pathlib,runpy,subprocess,sys; "
-                "root=subprocess.check_output(['git','rev-parse','--show-toplevel']).decode('utf-8').strip(); "
-                "script=pathlib.Path(root)/'.project-setting/runtime/hooks.py'; "
-                "sys.path.insert(0,str(script.parent)); "
-                "sys.argv=[str(script),'hook','--platform','codex']; "
-                "runpy.run_path(str(script),run_name='__main__')"
-            )
             handler['commandWindows'] = 'py -3 -X utf8 -c "' + bootstrap + '"'
         group = {'hooks': [handler]}
+        legacy_handler = {'type': 'command', 'command': legacy_command, 'timeout': 10}
+        legacy = {'hooks': [legacy_handler]}
+        legacy_windows = {'hooks': [{**legacy_handler, 'commandWindows': 'py -3 -X utf8 -c "' + legacy_bootstrap + '"'}]}
         if matcher:
-            group['matcher'] = matcher
-        # Upgrade only the exact registration emitted by the previous installer.
-        legacy = {'hooks': [{'type': 'command', 'command': command, 'timeout': 10}]}
-        if matcher:
-            legacy['matcher'] = matcher
-        if legacy in groups:
-            groups[groups.index(legacy)] = group
-        elif group not in groups:
+            group['matcher'] = legacy['matcher'] = legacy_windows['matcher'] = matcher
+        for index, existing in enumerate(groups):
+            if existing == legacy or (platform == 'codex' and existing == legacy_windows):
+                groups[index] = group
+        if group not in groups:
             groups.append(group)
+        # Collapse identical registrations when multiple old versions coexisted.
+        groups[:] = [entry for index, entry in enumerate(groups) if entry != group or group not in groups[:index]]
     c.atomic_json(config_path, config)
     if platform == 'codex':
         feature_config = folder / 'config.toml'
@@ -192,13 +203,13 @@ def install(root, platform):
     if MARKER not in text:
         instructions.write_text(text.rstrip() + '\n\n' + MARKER + '\n' + GUIDANCE, encoding='utf-8')
     ignore = root / '.gitignore'
-    if not ignore.is_symlink():
+    if ignore.exists() and not ignore.is_symlink():
         ignore_text = ignore.read_text(encoding='utf-8') if ignore.exists() else ''
         for pattern in ('.project-setting/routes.json', '.project-setting/routes.lock'):
             if pattern not in ignore_text.splitlines():
                 ignore_text = ignore_text.rstrip() + '\n' + pattern + '\n'
         ignore.write_text(ignore_text, encoding='utf-8')
-    return {'status': 'installed', 'platform': platform, 'root': str(root), 'note': '僅表示整合檔案已安裝，尚未驗證啟用。Codex：既有 config.toml 保持原樣；確認 [features] hooks = true（false 會停用），再到 /hooks 審查並信任定義。啟動新工作階段驗證載入。需要 Python 3.9+ 與 Git。'}
+    return {'status': 'installed', 'platform': platform, 'root': str(root), 'note': '僅表示整合檔案已安裝，尚未驗證啟用。Codex：既有 config.toml 保持原樣；確認 [features] hooks = true（false 會停用），再到 /hooks 審查並信任定義。啟動新工作階段驗證載入。需要 Python 3.9+，不需要 Git。'}
 
 
 def main():
@@ -210,7 +221,7 @@ def main():
     event = {}
     try:
         if args.action == 'install':
-            result = install(c.project_root(args.root or '.'), args.platform)
+            result = install(Path(args.root).resolve() if args.root else c.project_root('.'), args.platform)
         else:
             event = json.load(sys.stdin)
             installed_root = Path(__file__).resolve().parents[2]

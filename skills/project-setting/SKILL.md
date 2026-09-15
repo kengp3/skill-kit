@@ -11,9 +11,9 @@ Codex 已完成 macOS 實際平台驗收；Windows 相容程式已補齊，原�
 
 ## 初始化
 
-1. 確認使用者指定的專案根目錄、已有設定與平台指令。已有 Git 儲存庫以其根目錄為界；沒有 Git 時先說明 hook 安裝目前需要 Git，不自行建立儲存庫。
+1. 確認使用者指定的專案根目錄、已有設定與平台指令。不需要 Git；明確指定的 `--root` 為專案邊界，未指定時向上尋找最近的 `project-setting.json`，找不到則使用目前目錄。先初始化設定，再安裝 hook。
    若發現舊版 `project-conventions.json`、`.project-conventions/` 或舊 Hook 註冊，先說明需要遷移並保留原設定與狀態；目前沒有自動遷移，不直接並裝新版。
-2. Windows 先確認 `py -3 --version` 為 Python 3.9+，以下 `python3` 指令改用 `py -3 -X utf8`；Git 與 Python launcher 必須在 Codex 的執行環境可用。macOS/Linux 使用 `python3`。
+2. Windows 先確認 `py -3 --version` 為 Python 3.9+，以下 `python3` 指令改用 `py -3 -X utf8`；Python launcher 必須在 Codex 的執行環境可用。macOS/Linux 使用 `python3`。
    使用隨技能附帶的腳本（下文 SCRIPT 指本技能 scripts/ 下實際絕對路徑）：
    `python3 SCRIPT/conventions.py --root PROJECT init`
    使用者提供 JSON 時加 `--config FILE`。已有設定不覆寫。

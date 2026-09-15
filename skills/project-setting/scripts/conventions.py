@@ -31,7 +31,7 @@ def defaults():
 def project_root(start):
     start = Path(start).resolve()
     for folder in (start, *start.parents):
-        if (folder / CONFIG).exists() or (folder / '.git').exists():
+        if (folder / CONFIG).exists():
             return folder
     return start
 
@@ -254,7 +254,7 @@ def resolve(root, source, operation='write'):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--root', default='.')
+    parser.add_argument('--root')
     sub = parser.add_subparsers(dest='action', required=True)
     init = sub.add_parser('init')
     init.add_argument('--config')
@@ -272,7 +272,7 @@ def main():
     choice.add_argument('--destination')
     choice.add_argument('--confirmed', action='store_true', required=True)
     args = parser.parse_args()
-    root = project_root(args.root)
+    root = Path(args.root).resolve() if args.root else project_root('.')
     try:
         if args.action == 'init':
             result = initialize(root, json.loads(Path(args.config).read_text(encoding='utf-8')) if args.config else None)

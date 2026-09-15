@@ -7,6 +7,7 @@
 
 ## 設定與行為
 - `project-setting.json`：version=1；documents[type] 有 path、description、可選 match 檔名模式。支援 {slug} 與 {id}，其他佔位符拒絕。
+- 不依賴 Git：明確指定的根目錄優先；未指定時向上尋找最近的 `project-setting.json`，找不到則使用目前目錄。Hook 安裝需要有效設定，啟動命令以設定定位 runtime，支援子目錄及專案搬移；不得回退到上層專案的 runtime。
 - 初始化保留已有設定；平台安裝保留既有指令與 hooks。檔案放在 project root，目錄按需要建立。
 - 成功識別且資訊足夠時，寫入前改路徑，通知 AI 實際位置。相同來源後續讀寫使用同一路徑。
 - 缺設定、未知類型、多重匹配或缺 slug/id 時，暫停該文件寫入並讓 AI 建議既有分類或新增分類，詢問使用者；不自行確認。使用者可選既有類型、新類型或本次自訂目的地。

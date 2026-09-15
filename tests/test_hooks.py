@@ -1,5 +1,7 @@
 import json
 import os
+import shutil
+from unittest import mock
 from pathlib import Path
 import sys
 import subprocess
@@ -68,7 +70,6 @@ class HookTest(unittest.TestCase):
             self.assertEqual(result['updatedInput'], {'file_path': dest, **fields})
 
     def test_install_preserves_settings_and_is_idempotent(self):
-        subprocess.run(['git', 'init', '-q', str(self.root)], check=True)
         (self.root / 'AGENTS.md').write_text('Existing instructions\n')
         folder = self.root / '.claude'
         folder.mkdir()
@@ -84,13 +85,12 @@ class HookTest(unittest.TestCase):
         self.assertTrue((self.root / '.codex/hooks.json').exists())
 
     def test_windows_command_and_upgrade_preserve_other_hooks(self):
-        subprocess.run(['git', 'init', '-q', str(self.root)], check=True)
         h.install(self.root, 'codex')
         config_path = self.root / '.codex/hooks.json'
         config = json.loads(config_path.read_text())
         handler = config['hooks']['PreToolUse'][0]['hooks'][0]
         self.assertIn('commandWindows', handler)
-        command = handler.pop('commandWindows')
+        command = handler['commandWindows']
         self.assertTrue(command.startswith('py -3 -X utf8 -c "'))
         # Execute the Windows bootstrap as Python on this host; shell/native OS
         # compatibility still requires the same test on Windows.
@@ -123,13 +123,88 @@ class HookTest(unittest.TestCase):
         self.assertEqual(groups[1], extra)
         self.assertEqual(groups[0]['hooks'][0]['commandWindows'], command)
 
-    def test_install_requires_git_root_before_mutation(self):
-        with self.assertRaises(ValueError):
+    def test_install_requires_config_before_mutation(self):
+        (self.root / c.CONFIG).unlink()
+        with self.assertRaisesRegex(ValueError, 'project-setting.json'):
             h.install(self.root, 'codex')
         self.assertFalse((self.root / '.project-setting').exists())
 
+    def test_no_git_install_relocation_and_missing_nearest_runtime(self):
+        # No executable, including Git, is visible while installing.
+        with mock.patch.dict(os.environ, {'PATH': ''}):
+            h.install(self.root, 'codex')
+            h.install(self.root, 'claude')
+        self.assertFalse((self.root / '.gitignore').exists())
+        with tempfile.TemporaryDirectory() as target:
+            moved = Path(target) / '搬移 project'
+            shutil.copytree(self.root, moved)
+            shutil.rmtree(self.root)
+            child = moved / 'nested'
+            child.mkdir()
+            config = json.loads((moved / '.codex/hooks.json').read_text())
+            handler = config['hooks']['SessionStart'][0]['hooks'][0]
+            code = handler['commandWindows'].split(' -c "', 1)[1][:-1]
+            env = {**os.environ, 'PATH': '', 'PYTHONDONTWRITEBYTECODE': '1'}
+            event = json.dumps({'hook_event_name': 'SessionStart'})
+            result = subprocess.run([sys.executable, '-c', code], cwd=child, env=env,
+                                    input=event, capture_output=True, text=True, check=True)
+            self.assertIn('文件規範', json.loads(result.stdout)['hookSpecificOutput']['additionalContext'])
+            if os.name != 'nt':
+                binaries = Path(target) / 'bin'
+                binaries.mkdir()
+                (binaries / 'python3').symlink_to(sys.executable)
+                for folder, filename in (('.codex', 'hooks.json'), ('.claude', 'settings.json')):
+                    config = json.loads((moved / folder / filename).read_text())
+                    command = config['hooks']['SessionStart'][0]['hooks'][0]['command']
+                    result = subprocess.run(command, shell=True, cwd=child,
+                                            env={**env, 'PATH': str(binaries)}, input=event,
+                                            capture_output=True, text=True, check=True)
+                    self.assertIn('文件規範', json.loads(result.stdout)['hookSpecificOutput']['additionalContext'])
+            # A nested project must never fall back to its parent's runtime.
+            c.initialize(child)
+            result = subprocess.run([sys.executable, '-c', code], cwd=child, env=env,
+                                    input=event, capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('runtime not found', result.stderr)
+            (child / c.CONFIG).unlink()
+            (moved / c.CONFIG).unlink()
+            result = subprocess.run([sys.executable, '-c', code], cwd=child, env=env,
+                                    input=event, capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('project-setting.json not found', result.stderr)
+
+    def test_git_registrations_are_upgraded_exactly(self):
+        for platform in ('codex', 'claude'):
+            h.install(self.root, platform)
+            path = self.root / ('.codex/hooks.json' if platform == 'codex' else '.claude/settings.json')
+            config = json.loads(path.read_text())
+            expected = json.loads(path.read_text())
+            old_command = 'python3 "$(git rev-parse --show-toplevel)/.project-setting/runtime/hooks.py" hook --platform ' + platform
+            old_bootstrap = (
+                "import pathlib,runpy,subprocess,sys; "
+                "root=subprocess.check_output(['git','rev-parse','--show-toplevel']).decode('utf-8').strip(); "
+                "script=pathlib.Path(root)/'.project-setting/runtime/hooks.py'; "
+                "sys.path.insert(0,str(script.parent)); "
+                "sys.argv=[str(script),'hook','--platform','codex']; "
+                "runpy.run_path(str(script),run_name='__main__')"
+            )
+            for groups in config['hooks'].values():
+                group = groups[0]
+                group['hooks'] = [{'type': 'command', 'command': old_command, 'timeout': 10}]
+                if platform == 'codex':
+                    windows = json.loads(json.dumps(group))
+                    windows['hooks'][0]['commandWindows'] = 'py -3 -X utf8 -c "' + old_bootstrap + '"'
+                    groups.append(windows)
+            custom = {'hooks': [{'type': 'command', 'command': old_command, 'timeout': 20}]}
+            config['hooks']['SessionStart'].append(custom)
+            expected['hooks']['SessionStart'].append(custom)
+            path.write_text(json.dumps(config))
+            with mock.patch.dict(os.environ, {'PATH': ''}):
+                h.install(self.root, platform)
+                h.install(self.root, platform)
+            self.assertEqual(json.loads(path.read_text()), expected)
+
     def test_invalid_hook_config_and_broken_symlink_leave_no_runtime(self):
-        subprocess.run(['git', 'init', '-q', str(self.root)], check=True)
         folder = self.root / '.codex'
         folder.mkdir()
         config = folder / 'hooks.json'

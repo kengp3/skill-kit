@@ -59,6 +59,18 @@ class ConventionsTest(unittest.TestCase):
         self.assertEqual(self.c.read_config(self.root), cfg)
         self.assertEqual(self.c.resolve(self.root, 'login.plan.md')['destination'], '.project/plans/login.md')
 
+    def test_root_discovery_ignores_git_and_explicit_root_wins(self):
+        child = self.root / 'nested'
+        child.mkdir()
+        (self.root / '.git').mkdir()
+        self.assertEqual(self.c.project_root(child), child)
+        self.c.initialize(self.root)
+        self.assertEqual(self.c.project_root(child), self.root)
+        subprocess.run([sys.executable, str(SCRIPT), '--root', str(child), 'init'],
+                       capture_output=True, check=True)
+        self.assertTrue((child / self.c.CONFIG).exists())
+        self.assertEqual(self.c.project_root(child), child)
+
     def test_unknown_missing_ambiguous_and_missing_name(self):
         self.assertEqual(self.c.resolve(self.root, 'login.plan.md')['reason'], 'missing_config')
         self.c.initialize(self.root)
