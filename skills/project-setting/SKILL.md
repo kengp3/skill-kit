@@ -1,49 +1,26 @@
 ---
 name: project-setting
-description: Initialize, customize, explain, or troubleshoot a project's document placement conventions for PRD, spec, plan, ADR, research and user-defined types. Use when setting up project document structure or resolving an unclassified document; this skill manages placement, not the document's subject matter.
+description: Create or update a project's document placement rules and reminder hooks. Use for project document conventions or unclear document categories; manages placement, not document subject matter.
 ---
 
 # 專案文件規範
 
-在專案根目錄以 `project-setting.json` 定義文件位置。技能管理設定；專案指令與 hook 讓後續第三方技能也套用它。
+以專案根目錄 `project-setting.md` 為唯一文件規範來源，不依賴 AGENTS.md 或 CLAUDE.md 作為入口；平台適用指令仍須照常遵循。AI 遵循文字；Hook（事件掛鉤）只在工作階段與子代理開始時提醒讀取。不自動改寫路徑、阻擋工具或維護別名。
 
-Codex 已完成 macOS 實際平台驗收；Windows 相容程式已補齊，原生平台驗收尚未完成。Claude Code 依使用者要求跳過；其轉接程式僅通過本地回放，尚未完成實際平台驗證，預設不安裝。
+技能與 Hook 不需要 Python、Git 或 Node.js；使用現有檔案工具編輯，提醒用系統命令輸出固定文字。Codex 為主要平台，Claude 為選用；平台驗收狀態見 [設定說明](references/configuration.md)。
 
-## 初始化
+## 初始化或更新
 
-1. 確認使用者指定的專案根目錄、已有設定與平台指令。不需要 Git；明確指定的 `--root` 為專案邊界，未指定時向上尋找最近的 `project-setting.json`，找不到則使用目前目錄。先初始化設定，再安裝 hook。
-   若發現舊版 `project-conventions.json`、`.project-conventions/` 或舊 Hook 註冊，先說明需要遷移並保留原設定與狀態；目前沒有自動遷移，不直接並裝新版。
-2. 支援 Python 3.9+，不先檢查版本，直接執行初始化與安裝。Windows 將以下 `python3` 指令改用 `python -X utf8`；只需 Codex 的執行環境能找到 `python`，免安裝版亦可，不要求安裝或註冊 Python launcher。macOS/Linux 使用 `python3`。
-   使用隨技能附帶的腳本（下文 SCRIPT 指本技能 scripts/ 下實際絕對路徑）：
-   `python3 SCRIPT/conventions.py --root PROJECT init`
-   使用者提供 JSON 時加 `--config FILE`。已有設定不覆寫。
-3. 依使用者實際使用的平台執行：
-   `python3 SCRIPT/hooks.py install --platform codex --root PROJECT`
-   或 `--platform claude`。只安裝要求的平台，保留既有指令與設定。
-4. Codex 既有 `.codex/config.toml` 保持原樣；確認 `[features]` 下 `hooks = true`。若使用者原本設為 false，先告知這會停用整合，依使用者啟用意圖調整，保留其他設定。在 `/hooks` 審查並信任新增 hook，再開始新工作階段。Claude 從專案 root 開始新工作階段。既有專案更新時重新執行 install，以更新 runtime 及補入 `commandWindows`；更新後重新審查 Hook。設定檔存在不等於已成功載入；用一次建立→讀取→修改確認。若執行失敗，再視錯誤以 `python -V`（macOS/Linux：`python3 -V`）協助診斷，不將版本檢查設為事前必要步驟。
+1. 確認使用者指定的專案目錄，讀取適用指令、已有規範與平台 Hook 設定。使用者指定或工作階段已確認的專案根目錄優先，不以 Git、AGENTS.md 或工具 cwd 判定根目錄。不明時只問目標目錄，不無界向上搜尋或套用上層專案規範；多專案任務分別確認。
+2. 用 [規範範本](assets/document-rules.md) 建立根目錄 `project-setting.md`，依使用者慣例調整表格，沒有自訂需求時採五種預設；不預建空目錄。已有檔案先讀取，只改授權項目，不能以預設覆蓋；空白、不可讀或規則衝突先釐清。檢查目的地與符號連結不越界。新初始化不建立或修改 AGENTS.md／CLAUDE.md。
+3. 用 [設定說明](references/configuration.md) 安裝使用者要求的平台提示型 Hook；一般初始化沿用已知使用平台，未能判斷時詢問，不同時安裝所有平台。若只要求調整文件規範，不順手改 Hook。保留其他指令與設定；不將範本整份覆蓋到已有平台設定。
+4. 回讀變更，確認獨立規範可讀、平台指令檔未被新初始化更動，且每個事件只有一份本技能提醒。啟用、信任與驗證按設定說明完成；只寫入檔案不等於平台已載入。
 
-## 解讀與調整
+## 分類與日常使用
 
-- `python3 SCRIPT/conventions.py --root PROJECT show` 查看設定。
-- `python3 SCRIPT/conventions.py --root PROJECT resolve SOURCE` 取得分類結果與目的地。
-- 使用者明確要求更改設定後，準備保留其他項目的完整 JSON，再執行 `configure FILE --confirmed`。不要藉更新設定搬移既有文件。
-- 五種預設為 prd（產品目標）、spec（系統行為與驗收）、plan（實作步驟）、adr（架構決策）、research（研究證據）；不是每個功能都必須建立五份文件。
+- 文件操作前實際讀取已確認根目錄的 project-setting.md，以用途決定類型與目的地；規範剛被修改應重讀。根目錄不明、檔案缺失／空白／不可讀或規範衝突時，暫停相關文件寫入並回報，其他工作可繼續；不得擅自恢復預設或套用另一專案規範。這由 AI 遵循，不是 Hook 的自動偵測或阻擋。
+- 類型、必要名稱或編號不明時，提出一個最合適選擇與理由，等待使用者決定。可選既有類型、新類型或本次位置；一次性位置不新增永久規則。
+- 不自動搬移既有文件，不覆寫同名目的地，不越出專案邊界；一般文件與入口／平台文件分開處理。
+- 建立前確認路徑，完成後讀回核對。後續工具操作與連結使用真正目的地；沒有程式替你轉換來源名稱。
 
-## 分類需要使用者決定時
-
-看到 `need_input` 或 hook 的分類提示：
-
-1. 看文件用途、當前設定與候選類型。提出一個最合適的既有分類及理由；確實沒有合適類型才建議新類型與路徑。
-2. 每次詢問一個關鍵選擇，提供沿用既有類型、新增類型或本次位置。缺設定時先詢問是否初始化；未得到答覆不自行同意。
-3. 確認後，以 `choose SOURCE --type TYPE --slug NAME [--id ID] --confirmed` 保存這份文件的路徑；本次位置用 `--destination PATH`。
-4. 新增類型需先以 `configure` 保存使用者確認的設定。一次選擇不新增永久 match 規則。
-5. 重試原本文件工作，使用 hook 回報的實際路徑讀取、修改、建立連結及交接。
-
-`--confirmed` 是執行者對既有使用者選擇的聲明，不是取得同意的方法。禁止在使用者尚未回答時自行帶入。路徑衝突應保留文件並詢問，不能歸類成「新增類型」解決。
-
-## 支援範圍
-
-Codex `apply_patch` 與 Claude `Write/Read/Edit` 可改写已辨識文件。shell 提供指引，不透明改寫任意腳本；外部編輯器、固定路徑生成器和所有工具的全面覆蓋未保證。
-未納管的既有文件不自動搬移。平台／技能內部文件及 README 等入口不套用一般文件分類。
-
-詳細設定、安裝及限制見 [references/configuration.md](references/configuration.md)。
+停用只在使用者要求的專案內進行，依 [設定與停用說明](references/configuration.md#停用) 保留其他 Hook、規範與文件。

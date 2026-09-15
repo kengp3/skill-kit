@@ -1,82 +1,51 @@
-# 設定與整合
+# 設定與驗證
 
-Codex 已完成 macOS 實際平台驗收；Windows 相容程式已補齊，原生平台驗收尚未完成。Claude Code 依使用者要求跳過；其轉接程式僅通過本地回放，尚未完成實際平台驗證，預設不安裝。
+## 文件規範
 
-## 執行條件
+規範只維護在已確認專案根目錄的 `project-setting.md`，初始化採用 `assets/document-rules.md`。不存在時才建立，已存在時先讀取並保留自訂內容。新初始化不建立或修改 AGENTS.md／CLAUDE.md；平台適用指令仍須遵循，若與文件規範衝突，按指令優先序處理並說明。
+使用現有檔案工具編輯，不要求版本檢查或安裝 Python、Git、Node.js。不要為了合併幾段設定引入新的安裝程式。
 
-Python 3.9+，不需要 Git 或 Git 儲存庫。macOS/Linux 使用 `python3`；Windows 以 `python -X utf8` 執行；支援執行環境能找到 `python` 的免安裝版，不要求安裝或註冊 Python launcher。Codex 設定以 `commandWindows` 指定 Windows 啟動命令，原有 `command` 保留給 macOS/Linux。兩種啟動命令皆以 Python 從目前目錄向上尋找最近的 `project-setting.json`，再載入該專案的 runtime，支援子目錄啟動及專案搬移；Windows 不依賴 Bash。找不到設定或最近專案未安裝 runtime 時明確失敗，不改用上層專案。整個技能目錄可獨立複製，沒有套件依賴。安裝器把兩支腳本複製到專案 `.project-setting/runtime/`，後續不依賴開發儲存庫。路由別名 `.project-setting/routes.json` 與鎖定檔是本機狀態，不應提交；若已有 `.gitignore`，安裝器會補入排除規則，否則不建立。runtime、JSON、專案指令與 hook 設定可版本控制。
+從子目錄工作時，AI 依使用者指定或工作階段已確認的專案根目錄讀取 project-setting.md，不以工具 cwd、Git 或 AGENTS.md 猜根目錄。根目錄不明時先詢問，不無界向上搜尋；巢狀與多專案各自確認，不套用其他專案規範。檔案缺失、空白、不可讀或規則衝突時，暫停相關文件寫入並回報；修改後重讀。Hook 本身不查檔、不定位根目錄，也不保證 AI 遵循。
 
-Windows 檔案鎖使用標準庫 `msvcrt`，macOS/Linux 使用 `fcntl`；Windows 鎖忙碌時停止本次操作，可稍後重試，不會無鎖寫入。JSON 設定以 UTF-8 讀寫。Windows 原生 Codex、PowerShell/cmd 啟動與檔案系統行為仍需實機驗收；本機 bootstrap 回放與模擬鎖 API 測試不等於 Windows 驗收。
+## Codex（預設主要平台）
 
-更新既有專案時重跑 `hooks.py install --platform codex --root PROJECT`，安裝器會更新 runtime，並將完全符合舊版輸出的 Git 啟動註冊（含 Windows 版本）替換為不依賴 Git 的命令；上一版不依賴 Git 但仍使用 `py -3` 的 Windows 註冊也會更新為 `python`。手動改過的註冊保留，需人工檢查是否與新增註冊重複。更新後到 `/hooks` 重新審查與信任。
+1. 讀取專案 `.codex/hooks.json` 與 `.codex/config.toml`。如果已有內嵌 `[hooks]`，沿用 TOML 儲存位置，將範本同等欄位併入；同一層不要同時新增 JSON 與內嵌 Hook。兩者已並存時先釐清有效來源，不覆蓋任何一份。
+2. 把 [Codex 範本](../assets/codex-hooks.json) 的 `SessionStart`、`SubagentStart` 群組合併到既有 hooks 陣列。新事件可直接新增，已有事件保留其他 handlers。完整相同的本技能 handler 已存在就不追加。
+3. 保留其他設定。依初始化的啟用意圖設定 `[features]` 下 `hooks = true`，不建立第二個重複區段；若原值為 false，明確回報此變更。使用者明確要求維持停用時不得覆蓋。
+4. 到 `/hooks` 審查並信任新增定義，重開工作階段確認載入。若需要使用者在介面完成信任，交付具體檔案與操作位置，將「設定已寫入」與「信任／載入已確認」分開回報。
 
-不強制事前檢查 Python 版本，直接執行初始化與安裝，並以一次文件建立→讀取→修改確認可用性。初始化成功不代表所有 hook 功能皆相容；若執行失敗，再視錯誤以 `python -V`（macOS/Linux：`python3 -V`）協助診斷。Python 3.9+ 仍為支援版本要求。
+範本不設 matcher，讓 SessionStart 涵蓋開始、恢復與 compact（上下文壓縮）等來源；不新增 PreToolUse。兩個事件皆可直接輸出文字，無須解析輸入或生成動態 JSON。
 
-## 根目錄
+macOS/Linux 使用 shell 內建 `echo`；Windows 以 `commandWindows` 指定 `cmd /d /c echo`，只需系統 cmd.exe。提醒使用 ASCII，避開中文命令編碼問題。不得在命令中插入使用者路徑、文件內容或其他可執行字串；實際規範由 AI 讀取。
 
-明確指定 `--root PROJECT` 時使用該目錄，不會改用上層專案。省略時從目前目錄向上尋找最近的 `project-setting.json`；沒有設定時以目前目錄作為初始化位置。安裝 hook 前必須已有有效設定。從專案外部啟動 hook 不受支援。
+## Claude（使用者要求時才安裝）
 
-## JSON
+1. 直接使用同根 `project-setting.md`，不建立或修改 CLAUDE.md，也不需要 AGENTS.md 引用。
+2. 將 [Claude 範本](../assets/claude-hooks.json) 合併至 `.claude/settings.json`，保留 env、permissions 與其他 Hook，不安裝 Codex 設定。
+3. 範本使用 shell 的 `echo` 輸出靜態 JSON；SubagentStart 需透過 `additionalContext` 注入上下文，不能直接套用 Codex 的純文字輸出。依 Claude 宿主提供的 shell 執行，未聲稱 Windows 可直接使用 cmd 執行此範本。
+4. 重新載入／開始工作階段並查核設定是否生效。此平台仍屬選用且未完成模型端實測。
 
-```json
-{
-  "version": 1,
-  "documents": {
-    "plan": {
-      "description": "實作步驟與驗證安排",
-      "path": "docs/plans/{slug}.plan.md",
-      "match": ["*.plan.md", "*-plan.md", "plan.md"]
-    }
-  }
-}
-```
+## 停用
 
-- version 是設定格式版本，不是產品版本。
-- documents 的 key 是使用者可新增的小寫類型識別碼；path 是 root 相對路徑。
-- 支援 {slug}、{id} 各出現一次；固定檔名也可。slug 可含 Unicode 字母、數字、底線與連字號；不接受斜線。
-- match 使用區分大小寫的檔名 glob。既有目的路徑也會識別；多類型匹配時詢問，不以順序強行決定。
-- login.plan.md 自動取得 slug=login；plan.md 無名稱需詢問；0001-database.adr.md 提供 id 與 slug。
-- description 給 AI 建議用途。內容語意分類由 AI 解讀，核心不呼叫模型猜分類。
+1. 確認使用者指定的專案，讀取平台設定，修改前備份到不覆蓋既有資料且不越界的位置。
+2. 只移除與本技能 assets 範本完整相同的提醒 handler（事件處理項目）；自訂過的命令先確認歸屬。混合群組保留其他 handler，只刪除因此變空的群組，不清空整個 hooks，也不關閉全域 Hook 功能。
+3. 預設保留 project-setting.md 與所有實際文件；只有使用者明確要求同時移除規範時，才備份並移除該檔。其他平台指令與設定保持不變。
+4. 回讀差異，重新開始工作階段確認提醒已停用；未完成平台檢查時明確回報。解除安裝技能與停用專案提醒是兩個獨立動作。
 
-## 使用者選擇
+## 驗證與完成回報
 
-`choose` 保存來源→目的地的文件別名，讓同一來源後續讀寫一致；不修改全專案匹配規則。
-本次位置也保存同一文件的別名，便於後續修改；不代表永久新增一種類型。
-缺設定時可初始化使用者提供的 JSON，或確認一次性位置。設定改動只影響新文件，已選定文件保留原目的地。
+- 回讀 project-setting.md、平台設定，確認規範完整可讀、沒有重複提醒，其他內容未變。
+- 在命令執行環境回放兩個事件的 handler，檢查成功輸出規範提醒且未改寫任何檔案。這只證明命令可用，不等於 AI 已收到或遵循。
+- 在新工作階段確認 Hook 載入與輸出；若未授權或無法執行子代理，不為驗證額外建立子代理，明確列為未驗證。
+- 在隔離測試目錄提供相同規範，要求建立一份 plan、讀取並修改；確認實際檔名與連結正確、原文保留。再提供用途不明或已有同名文件的案例，檢查是否先釐清／讀取，而非覆寫。
+- 平台實測要使用真正模型與工具操作；人工或腳本回放不能充當 AI 行為驗收。沒有完成時列為未驗證。
 
-## 工具整合
+## 支援邊界與證據
 
-Codex：`.codex/hooks.json`，PreToolUse 改寫補丁的檔案標頭，保留內容。Claude：`.claude/settings.json`，改寫完整 input 物件中的 file_path，保留其他參數且不自動回傳 allow。
-兩平台 SessionStart/SubagentStart 提供規範；Bash 只提供指引。正常路由回傳目的地，資訊不足才 deny 並要求 AI 詢問，不把錯誤分類寫進檔案。
-Codex updatedInput 必須搭配 allow，仍須遵守宿主的沙箱與權限；不是新增操作授權。Claude 只回傳 updatedInput，保留原權限流程。
+本技能僅提供規範與提示，不強制阻擋、修改工具參數或保證外部腳本／所有檔案寫入皆符合規範。缺少 project-setting.md 時提醒仍會輸出；AI 必須回報規範缺失，不能宣稱 Hook 已載入規範全文。
 
-初始化只追加一次標記的指令，合併 hook 陣列。不要同時安裝多個重複的路由器。Claude 需從 root 啟動，Codex 專案與 hook 需要信任。新 session 驗證載入。
+維護者測試使用 Python 標準函式庫，僅驗證發行資源與原生命令，不構成技能使用者的 Python 依賴。實際驗證結果記錄於儲存庫 `tasks/plan.md`；安裝此技能不需要該文件。原生 Windows、Codex 模型端及 Claude 模型端須分開驗證。
 
-## 明確限制
-
-- 不能改寫任意 Bash/PowerShell/外部編輯器的逐檔寫入，不能保證第三方固定路徑腳本或文件相對連結自動修復。
-- 只改寫受支援途徑；其他程式先解析目的地再執行。來源不存在且不明的 Markdown 會詢問；慣用入口／技能內部目錄不會。
-- 路由別名是本地運行狀態，不是跨機器共享索引；後續工作應使用真正目的地。
-- 寫入前會保留來源與目的地對應，避免不同來源搶用同一位置；記錄存在不代表工具已成功寫入。工具失敗時保留對應，讓相同來源可重試。人工清理前須確認沒有進行中的工具呼叫，且不再需要該文件的別名；勿直接刪除整份狀態來解除衝突。
-- 受管文件的補丁重新命名尚未支援，因為還需要同步更新別名及參照；無關程式碼的重新命名不受此限制。
-- 無效設定、目的地衝突或路徑越界停止該操作並明確回報；不自動遷移歷史文件。
-- 尚未支援文件內容章節與範本驗證，也不宣稱 hook 是完整檔案系統隔離邊界。
-
-## 本次相容性驗證
-
-2026-09-15 在 macOS 執行 `python3 -m unittest discover -s tests -q`：26 項通過。涵蓋缺少 fcntl 時載入、Windows 鎖 API 模擬、鎖失敗不進入寫入區段、例外後跨程序重新取得實際鎖、Windows bootstrap 從中文與空白子目錄回放、原有 shell 命令與舊註冊升級。
-
-原生 Windows 可在開發儲存庫執行 `python -X utf8 -m unittest discover -s tests -q`；既有符號連結防護測試需要建立符號連結的權限。之後仍須在受信任的 Codex 專案中驗證 SessionStart 與建立→讀取→修改流程。本次沒有 Windows 執行環境，尚未完成這兩項驗收。
-
-## 移除 Git 依賴驗證
-
-2026-09-15 在 macOS 執行 `python3 -B -m unittest discover -s tests -q`：29 項通過。涵蓋無 Git 安裝、僅提供 Python 的 shell 啟動環境、中文與空白子目錄、搬移並刪除原專案後啟動、巢狀專案缺 runtime 時拒絕向上回退、明確根目錄優先，以及舊版註冊升級與自訂 hook 保留。本輪為腳本與啟動命令回放，未重跑 Codex 信任與模型操作，亦未驗證原生 Windows 或 Claude 平台。
-
-## 查證來源
-
-- [Python msvcrt](https://docs.python.org/3/library/msvcrt.html)：Windows byte-range locking，鎖失敗以 OSError 回報。
-- [Codex hooks](https://learn.chatgpt.com/docs/hooks)：PreToolUse updatedInput、additionalContext、信任與工具覆蓋。
-- [Claude hooks](https://code.claude.com/docs/en/hooks)：完整 input 替換、權限與上下文回傳。
-- [Claude settings](https://code.claude.com/docs/en/settings)：專案設定範圍。
-
-官方來源查核於 2026-09-15；實際平台驗證證據記錄在開發儲存庫 docs/plans/project-setting.plan.md。
+官方文件查證於 2026-09-15：
+- [Codex Hooks](https://learn.chatgpt.com/docs/hooks)：SessionStart／SubagentStart 純文字上下文、commandWindows、信任、設定來源。
+- [Claude Hooks](https://code.claude.com/docs/en/hooks)：SessionStart 與 SubagentStart 的輸出格式及設定。

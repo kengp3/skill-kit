@@ -7,7 +7,7 @@
 | 技能 | 用途 | 額外需求 |
 | --- | --- | --- |
 | [define-task](skills/define-task/SKILL.md) | 釐清模糊或高返工成本的任務，整理目標、背景、材料、邊界與完成條件 | 無額外執行依賴或初始化步驟 |
-| [project-setting](skills/project-setting/SKILL.md) | 管理專案文件位置與命名，支援 PRD、spec、plan、ADR、research 及自訂類型 | Python 3.9+，不需 Git；macOS/Linux；Codex Hook 需逐專案初始化與信任 |
+| [project-setting](skills/project-setting/SKILL.md) | 管理專案文件位置與命名，支援 PRD、spec、plan、ADR、research 及自訂類型 | 無 Python／Git 執行依賴；文字規範＋系統命令提醒；Codex Hook 需逐專案初始化與信任 |
 
 ## 如何安裝
 
@@ -69,9 +69,7 @@ npx skills list --agent codex
 
 以上為不同移除範例，依安裝範圍選擇執行；若專案與全域都有安裝，需分別移除。參數詳見 [Skills CLI 移除文件](https://github.com/vercel-labs/skills#skills-remove)。
 
-**移除 `project-setting` 技能不會自動清除已初始化的專案 Hook。** 安裝器已將執行腳本複製到各專案的 `.project-setting/runtime/`，並寫入 Hook 註冊與專案指令。若也要停用文件路由，需逐專案移除 `.codex/hooks.json` 中指向 `.project-setting/runtime/hooks.py` 的 Hook，以及 `AGENTS.md` 中本技能加入的指引；保留其他 Hook 與指令。曾整合 Claude Code 的專案，則檢查 `.claude/settings.json` 與 `CLAUDE.md`。
-
-目前沒有自動清理整套專案設定的移除指令。`project-setting.json`、`.project-setting/` 中的路由狀態與既有文件不會由上述技能移除指令刪除；停用整合後應開啟新工作階段確認不再載入。詳細設定見 [project-setting 設定說明](skills/project-setting/references/configuration.md)。
+**移除 `project-setting` 技能不會自動清除專案 Hook 或規範。** 若要停用提醒，請要求 AI 使用技能的 [停用流程](skills/project-setting/references/configuration.md#停用)，只移除本技能的提醒註冊，保留其他 Hook；文件規範保留，除非你也要求移除。實際文件不會自動刪除。
 
 ## 使用 define-task
 
@@ -87,9 +85,9 @@ npx skills list --agent codex
 
 > 使用 $project-setting 初始化這個專案的文件規範，採用預設類型，並設定 Codex Hook。
 
-技能會建立根目錄 `project-setting.json`，並將 Hook（事件掛鉤）整合到該專案。使用者仍需在 Codex 的 `/hooks` 審查並信任定義。**安裝技能不等於已啟用 Hook；安裝全部技能也不會自動替所有專案寫入設定。** 詳細流程與限制見技能內的 [設定說明](skills/project-setting/references/configuration.md)。
+技能會在專案根目錄建立獨立 `project-setting.md`，不建立或修改 `AGENTS.md`／`CLAUDE.md`，並合併 SessionStart／SubagentStart 提示型 Hook。Hook 直接提醒 AI 讀取 `project-setting.md`，不自動阻擋或改寫文件路徑，使用者仍需在 Codex 的 `/hooks` 審查並信任定義。**安裝技能不等於已啟用 Hook；安裝全部技能也不會自動替所有專案寫入設定。** 根目錄不明或規範缺失／空白／衝突時，由 AI 暫停相關文件寫入並回報；Hook 本身不偵測或硬性阻擋。詳見 [設定說明](skills/project-setting/references/configuration.md)。
 
-`project-setting` 原名 `project-conventions`。新版本使用 `project-setting.json` 與 `.project-setting/`，沒有自動遷移舊專案設定或 Hook。曾使用舊版的專案，應先保留原設定與路由狀態，完成專案層級遷移後再啟用新版，避免兩套路由器並存。
+Codex／Claude 模型端及原生 Windows 尚未完成驗收；命令回放結果與未驗證項目見 [驗證紀錄](tasks/plan.md#驗證紀錄)。
 
 ## 新增技能
 
@@ -101,7 +99,7 @@ npx skills list --agent codex
 ## 開發驗證
 
 ```bash
-python3 -m unittest discover -s tests -q
+python3 -B -m unittest discover -s tests -v
 ```
 
-發布前另以乾淨專案驗證清單、指定與全部安裝，以及安裝後的實際功能。技能更新不會自動更新已複製到其他專案的 Hook runtime（執行腳本）；目前尚未提供完整的專案 Hook 移除與舊版遷移流程。
+以上 Python 僅供維護者執行測試，不是技能或 Hook 的執行依賴。發布前另以乾淨專案驗證清單、指定與全部安裝，以及安裝後的實際功能。設計與驗證見 [計畫](tasks/plan.md)。
