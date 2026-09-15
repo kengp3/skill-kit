@@ -9,7 +9,7 @@
 | [define-task](skills/define-task/SKILL.md) | 釐清模糊或高返工成本的任務，整理目標、背景、材料、邊界與完成條件 | 無額外執行依賴或初始化步驟 |
 | [project-setting](skills/project-setting/SKILL.md) | 管理專案文件位置與命名，支援 PRD、spec、plan、ADR、research 及自訂類型 | Python 3.9+、Git、macOS/Linux；Codex Hook 需逐專案初始化與信任 |
 
-## 安裝
+## 如何安裝
 
 需要 Node.js 與 npm。儲存庫：[kengp3/skill-kit](https://github.com/kengp3/skill-kit)。
 
@@ -31,12 +31,47 @@ npx skills add kengp3/skill-kit --skill '*' --agent codex
 
 預設安裝到目前專案；要安裝到使用者層級可加 `--global`。互動安裝時可選擇需要的技能，也可透過 `--skill define-task` 僅安裝任務定義技能。參數詳見 [Skills CLI 官方文件](https://github.com/vercel-labs/skills)。
 
+```bash
+# 全域安裝全部技能，供不同專案使用
+npx skills add kengp3/skill-kit --skill '*' --agent codex --global
+
+# 安裝後確認 Codex 的已安裝技能與位置
+npx skills list --agent codex
+
+# 僅查看全域安裝
+npx skills list --agent codex --global
+```
+
 本機開發時，可在另一個暫存專案用儲存庫的實際路徑驗證：
 
 ```bash
 npx skills add /absolute/path/to/skill-kit --list
 npx skills add /absolute/path/to/skill-kit --skill project-setting --agent codex
 ```
+
+## 如何移除
+
+專案層級的技能，請在當初安裝的專案目錄執行；全域安裝則加上 `--global`。移除時使用技能名稱，而非儲存庫名稱。
+
+```bash
+# 移除指定技能
+npx skills remove project-setting --agent codex
+
+# 移除本集合的兩個技能
+npx skills remove define-task project-setting --agent codex
+
+# 移除全域安裝的兩個技能
+npx skills remove define-task project-setting --agent codex --global
+
+# 移除後確認剩餘技能與安裝位置
+npx skills list --agent codex
+```
+
+以上為不同移除範例，依安裝範圍選擇執行；若專案與全域都有安裝，需分別移除。參數詳見 [Skills CLI 移除文件](https://github.com/vercel-labs/skills#skills-remove)。
+
+**移除 `project-setting` 技能不會自動清除已初始化的專案 Hook。** 安裝器已將執行腳本複製到各專案的 `.project-setting/runtime/`，並寫入 Hook 註冊與專案指令。若也要停用文件路由，需逐專案移除 `.codex/hooks.json` 中指向 `.project-setting/runtime/hooks.py` 的 Hook，以及 `AGENTS.md` 中本技能加入的指引；保留其他 Hook 與指令。曾整合 Claude Code 的專案，則檢查 `.claude/settings.json` 與 `CLAUDE.md`。
+
+目前沒有自動清理整套專案設定的移除指令。`project-setting.json`、`.project-setting/` 中的路由狀態與既有文件不會由上述技能移除指令刪除；停用整合後應開啟新工作階段確認不再載入。詳細設定見 [project-setting 設定說明](skills/project-setting/references/configuration.md)。
 
 ## 使用 define-task
 
