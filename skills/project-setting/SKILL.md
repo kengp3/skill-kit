@@ -13,14 +13,14 @@ Codex 已完成 macOS 實際平台驗收；Windows 相容程式已補齊，原�
 
 1. 確認使用者指定的專案根目錄、已有設定與平台指令。不需要 Git；明確指定的 `--root` 為專案邊界，未指定時向上尋找最近的 `project-setting.json`，找不到則使用目前目錄。先初始化設定，再安裝 hook。
    若發現舊版 `project-conventions.json`、`.project-conventions/` 或舊 Hook 註冊，先說明需要遷移並保留原設定與狀態；目前沒有自動遷移，不直接並裝新版。
-2. Windows 先確認 `py -3 --version` 為 Python 3.9+，以下 `python3` 指令改用 `py -3 -X utf8`；Python launcher 必須在 Codex 的執行環境可用。macOS/Linux 使用 `python3`。
+2. 支援 Python 3.9+，不先檢查版本，直接執行初始化與安裝。Windows 將以下 `python3` 指令改用 `python -X utf8`；只需 Codex 的執行環境能找到 `python`，免安裝版亦可，不要求安裝或註冊 Python launcher。macOS/Linux 使用 `python3`。
    使用隨技能附帶的腳本（下文 SCRIPT 指本技能 scripts/ 下實際絕對路徑）：
    `python3 SCRIPT/conventions.py --root PROJECT init`
    使用者提供 JSON 時加 `--config FILE`。已有設定不覆寫。
 3. 依使用者實際使用的平台執行：
    `python3 SCRIPT/hooks.py install --platform codex --root PROJECT`
    或 `--platform claude`。只安裝要求的平台，保留既有指令與設定。
-4. Codex 既有 `.codex/config.toml` 保持原樣；確認 `[features]` 下 `hooks = true`。若使用者原本設為 false，先告知這會停用整合，依使用者啟用意圖調整，保留其他設定。在 `/hooks` 審查並信任新增 hook，再開始新工作階段。Claude 從專案 root 開始新工作階段。既有專案更新時重新執行 install，以更新 runtime 及補入 `commandWindows`；更新後重新審查 Hook。設定檔存在不等於已成功載入；用一次建立→讀取→修改確認。
+4. Codex 既有 `.codex/config.toml` 保持原樣；確認 `[features]` 下 `hooks = true`。若使用者原本設為 false，先告知這會停用整合，依使用者啟用意圖調整，保留其他設定。在 `/hooks` 審查並信任新增 hook，再開始新工作階段。Claude 從專案 root 開始新工作階段。既有專案更新時重新執行 install，以更新 runtime 及補入 `commandWindows`；更新後重新審查 Hook。設定檔存在不等於已成功載入；用一次建立→讀取→修改確認。若執行失敗，再視錯誤以 `python -V`（macOS/Linux：`python3 -V`）協助診斷，不將版本檢查設為事前必要步驟。
 
 ## 解讀與調整
 

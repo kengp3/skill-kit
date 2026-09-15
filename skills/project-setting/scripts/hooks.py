@@ -181,15 +181,16 @@ def install(root, platform):
         groups = config.setdefault('hooks', {}).setdefault(event, [])
         handler = {'type': 'command', 'command': command, 'timeout': 10}
         if platform == 'codex':
-            handler['commandWindows'] = 'py -3 -X utf8 -c "' + bootstrap + '"'
+            handler['commandWindows'] = 'python -X utf8 -c "' + bootstrap + '"'
         group = {'hooks': [handler]}
+        legacy_launcher = {'hooks': [{**handler, 'commandWindows': 'py -3 -X utf8 -c "' + bootstrap + '"'}]}
         legacy_handler = {'type': 'command', 'command': legacy_command, 'timeout': 10}
         legacy = {'hooks': [legacy_handler]}
         legacy_windows = {'hooks': [{**legacy_handler, 'commandWindows': 'py -3 -X utf8 -c "' + legacy_bootstrap + '"'}]}
         if matcher:
-            group['matcher'] = legacy['matcher'] = legacy_windows['matcher'] = matcher
+            group['matcher'] = legacy['matcher'] = legacy_windows['matcher'] = legacy_launcher['matcher'] = matcher
         for index, existing in enumerate(groups):
-            if existing == legacy or (platform == 'codex' and existing == legacy_windows):
+            if existing == legacy or (platform == 'codex' and existing in (legacy_windows, legacy_launcher)):
                 groups[index] = group
         if group not in groups:
             groups.append(group)

@@ -91,7 +91,7 @@ class HookTest(unittest.TestCase):
         handler = config['hooks']['PreToolUse'][0]['hooks'][0]
         self.assertIn('commandWindows', handler)
         command = handler['commandWindows']
-        self.assertTrue(command.startswith('py -3 -X utf8 -c "'))
+        self.assertTrue(command.startswith('python -X utf8 -c "'))
         # Execute the Windows bootstrap as Python on this host; shell/native OS
         # compatibility still requires the same test on Windows.
         code = command.split(' -c "', 1)[1][:-1]
@@ -113,6 +113,8 @@ class HookTest(unittest.TestCase):
                                    input=json.dumps({'hook_event_name': 'SessionStart'}),
                                    capture_output=True, text=True, encoding='utf-8', check=True)
             self.assertIn('文件規範', json.loads(posix.stdout)['hookSpecificOutput']['additionalContext'])
+        # Upgrade the previous Git-free command that still required py.exe.
+        handler['commandWindows'] = command.replace('python -X utf8', 'py -3 -X utf8', 1)
         extra = {'matcher': 'Bash', 'hooks': [{'type': 'command', 'command': 'echo keep'}]}
         config['hooks']['PreToolUse'].append(extra)
         config_path.write_text(json.dumps(config))

@@ -4,11 +4,13 @@ Codex 已完成 macOS 實際平台驗收；Windows 相容程式已補齊，原�
 
 ## 執行條件
 
-Python 3.9+，不需要 Git 或 Git 儲存庫。macOS/Linux 使用 `python3`；Windows 使用 `py -3 -X utf8`（需安裝 Python launcher）。Codex 設定以 `commandWindows` 指定 Windows 啟動命令，原有 `command` 保留給 macOS/Linux。兩種啟動命令皆以 Python 從目前目錄向上尋找最近的 `project-setting.json`，再載入該專案的 runtime，支援子目錄啟動及專案搬移；Windows 不依賴 Bash。找不到設定或最近專案未安裝 runtime 時明確失敗，不改用上層專案。整個技能目錄可獨立複製，沒有套件依賴。安裝器把兩支腳本複製到專案 `.project-setting/runtime/`，後續不依賴開發儲存庫。路由別名 `.project-setting/routes.json` 與鎖定檔是本機狀態，不應提交；若已有 `.gitignore`，安裝器會補入排除規則，否則不建立。runtime、JSON、專案指令與 hook 設定可版本控制。
+Python 3.9+，不需要 Git 或 Git 儲存庫。macOS/Linux 使用 `python3`；Windows 以 `python -X utf8` 執行；支援執行環境能找到 `python` 的免安裝版，不要求安裝或註冊 Python launcher。Codex 設定以 `commandWindows` 指定 Windows 啟動命令，原有 `command` 保留給 macOS/Linux。兩種啟動命令皆以 Python 從目前目錄向上尋找最近的 `project-setting.json`，再載入該專案的 runtime，支援子目錄啟動及專案搬移；Windows 不依賴 Bash。找不到設定或最近專案未安裝 runtime 時明確失敗，不改用上層專案。整個技能目錄可獨立複製，沒有套件依賴。安裝器把兩支腳本複製到專案 `.project-setting/runtime/`，後續不依賴開發儲存庫。路由別名 `.project-setting/routes.json` 與鎖定檔是本機狀態，不應提交；若已有 `.gitignore`，安裝器會補入排除規則，否則不建立。runtime、JSON、專案指令與 hook 設定可版本控制。
 
 Windows 檔案鎖使用標準庫 `msvcrt`，macOS/Linux 使用 `fcntl`；Windows 鎖忙碌時停止本次操作，可稍後重試，不會無鎖寫入。JSON 設定以 UTF-8 讀寫。Windows 原生 Codex、PowerShell/cmd 啟動與檔案系統行為仍需實機驗收；本機 bootstrap 回放與模擬鎖 API 測試不等於 Windows 驗收。
 
-更新既有專案時重跑 `hooks.py install --platform codex --root PROJECT`，安裝器會更新 runtime，並將完全符合舊版輸出的 Git 啟動註冊（含 Windows 版本）替換為不依賴 Git 的命令。手動改過的註冊保留，需人工檢查是否與新增註冊重複。更新後到 `/hooks` 重新審查與信任。
+更新既有專案時重跑 `hooks.py install --platform codex --root PROJECT`，安裝器會更新 runtime，並將完全符合舊版輸出的 Git 啟動註冊（含 Windows 版本）替換為不依賴 Git 的命令；上一版不依賴 Git 但仍使用 `py -3` 的 Windows 註冊也會更新為 `python`。手動改過的註冊保留，需人工檢查是否與新增註冊重複。更新後到 `/hooks` 重新審查與信任。
+
+不強制事前檢查 Python 版本，直接執行初始化與安裝，並以一次文件建立→讀取→修改確認可用性。初始化成功不代表所有 hook 功能皆相容；若執行失敗，再視錯誤以 `python -V`（macOS/Linux：`python3 -V`）協助診斷。Python 3.9+ 仍為支援版本要求。
 
 ## 根目錄
 
@@ -64,7 +66,7 @@ Codex updatedInput 必須搭配 allow，仍須遵守宿主的沙箱與權限；�
 
 2026-09-15 在 macOS 執行 `python3 -m unittest discover -s tests -q`：26 項通過。涵蓋缺少 fcntl 時載入、Windows 鎖 API 模擬、鎖失敗不進入寫入區段、例外後跨程序重新取得實際鎖、Windows bootstrap 從中文與空白子目錄回放、原有 shell 命令與舊註冊升級。
 
-原生 Windows 可在開發儲存庫執行 `py -3 -X utf8 -m unittest discover -s tests -q`；既有符號連結防護測試需要建立符號連結的權限。之後仍須在受信任的 Codex 專案中驗證 SessionStart 與建立→讀取→修改流程。本次沒有 Windows 執行環境，尚未完成這兩項驗收。
+原生 Windows 可在開發儲存庫執行 `python -X utf8 -m unittest discover -s tests -q`；既有符號連結防護測試需要建立符號連結的權限。之後仍須在受信任的 Codex 專案中驗證 SessionStart 與建立→讀取→修改流程。本次沒有 Windows 執行環境，尚未完成這兩項驗收。
 
 ## 移除 Git 依賴驗證
 
