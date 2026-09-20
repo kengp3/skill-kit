@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo project-setting: Before document operations, read project-setting.md at the project root confirmed by the user or session. Do not infer the root from tool cwd or use another project. If the root or rules are missing, unreadable, empty or conflicting, report and pause related document writes. Re-read changed rules and verify actual paths. This hook only reminds.",
+            "commandWindows": "cmd /d /c echo project-setting: Before document operations, read project-setting.md at the project root confirmed by the user or session. Do not infer the root from tool cwd or use another project. If the root or rules are missing, unreadable, empty or conflicting, report and pause related document writes. Re-read changed rules and verify actual paths. This hook only reminds.",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo project-setting: Before document operations, read project-setting.md at the project root confirmed by the user or session. Do not infer the root from tool cwd or use another project. If the root or rules are missing, unreadable, empty or conflicting, report and pause related document writes. Re-read changed rules and verify actual paths. This hook only reminds.",
+            "commandWindows": "cmd /d /c echo project-setting: Before document operations, read project-setting.md at the project root confirmed by the user or session. Do not infer the root from tool cwd or use another project. If the root or rules are missing, unreadable, empty or conflicting, report and pause related document writes. Re-read changed rules and verify actual paths. This hook only reminds.",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
