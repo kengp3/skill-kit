@@ -1,0 +1,65 @@
+{
+  "started_at": "2026-09-25T22:45:20+08:00",
+  "python": "3.14.7",
+  "fixture_checks": {
+    "base/api.py": true,
+    "base/export.py": true,
+    "base/paging.py": true,
+    "head/api.py": true,
+    "head/export.py": true,
+    "head/paging.py": true,
+    "diff.patch": true
+  },
+  "runs": {
+    "base": {
+      "probe": {
+        "command": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-paging-20260925-evidence/input/probe.py"
+        ],
+        "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-paging-20260925-evidence/input/base",
+        "exit_code": 0,
+        "stdout": "page boundary passed\nexport traversal passed\n",
+        "stderr": ""
+      },
+      "export": {
+        "command": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "-c",
+          "from export import export_ids; print(export_ids([{\"id\": 1}, {\"id\": 2}, {\"id\": 3}], limit=1, max_pages=5))"
+        ],
+        "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-paging-20260925-evidence/input/base",
+        "exit_code": 0,
+        "stdout": "[1, 2, 3]\n",
+        "stderr": ""
+      }
+    },
+    "head": {
+      "probe": {
+        "command": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-paging-20260925-evidence/input/probe.py"
+        ],
+        "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-paging-20260925-evidence/input/head",
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-paging-20260925-evidence/input/probe.py\", line 5, in <module>\n    assert [row[\"id\"] for row in list_page(rows, cursor=1, limit=1)[\"items\"]] == [2]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+      },
+      "export": {
+        "command": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "-c",
+          "from export import export_ids; print(export_ids([{\"id\": 1}, {\"id\": 2}, {\"id\": 3}], limit=1, max_pages=5))"
+        ],
+        "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-paging-20260925-evidence/input/head",
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    from export import export_ids; print(export_ids([{\"id\": 1}, {\"id\": 2}, {\"id\": 3}], limit=1, max_pages=5))\n                                         ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-paging-20260925-evidence/input/head/export.py\", line 12, in export_ids\n    raise RuntimeError(\"pagination did not terminate\")\nRuntimeError: pagination did not terminate\n"
+      }
+    }
+  }
+}

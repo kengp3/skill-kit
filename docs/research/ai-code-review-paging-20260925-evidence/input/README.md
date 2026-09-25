@@ -1,0 +1,1 @@
+Run `probe.py` once with `PYTHONPATH=base` and once with `PYTHONPATH=head` from this directory. Read `SPEC.md`, `diff.patch`, and all three modules in each snapshot. Do not modify the snapshots while reviewing.
