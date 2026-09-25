@@ -8,6 +8,9 @@
 | --- | --- | --- |
 | [define-task](skills/define-task/SKILL.md) | 釐清模糊需求，整理目標、範圍與完成條件 | 請 AI 使用 `$define-task` 定義任務，無須初始化 |
 | [project-setting](skills/project-setting/SKILL.md) | 管理專案文件的分類、命名與存放位置 | 請 AI 使用 `$project-setting` 初始化專案規範與提醒 |
+| [ai-code-review](skills/ai-code-review/SKILL.md) | 審查功能、缺陷修正、重構與移轉，提供問題、修改方向及驗收證據 | 提供 repo、審查版本與需求；移轉時另提供兩側 repo/ref |
+
+本機的 ai-code-review（由 migration-code-review 擴充並更名）尚未推送；可直接指定本機 SKILL.md 使用。下列遠端安裝指令只取得遠端已發布內容。
 
 ## 如何安裝
 
