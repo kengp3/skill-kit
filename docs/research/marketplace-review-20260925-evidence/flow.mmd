@@ -1,0 +1,37 @@
+sequenceDiagram
+    participant P as Probe
+    participant C as Checkout
+    participant I as Inventory
+    participant O as OfferEngine
+    participant Pay as Payment
+    participant L as Ledger
+    participant E as Event
+    P->>C: checkout(key, sku, quantity, coupon, decline)
+    C->>I: known(sku)
+    Note over C: Checkout 同時檢查 quantity
+    alt 輸入無效
+        C-->>P: IllegalArgumentException
+    else 輸入有效
+        C->>I: reserve(sku, quantity) 先扣庫存
+        alt 無庫存
+            C-->>P: OUT_OF_STOCK
+        else 保留成功
+            C->>C: completed.containsKey(key)
+            alt 成功鍵重播
+                C-->>P: 原結果，但本次已再扣庫存
+            else 新請求
+                C->>O: payable(sku, quantity, coupon)
+                O-->>C: gross 門檻計算的 payable
+                C->>Pay: charge(payable, decline)
+                alt 拒付
+                    Pay-->>C: false
+                    C-->>P: DECLINED，但庫存已扣
+                else 收款成功
+                    Pay-->>C: true
+                    C->>L: earn(payable)
+                    C->>E: new Event(amountCents=gross)
+                    C-->>P: OK:payable
+                end
+            end
+        end
+    end

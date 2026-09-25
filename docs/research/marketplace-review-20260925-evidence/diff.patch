@@ -1,0 +1,45 @@
+diff --git a/Checkout.java b/Checkout.java
+index 08860c9..33fef7d 100644
+--- a/Checkout.java
++++ b/Checkout.java
+@@ -6,22 +6,21 @@ public final class Checkout {
+     final Inventory inventory = new Inventory();
+     final Payment payment = new Payment();
+     final Ledger ledger = new Ledger();
++    final OfferEngine offers = new OfferEngine();
+     final Map<String,String> completed = new LinkedHashMap<>();
+     final List<Event> events = new ArrayList<>();
+     String checkout(String key, String sku, int quantity, boolean coupon, boolean decline) {
+         if (!inventory.known(sku) || quantity < 1 || quantity > 5)
+             throw new IllegalArgumentException("invalid request");
++        if (!inventory.reserve(sku, quantity)) return "OUT_OF_STOCK";
+         if (completed.containsKey(key)) return completed.get(key);
+-        if (!inventory.available(sku, quantity)) return "OUT_OF_STOCK";
+-        int gross = (sku.equals("KIT") ? 1200 : 350) * quantity;
+-        int afterTier = gross - (quantity >= 3 ? gross / 10 : 0);
+-        int payable = afterTier - (coupon && afterTier >= 1000 ? 150 : 0);
++        int payable = offers.payable(sku, quantity, coupon);
+         if (!payment.charge(payable, decline)) return "DECLINED";
+-        inventory.reserve(sku, quantity);
+         ledger.earn(payable);
+         String result = "OK:" + payable;
+         completed.put(key, result);
+-        events.add(new Event(key, sku, quantity, payable, payable / 100));
++        int gross = (sku.equals("KIT") ? 1200 : 350) * quantity;
++        events.add(new Event(key, sku, quantity, gross, payable / 100));
+         return result;
+     }
+ }
+diff --git a/OfferEngine.java b/OfferEngine.java
+new file mode 100644
+index 0000000..055bfbb
+--- /dev/null
++++ b/OfferEngine.java
+@@ -0,0 +1,7 @@
++final class OfferEngine {
++    int payable(String sku, int quantity, boolean coupon) {
++        int gross = (sku.equals("KIT") ? 1200 : 350) * quantity;
++        int afterTier = gross - (quantity >= 3 ? gross / 10 : 0);
++        return afterTier - (coupon && gross >= 1000 ? 150 : 0);
++    }
++}

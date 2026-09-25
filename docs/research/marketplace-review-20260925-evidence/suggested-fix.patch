@@ -1,0 +1,31 @@
+--- head/Checkout.java
++++ fixed/Checkout.java
+@@ -12,15 +12,15 @@
+     String checkout(String key, String sku, int quantity, boolean coupon, boolean decline) {
+         if (!inventory.known(sku) || quantity < 1 || quantity > 5)
+             throw new IllegalArgumentException("invalid request");
+-        if (!inventory.reserve(sku, quantity)) return "OUT_OF_STOCK";
+         if (completed.containsKey(key)) return completed.get(key);
++        if (!inventory.available(sku, quantity)) return "OUT_OF_STOCK";
+         int payable = offers.payable(sku, quantity, coupon);
+         if (!payment.charge(payable, decline)) return "DECLINED";
++        inventory.reserve(sku, quantity);
+         ledger.earn(payable);
+         String result = "OK:" + payable;
+         completed.put(key, result);
+-        int gross = (sku.equals("KIT") ? 1200 : 350) * quantity;
+-        events.add(new Event(key, sku, quantity, gross, payable / 100));
++        events.add(new Event(key, sku, quantity, payable, payable / 100));
+         return result;
+     }
+ }
+--- head/OfferEngine.java
++++ fixed/OfferEngine.java
+@@ -2,6 +2,6 @@
+     int payable(String sku, int quantity, boolean coupon) {
+         int gross = (sku.equals("KIT") ? 1200 : 350) * quantity;
+         int afterTier = gross - (quantity >= 3 ? gross / 10 : 0);
+-        return afterTier - (coupon && gross >= 1000 ? 150 : 0);
++        return afterTier - (coupon && afterTier >= 1000 ? 150 : 0);
+     }
+ }

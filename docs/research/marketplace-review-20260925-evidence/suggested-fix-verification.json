@@ -1,0 +1,390 @@
+{
+  "compile": {
+    "argv": [
+      "javac",
+      "-d",
+      "/private/tmp/marketplace-review-20260925-suggested-fix/classes",
+      "/private/tmp/marketplace-review-20260925-suggested-fix/source/Checkout.java",
+      "/private/tmp/marketplace-review-20260925-suggested-fix/source/Event.java",
+      "/private/tmp/marketplace-review-20260925-suggested-fix/source/Inventory.java",
+      "/private/tmp/marketplace-review-20260925-suggested-fix/source/Ledger.java",
+      "/private/tmp/marketplace-review-20260925-suggested-fix/source/OfferEngine.java",
+      "/private/tmp/marketplace-review-20260925-suggested-fix/source/Payment.java",
+      "/private/tmp/marketplace-review-20260925-suggested-fix/source/Probe.java"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "cases": {
+    "coupon_boundary": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/marketplace-review-20260925-suggested-fix/classes",
+        "Probe",
+        "coupon_boundary"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"result\":\"OK:945\",\"stockKit\":2,\"stockAddon\":2,\"chargeAttempts\":1,\"charges\":1,\"chargedCents\":945,\"points\":9,\"completedKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"sku\":\"ADDON\",\"quantity\":3,\"amountCents\":945,\"earnedPoints\":9}]}\n",
+      "stderr": "",
+      "steps": [
+        {
+          "result": "OK:945",
+          "stockKit": 2,
+          "stockAddon": 2,
+          "chargeAttempts": 1,
+          "charges": 1,
+          "chargedCents": 945,
+          "points": 9,
+          "completedKeys": [
+            "a"
+          ],
+          "events": [
+            {
+              "key": "a",
+              "sku": "ADDON",
+              "quantity": 3,
+              "amountCents": 945,
+              "earnedPoints": 9
+            }
+          ]
+        }
+      ],
+      "equals_fixed_base": true
+    },
+    "qualified_coupon": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/marketplace-review-20260925-suggested-fix/classes",
+        "Probe",
+        "qualified_coupon"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"result\":\"OK:1050\",\"stockKit\":1,\"stockAddon\":5,\"chargeAttempts\":1,\"charges\":1,\"chargedCents\":1050,\"points\":10,\"completedKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"sku\":\"KIT\",\"quantity\":1,\"amountCents\":1050,\"earnedPoints\":10}]}\n",
+      "stderr": "",
+      "steps": [
+        {
+          "result": "OK:1050",
+          "stockKit": 1,
+          "stockAddon": 5,
+          "chargeAttempts": 1,
+          "charges": 1,
+          "chargedCents": 1050,
+          "points": 10,
+          "completedKeys": [
+            "a"
+          ],
+          "events": [
+            {
+              "key": "a",
+              "sku": "KIT",
+              "quantity": 1,
+              "amountCents": 1050,
+              "earnedPoints": 10
+            }
+          ]
+        }
+      ],
+      "equals_fixed_base": true
+    },
+    "decline_retry": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/marketplace-review-20260925-suggested-fix/classes",
+        "Probe",
+        "decline_retry"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"result\":\"DECLINED\",\"stockKit\":2,\"stockAddon\":5,\"chargeAttempts\":1,\"charges\":0,\"chargedCents\":0,\"points\":0,\"completedKeys\":[],\"events\":[]}\n{\"result\":\"OK:1200\",\"stockKit\":1,\"stockAddon\":5,\"chargeAttempts\":2,\"charges\":1,\"chargedCents\":1200,\"points\":12,\"completedKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"sku\":\"KIT\",\"quantity\":1,\"amountCents\":1200,\"earnedPoints\":12}]}\n",
+      "stderr": "",
+      "steps": [
+        {
+          "result": "DECLINED",
+          "stockKit": 2,
+          "stockAddon": 5,
+          "chargeAttempts": 1,
+          "charges": 0,
+          "chargedCents": 0,
+          "points": 0,
+          "completedKeys": [],
+          "events": []
+        },
+        {
+          "result": "OK:1200",
+          "stockKit": 1,
+          "stockAddon": 5,
+          "chargeAttempts": 2,
+          "charges": 1,
+          "chargedCents": 1200,
+          "points": 12,
+          "completedKeys": [
+            "a"
+          ],
+          "events": [
+            {
+              "key": "a",
+              "sku": "KIT",
+              "quantity": 1,
+              "amountCents": 1200,
+              "earnedPoints": 12
+            }
+          ]
+        }
+      ],
+      "equals_fixed_base": true
+    },
+    "replay_exhausted": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/marketplace-review-20260925-suggested-fix/classes",
+        "Probe",
+        "replay_exhausted"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"result\":\"OK:2400\",\"stockKit\":0,\"stockAddon\":5,\"chargeAttempts\":1,\"charges\":1,\"chargedCents\":2400,\"points\":24,\"completedKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"sku\":\"KIT\",\"quantity\":2,\"amountCents\":2400,\"earnedPoints\":24}]}\n{\"result\":\"OK:2400\",\"stockKit\":0,\"stockAddon\":5,\"chargeAttempts\":1,\"charges\":1,\"chargedCents\":2400,\"points\":24,\"completedKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"sku\":\"KIT\",\"quantity\":2,\"amountCents\":2400,\"earnedPoints\":24}]}\n",
+      "stderr": "",
+      "steps": [
+        {
+          "result": "OK:2400",
+          "stockKit": 0,
+          "stockAddon": 5,
+          "chargeAttempts": 1,
+          "charges": 1,
+          "chargedCents": 2400,
+          "points": 24,
+          "completedKeys": [
+            "a"
+          ],
+          "events": [
+            {
+              "key": "a",
+              "sku": "KIT",
+              "quantity": 2,
+              "amountCents": 2400,
+              "earnedPoints": 24
+            }
+          ]
+        },
+        {
+          "result": "OK:2400",
+          "stockKit": 0,
+          "stockAddon": 5,
+          "chargeAttempts": 1,
+          "charges": 1,
+          "chargedCents": 2400,
+          "points": 24,
+          "completedKeys": [
+            "a"
+          ],
+          "events": [
+            {
+              "key": "a",
+              "sku": "KIT",
+              "quantity": 2,
+              "amountCents": 2400,
+              "earnedPoints": 24
+            }
+          ]
+        }
+      ],
+      "equals_fixed_base": true
+    },
+    "mixed": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/marketplace-review-20260925-suggested-fix/classes",
+        "Probe",
+        "mixed"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"result\":\"OK:1050\",\"stockKit\":1,\"stockAddon\":5,\"chargeAttempts\":1,\"charges\":1,\"chargedCents\":1050,\"points\":10,\"completedKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"sku\":\"KIT\",\"quantity\":1,\"amountCents\":1050,\"earnedPoints\":10}]}\n{\"result\":\"OK:945\",\"stockKit\":1,\"stockAddon\":2,\"chargeAttempts\":2,\"charges\":2,\"chargedCents\":1995,\"points\":19,\"completedKeys\":[\"a\",\"b\"],\"events\":[{\"key\":\"a\",\"sku\":\"KIT\",\"quantity\":1,\"amountCents\":1050,\"earnedPoints\":10},{\"key\":\"b\",\"sku\":\"ADDON\",\"quantity\":3,\"amountCents\":945,\"earnedPoints\":9}]}\n{\"result\":\"OK:1050\",\"stockKit\":1,\"stockAddon\":2,\"chargeAttempts\":2,\"charges\":2,\"chargedCents\":1995,\"points\":19,\"completedKeys\":[\"a\",\"b\"],\"events\":[{\"key\":\"a\",\"sku\":\"KIT\",\"quantity\":1,\"amountCents\":1050,\"earnedPoints\":10},{\"key\":\"b\",\"sku\":\"ADDON\",\"quantity\":3,\"amountCents\":945,\"earnedPoints\":9}]}\n",
+      "stderr": "",
+      "steps": [
+        {
+          "result": "OK:1050",
+          "stockKit": 1,
+          "stockAddon": 5,
+          "chargeAttempts": 1,
+          "charges": 1,
+          "chargedCents": 1050,
+          "points": 10,
+          "completedKeys": [
+            "a"
+          ],
+          "events": [
+            {
+              "key": "a",
+              "sku": "KIT",
+              "quantity": 1,
+              "amountCents": 1050,
+              "earnedPoints": 10
+            }
+          ]
+        },
+        {
+          "result": "OK:945",
+          "stockKit": 1,
+          "stockAddon": 2,
+          "chargeAttempts": 2,
+          "charges": 2,
+          "chargedCents": 1995,
+          "points": 19,
+          "completedKeys": [
+            "a",
+            "b"
+          ],
+          "events": [
+            {
+              "key": "a",
+              "sku": "KIT",
+              "quantity": 1,
+              "amountCents": 1050,
+              "earnedPoints": 10
+            },
+            {
+              "key": "b",
+              "sku": "ADDON",
+              "quantity": 3,
+              "amountCents": 945,
+              "earnedPoints": 9
+            }
+          ]
+        },
+        {
+          "result": "OK:1050",
+          "stockKit": 1,
+          "stockAddon": 2,
+          "chargeAttempts": 2,
+          "charges": 2,
+          "chargedCents": 1995,
+          "points": 19,
+          "completedKeys": [
+            "a",
+            "b"
+          ],
+          "events": [
+            {
+              "key": "a",
+              "sku": "KIT",
+              "quantity": 1,
+              "amountCents": 1050,
+              "earnedPoints": 10
+            },
+            {
+              "key": "b",
+              "sku": "ADDON",
+              "quantity": 3,
+              "amountCents": 945,
+              "earnedPoints": 9
+            }
+          ]
+        }
+      ],
+      "equals_fixed_base": true
+    },
+    "invalid": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/marketplace-review-20260925-suggested-fix/classes",
+        "Probe",
+        "invalid"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"result\":\"IllegalArgumentException\",\"stockKit\":2,\"stockAddon\":5,\"chargeAttempts\":0,\"charges\":0,\"chargedCents\":0,\"points\":0,\"completedKeys\":[],\"events\":[]}\n{\"result\":\"IllegalArgumentException\",\"stockKit\":2,\"stockAddon\":5,\"chargeAttempts\":0,\"charges\":0,\"chargedCents\":0,\"points\":0,\"completedKeys\":[],\"events\":[]}\n",
+      "stderr": "",
+      "steps": [
+        {
+          "result": "IllegalArgumentException",
+          "stockKit": 2,
+          "stockAddon": 5,
+          "chargeAttempts": 0,
+          "charges": 0,
+          "chargedCents": 0,
+          "points": 0,
+          "completedKeys": [],
+          "events": []
+        },
+        {
+          "result": "IllegalArgumentException",
+          "stockKit": 2,
+          "stockAddon": 5,
+          "chargeAttempts": 0,
+          "charges": 0,
+          "chargedCents": 0,
+          "points": 0,
+          "completedKeys": [],
+          "events": []
+        }
+      ],
+      "equals_fixed_base": true
+    },
+    "out_of_stock": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/marketplace-review-20260925-suggested-fix/classes",
+        "Probe",
+        "out_of_stock"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"result\":\"OUT_OF_STOCK\",\"stockKit\":2,\"stockAddon\":5,\"chargeAttempts\":0,\"charges\":0,\"chargedCents\":0,\"points\":0,\"completedKeys\":[],\"events\":[]}\n",
+      "stderr": "",
+      "steps": [
+        {
+          "result": "OUT_OF_STOCK",
+          "stockKit": 2,
+          "stockAddon": 5,
+          "chargeAttempts": 0,
+          "charges": 0,
+          "chargedCents": 0,
+          "points": 0,
+          "completedKeys": [],
+          "events": []
+        }
+      ],
+      "equals_fixed_base": true
+    },
+    "points": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/marketplace-review-20260925-suggested-fix/classes",
+        "Probe",
+        "points"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"result\":\"OK:700\",\"stockKit\":2,\"stockAddon\":3,\"chargeAttempts\":1,\"charges\":1,\"chargedCents\":700,\"points\":7,\"completedKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"sku\":\"ADDON\",\"quantity\":2,\"amountCents\":700,\"earnedPoints\":7}]}\n",
+      "stderr": "",
+      "steps": [
+        {
+          "result": "OK:700",
+          "stockKit": 2,
+          "stockAddon": 3,
+          "chargeAttempts": 1,
+          "charges": 1,
+          "chargedCents": 700,
+          "points": 7,
+          "completedKeys": [
+            "a"
+          ],
+          "events": [
+            {
+              "key": "a",
+              "sku": "ADDON",
+              "quantity": 2,
+              "amountCents": 700,
+              "earnedPoints": 7
+            }
+          ]
+        }
+      ],
+      "equals_fixed_base": true
+    }
+  }
+}
