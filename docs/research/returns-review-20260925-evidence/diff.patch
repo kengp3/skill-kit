@@ -1,0 +1,39 @@
+diff --git a/ReturnPolicy.java b/ReturnPolicy.java
+new file mode 100644
+index 0000000..80729e8
+--- /dev/null
++++ b/ReturnPolicy.java
+@@ -0,0 +1,6 @@
++final class ReturnPolicy {
++    int amountCents(Order order, int quantity) {
++        return quantity * order.unitCents
++            + (quantity == order.purchasedQty ? order.shippingCents : 0);
++    }
++}
+diff --git a/Returns.java b/Returns.java
+index 9f70546..320fea7 100644
+--- a/Returns.java
++++ b/Returns.java
+@@ -7,17 +7,17 @@ public final class Returns {
+     final Warehouse warehouse = new Warehouse();
+     final RefundGateway gateway = new RefundGateway();
+     final Loyalty loyalty = new Loyalty();
++    final ReturnPolicy policy = new ReturnPolicy();
+     final Map<String,String> receipts = new LinkedHashMap<>();
+     final List<ReturnEvent> events = new ArrayList<>();
+     String returnItems(String key, int quantity, int ageDays, boolean decline) {
+-        if (receipts.containsKey(key)) return receipts.get(key);
+-        if (quantity < 1 || ageDays < 0 || ageDays > 30) return "REJECTED";
++        if (quantity < 1 || ageDays < 0 || ageDays >= 30) return "REJECTED";
+         if (order.returnedQty + quantity > order.purchasedQty) return "NO_QUANTITY";
+-        int amountCents = quantity * order.unitCents
+-            + (order.returnedQty + quantity == order.purchasedQty ? order.shippingCents : 0);
+-        if (!gateway.refund(amountCents, decline)) return "DECLINED";
++        if (receipts.containsKey(key)) return receipts.get(key);
++        int amountCents = policy.amountCents(order, quantity);
+         order.returnedQty += quantity;
+         warehouse.restock(quantity);
++        if (!gateway.refund(amountCents, decline)) return "DECLINED";
+         loyalty.reverse(quantity * order.unitCents / 100);
+         String result = "REFUNDED:" + amountCents;
+         receipts.put(key, result);

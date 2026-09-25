@@ -1,0 +1,37 @@
+sequenceDiagram
+    participant P as Probe
+    participant R as Returns
+    participant O as Order
+    participant C as ReturnPolicy
+    participant W as Warehouse
+    participant G as RefundGateway
+    participant L as Loyalty
+    participant E as ReturnEvent
+    P->>R: returnItems(key, quantity, ageDays, decline)
+    alt ageDays >= 30 或 quantity < 1 或 ageDays < 0
+        R-->>P: REJECTED
+    else 剩餘件數不足
+        R-->>P: NO_QUANTITY
+    else 通過候選 guard
+        R->>R: receipts.containsKey(key)
+        alt 已成功的 key
+            R-->>P: 舊收據
+        else 新請求
+            R->>C: amountCents(order, quantity)
+            C->>O: 讀單價、購買件數、運費
+            C-->>R: refund amount
+            R->>O: returnedQty += quantity
+            R->>W: restock(quantity)
+            R->>G: refund(amount, decline)
+            alt 網關拒絕
+                G-->>R: false
+                R-->>P: DECLINED，訂單及倉庫已改
+            else 網關成功
+                G-->>R: true
+                R->>L: reverse(points)
+                R->>R: receipts.put(key, result)
+                R->>E: new ReturnEvent(amount)
+                R-->>P: REFUNDED:amount
+            end
+        end
+    end

@@ -1,0 +1,130 @@
+{
+  "compile_argv": [
+    "javac",
+    "-d",
+    "docs/research/returns-review-20260925-evidence/build/repair",
+    "docs/research/returns-review-20260925-evidence/repair/ReturnPolicy.java",
+    "docs/research/returns-review-20260925-evidence/repair/Order.java",
+    "docs/research/returns-review-20260925-evidence/repair/Probe.java",
+    "docs/research/returns-review-20260925-evidence/repair/RefundGateway.java",
+    "docs/research/returns-review-20260925-evidence/repair/ReturnEvent.java",
+    "docs/research/returns-review-20260925-evidence/repair/Loyalty.java",
+    "docs/research/returns-review-20260925-evidence/repair/Returns.java",
+    "docs/research/returns-review-20260925-evidence/repair/Warehouse.java"
+  ],
+  "compile_exit_code": 0,
+  "cases": [
+    {
+      "case": "partial_final",
+      "argv": [
+        "java",
+        "-cp",
+        "docs/research/returns-review-20260925-evidence/build/repair",
+        "Probe",
+        "partial_final"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"case\":\"partial_final\",\"step\":1,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n{\"case\":\"partial_final\",\"step\":2,\"result\":\"REFUNDED:900\",\"returnedQty\":3,\"restockedQty\":3,\"refundAttempts\":2,\"successfulRefunds\":2,\"refundedCents\":1300,\"reversedPoints\":12,\"receiptKeys\":[\"a\",\"b\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400},{\"key\":\"b\",\"quantity\":2,\"amountCents\":900}]}\n",
+      "stderr": "",
+      "matches_base": true
+    },
+    {
+      "case": "day30",
+      "argv": [
+        "java",
+        "-cp",
+        "docs/research/returns-review-20260925-evidence/build/repair",
+        "Probe",
+        "day30"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"case\":\"day30\",\"step\":1,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n",
+      "stderr": "",
+      "matches_base": true
+    },
+    {
+      "case": "decline_retry",
+      "argv": [
+        "java",
+        "-cp",
+        "docs/research/returns-review-20260925-evidence/build/repair",
+        "Probe",
+        "decline_retry"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"case\":\"decline_retry\",\"step\":1,\"result\":\"DECLINED\",\"returnedQty\":0,\"restockedQty\":0,\"refundAttempts\":1,\"successfulRefunds\":0,\"refundedCents\":0,\"reversedPoints\":0,\"receiptKeys\":[],\"events\":[]}\n{\"case\":\"decline_retry\",\"step\":2,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":2,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n",
+      "stderr": "",
+      "matches_base": true
+    },
+    {
+      "case": "replay_full",
+      "argv": [
+        "java",
+        "-cp",
+        "docs/research/returns-review-20260925-evidence/build/repair",
+        "Probe",
+        "replay_full"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"case\":\"replay_full\",\"step\":1,\"result\":\"REFUNDED:1300\",\"returnedQty\":3,\"restockedQty\":3,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":1300,\"reversedPoints\":12,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":3,\"amountCents\":1300}]}\n{\"case\":\"replay_full\",\"step\":2,\"result\":\"REFUNDED:1300\",\"returnedQty\":3,\"restockedQty\":3,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":1300,\"reversedPoints\":12,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":3,\"amountCents\":1300}]}\n",
+      "stderr": "",
+      "matches_base": true
+    },
+    {
+      "case": "replay_expired",
+      "argv": [
+        "java",
+        "-cp",
+        "docs/research/returns-review-20260925-evidence/build/repair",
+        "Probe",
+        "replay_expired"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"case\":\"replay_expired\",\"step\":1,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n{\"case\":\"replay_expired\",\"step\":2,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n",
+      "stderr": "",
+      "matches_base": true
+    },
+    {
+      "case": "too_many",
+      "argv": [
+        "java",
+        "-cp",
+        "docs/research/returns-review-20260925-evidence/build/repair",
+        "Probe",
+        "too_many"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"case\":\"too_many\",\"step\":1,\"result\":\"NO_QUANTITY\",\"returnedQty\":0,\"restockedQty\":0,\"refundAttempts\":0,\"successfulRefunds\":0,\"refundedCents\":0,\"reversedPoints\":0,\"receiptKeys\":[],\"events\":[]}\n",
+      "stderr": "",
+      "matches_base": true
+    },
+    {
+      "case": "after_window",
+      "argv": [
+        "java",
+        "-cp",
+        "docs/research/returns-review-20260925-evidence/build/repair",
+        "Probe",
+        "after_window"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"case\":\"after_window\",\"step\":1,\"result\":\"REJECTED\",\"returnedQty\":0,\"restockedQty\":0,\"refundAttempts\":0,\"successfulRefunds\":0,\"refundedCents\":0,\"reversedPoints\":0,\"receiptKeys\":[],\"events\":[]}\n",
+      "stderr": "",
+      "matches_base": true
+    },
+    {
+      "case": "normal",
+      "argv": [
+        "java",
+        "-cp",
+        "docs/research/returns-review-20260925-evidence/build/repair",
+        "Probe",
+        "normal"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"case\":\"normal\",\"step\":1,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n",
+      "stderr": "",
+      "matches_base": true
+    }
+  ]
+}
