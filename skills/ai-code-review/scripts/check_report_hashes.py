@@ -7,25 +7,40 @@ import sys
 from pathlib import Path
 
 
-LINK_HASH = re.compile(r"\[[^\]\n]+\]\(([^)\n]+)\)[ \t]*(?:SHA-256[ \t]*`([0-9a-fA-F]+)`|`([0-9a-fA-F]{60,68})`)")
+LINK_HASH = re.compile(
+    r"\[[^\]\n]+\]\((<[^>\n]+>|[^)\n]+)\)[ \t]*"
+    r"(?:SHA-256\b[ \t]*(?:`([^`\n]*)`)?|`([0-9a-fA-F]+)`)")
 
 
 def main(report_name):
     report = Path(report_name).resolve()
-    content = report.read_text()
+    try:
+        content = report.read_text(encoding="utf-8")
+    except (OSError, UnicodeError) as error:
+        print(f"cannot read {report}: {error}", file=sys.stderr)
+        return 1
     checked = 0
     errors = []
     for match in LINK_HASH.finditer(content):
         target, labeled, bare = match.groups()
-        claimed = labeled or bare
+        claimed = labeled or bare or ""
         target = target.strip("<>").split("#", 1)[0]
         target = re.sub(r":\d+$", "", target)
         path = Path(target) if target.startswith("/") else report.parent / target
         line = content.count("\n", 0, match.start()) + 1
         checked += 1
+        if not re.fullmatch(r"[0-9a-fA-F]{64}", claimed):
+            errors.append(f"line {line}: invalid SHA-256 for {target}")
+            continue
         if not path.is_file():
-            errors.append(f"line {line}: cannot read {target}")
-        elif len(claimed) != 64 or hashlib.sha256(path.read_bytes()).hexdigest() != claimed.lower():
+            errors.append(f"line {line}: cannot read {target}: not a regular file")
+            continue
+        try:
+            actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        except OSError as error:
+            errors.append(f"line {line}: cannot read {target}: {error}")
+            continue
+        if actual != claimed.lower():
             errors.append(f"line {line}: SHA-256 mismatch for {target}")
     if not checked:
         errors.append("no linked SHA-256 values found")
