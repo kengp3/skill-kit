@@ -1,0 +1,130 @@
+{
+  "legacy_ref": "60492ed70cfb13ff86a9d46c5e0f1bb90efb268e",
+  "expected": {
+    "order7999": "ORDER:8499|8499:0:0:0:O",
+    "order8000": "ORDER:8000|8000:0:0:0:O",
+    "order8001": "ORDER:8001|8001:0:0:0:O",
+    "invalid": "INVALID|0:0:0:0:",
+    "age30": "REFUND:1|0:1:1:1:R",
+    "age31": "EXPIRED|0:0:0:0:",
+    "decline": "DECLINED|0:0:0:1:",
+    "replay": "REFUND:1|0:1:1:1:R",
+    "sequence": "REFUND:1|8000:1:1:1:OR"
+  },
+  "cases": {
+    "C0": {
+      "target_base": "2ca09e3eaabf3c984ad3ca79f8dafd9422adf3dd",
+      "target_head": "3bcb55f1e85e4df8ebf99192da0cf6771e06e817",
+      "actual": {
+        "order7999": "ORDER:8499|8499:0:0:0:O",
+        "order8000": "ORDER:8000|8000:0:0:0:O",
+        "order8001": "ORDER:8001|8001:0:0:0:O",
+        "invalid": "INVALID|0:0:0:0:",
+        "age30": "REFUND:1|0:1:1:1:R",
+        "age31": "EXPIRED|0:0:0:0:",
+        "decline": "DECLINED|0:0:0:1:",
+        "replay": "REFUND:1|0:1:1:1:R",
+        "sequence": "REFUND:1|8000:1:1:1:OR"
+      },
+      "different": [],
+      "reader": "/private/tmp/incremental-migration-review-20260928-e/C0/reader"
+    },
+    "C1": {
+      "target_base": "834fcd68b8c98b0ea6431f477646b0ceb80c0491",
+      "target_head": "a7c2d4caa3d54397943de5509f453ba4cb70d91b",
+      "actual": {
+        "order7999": "ORDER:8499|8499:0:0:0:O",
+        "order8000": "ORDER:8000|8000:0:0:0:O",
+        "order8001": "ORDER:8001|8001:0:0:0:O",
+        "invalid": "INVALID|0:0:0:0:",
+        "age30": "EXPIRED|0:0:0:0:",
+        "age31": "EXPIRED|0:0:0:0:",
+        "decline": "DECLINED|0:0:0:1:",
+        "replay": "REFUND:1|0:1:1:1:R",
+        "sequence": "EXPIRED|8000:0:0:0:O"
+      },
+      "different": [
+        "age30",
+        "sequence"
+      ],
+      "reader": "/private/tmp/incremental-migration-review-20260928-e/C1/reader"
+    },
+    "C2": {
+      "target_base": "244764e726224b81c4715f5946ba15bc70254f58",
+      "target_head": "435f089b7839f25567fb133a088cb79f327d70ce",
+      "actual": {
+        "order7999": "ORDER:8499|8499:0:0:0:O",
+        "order8000": "ORDER:8000|8000:0:0:0:O",
+        "order8001": "ORDER:8001|8001:0:0:0:O",
+        "invalid": "INVALID|0:0:0:0:",
+        "age30": "REFUND:1|0:1:1:1:R",
+        "age31": "EXPIRED|0:0:0:0:",
+        "decline": "DECLINED|0:1:0:1:",
+        "replay": "REFUND:1|0:1:1:1:R",
+        "sequence": "REFUND:1|8000:1:1:1:OR"
+      },
+      "different": [
+        "decline"
+      ],
+      "reader": "/private/tmp/incremental-migration-review-20260928-e/C2/reader"
+    },
+    "C3": {
+      "target_base": "920ada7be31ee156b951dee451a671b5c0edaaed",
+      "target_head": "8aeffaf209f694b4c50cc3e6f23304de9f6c0ba9",
+      "actual": {
+        "order7999": "ORDER:8499|8499:0:0:0:O",
+        "order8000": "ORDER:8500|8500:0:0:0:O",
+        "order8001": "ORDER:8001|8001:0:0:0:O",
+        "invalid": "INVALID|0:0:0:0:",
+        "age30": "REFUND:1|0:1:1:1:R",
+        "age31": "EXPIRED|0:0:0:0:",
+        "decline": "DECLINED|0:0:0:1:",
+        "replay": "REFUND:1|0:1:1:1:R",
+        "sequence": "REFUND:1|8500:1:1:1:OR"
+      },
+      "different": [
+        "order8000",
+        "sequence"
+      ],
+      "reader": "/private/tmp/incremental-migration-review-20260928-e/C3/reader"
+    },
+    "C4": {
+      "target_base": "3418d3fc754539a7fdf6f586a6f944756539466b",
+      "target_head": "4d44190f1f547a9a0983871ba54ff692d459f78e",
+      "actual": {
+        "order7999": "ORDER:8499|8499:0:0:0:O",
+        "order8000": "ORDER:8000|8000:0:0:0:O",
+        "order8001": "ORDER:8001|8001:0:0:0:O",
+        "invalid": "INVALID|0:0:0:0:",
+        "age30": "REFUND:1|0:1:0:1:R",
+        "age31": "EXPIRED|0:0:0:0:",
+        "decline": "DECLINED|0:0:0:1:",
+        "replay": "REFUND:1|0:1:0:1:R",
+        "sequence": "REFUND:1|8000:1:0:1:OR"
+      },
+      "different": [
+        "age30",
+        "replay",
+        "sequence"
+      ],
+      "reader": "/private/tmp/incremental-migration-review-20260928-e/C4/reader"
+    },
+    "C5": {
+      "target_base": "242c1f372ae47b01003947e7e07986c283ee04a1",
+      "target_head": "d17bacb3a946f562e8960cf8422504c53f9879f9",
+      "actual": {
+        "order7999": "ORDER:8499|8499:0:0:0:O",
+        "order8000": "ORDER:8000|8000:0:0:0:O",
+        "order8001": "ORDER:8001|8001:0:0:0:O",
+        "invalid": "INVALID|0:0:0:0:",
+        "age30": "REFUND:1|0:1:1:1:R",
+        "age31": "EXPIRED|0:0:0:0:",
+        "decline": "DECLINED|0:0:0:1:",
+        "replay": "REFUND:1|0:1:1:1:R",
+        "sequence": "REFUND:1|8000:1:1:1:OR"
+      },
+      "different": [],
+      "reader": "/private/tmp/incremental-migration-review-20260928-e/C5/reader"
+    }
+  }
+}

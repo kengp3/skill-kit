@@ -1,0 +1,128 @@
+{
+  "compile": {
+    "argv": [
+      "javac",
+      "-d",
+      "/private/tmp/incremental-migration-review-20260928-e/C0/build",
+      "/private/tmp/incremental-migration-review-20260928-e/C0/target/OrderService.java",
+      "/private/tmp/incremental-migration-review-20260928-e/C0/target/Policy.java",
+      "/private/tmp/incremental-migration-review-20260928-e/C0/target/RefundService.java",
+      "/private/tmp/incremental-migration-review-20260928-e/C0/target/State.java",
+      "/private/tmp/incremental-migration-review-20260928-e/C0/target/Warehouse.java",
+      "/private/tmp/incremental-migration-review-20260928-e/C0/build/Probe.java"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "cases": {
+    "order7999": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/incremental-migration-review-20260928-e/C0/build",
+        "Probe",
+        "order7999"
+      ],
+      "exit_code": 0,
+      "stdout": "ORDER:8499|8499:0:0:0:O\n",
+      "stderr": ""
+    },
+    "order8000": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/incremental-migration-review-20260928-e/C0/build",
+        "Probe",
+        "order8000"
+      ],
+      "exit_code": 0,
+      "stdout": "ORDER:8000|8000:0:0:0:O\n",
+      "stderr": ""
+    },
+    "order8001": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/incremental-migration-review-20260928-e/C0/build",
+        "Probe",
+        "order8001"
+      ],
+      "exit_code": 0,
+      "stdout": "ORDER:8001|8001:0:0:0:O\n",
+      "stderr": ""
+    },
+    "invalid": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/incremental-migration-review-20260928-e/C0/build",
+        "Probe",
+        "invalid"
+      ],
+      "exit_code": 0,
+      "stdout": "INVALID|0:0:0:0:\n",
+      "stderr": ""
+    },
+    "age30": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/incremental-migration-review-20260928-e/C0/build",
+        "Probe",
+        "age30"
+      ],
+      "exit_code": 0,
+      "stdout": "REFUND:1|0:1:1:1:R\n",
+      "stderr": ""
+    },
+    "age31": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/incremental-migration-review-20260928-e/C0/build",
+        "Probe",
+        "age31"
+      ],
+      "exit_code": 0,
+      "stdout": "EXPIRED|0:0:0:0:\n",
+      "stderr": ""
+    },
+    "decline": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/incremental-migration-review-20260928-e/C0/build",
+        "Probe",
+        "decline"
+      ],
+      "exit_code": 0,
+      "stdout": "DECLINED|0:0:0:1:\n",
+      "stderr": ""
+    },
+    "replay": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/incremental-migration-review-20260928-e/C0/build",
+        "Probe",
+        "replay"
+      ],
+      "exit_code": 0,
+      "stdout": "REFUND:1|0:1:1:1:R\n",
+      "stderr": ""
+    },
+    "sequence": {
+      "argv": [
+        "java",
+        "-cp",
+        "/private/tmp/incremental-migration-review-20260928-e/C0/build",
+        "Probe",
+        "sequence"
+      ],
+      "exit_code": 0,
+      "stdout": "REFUND:1|8000:1:1:1:OR\n",
+      "stderr": ""
+    }
+  }
+}
