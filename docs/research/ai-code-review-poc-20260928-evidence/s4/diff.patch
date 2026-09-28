@@ -1,0 +1,12 @@
+--- base/publisher.py
++++ head/publisher.py
+@@ -1,5 +1,7 @@
++def make_payload(order_id):
++    return {"type": "OrderAccepted", "order_id": order_id}
++
+ def submit(bus, order_id):
+-    payload = {"type": "OrderAccepted", "order_id": order_id}
+-    if not bus.publish(payload):
++    if not bus.publish(make_payload(order_id)):
+         raise RuntimeError("publish rejected")
+     return "accepted"

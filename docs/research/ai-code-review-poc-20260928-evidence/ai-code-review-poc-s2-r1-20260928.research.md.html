@@ -1,0 +1,174 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ai-code-review-poc-s2-r1-20260928.research.md</title><style>
+body{font:16px/1.65 system-ui,sans-serif;color:#222;background:#fff;margin:0}main{max-width:1080px;margin:auto;padding:28px 36px}h1{font-size:28px}h2{font-size:22px;margin-top:40px;border-bottom:1px solid #ddd}h3{font-size:19px}a{color:#125aa6}table{border-collapse:collapse;width:100%;font-size:14px;margin:20px 0}th,td{border:1px solid #ddd;padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}th{background:#f3f5f7}pre{font:14px/1.5 ui-monospace,monospace;overflow:auto;background:#f6f8fa;padding:16px}code{font-family:ui-monospace,monospace}li{margin:5px 0}svg{max-width:100%;height:auto}.mermaid{background:#fff;text-align:center}@media(max-width:800px){main{padding:16px}table{font-size:13px}}
+</style><main><h1 id="程式碼審查核准的優惠門檻變更">程式碼審查：核准的優惠門檻變更</h1>
+<h2 id="1-基本說明">1. 基本說明</h2>
+<ul>
+<li><strong>建議：Approve（建議通過）；審查完成，需求符合性／品質 PASS。</strong></li>
+<li>尚存事項：0 項阻擋、0 項待釐清、0 項必要證據缺口；詳見 <a href="#4-%E5%AF%A9%E6%9F%A5%E7%B5%90%E6%9E%9C%E8%88%87%E5%95%8F%E9%A1%8C">審查結果</a>。無需提出程式修法。</li>
+<li>專案：simple-skills；<a href="/Users/kengp3/Workspaces/mine/simple-skills">完整根目錄</a>。被審快照：<a href="/docs/research/ai-code-review-poc-20260928-evidence/s2">s2</a>。</li>
+<li>本輪開始：2026-09-28 14:32:50 +08:00（Asia/Taipei）。</li>
+<li>目的：確認公開 quote 在 1,000 分含門檻套用 100 分優惠，保留其餘行為及輸入拒絕。</li>
+<li>邊界：本地快照演練；契約明定不需外部整合。結論只適用該公開入口及固定版本，並非全域等價或平台核准。</li>
+</ul>
+<h2 id="2-範圍說明">2. 範圍說明</h2>
+<table>
+<thead>
+<tr>
+<th>基準</th>
+<th>候選</th>
+<th>比較語意</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/base">base 快照</a></td>
+<td><a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/head">head 快照</a></td>
+<td>檔案內容直接比較；無 branch、commit 或 PR，不使用 merge-base</td>
+</tr>
+</tbody></table>
+<p><a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/diff.patch">diff.patch</a>共 1 個修改檔、1 個差異區塊：Python <code>policy.py</code> 的 <code>&gt;</code>→<code>&gt;=</code>。先盤點全部 2 個 base/head 原碼檔，再讀取未變更公開入口、契約與 probe；無新增／刪除／改名、二進位或生成檔。完整清單見 <a href="#%E9%99%84%E9%8C%84%E5%AE%8C%E6%95%B4%E6%AA%94%E6%A1%88%E6%B8%85%E5%96%AE">最後一節</a>。宿主工作樹其他變更及其他情境不在範圍。</p>
+<h2 id="3-關聯與流程">3. 關聯與流程</h2>
+<p><a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/contract.json">契約</a>明確核准新門檻：非負整數 cents，在 coupon 啟用且 subtotal ≥ 1,000 分時減 100 分。base 在剛好 1,000 分不折扣，head 折扣後為 900 分；這是必要的新行為。其他金額、coupon-off 與拒絕行為應保持。</p>
+<p><code>quote</code> 先用 <code>type(cents) is not int or cents &lt; 0</code> 拒絕無效輸入，再呼叫 <code>discounted</code>；policy 是內部運算，公開驗收邊界是 quote。原始碼已證實公開入口不能繞過 guard。兩者均不修改外部狀態。</p>
+<p>因變更由金額門檻與入口驗證決定，使用流程圖說明條件及拒絕出口。來源：<a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/head/api.py">head/api.py</a>、<a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/head/policy.py">head/policy.py</a>；圖是來源推導，入口結果已實測，無中間執行追蹤宣稱。</p>
+<pre class="mermaid">flowchart TD
+  A[&quot;公開 quote(cents,coupon)&quot;] --&gt; B{&quot;cents 為 int 且非負？&quot;}
+  B --&gt;|否| C[&quot;raise ValueError&quot;]
+  B --&gt;|是| D[&quot;quote 呼叫 discounted&quot;]
+  D --&gt; E{&quot;coupon 且 cents &gt;= 1000？&quot;}
+  E --&gt;|是| F[&quot;回傳 cents - 100&quot;]
+  E --&gt;|否| G[&quot;回傳 cents&quot;]
+</pre>
+<p>base 的門檻為 <code>cents &gt; 1000</code>，除此以外呼叫路徑相同；只在 1,000 分且啟用優惠時需要不同結果。圖不推測額外 API、金流或部署。</p>
+<h2 id="4-審查結果與問題">4. 審查結果與問題</h2>
+<p><strong>約定範圍未發現阻擋或必要證據缺口，無尚存 F（已確認缺陷）、Q（待釐清）或 U（必要證據缺口）。</strong> 不將已核准的門檻差異列為回歸，也不要求內部 policy 重複公開入口的輸入驗證。</p>
+<table>
+<thead>
+<tr>
+<th>實測輸入（單位：分）</th>
+<th>coupon</th>
+<th>base</th>
+<th>head／新契約預期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>999</td>
+<td>true</td>
+<td>999</td>
+<td>999</td>
+</tr>
+<tr>
+<td>1000</td>
+<td>true</td>
+<td>1000</td>
+<td>900</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>true</td>
+<td>901</td>
+<td>901</td>
+</tr>
+<tr>
+<td>1000、1001</td>
+<td>false</td>
+<td>原金額</td>
+<td>原金額</td>
+</tr>
+<tr>
+<td>0</td>
+<td>true</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>-1、1.5、true、字串 <code>&quot;1000&quot;</code>、None</td>
+<td>true</td>
+<td>ValueError</td>
+<td>ValueError</td>
+</tr>
+<tr>
+<td><code>10**100</code></td>
+<td>true</td>
+<td>原金額減 100</td>
+<td>原金額減 100，無固定寬度整數溢位</td>
+</tr>
+</tbody></table>
+<p>本輪 <a href="/docs/research/ai-code-review-poc-20260928-evidence/s2-review-r1.json">原始 log</a>：提供 probe 在兩版皆 exit 0；額外 12 個以新契約為預期的斷言，head 12/12 通過（exit 0）。base 僅 1,000 分且 coupon=true 失敗（exit 1），證明斷言能辨認尚未符合新規格的舊版本。這不表示舊版當時違反舊需求，也不把 base 失敗作為 head 阻擋。</p>
+<table>
+<thead>
+<tr>
+<th>已查面向</th>
+<th>方法與結果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>正確性、相容性</td>
+<td>全部 diff 與完整方法／caller 核對；正數門檻、零值、coupon-off 與拒絕輸入已執行。唯一行為差異符合明確核准需求</td>
+</tr>
+<tr>
+<td>安全與信任邊界</td>
+<td>quote 的型別與非負 guard 在內部呼叫前；bool 不被當作金額 int 接受；無外部命令、SQL 或敏感輸出 sink</td>
+</tr>
+<tr>
+<td>可靠性、副作用、並行</td>
+<td>純同步計算，無可變共享狀態、I/O、交易、重試或資源關閉；不適用提交與競速驗證</td>
+</tr>
+<tr>
+<td>效能與精度</td>
+<td>相同常數次比較與整數減法；不新增掃描、相依或資源持有。大整數補測成功；無浮點金額運算</td>
+</tr>
+<tr>
+<td>設計、測試</td>
+<td>共用 policy 保留 API 與簡單責任；probe 原本只輸出觀測，補上可失敗斷言，base/head 紅綠對照有效</td>
+</tr>
+</tbody></table>
+<p>coupon 的額外型別規範未指定，也未被此 diff 改動；不藉此創造必要補證。範圍內沒有外部整合需求；未驗證部署不是 Hold 理由。</p>
+<h2 id="5-結論">5. 結論</h2>
+<p>固定 head 在核准需求與已提供公開入口範圍 <strong>PASS／Approve</strong>；全目標關聯分析、來源審查及必要實跑均完成，沒有待解除事項。此建議不宣稱新舊完全一致；剛好 1,000 分的優惠差異正是新需求。若後續改動公開入口、門檻或契約，應按影響重新驗證。</p>
+<h2 id="附錄證據與查核依據">附錄：證據與查核依據</h2>
+<ul>
+<li>本輪共同起始時間由時鐘工具取得：2026-09-28 06:32:50 UTC，換算 Asia/Taipei 為 14:32:50 +08:00；實跑時間保留於 <a href="/docs/research/ai-code-review-poc-20260928-evidence/s2-review-r1.json">本輪原始 log</a>。模型精確版本未知。</li>
+<li>使用 <a href="/docs/research/ai-code-review-poc-20260928-evidence/skill-r1/SKILL.md">ai-code-review SKILL</a>、<a href="/docs/research/ai-code-review-poc-20260928-evidence/skill-r1/references/deep-review.md">deep-review</a>、<a href="/docs/research/ai-code-review-poc-20260928-evidence/skill-r1/references/report.md">report</a> 與 <a href="/project-setting.md">文件規則</a>；未修改技能。未發現根目錄、docs 或 docs/research 下另有 AGENTS.md；本次對話指示亦適用。</li>
+<li>原始 manifest 全項核對成功；以 Python difflib.unified_diff 重建全部 base/head 檔案差異，結果與 diff.patch 逐字相同。執行後重新核對，輸入無變更。</li>
+<li>Python 3.14.7；以 <code>PYTHONPATH=&lt;base 或 head&gt; python3 -B &lt;probe.py&gt;</code> 重跑，另以 <code>python3 -B -c &lt;assertion source&gt;</code> 查核；完整 argv、cwd、環境路徑、stdout、stderr 與退出碼均在本輪 log，不以提供的 execution.json 冒稱本輪實跑。</li>
+<li>原碼、契約、probe、既有執行紀錄、manifest、規則、技能、工具及本輪 log 的完整 SHA-256 集中於 <a href="/docs/research/ai-code-review-poc-s2-r1-20260928-hashes.research.md">hash 核對索引</a>。以快照技能的 <code>scripts/check_report_hashes.py</code> 實際驗證索引：15 筆全部通過，exit 0。</li>
+<li>Mermaid 圖依原碼查核節點與分支，未實際渲染；不宣稱視覺驗證。報告是本地快照演練建議，無真實 PR；未提交平台 review，未查核合併規則。</li>
+</ul>
+<h2 id="附錄完整檔案清單">附錄：完整檔案清單</h2>
+<table>
+<thead>
+<tr>
+<th>狀態／舊→新路徑</th>
+<th>責任與差異區塊</th>
+<th>影響／分析結果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>M：<a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/base/policy.py">base/policy.py</a> → <a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/head/policy.py">head/policy.py</a></td>
+<td><code>discounted(cents,coupon)</code>，唯一 hunk 第 1–2 行，<code>&gt;</code>→<code>&gt;=</code></td>
+<td>全檔已讀；符合含 1,000 分的新優惠規則，無 finding</td>
+</tr>
+</tbody></table>
+<p>關聯但未修改的來源及證據：</p>
+<table>
+<thead>
+<tr>
+<th>檔案</th>
+<th>責任／分析狀態</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/base/api.py">base/api.py</a>、<a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/head/api.py">head/api.py</a></td>
+<td>完整讀取；quote 型別／負數驗證，通過後呼叫 discounted，guard 與 API 未變</td>
+</tr>
+<tr>
+<td><a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/contract.json">contract.json</a>、<a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/probe.py">probe.py</a></td>
+<td>核准需求與原 runner 已讀；probe 本輪 base/head 重跑</td>
+</tr>
+<tr>
+<td><a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/diff.patch">diff.patch</a>、<a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/manifest.json">manifest.json</a>、<a href="/docs/research/ai-code-review-poc-20260928-evidence/s2/execution.json">execution.json</a></td>
+<td>比較、完整性與提供的歷史觀測已核對；實跑另存本輪 log</td>
+</tr>
+</tbody></table>
+<p>所有 1 個變更目標及必要關聯均完成；無生成／二進位、未讀或待查目標。排除宿主其他工作樹變更與不在契約內的外部服務，無必要缺口。</p>
+</main><script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:false,theme:'neutral',securityLevel:'strict'});try{await mermaid.run();document.documentElement.dataset.mermaid='ready'}catch(e){document.documentElement.dataset.mermaid='error';console.error(e)}</script></html>

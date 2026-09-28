@@ -1,0 +1,17 @@
+--- base/cache.py
++++ head/cache.py
+@@ -1,6 +1,8 @@
++from policy import fresh
++
+ def lookup(store, key, now):
+     item = store.get(key)
+     if item is None:
+         return None
+     expires, value = item
+-    return value if now < expires else None
++    return value if fresh(now, expires) else None
+--- base/policy.py
++++ head/policy.py
+@@ -0,0 +1,2 @@
++def fresh(now, expires):
++    return now <= expires

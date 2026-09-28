@@ -1,0 +1,222 @@
+{
+  "recorded_start": "2026-09-28T14:44:05+08:00",
+  "executed_at": "2026-09-28T14:44:55.243847+08:00",
+  "comparison": "direct snapshots, reconstructed diff matches supplied diff exactly",
+  "environment": {
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "platform": "macOS-27.0-arm64-arm-64bit-Mach-O"
+  },
+  "manifest_verified": true,
+  "hashes_before": {
+    "base/cache.py": "aee7e10e71d6e2db30dc997f2c4ec044479650ffe06a408e61e650e87f443ea7",
+    "base/views.py": "6bd0b39a08176224784b4c773bc6dfad8c8882a5e90a049137f4e87e007f540a",
+    "contract.json": "5d3c080381722d509826d48ef61773966bbcf6d2950612f02eee8f0e5b830a44",
+    "diff.patch": "fad3ae52bba309987a268ecce2e3f1fda1119da80739cf90bdf08ccc46b57121",
+    "execution.json": "5d224294672a21f5f804a684638302ad32164c66f374c50d09504b990502ee9d",
+    "head/cache.py": "0d46cab90bf08817412e05e599091096f9d23005fd7184aa006dcb6b1d172e20",
+    "head/policy.py": "071baec763c5e07532699e34db346c0b01fd39ffeec7b48d23658bb974b27ffc",
+    "head/views.py": "6bd0b39a08176224784b4c773bc6dfad8c8882a5e90a049137f4e87e007f540a",
+    "probe.py": "2b2009bb39c1ac5fa364ee1b7a981bc2b8b437c17a29a083de1b1d5434ebbe3e"
+  },
+  "reconstructed_diff": "--- base/cache.py\n+++ head/cache.py\n@@ -1,6 +1,8 @@\n+from policy import fresh\n+\n def lookup(store, key, now):\n     item = store.get(key)\n     if item is None:\n         return None\n     expires, value = item\n-    return value if now < expires else None\n+    return value if fresh(now, expires) else None\n--- base/policy.py\n+++ head/policy.py\n@@ -0,0 +1,2 @@\n+def fresh(now, expires):\n+    return now <= expires\n",
+  "expected_probe": [
+    {
+      "now": 9,
+      "a": "A",
+      "empty": "",
+      "missing": null,
+      "export": [
+        "A",
+        ""
+      ]
+    },
+    {
+      "now": 10,
+      "a": null,
+      "empty": null,
+      "missing": null,
+      "export": []
+    },
+    {
+      "now": 11,
+      "a": null,
+      "empty": null,
+      "missing": null,
+      "export": []
+    }
+  ],
+  "supplemental_source": "import json\nfrom cache import lookup\nfrom views import preview, export_values\nstore = {\"a\": (10, \"A\"), \"empty\": (10, \"\")}\nfor now in (9,10,11):\n    print(json.dumps({\"now\": now, \"lookup\": [lookup(store,key,now) for key in (\"a\",\"empty\",\"missing\")], \"preview\": [preview(store,key,now) for key in (\"a\",\"empty\",\"missing\")], \"export\": export_values(store,[\"empty\",\"missing\",\"a\",\"empty\"],now)}))\n",
+  "expected_supplemental": [
+    {
+      "now": 9,
+      "lookup": [
+        "A",
+        "",
+        null
+      ],
+      "preview": [
+        "A",
+        "",
+        null
+      ],
+      "export": [
+        "",
+        "A",
+        ""
+      ]
+    },
+    {
+      "now": 10,
+      "lookup": [
+        null,
+        null,
+        null
+      ],
+      "preview": [
+        null,
+        null,
+        null
+      ],
+      "export": []
+    },
+    {
+      "now": 11,
+      "lookup": [
+        null,
+        null,
+        null
+      ],
+      "preview": [
+        null,
+        null,
+        null
+      ],
+      "export": []
+    }
+  ],
+  "runs": {
+    "base_probe": {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-forward-20260928-evidence/s5/probe.py"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s5-review-r2-fkul9rjr",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-forward-20260928-evidence/s5/base",
+      "exit_code": 0,
+      "stdout": "{\"now\": 9, \"a\": \"A\", \"empty\": \"\", \"missing\": null, \"export\": [\"A\", \"\"]}\n{\"now\": 10, \"a\": null, \"empty\": null, \"missing\": null, \"export\": []}\n{\"now\": 11, \"a\": null, \"empty\": null, \"missing\": null, \"export\": []}\n",
+      "stderr": "",
+      "assertion_results": [
+        {
+          "now": 9,
+          "pass": true
+        },
+        {
+          "now": 10,
+          "pass": true
+        },
+        {
+          "now": 11,
+          "pass": true
+        }
+      ],
+      "all_expected_rows_present": true
+    },
+    "base_supplemental": {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "-c",
+        "import json\nfrom cache import lookup\nfrom views import preview, export_values\nstore = {\"a\": (10, \"A\"), \"empty\": (10, \"\")}\nfor now in (9,10,11):\n    print(json.dumps({\"now\": now, \"lookup\": [lookup(store,key,now) for key in (\"a\",\"empty\",\"missing\")], \"preview\": [preview(store,key,now) for key in (\"a\",\"empty\",\"missing\")], \"export\": export_values(store,[\"empty\",\"missing\",\"a\",\"empty\"],now)}))\n"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s5-review-r2-fkul9rjr",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-forward-20260928-evidence/s5/base",
+      "exit_code": 0,
+      "stdout": "{\"now\": 9, \"lookup\": [\"A\", \"\", null], \"preview\": [\"A\", \"\", null], \"export\": [\"\", \"A\", \"\"]}\n{\"now\": 10, \"lookup\": [null, null, null], \"preview\": [null, null, null], \"export\": []}\n{\"now\": 11, \"lookup\": [null, null, null], \"preview\": [null, null, null], \"export\": []}\n",
+      "stderr": "",
+      "assertion_results": [
+        {
+          "now": 9,
+          "pass": true
+        },
+        {
+          "now": 10,
+          "pass": true
+        },
+        {
+          "now": 11,
+          "pass": true
+        }
+      ],
+      "all_expected_rows_present": true
+    },
+    "head_probe": {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-forward-20260928-evidence/s5/probe.py"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s5-review-r2-fkul9rjr",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-forward-20260928-evidence/s5/head",
+      "exit_code": 0,
+      "stdout": "{\"now\": 9, \"a\": \"A\", \"empty\": \"\", \"missing\": null, \"export\": [\"A\", \"\"]}\n{\"now\": 10, \"a\": \"A\", \"empty\": \"\", \"missing\": null, \"export\": [\"A\", \"\"]}\n{\"now\": 11, \"a\": null, \"empty\": null, \"missing\": null, \"export\": []}\n",
+      "stderr": "",
+      "assertion_results": [
+        {
+          "now": 9,
+          "pass": true
+        },
+        {
+          "now": 10,
+          "pass": false
+        },
+        {
+          "now": 11,
+          "pass": true
+        }
+      ],
+      "all_expected_rows_present": true
+    },
+    "head_supplemental": {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "-c",
+        "import json\nfrom cache import lookup\nfrom views import preview, export_values\nstore = {\"a\": (10, \"A\"), \"empty\": (10, \"\")}\nfor now in (9,10,11):\n    print(json.dumps({\"now\": now, \"lookup\": [lookup(store,key,now) for key in (\"a\",\"empty\",\"missing\")], \"preview\": [preview(store,key,now) for key in (\"a\",\"empty\",\"missing\")], \"export\": export_values(store,[\"empty\",\"missing\",\"a\",\"empty\"],now)}))\n"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s5-review-r2-fkul9rjr",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-forward-20260928-evidence/s5/head",
+      "exit_code": 0,
+      "stdout": "{\"now\": 9, \"lookup\": [\"A\", \"\", null], \"preview\": [\"A\", \"\", null], \"export\": [\"\", \"A\", \"\"]}\n{\"now\": 10, \"lookup\": [\"A\", \"\", null], \"preview\": [\"A\", \"\", null], \"export\": [\"\", \"A\", \"\"]}\n{\"now\": 11, \"lookup\": [null, null, null], \"preview\": [null, null, null], \"export\": []}\n",
+      "stderr": "",
+      "assertion_results": [
+        {
+          "now": 9,
+          "pass": true
+        },
+        {
+          "now": 10,
+          "pass": false
+        },
+        {
+          "now": 11,
+          "pass": true
+        }
+      ],
+      "all_expected_rows_present": true
+    }
+  },
+  "hashes_after": {
+    "base/cache.py": "aee7e10e71d6e2db30dc997f2c4ec044479650ffe06a408e61e650e87f443ea7",
+    "base/views.py": "6bd0b39a08176224784b4c773bc6dfad8c8882a5e90a049137f4e87e007f540a",
+    "contract.json": "5d3c080381722d509826d48ef61773966bbcf6d2950612f02eee8f0e5b830a44",
+    "diff.patch": "fad3ae52bba309987a268ecce2e3f1fda1119da80739cf90bdf08ccc46b57121",
+    "execution.json": "5d224294672a21f5f804a684638302ad32164c66f374c50d09504b990502ee9d",
+    "head/cache.py": "0d46cab90bf08817412e05e599091096f9d23005fd7184aa006dcb6b1d172e20",
+    "head/policy.py": "071baec763c5e07532699e34db346c0b01fd39ffeec7b48d23658bb974b27ffc",
+    "head/views.py": "6bd0b39a08176224784b4c773bc6dfad8c8882a5e90a049137f4e87e007f540a",
+    "probe.py": "2b2009bb39c1ac5fa364ee1b7a981bc2b8b437c17a29a083de1b1d5434ebbe3e"
+  },
+  "input_unchanged": true
+}

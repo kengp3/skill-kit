@@ -1,0 +1,152 @@
+{
+  "audit_scope": "僅審閱讀理解與圖表可讀性；未讀 scenario plan、expected answers、原始碼檔、其他過往報告或 skill，亦未驗證報告事實／原始執行 log。",
+  "method_deviation": "S1/S2/S4 首次工具輸出誤取前 75 行，提前看見部分正文；以下受限區塊回述在完整閱讀前記錄，但不得視為嚴格 blind first-pass。已通知父任務另找未接觸報告的讀者補驗。",
+  "strict_first_pass_valid": false,
+  "overall_readable": "no",
+  "overall_reason": "四份報告文字可讀；唯一已確認的可讀性阻擋為 S4 的 1280px 實際圖表節點／分支文字過小。S1/S2/S3 圖形驗證由父任務負責。",
+  "reports": [
+    {
+      "scenario": "s1",
+      "report": "docs/research/ai-code-review-poc-s1-r1-20260928.research.md",
+      "restricted_section_readback": {
+        "decision": "Request changes；審查完成，需求符合性／行為保留 FAIL。",
+        "remaining_items": "1 項已確認阻擋缺陷 F-001；無待釐清或必要證據缺口。",
+        "first_action": "在共用 page_after 將 >= 改回 >，於修正後固定版本跑入口、末頁、不同 limit 的匯出回歸並保留 max_pages 保護。",
+        "unclear": [],
+        "report_lines": [
+          "5-7",
+          "46-48"
+        ]
+      },
+      "prose_readable": "yes",
+      "full_report_readback": {
+        "trigger": "游標代表已交付最後 ID，head 將 > 改為 >=，再次選入游標所在資料（22–24、54–58 行）。",
+        "expected_vs_actual": "rows=[1,2,3]、cursor=1、limit=1 應回 ID 2，實際回 ID 1；末頁應空卻再回 ID 3；export 應回 [1,2,3] 卻耗盡 max_pages 拋錯（91 行）。",
+        "impact": "公開分頁重複資料；所有提供的共用函式 caller 受影響，匯出不能完成。保護上限仍在，並非無限迴圈（24、42、52 行）。",
+        "solution_and_closure": "共用 page_after 恢復 >；修正正式候選後重跑排他、末頁、空頁與 limit 1/2/4 匯出，才解除 F-001（61–65、95、111 行）。",
+        "execution_vs_proposal": "報告清楚區分原 probe exit 0、額外斷言 head 失敗、隔離修法通過及被審 head 尚未修正（7、95、111 行）。"
+      },
+      "blocking_findings": [],
+      "optional_edits": [
+        {
+          "lines": "26、93、107、120、137",
+          "finding": "圖形選擇理由、單根因計數、範圍排除多處重述可縮短；未妨礙定位問題與修法。"
+        }
+      ],
+      "diagram_validation": "未查看實際 render，由父任務負責。"
+    },
+    {
+      "scenario": "s2",
+      "report": "docs/research/ai-code-review-poc-s2-r1-20260928.research.md",
+      "restricted_section_readback": {
+        "decision": "Approve；審查完成，需求符合性／品質 PASS。",
+        "remaining_items": "0 項阻擋、待釐清及必要證據缺口。",
+        "first_action": "接受此固定快照在公開 quote 範圍內的審查建議，無需修改程式；不是平台核准或部署指令。",
+        "unclear": [],
+        "report_lines": [
+          "5-10",
+          "40-54"
+        ]
+      },
+      "prose_readable": "yes",
+      "full_report_readback": {
+        "trigger": "coupon 啟用且金額恰好 1,000 分；新契約明確採含門檻（22、38 行）。",
+        "expected_vs_actual": "base 1,000 分不折扣，head 為 900 分；其他門檻、關閉優惠、非法輸入等有對照表（44–54 行）。",
+        "impact": "變化符合核准新需求，不屬新增回歸；公開 quote 保留輸入 guard（24、42、58–59 行）。",
+        "solution_and_closure": "不需要修法，固定候選可在約定範圍 Approve；沒有待解除事項，後續需求或入口改動才重驗（6、68 行）。",
+        "execution_vs_proposal": "12 個新契約斷言 head 全通過，base 唯一門檻失敗是有意辨識舊行為；明確限定為本輪本地實跑，非平台核准（10、54、75、77 行）。"
+      },
+      "blocking_findings": [],
+      "optional_edits": [
+        {
+          "lines": "22、38、42、54、64、68",
+          "finding": "『核准差異非回歸／不需外部整合』跨段重述略多，可整併；仍無閱讀歧義。"
+        }
+      ],
+      "diagram_validation": "未查看實際 render，由父任務負責。"
+    },
+    {
+      "scenario": "s3",
+      "report": "docs/research/ai-code-review-poc-s3-r1-20260928.research.md",
+      "strict_first_pass_valid": true,
+      "restricted_section_readback": {
+        "decision": "Request changes；審查已完成，需求符合性與行為一致性 FAIL。",
+        "remaining_items": "四項新增 open 阻擋缺陷 F-001 至 F-004；Q/U 均為零。",
+        "first_action": "依第四章整合修法，修正累計退貨運費公式、將期限上界改回 ageDays > 30、退款成功後才改退貨數及庫存、先讀成功 receipt 再驗可變條件；重跑同組九欄觀測。",
+        "unclear": [
+          "摘要尚未展開九欄觀測的欄位，但已指向完整修法與各項具體解除條件；不阻礙第一步定位。"
+        ],
+        "report_lines": [
+          "5–10",
+          "83–90"
+        ]
+      },
+      "prose_readable": "yes",
+      "full_report_readback": {
+        "F-001": "第 15 天依序退 1、2 件；末次應 900／累計 1300 cents，head 為 800／1200，result、receipt、event 金額一起錯。policy 改用更新前 returnedQty + quantity 判斷退滿，並驗一次全退仍為 1300（116–121、150–154 行）。",
+        "F-002": "fresh service 在第 30 天退 1 件，應 REFUNDED:400 並完成成功副作用，head 全數拒絕。ageDays 上界改回 >30，置於 receipt 命中之後；day30 成功、day31 拒絕且保留其他拒絕條件（164–174 行）。",
+        "F-003": "同 key 先 decline 再成功，head 在退款前已累加退貨／庫存，重試後兩欄為 2 而非 1。將 gateway 成功判斷移到 Order／Warehouse 寫入前；失敗僅 attempts 增加，重試成功只累加一次（212–231 行）。",
+        "F-004": "成功全退後同請求重播或第 31 天重播，head 先碰可變 guard 而回 NO_QUANTITY／REJECTED。先查 receipt，再驗期限與數量；兩種 replay 應回原成功字串且其餘八欄不變，不是重複退款缺陷（245–264 行）。",
+        "integration_and_closure": "有共用上下文及完整整合方法，先修 policy 再替換 returnItems；重新固定來源／SPEC／Probe、重編及重跑八案十二步九欄，逐項符合解除條件才 verified（124–148、266–287、308 行）。",
+        "execution_vs_proposal": "修法均明示尚未套用或編譯驗證；本輪兩次 compile、十六次 Probe 均 exit 0，但九欄對照仍判五案 FAIL；歷史 Git、真實金流與本次快照執行邊界清楚（6、10、268、287、314–337 行）。"
+      },
+      "blocking_findings": [],
+      "optional_edits": [
+        {
+          "lines": "6、287、324",
+          "finding": "九欄的完整定義直到附錄才出現；首提九欄時直接連到本輪執行與觀測，可減少尋找，但目前不造成猜測。"
+        },
+        {
+          "lines": "27、43、124、341、345",
+          "finding": "未讀父層規劃、選圖理由、未省略反證程式、交付回讀等過程敘述可縮短；基本摘要、總表與逐項觸發／修法／解除仍可直接使用。"
+        }
+      ],
+      "diagram_validation": "未查看 S3 實際 render，由父任務負責；不以 Mermaid 文字宣稱視覺通過。"
+    },
+    {
+      "scenario": "s4",
+      "report": "docs/research/ai-code-review-poc-s4-r1-20260928.research.md",
+      "restricted_section_readback": {
+        "decision": "Hold；來源審查與本機案例完成，整體需求符合性 UNKNOWN。",
+        "remaining_items": "U-001：缺真實 transport 重啟持久性證據；沒有已確認缺陷。",
+        "first_action": "提供與本次 head 對得上的真實 transport adapter／設定版本及具關聯 ID 的提交、acknowledgement、重啟、恢復紀錄。",
+        "unclear": [
+          "摘要未指定由誰補證；不妨礙知道要補什麼。"
+        ],
+        "report_lines": [
+          "5-7",
+          "58-60"
+        ]
+      },
+      "prose_readable": "yes",
+      "diagram_readable": "no",
+      "full_report_readback": {
+        "trigger": "抽取 make_payload 後，submit 向 bus 發布事件並依 acknowledgement 判斷結果（25、31、64–73 行）。",
+        "expected_vs_actual": "真實 transport 應在 acknowledgement 前持久保存且重啟後可恢復；實際只有 FakeBus 記憶體 list 與 accepted／拒絕觀測，持久性未知（73–75 行）。",
+        "impact": "不是已確認程式缺陷；缺少合約明訂驗收，阻止 Approve（60、73、97 行）。",
+        "next_evidence_and_closure": "補同版 adapter／設定與具 correlation ID 的 durable write、acknowledgement、停止／重啟／恢復 log；記錄命令、環境、時間及退出碼，再核對事件／版本／時序解除 U-001，責任人待指派（75、77–79、99 行）。",
+        "execution_vs_proposal": "清楚區分來源推導、本輪 fake 實跑與尚未執行的真實整合補證；亦交代未部署（54、73、77、85–91、104–110 行）。"
+      },
+      "blocking_findings": [
+        {
+          "id": "READ-001",
+          "surface": "diagram",
+          "lines": "33–52",
+          "evidence": "docs/research/ai-code-review-poc-20260928-evidence/s4-r1-diagram.png",
+          "finding": "1280px 實際畫面把 base/head 子圖並排壓縮；節點與分支標籤遠小於正文，正常比例難以可靠辨讀，圖本身無法承擔比較責任。",
+          "fix": "將兩版本上下排列，或使用一張共享流程並標示抽取差異；重新截取相同寬度確認節點與分支標籤可直接閱讀。",
+          "qualification": "文字段落仍足以理解流程；阻擋的是圖表可讀性，不是全文邏輯。"
+        }
+      ],
+      "optional_edits": [
+        {
+          "lines": "25、31、93、114",
+          "finding": "『未讀其他 scenario／父計畫』『故不增加類別圖』『已主動排除 finding』『回讀五章』等過程敘述可刪減或集中證據附錄，對讀者判斷無新增必要資訊。"
+        }
+      ]
+    }
+  ],
+  "pending": [
+    "S1/S2/S4 嚴格只看摘要的 first-pass 需另行補驗；S3 已按摘要抽取、先落盤回述、再讀全文順序完成。"
+  ]
+}

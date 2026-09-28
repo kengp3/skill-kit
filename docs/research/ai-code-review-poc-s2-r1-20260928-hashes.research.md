@@ -1,0 +1,19 @@
+# s2 審查 SHA-256 核對索引
+
+本輪實際讀取／執行依據；以固定快照內容驗證。
+
+- [project-setting.md](/Users/kengp3/Workspaces/mine/simple-skills/project-setting.md) SHA-256 `cd6c155c21a3a673873428e6b22512f4c1a14596efd2d88d343dc2bf4cb4ffac`
+- [docs/research/ai-code-review-poc-20260928-evidence/skill-r1/SKILL.md](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/skill-r1/SKILL.md) SHA-256 `38aee86693690fa4a69023e19359c2caa771e827f9add9d17548327dca4d1452`
+- [docs/research/ai-code-review-poc-20260928-evidence/skill-r1/references/deep-review.md](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/skill-r1/references/deep-review.md) SHA-256 `5b57525acc0dd12d4e5afb017eb170d9fd4d4bd047d672af1d282a79fff724de`
+- [docs/research/ai-code-review-poc-20260928-evidence/skill-r1/references/report.md](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/skill-r1/references/report.md) SHA-256 `e6fb0a2fa9b23f6dc763587d9c441704fce8d538356189cdf1e9ff65581a0494`
+- [docs/research/ai-code-review-poc-20260928-evidence/skill-r1/scripts/check_report_hashes.py](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/skill-r1/scripts/check_report_hashes.py) SHA-256 `e16b13cbec9cac679e8daaf978c6c5b9bfa600e85879c5d3afd9d771701e8212`
+- [docs/research/ai-code-review-poc-20260928-evidence/s2/base/api.py](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/base/api.py) SHA-256 `4edf9e758863f26deb1e878e1c47967ecbc3fd3e17a5fdee7e07343d108cf707`
+- [docs/research/ai-code-review-poc-20260928-evidence/s2/base/policy.py](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/base/policy.py) SHA-256 `c94a498067384732bf3523fb0df52e86d0e9a0c390281f9519436d6119969afc`
+- [docs/research/ai-code-review-poc-20260928-evidence/s2/contract.json](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/contract.json) SHA-256 `6a5304824f45364189278ec236973fe756ab8823fb22e839c1adbebca2682817`
+- [docs/research/ai-code-review-poc-20260928-evidence/s2/diff.patch](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/diff.patch) SHA-256 `7787179aedb19432d24dc356e59ff2c157d03f8ca9d1a8d04a5209b59a7702ea`
+- [docs/research/ai-code-review-poc-20260928-evidence/s2/execution.json](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/execution.json) SHA-256 `45bf7c0a4d2b17643593dc265708633efe4e3212db9441ac081cd05ae2edca04`
+- [docs/research/ai-code-review-poc-20260928-evidence/s2/head/api.py](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/head/api.py) SHA-256 `4edf9e758863f26deb1e878e1c47967ecbc3fd3e17a5fdee7e07343d108cf707`
+- [docs/research/ai-code-review-poc-20260928-evidence/s2/head/policy.py](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/head/policy.py) SHA-256 `8111c47fe0a378fa7347b107d46ad7303d5418fc6ab73fcb5a9bb697792b971f`
+- [docs/research/ai-code-review-poc-20260928-evidence/s2/manifest.json](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/manifest.json) SHA-256 `2d0ec18f157ae47aa4b061ae09ecb98edbb940266bf717c3b38178f4fea37e26`
+- [docs/research/ai-code-review-poc-20260928-evidence/s2/probe.py](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/probe.py) SHA-256 `0bb8b029d8f81b02458c1034f666abb64f59f762f7447d06817a975ac0e48cc1`
+- [docs/research/ai-code-review-poc-20260928-evidence/s2-review-r1.json](/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2-review-r1.json) SHA-256 `00b38f787706955f5f491951831ce842408f627ec4343e7e6b7452d79878cc30`

@@ -1,0 +1,4 @@
+{
+  "scope": "publisher extraction acceptance",
+  "requirements": "Preserve submit behavior: publish exactly once with type OrderAccepted and the order_id. Return accepted only for a truthy acknowledgement; otherwise raise RuntimeError. order_id is an upstream-validated nonempty string. Acceptance explicitly requires source review, local success/rejection cases AND an actual durable transport integration log proving data survives process restart before acknowledgement. Only fake transport is supplied; actual transport adapter, endpoint and integration logs are unavailable in this offline package. Do not infer durable delivery from fake.publish. No actual deployment is authorized."
+}

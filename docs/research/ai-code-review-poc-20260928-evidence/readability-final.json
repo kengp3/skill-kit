@@ -1,0 +1,288 @@
+{
+  "review_type": "independent_reader_acceptance",
+  "language": "zh-TW",
+  "root": "/Users/kengp3/Workspaces/mine/simple-skills",
+  "method": {
+    "initial_read_scope": [
+      "各報告第 1 章基本說明",
+      "各報告第 4 章第一個表格"
+    ],
+    "initial_restatement_persisted_before_full_read": true,
+    "excluded": [
+      "plans",
+      "skills",
+      "source fixtures",
+      "prior audits"
+    ],
+    "diagram_rendering": "父任務提供正常 1280px browser 截圖，本讀者透過 view_image 實際檢視全部五份共十五張截圖；節點、分支與上下段連接均已讀取。瀏覽器寬度及未縮放條件由父任務提供，我未自行量測 CSS、page overflow 或錨點。",
+    "s5": "依同一盲讀順序於 14:49:13 +08:00 先落盤摘要回述，隨後讀全文及兩張圖形截圖。",
+    "review_boundary": "本檔是獨立讀者驗收；報告所述來源真實性、測試正確性與 hashes 正確性不在本讀者工作範圍。沒有開啟報告連出的 source fixtures、skills、plans、先前 audit 或原始業務 log。"
+  },
+  "initial_pass_saved_at": "2026-09-28T14:46:19.948287+08:00",
+  "status": "five_report_reader_gate_complete",
+  "reports": [
+    {
+      "id": "s1-r1",
+      "report": "docs/research/ai-code-review-poc-s1-r1-20260928.research.md",
+      "initial_read_restatement": {
+        "decision": "要求修改；審查本身完成，行為保留不合格。",
+        "open_items": "1 個已確認阻擋缺陷：游標把末筆再交付，匯出可能耗盡頁數後拋錯；沒有待釐清或必要證據缺口。",
+        "first_step": "先將共用 page_after 改回 id > cursor，再驗證入口、末頁及不同 limit 的匯出；保留 max_pages。",
+        "comprehension_difficulty": "基本說明與總表已能直接決策。摘要說隔離副本已驗證修法，但被審 head 仍待修，因此不能當成缺陷已解除。無重大理解障礙。"
+      },
+      "full_read_review": {
+        "reader_restatement": "此次 > 改為 >= 把已交付游標包含進來，page_after 的錯誤同時傳到 list_page 與 export_ids。應在共用函式一次修正，不能靠增加 max_pages 或 caller 過濾結案。",
+        "example_concreteness": {
+          "assessment": "具體，可只依報告重述輸入、實際與預期",
+          "restatement": "rows 為 ID 1、2、3；list_page(rows,1,1) 預期 ID/cursor 2，head 卻回 1；cursor=3 仍吐出 ID 3。export_ids(rows,1,5) 應回 [1,2,3]，卻因頁數保護拋 RuntimeError。",
+          "locations": [
+            "第 4 章 F-001 具體案例",
+            "第 3 章 head 流程圖及 base 比較"
+          ]
+        },
+        "impact_recommendation_release": {
+          "impact": "重複交付與匯出不能正常完成是同一根因，列一项 finding 合理；max_pages 會終止，不能把它說成實際無限執行。",
+          "recommendation": "paging.py 的共用比較恢復 >，保留切頁、API 與 max_pages。",
+          "release": "對真正修後固定候選版本重跑排他、末頁、空頁、輸入不變及 limit 1/2/4 匯出；隔離副本成功不解除目前 head。"
+        },
+        "executed_vs_proposed": {
+          "executed_as_reported": "本輪 base 8/8；head 5 個斷言失敗；隔離修法 8/8。提供的 probe 會抓錯後正常退出，所以 exit 0 不等於通過。",
+          "proposed_or_pending": "被審 head 未修改，正式修正與對新版本重跑仍待執行。",
+          "reader_verification_boundary": "我只驗收報告表述，不開原始 log、不讀 fixture 或重跑測試。"
+        },
+        "diagram": {
+          "status": "viewed_readable",
+          "screenshots": [
+            "s1-r1-diagram.png",
+            "s1-r1-diagram-bottom.png"
+          ],
+          "restatement": "上半張可讀到 max_pages 額度的錯誤出口，以及 export→list_page→page_after；下半張可讀到 >=、next_cursor、空頁回傳及非空累加後回圈。兩張有 list_page 重疊段，可順序追蹤；需要正常垂直滾動但不用放大。",
+          "screenshot_sha256": {
+            "s1-r1-diagram.png": "bc63d47104963a49ee682d217f257fecdb02b9d10ff061201acd14149d3c85e6",
+            "s1-r1-diagram-bottom.png": "bd986371308a8d18a214415ab4241526da860ce297e531e07560fa47b6802886"
+          }
+        },
+        "major_defects": [],
+        "optional_improvements": [],
+        "verdict": "文字與已提供圖形可讀；能做出正確範圍內決策"
+      },
+      "report_sha256": "606412c44a87ec6ccb4b384a1c46bbda9a87e22d78af0eee56ce1f538760e266"
+    },
+    {
+      "id": "s2-r1",
+      "report": "docs/research/ai-code-review-poc-s2-r1-20260928.research.md",
+      "initial_read_restatement": {
+        "decision": "建議通過；本地固定快照的公開 quote 審查完成且符合品質與需求。",
+        "open_items": "沒有阻擋、待釐清或必要證據缺口。",
+        "first_step": "沒有必要程式修法；在本報告的固定公開入口範圍採用 Approve 建議。",
+        "comprehension_difficulty": "總表是輸入／輸出證據而非問題表，但摘要的零缺陷足以交代。1000 分且 coupon=true 時由 1000 變 900 是刻意門檻修正，不能誤讀為回歸；不代表全域或平台核准。"
+      },
+      "full_read_review": {
+        "reader_restatement": "唯一刻意改變是 coupon=true 且剛好 1000 分時也折 100；入口 quote 仍先拒絕無效金額。Approve 只涵蓋這個固定快照和公開入口，不是全域等價或平台操作。",
+        "example_concreteness": {
+          "assessment": "門檻、鄰值、關閉優惠及拒絕案例足以理解",
+          "restatement": "999 維持 999，1000 從 base 的 1000 變成 head 的 900，1001 仍為 901；coupon=false 保留原價。bool、負數、浮點、字串和 None 應拒絕；大整數保持整數減 100。",
+          "locations": [
+            "第 4 章實測輸入表",
+            "第 3 章契約與公開入口驗證說明"
+          ]
+        },
+        "impact_recommendation_release": {
+          "impact": "1000 分輸出變更是核准需求，不能據新舊不同就報回歸；也不必讓內部 policy 重複公開入口 guard。",
+          "recommendation": "無程式修法；可對固定範圍採納 Approve 建議。",
+          "release": "無未解除事項；後續公開入口、門檻或契約改變才按影響重新驗證。"
+        },
+        "executed_vs_proposed": {
+          "executed_as_reported": "head 的 12 個新契約斷言全通過；base 只在剛好 1000 且優惠開啟時失敗，表示測試分辨新需求而非 head 有錯。",
+          "proposed_or_pending": "沒有必要補跑外部整合；契約無此義務，也沒有宣稱部署驗收或平台核准。",
+          "reader_verification_boundary": "未開 log 或 fixture；這是報告的可讀性驗收。"
+        },
+        "diagram": {
+          "status": "viewed_readable",
+          "screenshots": [
+            "s2-r1-diagram.png",
+            "s2-r1-diagram-bottom.png"
+          ],
+          "restatement": "可讀到 quote 先檢查非負 int，不符即 ValueError；通過才進 discounted，再依 coupon 與 >=1000 決定折扣。上下截圖在門檻菱形重疊，兩個金額出口清楚，不需放大。",
+          "screenshot_sha256": {
+            "s2-r1-diagram.png": "011c8597d234fd6a5283e3fb86e5fc8a46f6b8795b3dc5a47fe82959bbfd9213",
+            "s2-r1-diagram-bottom.png": "792ba85ec3d1072ab0e0f737f9157a587d29723357b24cc228801ddac4ea832b"
+          }
+        },
+        "major_defects": [],
+        "optional_improvements": [],
+        "verdict": "文字與已提供圖形可讀；可明確理解為有意行為改動的無缺陷報告"
+      },
+      "report_sha256": "03121fccd5cc73028065807d5efb1641c4e810f4cf47c809972bf392b58d9951"
+    },
+    {
+      "id": "s3-r2",
+      "report": "docs/research/ai-code-review-poc-s3-r2-20260928.research.md",
+      "initial_read_restatement": {
+        "decision": "要求修改；約定審查完成，但需求與行為一致性 FAIL。",
+        "open_items": "4 個阻擋缺陷：分批退滿漏運費、第 30 天拒絕、退款失敗已異動退貨與庫存、成功收據重播遭可變條件攔截；必要證據缺口為零。",
+        "first_step": "依四項缺陷先修累計運費公式、期限上界及操作順序，再重跑九欄觀測。",
+        "comprehension_difficulty": "每項解除條件包含可觀測輸出，能分開理解。九欄觀測的欄名在這些節錄中尚未提供，但不妨礙知道先修再驗；R2 未重跑 Java，推薦整合修法也未套用或驗證。"
+      },
+      "full_read_review": {
+        "reader_restatement": "抽取退款 policy 時同時破壞累計運費、第 30 天上界、退款拒絕前的寫入順序與成功收據優先回放。四項均需修正；共用 returnItems 的整合修法已給出但尚未驗證。",
+        "example_concreteness": {
+          "assessment": "四項都有可追的初始狀態、輸入、預期及實際結果",
+          "restatement": "3 件各 400、運費 100：先退 1 再退 2，末次應 900 卻 800；day30 退 1 應 400 卻全零 REJECTED；拒絕後重試同 key，退貨/庫存應最後各 1 卻各 2；全退後重播應 REFUNDED:1300 卻 NO_QUANTITY，day31 重播已完成 1 件應 REFUNDED:400 卻 REJECTED。",
+          "locations": [
+            "第 4 章 F-001 至 F-004 觸發及觀測",
+            "附錄八案十二步九欄觀測說明"
+          ]
+        },
+        "impact_recommendation_release": {
+          "impact": "分別造成少退款、合法新請求被拒、失敗吃掉可退數並錯加庫存，以及失去既有成功回覆；最後一項不代表重複退款，報告明說其餘八欄未增加。",
+          "recommendation": "policy 以更新前 returnedQty + quantity 判斷退滿；returnItems 先回放 receipt，再檢查 day30 inclusive 與數量，計算金額，退款成功後才改退貨/庫存並執行其他成功副作用。",
+          "release": "固定新快照並重編，重跑八案十二步九欄；各項分別驗末次 900/累計1300、day30通過/day31拒絕、decline僅 attempts 改變且重試只累加一次、兩種 replay 原結果且其他狀態不變。"
+        },
+        "executed_vs_proposed": {
+          "executed_as_reported": "R1 實際編譯兩版並跑十六次 Probe，得到二十四筆 JSON；五個 head 案例違約，三個符合。R2 只改呈現並沿用 R1，沒有重跑 Java。",
+          "proposed_or_pending": "第四章整合修法未套用且未編譯驗證；不能拿全部 Java exit 0 或可執行程式碼外觀宣稱已解除。",
+          "reader_verification_boundary": "未讀原始 fixture、log 或先前報告；評估依本報告全文。"
+        },
+        "diagram": {
+          "status": "viewed_readable",
+          "screenshots": [
+            "s3-r2-guards-base.png",
+            "s3-r2-guards-base-bottom.png",
+            "s3-r2-effects-base.png",
+            "s3-r2-effects-base-bottom.png",
+            "s3-r2-guards-head.png",
+            "s3-r2-guards-head-bottom.png",
+            "s3-r2-effects-head.png",
+            "s3-r2-effects-head-bottom.png"
+          ],
+          "restatement": "A 的 receipt 優先與 day30 inclusive 可讀，接 B 先 gateway 再庫存；C 清楚改為 day29 上界且 receipt 排在數量 guard 後，接 D 先改庫存再 gateway。各張上下段有重疊節點，四張的接 A/B/C/D 名稱明確；成功、拒絕、NO_QUANTITY、DECLINED 及拒絕後不還原的文字皆能在所供正常寬度截圖直接讀取，不必放大。",
+          "screenshot_sha256": {
+            "s3-r2-guards-base.png": "669a492901e6d353a69de494e6b5b9fa4c7affad86f9b6e76a4bc25aa322a2fa",
+            "s3-r2-guards-base-bottom.png": "fafe7959423c4ada82336a3a3ba95e956f39813a3eb36ab6057bbc41602135da",
+            "s3-r2-effects-base.png": "d00df041cf8e1a377bc9cf381a18918eb8829102fd1e3286c25ee0e52f4922f6",
+            "s3-r2-effects-base-bottom.png": "30436228e705495aa4b643842858bf71583db1a00c8d2b37c53598b3adc86c5d",
+            "s3-r2-guards-head.png": "37f6ccd29f06496641bef42536b972ea7c8e01a14df679d022ae2eae19a4d08f",
+            "s3-r2-guards-head-bottom.png": "f269df25b48a2a5130982ffc0463cf03f9cea5bc775278b8e66a337af4f07137",
+            "s3-r2-effects-head.png": "449ec5c93602ab2095bc20dbe54539299a7309cc9a0bcdbfc3903f4cb5f52493",
+            "s3-r2-effects-head-bottom.png": "bd5c3fa69d912ea44c028a1d7e3fa7b2a1706ea5fa5f06fbe5ea87e1ae8c3264"
+          }
+        },
+        "major_defects": [],
+        "optional_improvements": [
+          {
+            "location": "第 1 章「九欄觀測」與附錄「原審查執行與沿用觀測」",
+            "observation": "首頁第一次出現九欄觀測，但欄名到附錄才完整展開；初讀可知需重驗，卻須往後找具體欄位。",
+            "suggestion": "可將首次九欄觀測加上指向附錄的章節連結；不必重貼清單或改動結論。",
+            "impact": "只影響導覽速度，不影響四項問題或解除條件的理解。"
+          }
+        ],
+        "verdict": "文字與四張圖形皆可讀；一項 optional 導覽改善，不阻擋"
+      },
+      "report_sha256": "4661eb335ce780f91034b37b6a5b6d763f43cd9837d054fc8d59ac9e908efbeb"
+    },
+    {
+      "id": "s4-r2",
+      "report": "docs/research/ai-code-review-poc-s4-r2-20260928.research.md",
+      "initial_read_restatement": {
+        "decision": "暫緩；審查部分完成，整體需求符合性 UNKNOWN。",
+        "open_items": "沒有已確認來源缺陷，唯一阻擋核准的是實際 transport 重啟持久性必要證據 U-001。",
+        "first_step": "補相同版本 adapter／設定及帶關聯 ID 的提交、重啟、恢復與 acknowledgement 紀錄，核對持久保存早於 acknowledgement。",
+        "comprehension_difficulty": "可清楚區分缺證據與程式錯誤；現有離線材料不能生成所需證據且未授權部署，所以不能把補紀錄理解為立即部署。R2 只改圖表，沿用 r1 觀測。"
+      },
+      "full_read_review": {
+        "reader_restatement": "本機能證明 helper 抽取後 payload、單次 publish 及接受/拒絕出口不變；不能證明 acknowledgement 對應持久保存與重啟可恢復。因此 Hold 是缺必要證據，並非已發現程式缺陷。",
+        "example_concreteness": {
+          "assessment": "例子具體，而且把能證明與不能證明的事情分開",
+          "restatement": "order_id=o-1、FakeBus=True 時 list 有一筆 type=OrderAccepted/order_id=o-1 且回 accepted；False 時仍記錄一次發布但回 publish rejected。記憶體 append 沒有保存或重啟觀測，故 durability 結果未知。",
+          "locations": [
+            "第 4 章 U-001 具體案例及推薦補證",
+            "附錄本機 stdout"
+          ]
+        },
+        "impact_recommendation_release": {
+          "impact": "尚不能核准合約要求的真實 transport 持久性；未知不能說通過或失敗，也不能把 fake 無持久性報成抽取新增 bug。",
+          "recommendation": "由有權操作整合環境者補同版 adapter/設定及 correlation ID 對齊的 durable write、acknowledgement、停止/重啟、恢復紀錄；無根據不要先改碼。",
+          "release": "核對版本、同一 payload/type/order_id 跨程序恢復及 durable write 先於 acknowledgement，保留命令、環境、時間、退出碼和失敗輸出，再判斷 U-001。"
+        },
+        "executed_vs_proposed": {
+          "executed_as_reported": "R1 兩版各跑 True/False 並用外層斷言核完整 payload 與次數；R2 沿用，未重跑 Python。publish 例外傳播與其他 truthy/falsy 語意是來源推導，未冒充實跑。",
+          "proposed_or_pending": "實際 adapter/endpoint/integration log 未提供，必要持久性驗收未做；沒有部署授權，責任人待指派。",
+          "reader_verification_boundary": "未讀 log、contract 或 source；本驗收只核報告是否足以理解決策與證據界線。"
+        },
+        "diagram": {
+          "status": "viewed_readable",
+          "screenshots": [
+            "s4-r2-diagram.png"
+          ],
+          "restatement": "可讀到 submit 呼叫 make_payload 後才 publish 一次，回覆進 truthy 判斷，真值回 accepted、假值拋 RuntimeError；publish 例外直接向 caller 傳播。單欄短標籤沒有橫向壓縮；截圖入口框頂緣在視窗外屬捲動位置，文字仍可讀。",
+          "screenshot_sha256": {
+            "s4-r2-diagram.png": "dbe3e968efcc1f6bf2251046e47fdb0f39226e15e70710ce1c195ca329747b30"
+          }
+        },
+        "major_defects": [],
+        "optional_improvements": [],
+        "verdict": "文字與已提供圖形可讀；Hold 原因及補證第一步清楚"
+      },
+      "report_sha256": "7f511e213042f7fd97045ba2d3065e98fb304a3b5524ebfc9090083ae56a9373"
+    },
+    {
+      "id": "s5-r2",
+      "report": "docs/research/ai-code-review-poc-s5-r2-20260928.research.md",
+      "initial_read_restatement": {
+        "decision": "要求修改；來源審查及約定重跑完成，但需求和行為一致性 FAIL。",
+        "open_items": "一個已確認阻擋 F-001：到期當下仍顯示、匯出過期值，含空字串；沒有必要證據缺口或待釐清。",
+        "first_step": "將共用 fresh 的 <= 改回 <，以固定新 head 重跑 lookup、preview、export_values 的到期前/當下/後、缺值、空字串與順序案例。",
+        "comprehension_difficulty": "基本說明稱兩 caller，目的另列 lookup/preview/export_values，暫能理解 lookup 可能是共用入口，全文需確認呼叫關係；不妨礙第一步修法與阻擋判斷。圖形尚未渲染不能視為已驗。"
+      },
+      "initial_pass_saved_at": "2026-09-28T14:49:13.111923+08:00",
+      "initial_restatement_persisted_before_full_read": true,
+      "full_read_review": {
+        "reader_restatement": "preview 與 export_values 都委派 lookup，lookup 的缺值 guard 後再交由 fresh 判有效；共用 <= 在 now=expires 時錯放過期字串。首輪對兩 caller/三函式的輕微疑問，在第 3 章即釐清。",
+        "example_concreteness": {
+          "assessment": "明確交代 store、ticks、keys、缺值/空字串與實際輸出",
+          "restatement": "store 有 a:(10,A)、empty:(10,空字串)，now=10 時 preview(a) 應 None 卻 A、preview(empty) 應 None 卻空字串，missing 維持 None；export [missing,a,empty] 應 [] 卻 [A,空字串]。now=9 保留值、now=11 排除。補充 keys=[empty,missing,a,empty] 說明順序、重複與有效空字串必須保留。",
+          "locations": [
+            "第 4 章 F-001 實際觀測及具體案例",
+            "第 3 章兩 caller 與共用 lookup 說明"
+          ]
+        },
+        "impact_recommendation_release": {
+          "impact": "到期邊界同時讓預覽和匯出輸出過期資料；空字串為合法值，不應以 truthiness 過濾修補。影響沒有被誇大成敏感資料外洩或真實時間延遲。",
+          "recommendation": "只在共用 fresh 改 <= 為 <；維持缺值 guard 與 export 的 is not None，避免兩 caller 各補一層。",
+          "release": "固定新 head，重跑原 probe 與補充 lookup/順序/重複 key 案例，核 now=9/10/11、missing、空字串及所有 expected rows；新來源與執行證據 hash 對齊才解除 F-001。"
+        },
+        "executed_vs_proposed": {
+          "executed_as_reported": "本輪重新跑 base/head × 原 probe/補充共四個程序。base 每組三列均符合，head 每組只有 now=10 不符；程序 exit 0 只是正常執行。報告明示列內含多操作，未冒充測試函式數。",
+          "proposed_or_pending": "< 修法未套用、未執行驗證，F-001 仍 open；無需範圍外真實時鐘或外部整合。",
+          "reader_verification_boundary": "未讀 source fixtures、raw JSON、Skill 或 hash 索引；本驗收確認報告讀者可以分辨聲稱已跑與尚待修正，不獨立重驗業務結果。"
+        },
+        "diagram": {
+          "status": "viewed_readable",
+          "screenshots": [
+            "s5-r2-diagram.png",
+            "s5-r2-diagram-bottom.png"
+          ],
+          "restatement": "兩個 caller 位於上方且各自箭頭註明一次 lookup 與依 keys 順序逐項 lookup；共同到 store.get，再分缺值/拆包/fresh。下半張可讀 true 回 value（可空字串）、false 與缺值回 None；重疊拆包節點使上下連貫。<= 的具體運算在圖下文字清楚說明；所有分支文字能直接讀，不需放大。",
+          "screenshot_sha256": {
+            "s5-r2-diagram.png": "3c44203e860c508e83dfc70bcb82340fd726266e581169a168a691dc4edce570",
+            "s5-r2-diagram-bottom.png": "62518b9ef6a419c36251e0b38e29e49a419253d92c0e7a9d675b440eeefe28ed"
+          }
+        },
+        "major_defects": [],
+        "optional_improvements": [],
+        "verdict": "文字與圖形可讀；初輪 caller 名稱疑問已由正文釐清，不構成缺陷"
+      },
+      "report_sha256": "cd2ab9f413ebf8fc325ece6a53fbd6fff72f2d934aa24948771ca9463802f20a"
+    }
+  ],
+  "full_text_read_completed_at": "2026-09-28T14:48:26.134144+08:00",
+  "overall": {
+    "major_defect_count": 0,
+    "optional_improvement_count": 1,
+    "scope": "S1 r1、S2 r1、S3 r2、S4 r2、S5 r2，先摘要後全文及已提供全部渲染截圖",
+    "decision": "五份報告的讀者可讀性 gate 通過；能從摘要決策、由正文重述具體案例與問題影響、推薦方案、解除條件，並分辨已跑證據與未執行建議。S3 僅有九欄觀測導覽的 optional 改善。",
+    "does_not_mean": "不代表被審程式通過；S1/S3/S5 仍 Request changes，S4 仍 Hold，S2 為固定範圍 Approve。"
+  },
+  "completed_at": "2026-09-28T14:50:21.057160+08:00"
+}

@@ -1,0 +1,95 @@
+{
+  "review_started_at": "2026-09-28T14:32:50+08:00",
+  "runtime_started_at": "2026-09-28T14:34:10.458915+08:00",
+  "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "python_executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+  "manifest_verification": {
+    "base/api.py": true,
+    "base/export.py": true,
+    "base/paging.py": true,
+    "contract.json": true,
+    "diff.patch": true,
+    "execution.json": true,
+    "head/api.py": true,
+    "head/export.py": true,
+    "head/paging.py": true,
+    "probe.py": true
+  },
+  "patch_matches_snapshots": true,
+  "runs": [
+    {
+      "side": "base",
+      "kind": "provided_probe",
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s1/probe.py"
+      ],
+      "cwd": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s1",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s1/base",
+      "exit_code": 0,
+      "stdout": "{\"page\": {\"items\": [{\"id\": 2}], \"next_cursor\": 2}}\n{\"export\": [1, 2, 3]}\n",
+      "stderr": ""
+    },
+    {
+      "side": "base",
+      "kind": "review_assertions",
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "-c",
+        "import json\nfrom api import list_page\nfrom export import export_ids\nfrom paging import page_after\nrows = [{\"id\":1},{\"id\":2},{\"id\":3}]\nchecks = []\ndef check(name, actual, expected):\n    checks.append({\"name\":name,\"actual\":actual,\"expected\":expected,\"pass\":actual==expected})\ncheck(\"exclusive_cursor\", list_page(rows,1,1), {\"items\":[{\"id\":2}],\"next_cursor\":2})\ncheck(\"end_cursor\", list_page(rows,3,2), {\"items\":[],\"next_cursor\":None})\ncheck(\"empty_page\", list_page([],0,2), {\"items\":[],\"next_cursor\":None})\ncheck(\"empty_export\", export_ids([],1,5), [])\ncheck(\"input_unchanged\",rows,[{\"id\":1},{\"id\":2},{\"id\":3}])\nfor limit in [1,2,4]:\n    try: result=export_ids(rows,limit,10)\n    except RuntimeError as e: result={\"error\":str(e)}\n    check(\"export_limit_\"+str(limit),result,[1,2,3])\nprint(json.dumps(checks))\nassert all(c[\"pass\"] for c in checks), \"pagination contract violated\"\n"
+      ],
+      "cwd": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s1",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s1/base",
+      "exit_code": 0,
+      "stdout": "[{\"name\": \"exclusive_cursor\", \"actual\": {\"items\": [{\"id\": 2}], \"next_cursor\": 2}, \"expected\": {\"items\": [{\"id\": 2}], \"next_cursor\": 2}, \"pass\": true}, {\"name\": \"end_cursor\", \"actual\": {\"items\": [], \"next_cursor\": null}, \"expected\": {\"items\": [], \"next_cursor\": null}, \"pass\": true}, {\"name\": \"empty_page\", \"actual\": {\"items\": [], \"next_cursor\": null}, \"expected\": {\"items\": [], \"next_cursor\": null}, \"pass\": true}, {\"name\": \"empty_export\", \"actual\": [], \"expected\": [], \"pass\": true}, {\"name\": \"input_unchanged\", \"actual\": [{\"id\": 1}, {\"id\": 2}, {\"id\": 3}], \"expected\": [{\"id\": 1}, {\"id\": 2}, {\"id\": 3}], \"pass\": true}, {\"name\": \"export_limit_1\", \"actual\": [1, 2, 3], \"expected\": [1, 2, 3], \"pass\": true}, {\"name\": \"export_limit_2\", \"actual\": [1, 2, 3], \"expected\": [1, 2, 3], \"pass\": true}, {\"name\": \"export_limit_4\", \"actual\": [1, 2, 3], \"expected\": [1, 2, 3], \"pass\": true}]\n",
+      "stderr": ""
+    },
+    {
+      "side": "head",
+      "kind": "provided_probe",
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s1/probe.py"
+      ],
+      "cwd": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s1",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s1/head",
+      "exit_code": 0,
+      "stdout": "{\"page\": {\"items\": [{\"id\": 1}], \"next_cursor\": 1}}\n{\"error\": \"pagination did not terminate\"}\n",
+      "stderr": ""
+    },
+    {
+      "side": "head",
+      "kind": "review_assertions",
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "-c",
+        "import json\nfrom api import list_page\nfrom export import export_ids\nfrom paging import page_after\nrows = [{\"id\":1},{\"id\":2},{\"id\":3}]\nchecks = []\ndef check(name, actual, expected):\n    checks.append({\"name\":name,\"actual\":actual,\"expected\":expected,\"pass\":actual==expected})\ncheck(\"exclusive_cursor\", list_page(rows,1,1), {\"items\":[{\"id\":2}],\"next_cursor\":2})\ncheck(\"end_cursor\", list_page(rows,3,2), {\"items\":[],\"next_cursor\":None})\ncheck(\"empty_page\", list_page([],0,2), {\"items\":[],\"next_cursor\":None})\ncheck(\"empty_export\", export_ids([],1,5), [])\ncheck(\"input_unchanged\",rows,[{\"id\":1},{\"id\":2},{\"id\":3}])\nfor limit in [1,2,4]:\n    try: result=export_ids(rows,limit,10)\n    except RuntimeError as e: result={\"error\":str(e)}\n    check(\"export_limit_\"+str(limit),result,[1,2,3])\nprint(json.dumps(checks))\nassert all(c[\"pass\"] for c in checks), \"pagination contract violated\"\n"
+      ],
+      "cwd": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s1",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s1/head",
+      "exit_code": 1,
+      "stdout": "[{\"name\": \"exclusive_cursor\", \"actual\": {\"items\": [{\"id\": 1}], \"next_cursor\": 1}, \"expected\": {\"items\": [{\"id\": 2}], \"next_cursor\": 2}, \"pass\": false}, {\"name\": \"end_cursor\", \"actual\": {\"items\": [{\"id\": 3}], \"next_cursor\": 3}, \"expected\": {\"items\": [], \"next_cursor\": null}, \"pass\": false}, {\"name\": \"empty_page\", \"actual\": {\"items\": [], \"next_cursor\": null}, \"expected\": {\"items\": [], \"next_cursor\": null}, \"pass\": true}, {\"name\": \"empty_export\", \"actual\": [], \"expected\": [], \"pass\": true}, {\"name\": \"input_unchanged\", \"actual\": [{\"id\": 1}, {\"id\": 2}, {\"id\": 3}], \"expected\": [{\"id\": 1}, {\"id\": 2}, {\"id\": 3}], \"pass\": true}, {\"name\": \"export_limit_1\", \"actual\": {\"error\": \"pagination did not terminate\"}, \"expected\": [1, 2, 3], \"pass\": false}, {\"name\": \"export_limit_2\", \"actual\": {\"error\": \"pagination did not terminate\"}, \"expected\": [1, 2, 3], \"pass\": false}, {\"name\": \"export_limit_4\", \"actual\": {\"error\": \"pagination did not terminate\"}, \"expected\": [1, 2, 3], \"pass\": false}]\n",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 19, in <module>\n    assert all(c[\"pass\"] for c in checks), \"pagination contract violated\"\n           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: pagination contract violated\n"
+    },
+    {
+      "side": "isolated_remedy",
+      "kind": "review_assertions",
+      "change": "paging.py: >= cursor -> > cursor",
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "-c",
+        "import json\nfrom api import list_page\nfrom export import export_ids\nfrom paging import page_after\nrows = [{\"id\":1},{\"id\":2},{\"id\":3}]\nchecks = []\ndef check(name, actual, expected):\n    checks.append({\"name\":name,\"actual\":actual,\"expected\":expected,\"pass\":actual==expected})\ncheck(\"exclusive_cursor\", list_page(rows,1,1), {\"items\":[{\"id\":2}],\"next_cursor\":2})\ncheck(\"end_cursor\", list_page(rows,3,2), {\"items\":[],\"next_cursor\":None})\ncheck(\"empty_page\", list_page([],0,2), {\"items\":[],\"next_cursor\":None})\ncheck(\"empty_export\", export_ids([],1,5), [])\ncheck(\"input_unchanged\",rows,[{\"id\":1},{\"id\":2},{\"id\":3}])\nfor limit in [1,2,4]:\n    try: result=export_ids(rows,limit,10)\n    except RuntimeError as e: result={\"error\":str(e)}\n    check(\"export_limit_\"+str(limit),result,[1,2,3])\nprint(json.dumps(checks))\nassert all(c[\"pass\"] for c in checks), \"pagination contract violated\"\n"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s1-review-remedy-ham8w1xz",
+      "exit_code": 0,
+      "stdout": "[{\"name\": \"exclusive_cursor\", \"actual\": {\"items\": [{\"id\": 2}], \"next_cursor\": 2}, \"expected\": {\"items\": [{\"id\": 2}], \"next_cursor\": 2}, \"pass\": true}, {\"name\": \"end_cursor\", \"actual\": {\"items\": [], \"next_cursor\": null}, \"expected\": {\"items\": [], \"next_cursor\": null}, \"pass\": true}, {\"name\": \"empty_page\", \"actual\": {\"items\": [], \"next_cursor\": null}, \"expected\": {\"items\": [], \"next_cursor\": null}, \"pass\": true}, {\"name\": \"empty_export\", \"actual\": [], \"expected\": [], \"pass\": true}, {\"name\": \"input_unchanged\", \"actual\": [{\"id\": 1}, {\"id\": 2}, {\"id\": 3}], \"expected\": [{\"id\": 1}, {\"id\": 2}, {\"id\": 3}], \"pass\": true}, {\"name\": \"export_limit_1\", \"actual\": [1, 2, 3], \"expected\": [1, 2, 3], \"pass\": true}, {\"name\": \"export_limit_2\", \"actual\": [1, 2, 3], \"expected\": [1, 2, 3], \"pass\": true}, {\"name\": \"export_limit_4\", \"actual\": [1, 2, 3], \"expected\": [1, 2, 3], \"pass\": true}]\n",
+      "stderr": ""
+    }
+  ],
+  "inputs_unchanged_after_execution": true
+}

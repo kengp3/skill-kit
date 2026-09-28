@@ -1,0 +1,1081 @@
+{
+  "review_started_at": "2026-09-28T14:33:02+08:00",
+  "recorded_at": "2026-09-28T06:34:23.305637+00:00",
+  "comparison": "direct retained snapshots; historical Git refs are provenance only",
+  "original_base": "9caa46534059dba58d4d8a6ab0da4068a71012ef",
+  "original_head": "568ca825086b400391e73d955bcc3d83e639b9a5",
+  "original_branch": "codex/refund-policy-extraction",
+  "manifest_checks": {
+    "base/Loyalty.java": true,
+    "base/Order.java": true,
+    "base/Probe.java": true,
+    "base/RefundGateway.java": true,
+    "base/ReturnEvent.java": true,
+    "base/Returns.java": true,
+    "base/SPEC.md": true,
+    "base/Warehouse.java": true,
+    "diff.patch": true,
+    "environment.json": true,
+    "execution.json": true,
+    "generation.json": true,
+    "head/Loyalty.java": true,
+    "head/Order.java": true,
+    "head/Probe.java": true,
+    "head/RefundGateway.java": true,
+    "head/ReturnEvent.java": true,
+    "head/ReturnPolicy.java": true,
+    "head/Returns.java": true,
+    "head/SPEC.md": true,
+    "head/Warehouse.java": true,
+    "provenance.txt": true
+  },
+  "patch_matches": true,
+  "targets": [
+    {
+      "old_path": null,
+      "new_path": "head/ReturnPolicy.java",
+      "status": "A"
+    },
+    {
+      "old_path": "base/Returns.java",
+      "new_path": "head/Returns.java",
+      "status": "M"
+    }
+  ],
+  "build_root": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w",
+  "environment": {
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "java": {
+      "argv": [
+        "java",
+        "--version"
+      ],
+      "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+      "exit_code": 0,
+      "stdout": "openjdk 25.0.1 2025-10-21 LTS\nOpenJDK Runtime Environment Temurin-25.0.1+8 (build 25.0.1+8-LTS)\nOpenJDK 64-Bit Server VM Temurin-25.0.1+8 (build 25.0.1+8-LTS, mixed mode, sharing)\n",
+      "stderr": ""
+    },
+    "javac": {
+      "argv": [
+        "javac",
+        "--version"
+      ],
+      "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+      "exit_code": 0,
+      "stdout": "javac 25.0.1\n",
+      "stderr": ""
+    }
+  },
+  "cases": [
+    "partial_final",
+    "day30",
+    "decline_retry",
+    "replay_full",
+    "replay_expired",
+    "too_many",
+    "after_window",
+    "normal"
+  ],
+  "runs": {
+    "base": {
+      "compile": {
+        "argv": [
+          "javac",
+          "-d",
+          "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/base",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/Loyalty.java",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/Order.java",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/Probe.java",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/RefundGateway.java",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/ReturnEvent.java",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/Returns.java",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/Warehouse.java"
+        ],
+        "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "records": [
+        {
+          "case": "partial_final",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/base",
+              "Probe",
+              "partial_final"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"partial_final\",\"step\":1,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n{\"case\":\"partial_final\",\"step\":2,\"result\":\"REFUNDED:900\",\"returnedQty\":3,\"restockedQty\":3,\"refundAttempts\":2,\"successfulRefunds\":2,\"refundedCents\":1300,\"reversedPoints\":12,\"receiptKeys\":[\"a\",\"b\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400},{\"key\":\"b\",\"quantity\":2,\"amountCents\":900}]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "partial_final",
+              "step": 1,
+              "result": "REFUNDED:400",
+              "returnedQty": 1,
+              "restockedQty": 1,
+              "refundAttempts": 1,
+              "successfulRefunds": 1,
+              "refundedCents": 400,
+              "reversedPoints": 4,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 1,
+                  "amountCents": 400
+                }
+              ]
+            },
+            {
+              "case": "partial_final",
+              "step": 2,
+              "result": "REFUNDED:900",
+              "returnedQty": 3,
+              "restockedQty": 3,
+              "refundAttempts": 2,
+              "successfulRefunds": 2,
+              "refundedCents": 1300,
+              "reversedPoints": 12,
+              "receiptKeys": [
+                "a",
+                "b"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 1,
+                  "amountCents": 400
+                },
+                {
+                  "key": "b",
+                  "quantity": 2,
+                  "amountCents": 900
+                }
+              ]
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "day30",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/base",
+              "Probe",
+              "day30"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"day30\",\"step\":1,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "day30",
+              "step": 1,
+              "result": "REFUNDED:400",
+              "returnedQty": 1,
+              "restockedQty": 1,
+              "refundAttempts": 1,
+              "successfulRefunds": 1,
+              "refundedCents": 400,
+              "reversedPoints": 4,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 1,
+                  "amountCents": 400
+                }
+              ]
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "decline_retry",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/base",
+              "Probe",
+              "decline_retry"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"decline_retry\",\"step\":1,\"result\":\"DECLINED\",\"returnedQty\":0,\"restockedQty\":0,\"refundAttempts\":1,\"successfulRefunds\":0,\"refundedCents\":0,\"reversedPoints\":0,\"receiptKeys\":[],\"events\":[]}\n{\"case\":\"decline_retry\",\"step\":2,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":2,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "decline_retry",
+              "step": 1,
+              "result": "DECLINED",
+              "returnedQty": 0,
+              "restockedQty": 0,
+              "refundAttempts": 1,
+              "successfulRefunds": 0,
+              "refundedCents": 0,
+              "reversedPoints": 0,
+              "receiptKeys": [],
+              "events": []
+            },
+            {
+              "case": "decline_retry",
+              "step": 2,
+              "result": "REFUNDED:400",
+              "returnedQty": 1,
+              "restockedQty": 1,
+              "refundAttempts": 2,
+              "successfulRefunds": 1,
+              "refundedCents": 400,
+              "reversedPoints": 4,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 1,
+                  "amountCents": 400
+                }
+              ]
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "replay_full",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/base",
+              "Probe",
+              "replay_full"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"replay_full\",\"step\":1,\"result\":\"REFUNDED:1300\",\"returnedQty\":3,\"restockedQty\":3,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":1300,\"reversedPoints\":12,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":3,\"amountCents\":1300}]}\n{\"case\":\"replay_full\",\"step\":2,\"result\":\"REFUNDED:1300\",\"returnedQty\":3,\"restockedQty\":3,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":1300,\"reversedPoints\":12,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":3,\"amountCents\":1300}]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "replay_full",
+              "step": 1,
+              "result": "REFUNDED:1300",
+              "returnedQty": 3,
+              "restockedQty": 3,
+              "refundAttempts": 1,
+              "successfulRefunds": 1,
+              "refundedCents": 1300,
+              "reversedPoints": 12,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 3,
+                  "amountCents": 1300
+                }
+              ]
+            },
+            {
+              "case": "replay_full",
+              "step": 2,
+              "result": "REFUNDED:1300",
+              "returnedQty": 3,
+              "restockedQty": 3,
+              "refundAttempts": 1,
+              "successfulRefunds": 1,
+              "refundedCents": 1300,
+              "reversedPoints": 12,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 3,
+                  "amountCents": 1300
+                }
+              ]
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "replay_expired",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/base",
+              "Probe",
+              "replay_expired"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"replay_expired\",\"step\":1,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n{\"case\":\"replay_expired\",\"step\":2,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "replay_expired",
+              "step": 1,
+              "result": "REFUNDED:400",
+              "returnedQty": 1,
+              "restockedQty": 1,
+              "refundAttempts": 1,
+              "successfulRefunds": 1,
+              "refundedCents": 400,
+              "reversedPoints": 4,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 1,
+                  "amountCents": 400
+                }
+              ]
+            },
+            {
+              "case": "replay_expired",
+              "step": 2,
+              "result": "REFUNDED:400",
+              "returnedQty": 1,
+              "restockedQty": 1,
+              "refundAttempts": 1,
+              "successfulRefunds": 1,
+              "refundedCents": 400,
+              "reversedPoints": 4,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 1,
+                  "amountCents": 400
+                }
+              ]
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "too_many",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/base",
+              "Probe",
+              "too_many"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"too_many\",\"step\":1,\"result\":\"NO_QUANTITY\",\"returnedQty\":0,\"restockedQty\":0,\"refundAttempts\":0,\"successfulRefunds\":0,\"refundedCents\":0,\"reversedPoints\":0,\"receiptKeys\":[],\"events\":[]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "too_many",
+              "step": 1,
+              "result": "NO_QUANTITY",
+              "returnedQty": 0,
+              "restockedQty": 0,
+              "refundAttempts": 0,
+              "successfulRefunds": 0,
+              "refundedCents": 0,
+              "reversedPoints": 0,
+              "receiptKeys": [],
+              "events": []
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "after_window",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/base",
+              "Probe",
+              "after_window"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"after_window\",\"step\":1,\"result\":\"REJECTED\",\"returnedQty\":0,\"restockedQty\":0,\"refundAttempts\":0,\"successfulRefunds\":0,\"refundedCents\":0,\"reversedPoints\":0,\"receiptKeys\":[],\"events\":[]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "after_window",
+              "step": 1,
+              "result": "REJECTED",
+              "returnedQty": 0,
+              "restockedQty": 0,
+              "refundAttempts": 0,
+              "successfulRefunds": 0,
+              "refundedCents": 0,
+              "reversedPoints": 0,
+              "receiptKeys": [],
+              "events": []
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "normal",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/base",
+              "Probe",
+              "normal"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"normal\",\"step\":1,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "normal",
+              "step": 1,
+              "result": "REFUNDED:400",
+              "returnedQty": 1,
+              "restockedQty": 1,
+              "refundAttempts": 1,
+              "successfulRefunds": 1,
+              "refundedCents": 400,
+              "reversedPoints": 4,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 1,
+                  "amountCents": 400
+                }
+              ]
+            }
+          ],
+          "matches_original": true
+        }
+      ]
+    },
+    "head": {
+      "compile": {
+        "argv": [
+          "javac",
+          "-d",
+          "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/head",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/Loyalty.java",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/Order.java",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/Probe.java",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/RefundGateway.java",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/ReturnEvent.java",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/ReturnPolicy.java",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/Returns.java",
+          "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/Warehouse.java"
+        ],
+        "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "records": [
+        {
+          "case": "partial_final",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/head",
+              "Probe",
+              "partial_final"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"partial_final\",\"step\":1,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n{\"case\":\"partial_final\",\"step\":2,\"result\":\"REFUNDED:800\",\"returnedQty\":3,\"restockedQty\":3,\"refundAttempts\":2,\"successfulRefunds\":2,\"refundedCents\":1200,\"reversedPoints\":12,\"receiptKeys\":[\"a\",\"b\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400},{\"key\":\"b\",\"quantity\":2,\"amountCents\":800}]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "partial_final",
+              "step": 1,
+              "result": "REFUNDED:400",
+              "returnedQty": 1,
+              "restockedQty": 1,
+              "refundAttempts": 1,
+              "successfulRefunds": 1,
+              "refundedCents": 400,
+              "reversedPoints": 4,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 1,
+                  "amountCents": 400
+                }
+              ]
+            },
+            {
+              "case": "partial_final",
+              "step": 2,
+              "result": "REFUNDED:800",
+              "returnedQty": 3,
+              "restockedQty": 3,
+              "refundAttempts": 2,
+              "successfulRefunds": 2,
+              "refundedCents": 1200,
+              "reversedPoints": 12,
+              "receiptKeys": [
+                "a",
+                "b"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 1,
+                  "amountCents": 400
+                },
+                {
+                  "key": "b",
+                  "quantity": 2,
+                  "amountCents": 800
+                }
+              ]
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "day30",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/head",
+              "Probe",
+              "day30"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"day30\",\"step\":1,\"result\":\"REJECTED\",\"returnedQty\":0,\"restockedQty\":0,\"refundAttempts\":0,\"successfulRefunds\":0,\"refundedCents\":0,\"reversedPoints\":0,\"receiptKeys\":[],\"events\":[]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "day30",
+              "step": 1,
+              "result": "REJECTED",
+              "returnedQty": 0,
+              "restockedQty": 0,
+              "refundAttempts": 0,
+              "successfulRefunds": 0,
+              "refundedCents": 0,
+              "reversedPoints": 0,
+              "receiptKeys": [],
+              "events": []
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "decline_retry",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/head",
+              "Probe",
+              "decline_retry"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"decline_retry\",\"step\":1,\"result\":\"DECLINED\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":0,\"refundedCents\":0,\"reversedPoints\":0,\"receiptKeys\":[],\"events\":[]}\n{\"case\":\"decline_retry\",\"step\":2,\"result\":\"REFUNDED:400\",\"returnedQty\":2,\"restockedQty\":2,\"refundAttempts\":2,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "decline_retry",
+              "step": 1,
+              "result": "DECLINED",
+              "returnedQty": 1,
+              "restockedQty": 1,
+              "refundAttempts": 1,
+              "successfulRefunds": 0,
+              "refundedCents": 0,
+              "reversedPoints": 0,
+              "receiptKeys": [],
+              "events": []
+            },
+            {
+              "case": "decline_retry",
+              "step": 2,
+              "result": "REFUNDED:400",
+              "returnedQty": 2,
+              "restockedQty": 2,
+              "refundAttempts": 2,
+              "successfulRefunds": 1,
+              "refundedCents": 400,
+              "reversedPoints": 4,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 1,
+                  "amountCents": 400
+                }
+              ]
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "replay_full",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/head",
+              "Probe",
+              "replay_full"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"replay_full\",\"step\":1,\"result\":\"REFUNDED:1300\",\"returnedQty\":3,\"restockedQty\":3,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":1300,\"reversedPoints\":12,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":3,\"amountCents\":1300}]}\n{\"case\":\"replay_full\",\"step\":2,\"result\":\"NO_QUANTITY\",\"returnedQty\":3,\"restockedQty\":3,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":1300,\"reversedPoints\":12,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":3,\"amountCents\":1300}]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "replay_full",
+              "step": 1,
+              "result": "REFUNDED:1300",
+              "returnedQty": 3,
+              "restockedQty": 3,
+              "refundAttempts": 1,
+              "successfulRefunds": 1,
+              "refundedCents": 1300,
+              "reversedPoints": 12,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 3,
+                  "amountCents": 1300
+                }
+              ]
+            },
+            {
+              "case": "replay_full",
+              "step": 2,
+              "result": "NO_QUANTITY",
+              "returnedQty": 3,
+              "restockedQty": 3,
+              "refundAttempts": 1,
+              "successfulRefunds": 1,
+              "refundedCents": 1300,
+              "reversedPoints": 12,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 3,
+                  "amountCents": 1300
+                }
+              ]
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "replay_expired",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/head",
+              "Probe",
+              "replay_expired"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"replay_expired\",\"step\":1,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n{\"case\":\"replay_expired\",\"step\":2,\"result\":\"REJECTED\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "replay_expired",
+              "step": 1,
+              "result": "REFUNDED:400",
+              "returnedQty": 1,
+              "restockedQty": 1,
+              "refundAttempts": 1,
+              "successfulRefunds": 1,
+              "refundedCents": 400,
+              "reversedPoints": 4,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 1,
+                  "amountCents": 400
+                }
+              ]
+            },
+            {
+              "case": "replay_expired",
+              "step": 2,
+              "result": "REJECTED",
+              "returnedQty": 1,
+              "restockedQty": 1,
+              "refundAttempts": 1,
+              "successfulRefunds": 1,
+              "refundedCents": 400,
+              "reversedPoints": 4,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 1,
+                  "amountCents": 400
+                }
+              ]
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "too_many",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/head",
+              "Probe",
+              "too_many"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"too_many\",\"step\":1,\"result\":\"NO_QUANTITY\",\"returnedQty\":0,\"restockedQty\":0,\"refundAttempts\":0,\"successfulRefunds\":0,\"refundedCents\":0,\"reversedPoints\":0,\"receiptKeys\":[],\"events\":[]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "too_many",
+              "step": 1,
+              "result": "NO_QUANTITY",
+              "returnedQty": 0,
+              "restockedQty": 0,
+              "refundAttempts": 0,
+              "successfulRefunds": 0,
+              "refundedCents": 0,
+              "reversedPoints": 0,
+              "receiptKeys": [],
+              "events": []
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "after_window",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/head",
+              "Probe",
+              "after_window"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"after_window\",\"step\":1,\"result\":\"REJECTED\",\"returnedQty\":0,\"restockedQty\":0,\"refundAttempts\":0,\"successfulRefunds\":0,\"refundedCents\":0,\"reversedPoints\":0,\"receiptKeys\":[],\"events\":[]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "after_window",
+              "step": 1,
+              "result": "REJECTED",
+              "returnedQty": 0,
+              "restockedQty": 0,
+              "refundAttempts": 0,
+              "successfulRefunds": 0,
+              "refundedCents": 0,
+              "reversedPoints": 0,
+              "receiptKeys": [],
+              "events": []
+            }
+          ],
+          "matches_original": true
+        },
+        {
+          "case": "normal",
+          "command": {
+            "argv": [
+              "java",
+              "-cp",
+              "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/s3-review-r1-ki_64d4w/head",
+              "Probe",
+              "normal"
+            ],
+            "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+            "exit_code": 0,
+            "stdout": "{\"case\":\"normal\",\"step\":1,\"result\":\"REFUNDED:400\",\"returnedQty\":1,\"restockedQty\":1,\"refundAttempts\":1,\"successfulRefunds\":1,\"refundedCents\":400,\"reversedPoints\":4,\"receiptKeys\":[\"a\"],\"events\":[{\"key\":\"a\",\"quantity\":1,\"amountCents\":400}]}\n",
+            "stderr": ""
+          },
+          "observed": [
+            {
+              "case": "normal",
+              "step": 1,
+              "result": "REFUNDED:400",
+              "returnedQty": 1,
+              "restockedQty": 1,
+              "refundAttempts": 1,
+              "successfulRefunds": 1,
+              "refundedCents": 400,
+              "reversedPoints": 4,
+              "receiptKeys": [
+                "a"
+              ],
+              "events": [
+                {
+                  "key": "a",
+                  "quantity": 1,
+                  "amountCents": 400
+                }
+              ]
+            }
+          ],
+          "matches_original": true
+        }
+      ]
+    }
+  },
+  "compared_fields": [
+    "result",
+    "returnedQty",
+    "restockedQty",
+    "refundAttempts",
+    "successfulRefunds",
+    "refundedCents",
+    "reversedPoints",
+    "receiptKeys",
+    "events"
+  ],
+  "comparison_by_case": {
+    "partial_final": [
+      {
+        "step": 2,
+        "fields": {
+          "result": {
+            "base": "REFUNDED:900",
+            "head": "REFUNDED:800"
+          },
+          "refundedCents": {
+            "base": 1300,
+            "head": 1200
+          },
+          "events": {
+            "base": [
+              {
+                "key": "a",
+                "quantity": 1,
+                "amountCents": 400
+              },
+              {
+                "key": "b",
+                "quantity": 2,
+                "amountCents": 900
+              }
+            ],
+            "head": [
+              {
+                "key": "a",
+                "quantity": 1,
+                "amountCents": 400
+              },
+              {
+                "key": "b",
+                "quantity": 2,
+                "amountCents": 800
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "day30": [
+      {
+        "step": 1,
+        "fields": {
+          "result": {
+            "base": "REFUNDED:400",
+            "head": "REJECTED"
+          },
+          "returnedQty": {
+            "base": 1,
+            "head": 0
+          },
+          "restockedQty": {
+            "base": 1,
+            "head": 0
+          },
+          "refundAttempts": {
+            "base": 1,
+            "head": 0
+          },
+          "successfulRefunds": {
+            "base": 1,
+            "head": 0
+          },
+          "refundedCents": {
+            "base": 400,
+            "head": 0
+          },
+          "reversedPoints": {
+            "base": 4,
+            "head": 0
+          },
+          "receiptKeys": {
+            "base": [
+              "a"
+            ],
+            "head": []
+          },
+          "events": {
+            "base": [
+              {
+                "key": "a",
+                "quantity": 1,
+                "amountCents": 400
+              }
+            ],
+            "head": []
+          }
+        }
+      }
+    ],
+    "decline_retry": [
+      {
+        "step": 1,
+        "fields": {
+          "returnedQty": {
+            "base": 0,
+            "head": 1
+          },
+          "restockedQty": {
+            "base": 0,
+            "head": 1
+          }
+        }
+      },
+      {
+        "step": 2,
+        "fields": {
+          "returnedQty": {
+            "base": 1,
+            "head": 2
+          },
+          "restockedQty": {
+            "base": 1,
+            "head": 2
+          }
+        }
+      }
+    ],
+    "replay_full": [
+      {
+        "step": 2,
+        "fields": {
+          "result": {
+            "base": "REFUNDED:1300",
+            "head": "NO_QUANTITY"
+          }
+        }
+      }
+    ],
+    "replay_expired": [
+      {
+        "step": 2,
+        "fields": {
+          "result": {
+            "base": "REFUNDED:400",
+            "head": "REJECTED"
+          }
+        }
+      }
+    ],
+    "too_many": [],
+    "after_window": [],
+    "normal": []
+  },
+  "source_hashes": {
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/Loyalty.java": "ee9d62c6e5f8951689b3f110c25b9c8a96b9937b1772835af1f8aa4101a5c8da",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/Order.java": "a3706b60b55762a0aa464753f9e3698502439e0a4b14628b967b2a41212b4209",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/Probe.java": "c21d0d61b23f06f017f4f9d9232239201349efaa9e6181c8e6a457a2c31f3394",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/RefundGateway.java": "e13ca705fbb1ba1913236635ec7bc11c573e99795822fb3caaf6670ef843b15e",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/ReturnEvent.java": "353e793fc47b58500429c8a0370f8d874e33e5da18e5952dc50e49d5683e5f9a",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/Returns.java": "834681e402c05e7e211f0ba0b3927343eba3a0abfca7763ef6321d668e38927c",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/SPEC.md": "15595c02ba58c360720d5d0cffe6fb0510ab17bcd9664ec51ed7282bb67f6e8b",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/base/Warehouse.java": "1d24488f613800b162ba1f498b8941bab79ce3abb0f275e4e264980f1b50fc64",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/diff.patch": "09f5a866c486080555b1a948b631b9be3a97f67201591ecda8e228951bf794a7",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/environment.json": "189bf5fc514ec8b44e8da35b33b601a0e13ae39c28387781490109affeb52971",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/execution.json": "4212d6c5c3e8bf511b7a2573cd4f1cfc0b4867b285750b884324b1e2f9d19afa",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/generation.json": "98a74e2fcfae412224985133ee5ecf49fa3712f1f1fb08128d583b78be910936",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/Loyalty.java": "ee9d62c6e5f8951689b3f110c25b9c8a96b9937b1772835af1f8aa4101a5c8da",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/Order.java": "a3706b60b55762a0aa464753f9e3698502439e0a4b14628b967b2a41212b4209",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/Probe.java": "c21d0d61b23f06f017f4f9d9232239201349efaa9e6181c8e6a457a2c31f3394",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/RefundGateway.java": "e13ca705fbb1ba1913236635ec7bc11c573e99795822fb3caaf6670ef843b15e",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/ReturnEvent.java": "353e793fc47b58500429c8a0370f8d874e33e5da18e5952dc50e49d5683e5f9a",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/ReturnPolicy.java": "e2d37f9836e94d6f32017971168f4f3fcdd753f3bf1f31fdb79a7cedda5e0ba5",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/Returns.java": "e83e29540b7ae6a441dfeb6fede242d7c4faf6691577de6e9f8d7e82936c7c26",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/SPEC.md": "15595c02ba58c360720d5d0cffe6fb0510ab17bcd9664ec51ed7282bb67f6e8b",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/head/Warehouse.java": "1d24488f613800b162ba1f498b8941bab79ce3abb0f275e4e264980f1b50fc64",
+    "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s3/provenance.txt": "6466f0ae2030b0a263e78740c6e6f72c3916acccf1b488f60a9225e5e64d5751"
+  },
+  "finding_ids": [
+    "F-001",
+    "F-002",
+    "F-003",
+    "F-004"
+  ],
+  "decision": "Request changes",
+  "execution_status": "complete",
+  "compliance": "FAIL"
+}

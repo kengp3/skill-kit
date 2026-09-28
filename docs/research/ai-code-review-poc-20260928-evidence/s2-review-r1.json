@@ -1,0 +1,78 @@
+{
+  "review_started_at": "2026-09-28T14:32:50+08:00",
+  "runtime_started_at": "2026-09-28T14:34:10.576002+08:00",
+  "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "python_executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+  "manifest_verification": {
+    "base/api.py": true,
+    "base/policy.py": true,
+    "contract.json": true,
+    "diff.patch": true,
+    "execution.json": true,
+    "head/api.py": true,
+    "head/policy.py": true,
+    "probe.py": true
+  },
+  "patch_matches_snapshots": true,
+  "runs": [
+    {
+      "side": "base",
+      "kind": "provided_probe",
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/probe.py"
+      ],
+      "cwd": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/base",
+      "exit_code": 0,
+      "stdout": "{\"cents\": 999, \"coupon\": true, \"result\": 999}\n{\"cents\": 1000, \"coupon\": true, \"result\": 1000}\n{\"cents\": 1001, \"coupon\": true, \"result\": 901}\n{\"cents\": 1000, \"coupon\": false, \"result\": 1000}\n{\"cents\": 0, \"coupon\": true, \"result\": 0}\n{\"cents\": -1, \"coupon\": true, \"error\": \"nonnegative integer cents required\"}\n{\"cents\": 1.5, \"coupon\": true, \"error\": \"nonnegative integer cents required\"}\n",
+      "stderr": ""
+    },
+    {
+      "side": "base",
+      "kind": "review_assertions",
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "-c",
+        "import json\nfrom api import quote\nchecks=[]\nfor cents,coupon,expected in [(999,True,999),(1000,True,900),(1001,True,901),(1000,False,1000),(0,True,0),(1001,False,1001),(10**100,True,10**100-100)]:\n    actual=quote(cents,coupon)\n    checks.append({\"cents\":cents,\"coupon\":coupon,\"actual\":actual,\"expected\":expected,\"pass\":actual==expected})\nfor cents in [-1,1.5,True,\"1000\",None]:\n    try: actual=quote(cents,True)\n    except ValueError as e: actual=str(e)\n    checks.append({\"cents\":cents,\"actual\":actual,\"expected\":\"nonnegative integer cents required\",\"pass\":actual==\"nonnegative integer cents required\"})\nprint(json.dumps(checks))\nassert all(c[\"pass\"] for c in checks), \"approved quote contract violated\"\n"
+      ],
+      "cwd": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/base",
+      "exit_code": 1,
+      "stdout": "[{\"cents\": 999, \"coupon\": true, \"actual\": 999, \"expected\": 999, \"pass\": true}, {\"cents\": 1000, \"coupon\": true, \"actual\": 1000, \"expected\": 900, \"pass\": false}, {\"cents\": 1001, \"coupon\": true, \"actual\": 901, \"expected\": 901, \"pass\": true}, {\"cents\": 1000, \"coupon\": false, \"actual\": 1000, \"expected\": 1000, \"pass\": true}, {\"cents\": 0, \"coupon\": true, \"actual\": 0, \"expected\": 0, \"pass\": true}, {\"cents\": 1001, \"coupon\": false, \"actual\": 1001, \"expected\": 1001, \"pass\": true}, {\"cents\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000, \"coupon\": true, \"actual\": 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999900, \"expected\": 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999900, \"pass\": true}, {\"cents\": -1, \"actual\": \"nonnegative integer cents required\", \"expected\": \"nonnegative integer cents required\", \"pass\": true}, {\"cents\": 1.5, \"actual\": \"nonnegative integer cents required\", \"expected\": \"nonnegative integer cents required\", \"pass\": true}, {\"cents\": true, \"actual\": \"nonnegative integer cents required\", \"expected\": \"nonnegative integer cents required\", \"pass\": true}, {\"cents\": \"1000\", \"actual\": \"nonnegative integer cents required\", \"expected\": \"nonnegative integer cents required\", \"pass\": true}, {\"cents\": null, \"actual\": \"nonnegative integer cents required\", \"expected\": \"nonnegative integer cents required\", \"pass\": true}]\n",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 12, in <module>\n    assert all(c[\"pass\"] for c in checks), \"approved quote contract violated\"\n           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: approved quote contract violated\n"
+    },
+    {
+      "side": "head",
+      "kind": "provided_probe",
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/probe.py"
+      ],
+      "cwd": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/head",
+      "exit_code": 0,
+      "stdout": "{\"cents\": 999, \"coupon\": true, \"result\": 999}\n{\"cents\": 1000, \"coupon\": true, \"result\": 900}\n{\"cents\": 1001, \"coupon\": true, \"result\": 901}\n{\"cents\": 1000, \"coupon\": false, \"result\": 1000}\n{\"cents\": 0, \"coupon\": true, \"result\": 0}\n{\"cents\": -1, \"coupon\": true, \"error\": \"nonnegative integer cents required\"}\n{\"cents\": 1.5, \"coupon\": true, \"error\": \"nonnegative integer cents required\"}\n",
+      "stderr": ""
+    },
+    {
+      "side": "head",
+      "kind": "review_assertions",
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "-c",
+        "import json\nfrom api import quote\nchecks=[]\nfor cents,coupon,expected in [(999,True,999),(1000,True,900),(1001,True,901),(1000,False,1000),(0,True,0),(1001,False,1001),(10**100,True,10**100-100)]:\n    actual=quote(cents,coupon)\n    checks.append({\"cents\":cents,\"coupon\":coupon,\"actual\":actual,\"expected\":expected,\"pass\":actual==expected})\nfor cents in [-1,1.5,True,\"1000\",None]:\n    try: actual=quote(cents,True)\n    except ValueError as e: actual=str(e)\n    checks.append({\"cents\":cents,\"actual\":actual,\"expected\":\"nonnegative integer cents required\",\"pass\":actual==\"nonnegative integer cents required\"})\nprint(json.dumps(checks))\nassert all(c[\"pass\"] for c in checks), \"approved quote contract violated\"\n"
+      ],
+      "cwd": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s2/head",
+      "exit_code": 0,
+      "stdout": "[{\"cents\": 999, \"coupon\": true, \"actual\": 999, \"expected\": 999, \"pass\": true}, {\"cents\": 1000, \"coupon\": true, \"actual\": 900, \"expected\": 900, \"pass\": true}, {\"cents\": 1001, \"coupon\": true, \"actual\": 901, \"expected\": 901, \"pass\": true}, {\"cents\": 1000, \"coupon\": false, \"actual\": 1000, \"expected\": 1000, \"pass\": true}, {\"cents\": 0, \"coupon\": true, \"actual\": 0, \"expected\": 0, \"pass\": true}, {\"cents\": 1001, \"coupon\": false, \"actual\": 1001, \"expected\": 1001, \"pass\": true}, {\"cents\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000, \"coupon\": true, \"actual\": 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999900, \"expected\": 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999900, \"pass\": true}, {\"cents\": -1, \"actual\": \"nonnegative integer cents required\", \"expected\": \"nonnegative integer cents required\", \"pass\": true}, {\"cents\": 1.5, \"actual\": \"nonnegative integer cents required\", \"expected\": \"nonnegative integer cents required\", \"pass\": true}, {\"cents\": true, \"actual\": \"nonnegative integer cents required\", \"expected\": \"nonnegative integer cents required\", \"pass\": true}, {\"cents\": \"1000\", \"actual\": \"nonnegative integer cents required\", \"expected\": \"nonnegative integer cents required\", \"pass\": true}, {\"cents\": null, \"actual\": \"nonnegative integer cents required\", \"expected\": \"nonnegative integer cents required\", \"pass\": true}]\n",
+      "stderr": ""
+    }
+  ],
+  "inputs_unchanged_after_execution": true
+}

@@ -1,0 +1,4 @@
+{
+  "scope": "cache policy extraction",
+  "requirements": "Preserve lookup, preview and export_values behavior. Stored values are strings (including empty string); each entry is (expires, value), expires and now are caller-supplied integer ticks from the same clock. Validity interval excludes expires: only now < expires is fresh. Missing or expired lookup returns None. Export preserves input key order and includes every fresh value, including empty strings. Single-threaded local scope; no real clock or external integration is required. Review full diff and run before/at/after expiry, missing and empty-value cases for both callers."
+}

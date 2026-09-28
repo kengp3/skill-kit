@@ -1,0 +1,65 @@
+{
+  "scenario": "s4",
+  "round": "r1",
+  "started_at": "2026-09-28T14:33:14+08:00",
+  "local_checks_at": "2026-09-28T14:34:03.077680+08:00",
+  "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "python_executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+  "comparison": "direct snapshots",
+  "manifest_checks": {
+    "base/publisher.py": true,
+    "contract.json": true,
+    "diff.patch": true,
+    "execution.json": true,
+    "head/publisher.py": true,
+    "probe.py": true
+  },
+  "diff_matches": true,
+  "runs": {
+    "base": {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s4/probe.py"
+      ],
+      "cwd": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s4",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s4/base",
+      "exit_code": 0,
+      "stdout": "{\"acknowledge\": true, \"calls\": [{\"type\": \"OrderAccepted\", \"order_id\": \"o-1\"}], \"result\": \"accepted\"}\n{\"acknowledge\": false, \"calls\": [{\"type\": \"OrderAccepted\", \"order_id\": \"o-1\"}], \"error\": \"publish rejected\"}\n",
+      "stderr": "",
+      "assertions_passed": true
+    },
+    "head": {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s4/probe.py"
+      ],
+      "cwd": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s4",
+      "PYTHONPATH": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/ai-code-review-poc-20260928-evidence/s4/head",
+      "exit_code": 0,
+      "stdout": "{\"acknowledge\": true, \"calls\": [{\"type\": \"OrderAccepted\", \"order_id\": \"o-1\"}], \"result\": \"accepted\"}\n{\"acknowledge\": false, \"calls\": [{\"type\": \"OrderAccepted\", \"order_id\": \"o-1\"}], \"error\": \"publish rejected\"}\n",
+      "stderr": "",
+      "assertions_passed": true
+    }
+  },
+  "execution_status": "partial",
+  "decision": "Hold",
+  "requirements_result": "UNKNOWN",
+  "local_behavior_result": "PASS",
+  "confirmed_defects": [],
+  "gaps": [
+    {
+      "id": "U-001",
+      "status": "open",
+      "requirement": "actual durable transport integration log proving data survives process restart before acknowledgement",
+      "missing": [
+        "transport adapter",
+        "endpoint",
+        "integration log"
+      ],
+      "impact": "cannot verify durability acceptance",
+      "next_step": "provide adapter/config revision and a correlated integration log showing publish, restart/recovery and persisted payload before acknowledgement; no deployment performed"
+    }
+  ]
+}
