@@ -1,0 +1,161 @@
+{
+  "candidate_sha256": "20387010c2d448d08e08e51b5985ab80696b75b1d65a1bdffefc4a4486ce4c04",
+  "overall": "partially remediated; state persistence and evidence provenance gaps remain",
+  "observations": [
+    {
+      "id": "REC-56-01",
+      "status": "passed in final two-model plan-only cases",
+      "evidence": [
+        "attempt2/sol61/plan/tasks.md",
+        "attempt2/sol56/plan/tasks.md"
+      ]
+    },
+    {
+      "id": "EVID-56-01",
+      "status": "passed in final two-model parallel cases",
+      "evidence": [
+        "attempt2/sol61/parallel/evidence/integration.json",
+        "attempt2/sol56/parallel/evidence/check.txt"
+      ],
+      "note": "Worker evidence contains source fingerprints; coordinators compare and bind combined results."
+    },
+    {
+      "id": "EVID-61-01",
+      "status": "passed in final resume cases; generic rule still has sibling gap EVID-56-02",
+      "evidence": [
+        "attempt2/sol61/resume/evidence/",
+        "attempt2/sol56/resume/evidence/resume-2026-10-02.md"
+      ],
+      "note": "Individual decision-relevant command results retained; expected 75 exits are not masked by later success."
+    },
+    {
+      "id": "STATE-01",
+      "severity": "low",
+      "status": "open; partially improved",
+      "improvements": [
+        "helper dispatch running/handle/attempt persisted",
+        "helper done and receipt running precede receipt implementation",
+        "final worker liveness accurate"
+      ],
+      "remaining": "STATE-02: sol56 adds T4 checker/evidence depending on T3, yet T4 goes pending directly to done in the final batch with T3. Checker invocations cannot be conclusively assigned to T3 versus T4; no separate task-start or changed-plan record exists.",
+      "trace": "attempt2/native-traces/remfix2_56_parallel.json",
+      "calls": [
+        "call_Kr6aThD9WwDR1LIbl5WT1XGQ",
+        "call_RFQQbl9t3KDJb24gcfWO7Wt0",
+        "call_3sVHJL4glJEo9czU08MtdxW6"
+      ],
+      "source_lines": [
+        120,
+        134,
+        141
+      ],
+      "impact": "No wrong output, conflicting writers or external side effects observed; intermediate tracker cannot faithfully support recovery.",
+      "next_action": "Diagnose and simplify verification-only task decomposition; test a changed approach instead of adding another synonymous timing rule.",
+      "additional_unverified_timing": "sol56 resume applies math_ops.py change and running-state change in one patch, source update listed first; no separate persisted-running checkpoint before implementation is evidenced."
+    },
+    {
+      "id": "EVID-56-02",
+      "severity": "low",
+      "status": "open",
+      "kind": "individual exit provenance",
+      "observed": "labels worker batches Python assertions then sha256sum; only batch exit 0 observed, but evidence labels-worker.txt claims each command exit 0. PASS output supports assertions, not a separately captured interpreter exit.",
+      "trace": "attempt2/native-traces/remfix2_56_parallel--labels_worker.json",
+      "calls": [
+        "call_jQB1UmMaE5te5Wm3mClddlCH",
+        "call_9F3wUN1YrRerHsDxk9EOyq7x",
+        "call_QyGrTAhkW6yCysJchm97mxz5"
+      ],
+      "source_lines": [
+        39,
+        42,
+        48,
+        55,
+        58
+      ],
+      "relationship": "Same class as original EVID-61-01, observed on another path after original resume case passed.",
+      "impact": "Functional and integration assertions valid; handoff overstates command-specific process receipts."
+    },
+    {
+      "id": "EVID-61-02",
+      "severity": "low",
+      "status": "open observation",
+      "kind": "command transcription",
+      "observed": "labels worker records equivalent python -c command although actual tool ran assertions inside a Python heredoc alongside file and evidence writes.",
+      "trace": "attempt2/native-traces/remfix2_61_parallel--labels.json",
+      "call": "call_fqKma2I3dDBDyEcvEQh9x3gx",
+      "source_line": 26,
+      "impact": "Assertions actually executed and hash is valid, but command field is not a verbatim actual invocation."
+    },
+    {
+      "id": "STATE-02",
+      "parent": "STATE-01",
+      "severity": "low",
+      "status": "open confirmed",
+      "observed": "sol56 parallel verification-only successor T4 goes pending directly to done; missing task-start and prerequisite handoff evidence.",
+      "trace": "attempt2/native-traces/remfix2_56_parallel.json",
+      "calls": [
+        "call_mXfiEKnISE9CZXeYyIvsY0vM",
+        "call_RFQQbl9t3KDJb24gcfWO7Wt0",
+        "call_3sVHJL4glJEo9czU08MtdxW6"
+      ],
+      "source_lines": [
+        127,
+        130,
+        134,
+        137,
+        141,
+        144
+      ]
+    },
+    {
+      "id": "STATE-03",
+      "parent": "STATE-01",
+      "severity": "low",
+      "status": "open unverified ordering",
+      "observed": "sol56 resume changes math_ops.py and running tracker state within one patch; no separate successful running checkpoint before implementation. No OS write ordering or actual crash inferred.",
+      "trace": "attempt2/native-traces/remfix2_56_resume.json",
+      "call": "call_Yt214Unn9RYmkxzts8ycgMBD",
+      "source_lines": [
+        44,
+        47
+      ]
+    }
+  ],
+  "incidental_errors": [
+    {
+      "round": 1,
+      "kind": "same-path Delete+Add patch rejected",
+      "disposition": "recovered; preserved in candidate1 review"
+    },
+    {
+      "round": 1,
+      "kind": "source/check.py not found",
+      "disposition": "test envelope path error, recovered by actual file inspection; corrected symmetrically in round2"
+    },
+    {
+      "round": 1,
+      "kind": "zsh status read-only variable in integration wrapper",
+      "disposition": "recovered with independent checker receipt"
+    },
+    {
+      "round": 2,
+      "kind": "zsh status read-only variable in amounts-worker wrapper",
+      "disposition": "recovered; native CommandExecution exit 1 retained in lifecycle-observation.json"
+    },
+    {
+      "round": 2,
+      "kind": "same-path Delete+Add patch rejected in plan case",
+      "disposition": "recovered with Update; remfix2_56_plan call_7kLVbMM1mnH8mYOOuRLIJPs3 source 37/39 then 43/46"
+    }
+  ],
+  "expected_environment": "Non-Git lookup, not-yet-created tasks/evidence paths, missing deployctl, seeded checker fault and service 75 are evaluated separately.",
+  "limits": [
+    "One fresh run per model/case/version; not statistical reliability evidence.",
+    "Read-only native list_agents immediately after second spawn is prescribed observation control.",
+    "Historical artifacts and failed candidate remain unchanged; no manual correction of evaluated output."
+  ],
+  "independent_reviews": [
+    "review-final.md",
+    "attempt2/review-final.md"
+  ]
+}

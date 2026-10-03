@@ -1,0 +1,138 @@
+[
+  {
+    "case": "sol61-resume",
+    "gates": {
+      "G1": "pass",
+      "G5": "pass"
+    },
+    "receipts": [
+      {
+        "receipt": "T1-check-1.json",
+        "argv": [
+          "python3",
+          "check.py"
+        ],
+        "returncode": 0
+      },
+      {
+        "receipt": "T3-availability-1.json",
+        "argv": [
+          "python3",
+          "-c",
+          "import shutil,sys; p=shutil.which(\"deployctl\"); print(p or \"deployctl unavailable\"); sys.exit(0 if p else 127)"
+        ],
+        "returncode": 127
+      },
+      {
+        "receipt": "T4-service-1.json",
+        "argv": [
+          "python3",
+          "probe.py"
+        ],
+        "returncode": 75
+      },
+      {
+        "receipt": "T4-service-2.json",
+        "argv": [
+          "python3",
+          "probe.py"
+        ],
+        "returncode": 0
+      },
+      {
+        "receipt": "T5-service-1.json",
+        "argv": [
+          "python3",
+          "unavailable.py"
+        ],
+        "returncode": 75
+      },
+      {
+        "receipt": "T5-service-2.json",
+        "argv": [
+          "python3",
+          "unavailable.py"
+        ],
+        "returncode": 75
+      }
+    ],
+    "protected_unchanged": true,
+    "counters": {
+      "probe": 2,
+      "unavailable": 2
+    },
+    "trace": "native-traces/followup2_61_resume.json",
+    "checkpoint_source_lines": [
+      24,
+      34,
+      47
+    ],
+    "notes": "Manually inspected checkpoint-before-action and unknown history preservation; native process results and protected hashes checked."
+  },
+  {
+    "case": "sol56-resume",
+    "gates": {
+      "G1": "pass",
+      "G5": "pass"
+    },
+    "receipts": [
+      {
+        "receipt": "T1-check-1.json",
+        "argv": [
+          "python3",
+          "check.py"
+        ],
+        "returncode": 0
+      },
+      {
+        "receipt": "T4-check-1.json",
+        "argv": [
+          "python3",
+          "probe.py"
+        ],
+        "returncode": 75
+      },
+      {
+        "receipt": "T4-check-2.json",
+        "argv": [
+          "python3",
+          "probe.py"
+        ],
+        "returncode": 0
+      },
+      {
+        "receipt": "T5-check-1.json",
+        "argv": [
+          "python3",
+          "unavailable.py"
+        ],
+        "returncode": 75
+      },
+      {
+        "receipt": "T5-check-2.json",
+        "argv": [
+          "python3",
+          "unavailable.py"
+        ],
+        "returncode": 75
+      }
+    ],
+    "protected_unchanged": true,
+    "counters": {
+      "probe": 2,
+      "unavailable": 2
+    },
+    "trace": "native-traces/followup2_56_resume.json",
+    "checkpoint_source_lines": [
+      37,
+      51,
+      70,
+      77,
+      105,
+      122,
+      129,
+      146
+    ],
+    "notes": "Manually inspected checkpoint-before-action and unknown history preservation; native process results and protected hashes checked."
+  }
+]

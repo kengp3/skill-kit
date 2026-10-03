@@ -1,0 +1,17 @@
+{
+  "input": {
+    "cmd": "'codex' 'sandbox' '-P' 'portability_fixed' '-C' '/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution' '-c' 'permissions.portability_fixed.filesystem={\":root\"=\"deny\",\":minimal\"=\"read\",\"/private/tmp/task-harness-portability-u3tqwccr\"=\"deny\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\"=\"write\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/skill\"=\"read\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/inputs\"=\"read\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/project-setting.md\"=\"read\",\"/private/tmp\"=\"deny\",\"/private/var/tmp\"=\"deny\"}' '--' '/bin/sh' '-c' 'printf \"OWN_INPUT\\n\"; /bin/cat \"$1\"; own=$?; printf \"OWN_EXIT=%s\\n\" \"$own\"; printf \"OUTSIDE_INPUT\\n\"; /bin/cat \"$2\"; outside=$?; printf \"OUTSIDE_EXIT=%s\\n\" \"$outside\"; test \"$own\" -eq 0 && test \"$outside\" -ne 0' 'probe' '/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/inputs/prices.txt' '/private/tmp/task-harness-portability-u3tqwccr/outside-canary.txt'",
+    "workdir": "/Users/kengp3/Workspaces/mine/simple-skills",
+    "login": false,
+    "max_output_tokens": 1500,
+    "sandbox_permissions": "require_escalated",
+    "justification": "驗證單次測試 profile 的明確 tmp deny 加個別 workspace allow；僅讀取無敏感 fixture，防止其他暫存 run 資料污染。"
+  },
+  "result": {
+    "chunk_id": "82a08f",
+    "wall_time_seconds": 0.000007708,
+    "exit_code": 0,
+    "original_token_count": 39,
+    "output": "OWN_INPUT\n10\n20\n30\nOWN_EXIT=0\nOUTSIDE_INPUT\ncat: /private/tmp/task-harness-portability-u3tqwccr/outside-canary.txt: Operation not permitted\nOUTSIDE_EXIT=1\n"
+  }
+}

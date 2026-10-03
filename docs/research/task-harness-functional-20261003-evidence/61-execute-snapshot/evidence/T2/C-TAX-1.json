@@ -1,0 +1,81 @@
+{
+  "schema": "task-harness-native-tool-receipt",
+  "task_id": "T2",
+  "task_attempt": 1,
+  "check_id": "C-TAX",
+  "check_attempt": 1,
+  "owner": "/root/tax",
+  "workspace": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+  "start_metadata_path": "evidence/T2/C-TAX-1-start.json",
+  "sources": [
+    "inputs/prices.txt",
+    "inputs/tax-rate.txt"
+  ],
+  "product": "output/tax.txt",
+  "native_output_kind": "merged",
+  "command_representation": "actual exec_command request cmd string; not process argv",
+  "fingerprint_method": "cksum CRC and byte count; noncryptographic",
+  "material_read": {
+    "request": {
+      "cmd": "/bin/cat inputs/prices.txt inputs/tax-rate.txt",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+      "max_output_tokens": 1000
+    },
+    "result": {
+      "chunk_id": "5a710d",
+      "wall_time_seconds": 0.000002125,
+      "exit_code": 0,
+      "original_token_count": 4,
+      "output": "10\n20\n30\n0.05\n"
+    }
+  },
+  "before": {
+    "request": {
+      "cmd": "/usr/bin/cksum inputs/prices.txt inputs/tax-rate.txt output/tax.txt",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+      "max_output_tokens": 1000
+    },
+    "result": {
+      "chunk_id": "824d75",
+      "wall_time_seconds": 0.000002291,
+      "exit_code": 0,
+      "original_token_count": 23,
+      "output": "2869352896 9 inputs/prices.txt\n3510201678 5 inputs/tax-rate.txt\n4164007125 2 output/tax.txt\n"
+    }
+  },
+  "checker": {
+    "request": {
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+      "shell": "/bin/sh",
+      "login": false,
+      "max_output_tokens": 2000,
+      "cmd": "set -eu\nfail() { printf '%s\\n' \"$1\" >&2; exit 1; }\nsum=0\ncount=0\nwhile IFS= read -r price || [ -n \"$price\" ]; do\n  case \"$price\" in ''|*[!0-9]*) fail \"invalid price integer\";; esac\n  while [ \"${price#0}\" != \"$price\" ]; do price=${price#0}; done\n  price=${price:-0}\n  [ \"${#price}\" -le 9 ] || fail \"price exceeds safe arithmetic bound\"\n  sum=$((sum + price))\n  [ \"$sum\" -le 1000000000 ] || fail \"sum exceeds safe arithmetic bound\"\n  count=$((count + 1))\ndone < inputs/prices.txt\n[ \"$count\" -gt 0 ] || fail \"no prices\"\nrate=$(/bin/cat inputs/tax-rate.txt)\nprintf '%s\\n' \"$rate\" | /usr/bin/cmp -s - inputs/tax-rate.txt || fail \"rate must be one line with LF\"\ncase \"$rate\" in *.*) ;; *) fail \"decimal rate required\";; esac\nwhole=${rate%%.*}\nfraction=${rate#*.}\ncase \"$whole\" in ''|*[!0-9]*) fail \"invalid decimal whole part\";; esac\ncase \"$fraction\" in ''|*[!0-9]*) fail \"invalid decimal fractional part\";; esac\n[ \"${#fraction}\" -le 6 ] || fail \"rate exceeds safe precision bound\"\ndenominator=1\nremaining=$fraction\nwhile [ -n \"$remaining\" ]; do\n  denominator=$((denominator * 10))\n  remaining=${remaining#?}\ndone\nwhile [ \"${whole#0}\" != \"$whole\" ]; do whole=${whole#0}; done\nwhole=${whole:-0}\nwhile [ \"${fraction#0}\" != \"$fraction\" ]; do fraction=${fraction#0}; done\nfraction=${fraction:-0}\n[ \"${#whole}\" -le 3 ] || fail \"rate exceeds safe arithmetic bound\"\nnumerator=$((whole * denominator + fraction))\nscaled=$((sum * numerator))\n[ \"$((scaled % denominator))\" -eq 0 ] || fail \"noninteger tax requires rounding guidance\"\nexpected=$((scaled / denominator))\nprintf '%s\\n' \"$expected\" | /usr/bin/cmp -s - output/tax.txt || fail \"tax bytes do not match independently recomputed integer plus LF\"\nprintf '%s\\n' 'PASS C-TAX: independent source calculation and exact byte comparison'\n"
+    },
+    "result": {
+      "chunk_id": "d96503",
+      "wall_time_seconds": 0.000002875,
+      "exit_code": 0,
+      "original_token_count": 18,
+      "output": "PASS C-TAX: independent source calculation and exact byte comparison\n"
+    }
+  },
+  "after": {
+    "request": {
+      "cmd": "/usr/bin/cksum inputs/prices.txt inputs/tax-rate.txt output/tax.txt",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+      "max_output_tokens": 1000
+    },
+    "result": {
+      "chunk_id": "92a5bb",
+      "wall_time_seconds": 0.000002458,
+      "exit_code": 0,
+      "original_token_count": 23,
+      "output": "2869352896 9 inputs/prices.txt\n3510201678 5 inputs/tax-rate.txt\n4164007125 2 output/tax.txt\n"
+    }
+  },
+  "observations": {
+    "finished": true,
+    "checker_pass": true,
+    "fingerprints_stable": true
+  }
+}

@@ -1,0 +1,12 @@
+T1 subtotal verification
+
+Command: python3 -c 'from amounts import subtotal; result = subtotal([(125, 2), (50, 3)]); print(result); assert result == 400'
+Exit status: 0
+Result: 400
+
+Command: python3 -c 'from amounts import subtotal; result = subtotal([]); print(result); assert result == 0'
+Exit status: 0
+Result: 0
+
+Fingerprint command: shasum -a 256 amounts.py
+amounts.py SHA-256: 34b24b52aaa6d058d4326a4dc2048716945c3794e92bf012074778ed22ff3bd9

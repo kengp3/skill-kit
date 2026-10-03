@@ -1,0 +1,308 @@
+{
+  "candidate": 2,
+  "verdict": "pass",
+  "review_method": "Root manual trace audit against predeclared G1-G5 plus archived native/receipt/version checks; no additional reviewer hierarchy.",
+  "applicability": {
+    "parallel": [
+      "G1",
+      "G2",
+      "G3",
+      "G4"
+    ],
+    "resume": [
+      "G1",
+      "G5"
+    ]
+  },
+  "gates": [
+    {
+      "case": "C61-P",
+      "gate": "G1",
+      "verdict": "pass",
+      "evidence": [
+        {
+          "trace": "native-traces/followup2_61_parallel.json",
+          "source_lines": [
+            30,
+            33,
+            36,
+            39,
+            41,
+            44,
+            47,
+            50,
+            86,
+            91
+          ],
+          "note": "Each real handle checkpoint succeeds before next dispatch; T3 task checkpoint precedes product write; T3 check metadata precedes invocation in sequential awaited calls."
+        }
+      ]
+    },
+    {
+      "case": "C61-P",
+      "gate": "G2",
+      "verdict": "pass",
+      "evidence": [
+        {
+          "trace": "native-traces/followup2_61_parallel.json",
+          "source_lines": [
+            65,
+            68,
+            71,
+            74,
+            78,
+            82
+          ],
+          "note": "Read each own receipt and product; verify current fingerprint before persisted done. Receipt/native matching in receipt-integrity.json."
+        }
+      ]
+    },
+    {
+      "case": "C61-P",
+      "gate": "G3",
+      "verdict": "pass",
+      "evidence": [
+        {
+          "trace": "native-traces/followup2_61_parallel.json",
+          "source_lines": [
+            71,
+            74,
+            78,
+            82,
+            86,
+            91
+          ],
+          "note": "Prerequisite done writes succeed before T3 start checkpoint; first product write follows successful checkpoint within sequential awaited calls."
+        }
+      ]
+    },
+    {
+      "case": "C61-P",
+      "gate": "G4",
+      "verdict": "pass",
+      "evidence": [
+        {
+          "trace": "native-traces/followup2_61_parallel.json",
+          "source_lines": [
+            30,
+            36,
+            41,
+            47,
+            52
+          ],
+          "note": "Dispatch A/checkpoint A/dispatch B/checkpoint B before first active wait. Natural completion and overlap are not blocking criteria."
+        }
+      ]
+    },
+    {
+      "case": "C56-P",
+      "gate": "G1",
+      "verdict": "pass",
+      "evidence": [
+        {
+          "trace": "native-traces/followup2_56_parallel.json",
+          "source_lines": [
+            42,
+            45,
+            50,
+            53,
+            57,
+            60,
+            63,
+            66,
+            116,
+            119,
+            125,
+            139,
+            142,
+            146
+          ],
+          "note": "Both dispatch checkpoint task attempt 1; T3 start and check attempt succeed before respective actions."
+        }
+      ]
+    },
+    {
+      "case": "C56-P",
+      "gate": "G2",
+      "verdict": "pass",
+      "evidence": [
+        {
+          "trace": "native-traces/followup2_56_parallel.json",
+          "source_lines": [
+            82,
+            86,
+            91,
+            94,
+            102,
+            105,
+            109,
+            112
+          ],
+          "note": "Coordinator reads actual source and own receipt before accepting each dependency. Audit reconstructs unchanged versions from all writer traces and compares archived source hashes to original receipts; no later integration receipt substitutes prerequisite acceptance."
+        },
+        {
+          "trace": "native-traces/followup2_56_parallel--subtotal_worker.json",
+          "source_lines": [
+            32,
+            37,
+            42
+          ],
+          "note": "Only amounts write precedes direct receipt and worker hash inspection; no later amounts mutation."
+        },
+        {
+          "trace": "native-traces/followup2_56_parallel--label_worker.json",
+          "source_lines": [
+            32,
+            39,
+            46
+          ],
+          "note": "Only labels write precedes direct receipt and worker hash inspection; no later labels mutation."
+        }
+      ]
+    },
+    {
+      "case": "C56-P",
+      "gate": "G3",
+      "verdict": "pass",
+      "evidence": [
+        {
+          "trace": "native-traces/followup2_56_parallel.json",
+          "source_lines": [
+            91,
+            94,
+            109,
+            112,
+            116,
+            119,
+            125,
+            128
+          ],
+          "note": "Both accepted done writes before T3 start; successful start checkpoint before receipt.py mutation."
+        }
+      ]
+    },
+    {
+      "case": "C56-P",
+      "gate": "G4",
+      "verdict": "pass",
+      "evidence": [
+        {
+          "trace": "native-traces/followup2_56_parallel.json",
+          "source_lines": [
+            42,
+            50,
+            57,
+            63,
+            72
+          ],
+          "note": "No wait/accept/unrelated work between selected group dispatches; first wait after both checkpoints."
+        }
+      ]
+    },
+    {
+      "case": "C61-R",
+      "gate": "G1",
+      "verdict": "pass",
+      "evidence": [
+        {
+          "trace": "native-traces/followup2_61_resume.json",
+          "source_lines": [
+            24,
+            30,
+            34,
+            45,
+            47,
+            56
+          ],
+          "note": "Named epoch with historical unknown; local task1 and separate checks1/2 persisted in sequential awaited successful commands before actions. T2 historical unknown and not replayed."
+        }
+      ]
+    },
+    {
+      "case": "C56-R",
+      "gate": "G1",
+      "verdict": "pass",
+      "evidence": [
+        {
+          "trace": "native-traces/followup2_56_resume.json",
+          "source_lines": [
+            37,
+            40,
+            44,
+            51,
+            54,
+            56,
+            70,
+            77,
+            80,
+            91,
+            105,
+            108,
+            110,
+            122,
+            125,
+            129,
+            132,
+            134,
+            146,
+            149,
+            151
+          ],
+          "note": "R1 local task1; historical task/check counts unknown. Recovered failed initial patch before product mutation. Every coordinator check/retry checkpoint precedes invocation."
+        }
+      ]
+    },
+    {
+      "case": "C61-R",
+      "gate": "G5",
+      "verdict": "pass",
+      "evidence": [
+        {
+          "trace": "native-traces/followup2_61_resume.json",
+          "source_lines": [
+            24,
+            34,
+            47,
+            56
+          ],
+          "note": "Stale done repaired and checked; no send execution; missing deployment tool remains blocked; T4 75->0 and T5 75->75, each counter2. Protected-file hashes verified by collector."
+        }
+      ]
+    },
+    {
+      "case": "C56-R",
+      "gate": "G5",
+      "verdict": "pass",
+      "evidence": [
+        {
+          "trace": "native-traces/followup2_56_resume.json",
+          "source_lines": [
+            23,
+            37,
+            44,
+            56,
+            70,
+            91,
+            110,
+            134,
+            151,
+            167,
+            174
+          ],
+          "note": "Stale done repaired and checked; no send execution; missing deployment tool remains blocked; T4 75->0 and T5 75->75, each counter2. Protected-file hashes verified by collector."
+        }
+      ]
+    }
+  ],
+  "common_safety_evidence": [
+    "preservation-check.json",
+    "trace-verification.json",
+    "receipt-integrity.json",
+    "artifact-checks.json"
+  ],
+  "limits": [
+    "One forward run per final-candidate case; not a statistical reliability claim.",
+    "Worker separate pre-check metadata format is not a new release gate: original G1 covers dispatch, coordinator execution, safe retry; worker receipt artifacts retain checks.",
+    "5.6 coordinator read current source and receipt; audit reconstructs exact version binding rather than claiming it ran a coordinator hash-comparison command."
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "objective": "重新驗證測試；實際嘗試 gpt-6.1-sol、gpt-5.6-sol；收集錯誤資訊留待後續修正",
+  "previous_goal_turn_classification": "progress: source changes, fresh model tests and evidence collection",
+  "requirements": [
+    {
+      "requirement": "Both requested models actually execute tests",
+      "status": "proven",
+      "evidence": "Native turn_context for twenty actors in two rounds, including six cases per round."
+    },
+    {
+      "requirement": "Tests are revalidated against current source",
+      "status": "proven",
+      "evidence": "Final source bytes match both final tested copies; existing verifiers and raw traces checked."
+    },
+    {
+      "requirement": "Errors are collected for later repair",
+      "status": "proven",
+      "evidence": "findings.json includes open state and evidence gaps plus recovered patch/wrapper errors; both independent reviews retained."
+    },
+    {
+      "requirement": "Referenced skills guide work",
+      "status": "proven",
+      "evidence": "Narrow source updates, isolated independent forward tests, bounded fixture scopes and reuse of existing validators/exporter; see report and source diffs."
+    }
+  ],
+  "rounds": [
+    {
+      "round": ".",
+      "actors_verified": 10,
+      "raw_tool_events_verified": 162,
+      "models_verified": [
+        "gpt-6.1-sol",
+        "gpt-5.6-sol"
+      ],
+      "cases_per_model": [
+        "plan",
+        "parallel",
+        "resume"
+      ],
+      "native_terminal_events_verified": true,
+      "functional_verifiers_exit": {
+        "sol61": 0,
+        "sol56": 0
+      },
+      "independent_review_present": true
+    },
+    {
+      "round": "attempt2",
+      "actors_verified": 10,
+      "raw_tool_events_verified": 144,
+      "models_verified": [
+        "gpt-6.1-sol",
+        "gpt-5.6-sol"
+      ],
+      "cases_per_model": [
+        "plan",
+        "parallel",
+        "resume"
+      ],
+      "native_terminal_events_verified": true,
+      "functional_verifiers_exit": {
+        "sol61": 0,
+        "sol56": 0
+      },
+      "independent_review_present": true
+    }
+  ],
+  "current_skill_sha256": "20387010c2d448d08e08e51b5985ab80696b75b1d65a1bdffefc4a4486ce4c04",
+  "historical_files_unchanged": 290,
+  "overall": "collection objective achieved; harness defects still open",
+  "open_findings": [
+    "EVID-56-02",
+    "EVID-61-02",
+    "STATE-02",
+    "STATE-03"
+  ],
+  "note": "Completion applies to revalidation and error collection, not complete remediation."
+}

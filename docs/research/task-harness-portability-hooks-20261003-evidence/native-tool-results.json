@@ -1,0 +1,87 @@
+{
+  "schema": "p1-native-tool-evidence-v1",
+  "purpose": "research-only capability PoC, not a production runner",
+  "host": "Codex desktop functions.exec/exec_command/apply_patch",
+  "before": {
+    "input": {
+      "cmd": "git hash-object -- expected.txt actual.txt",
+      "workdir": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture",
+      "login": false,
+      "max_output_tokens": 1000
+    },
+    "result": {
+      "chunk_id": "1b2a60",
+      "wall_time_seconds": 0.0000075,
+      "exit_code": 0,
+      "original_token_count": 21,
+      "output": "2e31f1f298e0d81233988ef973dc4939f0e3bb30\n2e31f1f298e0d81233988ef973dc4939f0e3bb30\n"
+    }
+  },
+  "checks": [
+    {
+      "id": "E1",
+      "input": {
+        "cmd": "git diff --no-index --exit-code -- expected.txt actual.txt",
+        "workdir": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture",
+        "login": false,
+        "max_output_tokens": 1000
+      },
+      "result": {
+        "chunk_id": "a2c7d8",
+        "wall_time_seconds": 0.000005625,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    {
+      "id": "E2",
+      "input": {
+        "cmd": "printf 'PASS\\n'; exit 7",
+        "workdir": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture",
+        "login": false,
+        "max_output_tokens": 1000
+      },
+      "result": {
+        "chunk_id": "942c03",
+        "wall_time_seconds": 0.000012834,
+        "exit_code": 7,
+        "original_token_count": 2,
+        "output": "PASS\n"
+      }
+    },
+    {
+      "id": "E4",
+      "input": {
+        "cmd": "./intentionally-absent-checker",
+        "workdir": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture",
+        "login": false,
+        "max_output_tokens": 1000
+      },
+      "result": {
+        "chunk_id": "a0b23f",
+        "wall_time_seconds": 0.000006292,
+        "exit_code": 127,
+        "original_token_count": 17,
+        "output": "zsh:1: no such file or directory: ./intentionally-absent-checker\n"
+      }
+    }
+  ],
+  "after": {
+    "input": {
+      "cmd": "git hash-object -- expected.txt actual.txt",
+      "workdir": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture",
+      "login": false,
+      "max_output_tokens": 1000
+    },
+    "result": {
+      "chunk_id": "a1c0bb",
+      "wall_time_seconds": 0.000007667,
+      "exit_code": 0,
+      "original_token_count": 21,
+      "output": "2e31f1f298e0d81233988ef973dc4939f0e3bb30\n2e31f1f298e0d81233988ef973dc4939f0e3bb30\n"
+    }
+  },
+  "provenance": "Tool response objects serialized directly in host code mode; no manually transcribed exits/digests; no exclusive-create or crash durability claim"
+}
+

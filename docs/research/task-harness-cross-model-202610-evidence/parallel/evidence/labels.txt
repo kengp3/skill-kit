@@ -1,0 +1,4 @@
+Worker completion: /root/sol_harness_parallel/labels reported implemented labels.py; direct assertions exit 0; SHA-256 bf323853530fd47713761cb3c51f6b548f4dafa5ea8602b2a5f00d69bbf5fe1e.
+Coordinator command: python3 -c 'from labels import label; assert label("  Alice  ") == "Alice"; assert label(" ") == "Guest"; print("PASS labels")'
+Coordinator result: exit 0, PASS labels.
+Coordinator inspected implementation: return name.strip() or "Guest".

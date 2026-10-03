@@ -1,0 +1,23 @@
+[
+  {
+    "id": "F2-PATCH",
+    "severity": "low",
+    "status": "non_blocking_recovered",
+    "evidence": "native-traces/followup2_56_resume.json source_line31/33/37/40",
+    "note": "Delete+Add same path rejected; update succeeded before product mutation. No retry of consequential side effects."
+  },
+  {
+    "id": "F2-FIXTURE-TOOLS",
+    "severity": "low",
+    "status": "non_blocking",
+    "evidence": "observed-process-errors.json",
+    "note": "Inspection of absent evidence directory and Git commands in non-Git fixture produce tool errors; they were not used as acceptance. Preserve native errors; no runtime change required."
+  },
+  {
+    "id": "F2-WORKER-METADATA",
+    "severity": "low",
+    "status": "follow_up_only",
+    "evidence": "native-traces/followup2_56_parallel--subtotal_worker.json; native-traces/followup2_56_parallel--label_worker.json",
+    "note": "5.6 workers retain first checks as receipts but no separate pre-check attempt metadata. Original G1 explicitly covers dispatch/coordinator/retry, so do not add a new blocker after observing results."
+  }
+]

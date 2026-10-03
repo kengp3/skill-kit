@@ -1,0 +1,29 @@
+{
+  "tool": "collaboration.spawn_agent",
+  "returned_handles": {
+    "T1": "/root/test_harness_parallel/amounts_worker",
+    "T2": "/root/test_harness_parallel/labels_worker"
+  },
+  "ownership": {
+    "T1": [
+      "amounts.py"
+    ],
+    "T2": [
+      "labels.py"
+    ]
+  },
+  "concurrent_snapshot": {
+    "tool": "collaboration.list_agents",
+    "agents": [
+      {
+        "agent_name": "/root/test_harness_parallel/amounts_worker",
+        "agent_status": "running"
+      },
+      {
+        "agent_name": "/root/test_harness_parallel/labels_worker",
+        "agent_status": "running"
+      }
+    ]
+  },
+  "shared_resources": "Workers prohibited from task state, evidence, bytecode, check.py, other source files; coordinator owns integration and state."
+}

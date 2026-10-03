@@ -1,0 +1,69 @@
+{
+  "task_id": "T3",
+  "resume_epoch": "R1",
+  "check_id": "R1-A1",
+  "check_attempt": 1,
+  "readback_tools": [
+    {
+      "path": "output/native-evidence-assessment.md",
+      "tool": "exec_command",
+      "input": {
+        "cmd": "cat output/native-evidence-assessment.md",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_resume-negative",
+        "login": false,
+        "max_output_tokens": 6000
+      },
+      "result": {
+        "chunk_id": "96e954",
+        "wall_time_seconds": 0.000001125,
+        "exit_code": 0,
+        "original_token_count": 1200,
+        "output": "# 原生 evidence 完整性 assessment 與 resume 結果\n\n本回合已完成版本適用性與證據完整性評估。缺必要版本或缺 checker 最終 exit 的 evidence **不能標成通過**。這是有來源支持的評估結論，不是整體 Task Harness 通過宣告。\n\n## Resume：歷史證據的適用範圍\n\n目前 `inputs/prices.txt` 為三行 `10`、`20`、`40`；歷史 snapshots 為 `10`、`20`、`30`。原生 Git 指紋核對顯示 prices 版本不同，checker 版本相同，歷史 snapshots 仍符合原 receipts。\n\n[C1 原始 receipt](../evidence/C1-attempt-1.native.json) 仍證明歷史版本的 checker 輸出 PASS、最終 exit 非零，歷史 subject verdict 為 FAIL。[原 acceptance](../evidence/C1-acceptance.native.json) 的版本一致結論只描述前回合當時的版本；resume 不能把它沿用為目前版本一致。\n\n[R1 原生版本 receipt](../evidence/R1-V1-attempt-1.native.json)、[目前內容 receipt](../evidence/R1-V1-content.native.json) 與[reconciliation](../evidence/R1-reconciliation.json) 保存目前讀回、指紋及自動推導判定。沒有重跑 checker，因此目前版本的 process check **未驗證**；不能從檔案讀取或 Git 指紋工具成功推導 checker 成功。T1 歷史評估完成的事實保留，但目前版本的 acceptance 重開為 `verifying`。\n\n## T3：缺必要 evidence 能否通過\n\n本 assessment 獨立於 T1 當前 process check，不依賴其通過，也不替代其驗收。以下兩種缺件是規則分析情境，並非把真實 C1 receipt 改成缺件 fixture；C1 原 evidence 實際包含版本資料與最終 exit。\n\n| 情境 | 能否標成通過 | 理由 | 受影響狀態 |\n| --- | --- | --- | --- |\n| 缺可歸屬的受測版本，包括必要的前後版本或 snapshot/fingerprint | 不能；版本驗收未驗證 | 無法把結果綁定到實際受測內容，也無法確認目前接受的是同一版本。檔案路徑或 PASS 字串不是版本證據。 | 取回並核對既有版本證據期間為 `verifying`；若沒有獲准能力取得必要歸屬，則 `blocked`，具體 blocker 是缺版本證據。 |\n| 缺 checker 自己的最終 exit | 不能；最終結果 unknown | 無法確定程序已完成或成功。PASS 字串、執行中 session、wrapper 成功及讀回檔案的 exit 都不能代替 checker 最終 exit。不能人工補 exit。 | 取回原生最終結果與 reconcile 期間為 `verifying`；若在可用能力與授權內無法恢復，則 `blocked`，具體 blocker 是缺最終結果。 |\n\n只有已有可恢復原始證據時才能補足歸屬或結果；不能把人工抄值當原始 receipt。本回合明確禁止重跑 C1，所以不能以新執行來填補舊 evidence。unknown 外部副作用亦不得為補證據而重播。\n\n如果已知原程序 exit 非零，即使其他資料缺失，也不能因輸出 PASS 把該歷史程序改判通過；版本歸屬缺失仍使目前版本驗收未確認。證據不完整本身也不等於已觀察到受測程序以非零退出，必須分開 `FAIL` 與 `unverified/unknown`。\n\n## 依據、任務狀態與限制\n\n依據 [skill/SKILL.md](../skill/SKILL.md) 的 Execute, verify, integrate：第 3 點 Native evidence first 要求實際工具 input、最終 result、cwd、前後可歸屬版本；明定非零 exit 即失敗、missing results/unknown 不是 pass。Capability missing 與第 4 點要求缺必要驗證時維持 `verifying` 或 `blocked`。Decompose 與狀態表明定 assessment 可以因交付有支持的負面結論而完成。\n\n[T3 原生 assessment evidence](../evidence/T3-R1-A1.native.json) 引用獨立原生讀取工具 receipts，保存 skill 與 C1 原 evidence 的前後自動指紋，及規則核對結果。這是一份文件與規則 assessment，沒有新的 checker process，也沒有為 assessment 虛構 checker exit。\n\n- T3：提供有來源支持的結論與受影響狀態後，可標記 `done`；受評缺件 evidence **不獲接受為通過**。\n- T1：歷史負例 assessment 已完成；歷史 subject FAIL；目前版本 acceptance `verifying`，目前 checker 未驗證。\n- T2：維持 `blocked` 與明確標記的「合成恢復 fixture」副作用 `unknown`；沒有實際訊息或外部操作，也沒有重播。\n- 本回合的 resume 與獨立 assessment 交付完成，不表示整體 Skill 通過；檔案讀回成功、低階工具 exit 成功及保存 checkpoint 均只證明各自有限的操作結果。\n\n此為共用宿主普通功能 smoke 的局部證據，不宣稱盲測、強隔離、原子 snapshot 或獨占 reservation。原生工具提供的是 command string 與合併輸出，沒有 argv 級或獨立 stdout/stderr 保證。未派 worker、未讀其他 run/歷史 verdict、未使用外部服務或額外 language process。\n"
+      }
+    },
+    {
+      "path": "evidence/T3-R1-A1.native.json",
+      "tool": "exec_command",
+      "input": {
+        "cmd": "cat evidence/T3-R1-A1.native.json",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_resume-negative",
+        "login": false,
+        "max_output_tokens": 6000
+      },
+      "result": {
+        "chunk_id": "80b092",
+        "wall_time_seconds": 0.000003958,
+        "exit_code": 0,
+        "original_token_count": 726,
+        "output": "{\n  \"kind\": \"Native document-based assessment, not a shell checker execution\",\n  \"task_id\": \"T3\",\n  \"resume_epoch\": \"R1\",\n  \"task_attempt\": 1,\n  \"check_id\": \"R1-A1\",\n  \"check_attempt\": 1,\n  \"source_receipts\": [\n    \"evidence/T3-R1-sources-before.native.json\",\n    \"evidence/T3-R1-rules.native.json\",\n    \"evidence/T3-R1-reference-check.native.json\",\n    \"evidence/T3-R1-sources-after.native.json\"\n  ],\n  \"source_fingerprint_order\": [\n    \"skill/SKILL.md\",\n    \"project-setting.md\",\n    \"evidence/C1-attempt-1.native.json\",\n    \"evidence/C1-before.native.json\",\n    \"evidence/C1-after.native.json\"\n  ],\n  \"rules_verified\": true,\n  \"rule_anchors\": [\n    \"A nonzero exit fails even when output says PASS.\",\n    \"Bind the result to actual artifact fingerprints or host version/snapshot identifiers\",\n    \"Running sessions, missing results and unknown outcomes are not passes.\",\n    \"Missing required verification keeps the task verifying or blocked.\",\n    \"An assessment may be done with a negative subject verdict\",\n    \"Do not manually reconstruct results, exits or digests.\"\n  ],\n  \"sources_stable\": true,\n  \"reference_original_checker_result\": {\n    \"chunk_id\": \"ed2a13\",\n    \"wall_time_seconds\": 0.000004542,\n    \"exit_code\": 7,\n    \"original_token_count\": 2,\n    \"output\": \"PASS\\n\"\n  },\n  \"reasoned_cases\": [\n    {\n      \"case\": \"Missing attributable before/after artifact versions\",\n      \"kind\": \"hypothetical policy assessment; no original receipt altered\",\n      \"can_mark_pass\": false,\n      \"subject_status\": \"unverified for accepted/current version\",\n      \"affected_acceptance\": \"verifying while reconciling existing versions; blocked if no permitted capability can supply required attribution\",\n      \"reason\": \"A result cannot be bound to the actual tested and currently accepted content. A path or output text alone is not a version identifier.\"\n    },\n    {\n      \"case\": \"Missing checker final exit\",\n      \"kind\": \"hypothetical policy assessment; no original receipt altered\",\n      \"can_mark_pass\": false,\n      \"subject_status\": \"unknown final outcome; no inferred exit\",\n      \"affected_acceptance\": \"verifying while retrieving/reconciling a native final result; blocked if it cannot be safely recovered within available capabilities\",\n      \"reason\": \"PASS text, a running session, readback exit, or orchestration success cannot establish the checker's own terminal status.\"\n    }\n  ],\n  \"assessment_completed\": true,\n  \"assessed_incomplete_evidence_accepted\": false,\n  \"overall_skill_pass_claimed\": false,\n  \"notes\": [\n    \"C1 is a real nonzero negative receipt, not an example of missing fields.\",\n    \"R1 current source mismatch is distinct from missing historical version evidence.\",\n    \"No checker replay, no unknown side effect replay, no manufactured shell exit for this reasoning assessment.\",\n    \"Original helper is prohibited by user; no language subprocess used.\"\n  ]\n}\n"
+      }
+    },
+    {
+      "path": "evidence/R1-reconciliation.json",
+      "tool": "exec_command",
+      "input": {
+        "cmd": "cat evidence/R1-reconciliation.json",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_resume-negative",
+        "login": false,
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "8e812f",
+        "wall_time_seconds": 8.34e-7,
+        "exit_code": 0,
+        "original_token_count": 446,
+        "output": "{\n  \"kind\": \"Assessment derived from native receipt values, not a new checker result\",\n  \"source_receipts\": [\n    \"evidence/R1-V1-attempt-1.native.json\",\n    \"evidence/R1-V1-content.native.json\",\n    \"evidence/R1-read-C1-acceptance.native.json\",\n    \"evidence/R1-read-C1-check.native.json\",\n    \"evidence/R1-read-C1-before.native.json\",\n    \"evidence/R1-read-C1-after.native.json\"\n  ],\n  \"fingerprint_order\": [\n    \"inputs/prices.txt\",\n    \"output/prices-negative-check.sh\",\n    \"evidence/C1-before/prices.txt\",\n    \"evidence/C1-before/prices-negative-check.sh\",\n    \"evidence/C1-after/prices.txt\",\n    \"evidence/C1-after/prices-negative-check.sh\"\n  ],\n  \"derived\": {\n    \"current_prices_content\": \"10\\n20\\n40\\n\",\n    \"current_prices_blob\": \"f0adb405d3b629a637c97446b68e5314f229e844\",\n    \"historical_prices_blob\": \"300ed6fcd17373e06dd6ecdf001f55e0e9cd765f\",\n    \"current_checker_blob\": \"43b8f149a89c4caae3634e43e2190140bf77b024\",\n    \"historical_checker_blob\": \"43b8f149a89c4caae3634e43e2190140bf77b024\",\n    \"prices_version_matches_historical\": false,\n    \"checker_version_matches_historical\": true,\n    \"historical_snapshots_match_receipts\": true,\n    \"historical_before_after_stable\": true,\n    \"original_final_exit_present\": true,\n    \"historical_subject_verdict\": \"FAIL\",\n    \"old_evidence_applicable_to_current_prices\": false,\n    \"prior_accepted_assessment\": true,\n    \"current_acceptance_state\": \"verifying\",\n    \"current_subject_verdict\": \"unverified (checker not rerun)\"\n  },\n  \"limitations\": [\n    \"Read/hash tool success proves only that observation completed.\",\n    \"No new checker exit is supplied or inferred.\",\n    \"Prior current-version statements are historical; current prices have changed.\",\n    \"Sequential/non-atomic smoke observations on a shared host.\"\n  ]\n}\n"
+      }
+    }
+  ],
+  "derived": {
+    "report_read_back_exactly": true,
+    "assessment_read_back_exactly": true,
+    "reconciliation_read_back_exactly": true,
+    "reasoned_assessment_completion": true,
+    "incomplete_evidence_can_be_marked_pass": false,
+    "current_checker_pass_claimed": false,
+    "overall_skill_pass_claimed": false
+  },
+  "scope": "Accepts the documented assessment and resume reconciliation only; readback tool exits never substitute for checker exits."
+}

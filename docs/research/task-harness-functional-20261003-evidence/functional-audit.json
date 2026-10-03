@@ -1,0 +1,263 @@
+{
+  "scope": "fixed ordinary-folder functional smoke, not blind/causal/security comparison",
+  "candidate_sha256": "970a338e499945b21d8ac045f1ed34fdda25e8d6c431735a3fb5d71a3c89d182",
+  "native": {
+    "61": {
+      "products_exact": {
+        "subtotal.txt": true,
+        "tax.txt": true,
+        "total.txt": true
+      },
+      "receipts": [
+        {
+          "path": "evidence/T1/C-SUB-1.json",
+          "sha256": "a35f657c608abf73d3598ea417688528b446f7ff967e59f95a4249171ffda667",
+          "check_exit": 0,
+          "source_endpoints_stable": true,
+          "check_attempt": 1
+        },
+        {
+          "path": "evidence/T2/C-TAX-1.json",
+          "sha256": "4f0625943606763507f780dd79453bd63f82c5d59366995602a77eaf5f4b72ce",
+          "check_exit": 0,
+          "source_endpoints_stable": true,
+          "check_attempt": 1
+        },
+        {
+          "path": "evidence/T3/C-TOTAL-1.json",
+          "sha256": "d099f3317880f99f78988807dd2a290a0e22efbd9951cb278a5d29f09ce82bfa",
+          "check_exit": 0,
+          "source_endpoints_stable": true,
+          "check_attempt": 1
+        }
+      ],
+      "core_helper_absent": true
+    },
+    "56": {
+      "products_exact": {
+        "subtotal.txt": true,
+        "tax.txt": true,
+        "total.txt": true
+      },
+      "receipts": [
+        {
+          "path": "evidence/T1-check-1.json",
+          "sha256": "7018be2984abc7ae43a6570a3b12791ce215d38ca861b00e6b492013bb403c06",
+          "check_exit": 0,
+          "source_endpoints_stable": true,
+          "check_attempt": 1
+        },
+        {
+          "path": "evidence/T2-check-1.json",
+          "sha256": "f75be6c9f831ad9747ec98271cf7d39a9aae22223b471b668131da6057995992",
+          "check_exit": 0,
+          "source_endpoints_stable": true,
+          "check_attempt": 1
+        },
+        {
+          "path": "evidence/T3-check-1.json",
+          "sha256": "306d2fde825faed8bee3b9a4e441b88c8262eeb8b5f07a39ee86f57fb85ad85b",
+          "check_exit": 0,
+          "source_endpoints_stable": true,
+          "check_attempt": 1
+        }
+      ],
+      "core_helper_absent": true
+    }
+  },
+  "negative": {
+    "61": {
+      "old_receipts_unchanged": {
+        "evidence/C1-after.native.json": true,
+        "evidence/C1-attempt-1.native.json": true,
+        "evidence/C1-acceptance.native.json": true,
+        "evidence/C1-before.native.json": true,
+        "evidence/C1-after/prices-negative-check.sh": true,
+        "evidence/C1-after/prices.txt": true,
+        "evidence/C1-before/prices-negative-check.sh": true,
+        "evidence/C1-before/prices.txt": true
+      },
+      "current_source_matches_authorized_mutation": true,
+      "initial_exit7_checks": 1,
+      "resume_commands": [
+        {
+          "command": "/bin/zsh -c 'pwd\ncat project-setting.md skill/SKILL.md tasks.md'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c \"rg --files --hidden -g '\"'!.git/**'\"' -g '\"'!.agents/**'\"' -g '\"'!.codex/**'\"' -g '\"'!.aws/**'\"'\ncat inputs/prices.txt evidence/C1-before.native.json evidence/C1-attempt-1.native.json evidence/C1-after.native.json\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'cat inputs/prices.txt'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'cat evidence/C1-acceptance.native.json'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'cat evidence/C1-attempt-1.native.json'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'git hash-object -- inputs/prices.txt output/prices-negative-check.sh evidence/C1-before/prices.txt evidence/C1-before/prices-negative-check.sh evidence/C1-after/prices.txt evidence/C1-after/prices-negative-check.sh'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'cat evidence/C1-before.native.json'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'cat evidence/C1-after.native.json'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'git hash-object -- skill/SKILL.md project-setting.md evidence/C1-attempt-1.native.json evidence/C1-before.native.json evidence/C1-after.native.json'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'cat skill/SKILL.md'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'cat evidence/C1-attempt-1.native.json'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'git hash-object -- skill/SKILL.md project-setting.md evidence/C1-attempt-1.native.json evidence/C1-before.native.json evidence/C1-after.native.json'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'cat evidence/T3-R1-A1.native.json'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'cat evidence/R1-reconciliation.json'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'cat output/native-evidence-assessment.md'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'cat evidence/T3-R1-acceptance.native.json'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c 'cat tasks.md\nrg --files evidence output'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -c \"rg -n 'Historical update|T3.*done|Unresolved acceptance|Completed and accepted' tasks.md\"",
+          "exit_code": 0
+        }
+      ],
+      "note": "Commands manually reviewed: source/evidence reads and fingerprints only; no old checker invocation. Unknown is synthetic; no real external send was attempted."
+    },
+    "56": {
+      "old_receipts_unchanged": {
+        "evidence/T1-check-1.md": true
+      },
+      "current_source_matches_authorized_mutation": true,
+      "initial_exit7_checks": 1,
+      "resume_commands": [
+        {
+          "command": "/bin/zsh -lc \"sed -n '1,240p' project-setting.md\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '1,320p' skill/SKILL.md\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '1,300p' tasks.md\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '1,320p' evidence/T1-check-1.md\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"rg -n \\\"T1 \\\\||T2 \\\\||T3 \\\\||C2 attempt 1|暫時重開|禁止重跑 C1\\\" tasks.md\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '20,110p' evidence/T1-check-1.md\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc 'cksum inputs/prices.txt'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '1,20p' inputs/prices.txt\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc 'cksum inputs/prices.txt'",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"rg -n \\\"\\\\| T1 \\\\||\\\\| T2 \\\\||\\\\| T3 \\\\||目前內容為|task attempt 1 running|blocked；目前版本\\\" tasks.md\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"rg -n \\\"\\\\| T3 \\\\||A1 attempt 1|T3 verifying\\\" tasks.md\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '1,260p' evidence/T3-assessment.md\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '1,360p' evidence/T3-readback-1.md\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '1,320p' evidence/T1-resume-version-1.md\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc \"sed -n '1,300p' tasks.md\"",
+          "exit_code": 0
+        },
+        {
+          "command": "/bin/zsh -lc 'find evidence -maxdepth 1 -type f -print | sort'",
+          "exit_code": 0
+        }
+      ],
+      "note": "Commands manually reviewed: source/evidence reads and fingerprints only; no old checker invocation. Unknown is synthetic; no real external send was attempted."
+    }
+  },
+  "cli_turns": {
+    "p3_56_native-execution-resume.jsonl": {
+      "thread_id": "01a1022e-36fb-7c61-b4e6-34cb92e9a4bb",
+      "turn_completed": true
+    },
+    "p3_61_resume-negative-initial.jsonl": {
+      "thread_id": "01a1022d-5372-7961-a08b-0e365288e183",
+      "turn_completed": true
+    },
+    "61-execute.jsonl": {
+      "thread_id": "01a101fd-fb50-7c41-9bda-7d64a282e847",
+      "turn_completed": true
+    },
+    "p3_56_resume-negative-initial.jsonl": {
+      "thread_id": "01a1022e-aaaa-7351-9713-2e377c1d7b34",
+      "turn_completed": true
+    },
+    "p3_56_resume-negative-resume.jsonl": {
+      "thread_id": "01a1022e-aaaa-7351-9713-2e377c1d7b34",
+      "turn_completed": true
+    },
+    "p3_61_resume-negative-resume.jsonl": {
+      "thread_id": "01a1022d-5372-7961-a08b-0e365288e183",
+      "turn_completed": true
+    },
+    "p3_56_native-execution-initial.jsonl": {
+      "thread_id": "01a1022e-36fb-7c61-b4e6-34cb92e9a4bb",
+      "turn_completed": true
+    }
+  }
+}

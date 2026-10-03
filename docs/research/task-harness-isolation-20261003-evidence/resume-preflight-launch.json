@@ -1,0 +1,18 @@
+{
+  "input": {
+    "cmd": "'codex' 'exec' 'resume' '--ignore-user-config' '--skip-git-repo-check' '--json' '--model' 'gpt-6.1-sol' '--enable' 'code_mode' '--enable' 'code_mode_only' '--disable' 'apps' '--disable' 'browser_use' '--disable' 'computer_use' '--disable' 'skill_mcp_dependency_install' '-c' 'model_reasoning_effort=\"high\"' '-c' 'approval_policy=\"never\"' '-c' 'default_permissions=\"portability_fixed\"' '-c' 'permissions.portability_fixed.filesystem={\":root\"=\"deny\",\":minimal\"=\"read\",\"/private/tmp/task-harness-portability-u3tqwccr\"=\"deny\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\"=\"write\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/skill\"=\"read\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/inputs\"=\"read\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/project-setting.md\"=\"read\",\"/private/tmp\"=\"deny\",\"/private/var/tmp\"=\"deny\"}' '-c' 'permissions.portability_fixed.network.enabled=false' '01a101fd-fb50-7c41-9bda-7d64a282e847' '-' < '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-isolation-20261003-evidence/resume-preflight-prompt.txt' > '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-isolation-20261003-evidence/resume-preflight.jsonl' 2> '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-isolation-20261003-evidence/resume-preflight.stderr'",
+    "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+    "login": false,
+    "max_output_tokens": 1000,
+    "yield_time_ms": 1000,
+    "sandbox_permissions": "require_escalated",
+    "justification": "以原測試 session、同一凍結候選與更嚴格單次 profile 驗證實際工具隔離；通過後僅完成既定 plan-only，不改全域設定或正式 Skill。"
+  },
+  "result": {
+    "chunk_id": "dfc4f1",
+    "wall_time_seconds": 1.002301792,
+    "session_id": 56415,
+    "original_token_count": 0,
+    "output": ""
+  }
+}

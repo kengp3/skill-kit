@@ -1,0 +1,34 @@
+{
+  "schema": "task-harness-native-exec-receipt/v1",
+  "check_id": "T2-check",
+  "attempt": 1,
+  "generated_by": "host built-in code mode from native exec_command input/result",
+  "exec_command": {
+    "input": {
+      "cmd": "zsh -c 'set -eu; before_prices=$(cksum inputs/prices.txt); before_rate=$(cksum inputs/tax-rate.txt); before_tax=$(cksum output/tax.txt); print -r -- \"fingerprint.before.prices=$before_prices\"; print -r -- \"fingerprint.before.tax_rate=$before_rate\"; print -r -- \"fingerprint.before.tax=$before_tax\"; sum=0; while IFS= read -r price || [ -n \"$price\" ]; do case \"$price\" in (\"\"|*[!0-9-]*) exit 20;; esac; sum=$((sum + price)); done < inputs/prices.txt; rate=$(< inputs/tax-rate.txt); case \"$rate\" in ([0-9]*.[0-9]*) ;; (*) exit 21;; esac; whole=${rate%%.*}; fraction=${rate#*.}; [ -n \"$whole\" ] && [ -n \"$fraction\" ]; case \"$whole$fraction\" in (*[!0-9]*) exit 22;; esac; scale=1; i=0; while [ \"$i\" -lt \"${#fraction}\" ]; do scale=$((scale * 10)); i=$((i + 1)); done; rate_num=$((10#$whole * scale + 10#$fraction)); product=$((sum * rate_num)); [ $((product % scale)) -eq 0 ]; tax=$((product / scale)); expected=$(printf \"%s\\n\" \"$tax\" | od -An -t x1 | tr -d \" \\n\"); actual=$(od -An -t x1 output/tax.txt | tr -d \" \\n\"); [ \"$actual\" = \"$expected\" ]; after_prices=$(cksum inputs/prices.txt); after_rate=$(cksum inputs/tax-rate.txt); after_tax=$(cksum output/tax.txt); print -r -- \"fingerprint.after.prices=$after_prices\"; print -r -- \"fingerprint.after.tax_rate=$after_rate\"; print -r -- \"fingerprint.after.tax=$after_tax\"; [ \"$before_prices\" = \"$after_prices\" ] && [ \"$before_rate\" = \"$after_rate\" ] && [ \"$before_tax\" = \"$after_tax\" ]'",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_56_native-execution",
+      "yield_time_ms": 10000,
+      "max_output_tokens": 10000
+    },
+    "result": {
+      "chunk_id": "95d4c4",
+      "wall_time_seconds": 0.000002042,
+      "exit_code": 0,
+      "original_token_count": 84,
+      "output": "fingerprint.before.prices=2869352896 9 inputs/prices.txt\nfingerprint.before.tax_rate=3510201678 5 inputs/tax-rate.txt\nfingerprint.before.tax=4164007125 2 output/tax.txt\nfingerprint.after.prices=2869352896 9 inputs/prices.txt\nfingerprint.after.tax_rate=3510201678 5 inputs/tax-rate.txt\nfingerprint.after.tax=4164007125 2 output/tax.txt\n"
+    },
+    "merged_output_field": "exec_command.result.output"
+  },
+  "fingerprints": {
+    "before": {
+      "prices": "2869352896 9 inputs/prices.txt",
+      "tax_rate": "3510201678 5 inputs/tax-rate.txt",
+      "tax": "4164007125 2 output/tax.txt"
+    },
+    "after": {
+      "prices": "2869352896 9 inputs/prices.txt",
+      "tax_rate": "3510201678 5 inputs/tax-rate.txt",
+      "tax": "4164007125 2 output/tax.txt"
+    }
+  }
+}

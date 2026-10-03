@@ -1,0 +1,42 @@
+{
+  "kind": "Assessment derived from native receipt values, not a new checker result",
+  "source_receipts": [
+    "evidence/R1-V1-attempt-1.native.json",
+    "evidence/R1-V1-content.native.json",
+    "evidence/R1-read-C1-acceptance.native.json",
+    "evidence/R1-read-C1-check.native.json",
+    "evidence/R1-read-C1-before.native.json",
+    "evidence/R1-read-C1-after.native.json"
+  ],
+  "fingerprint_order": [
+    "inputs/prices.txt",
+    "output/prices-negative-check.sh",
+    "evidence/C1-before/prices.txt",
+    "evidence/C1-before/prices-negative-check.sh",
+    "evidence/C1-after/prices.txt",
+    "evidence/C1-after/prices-negative-check.sh"
+  ],
+  "derived": {
+    "current_prices_content": "10\n20\n40\n",
+    "current_prices_blob": "f0adb405d3b629a637c97446b68e5314f229e844",
+    "historical_prices_blob": "300ed6fcd17373e06dd6ecdf001f55e0e9cd765f",
+    "current_checker_blob": "43b8f149a89c4caae3634e43e2190140bf77b024",
+    "historical_checker_blob": "43b8f149a89c4caae3634e43e2190140bf77b024",
+    "prices_version_matches_historical": false,
+    "checker_version_matches_historical": true,
+    "historical_snapshots_match_receipts": true,
+    "historical_before_after_stable": true,
+    "original_final_exit_present": true,
+    "historical_subject_verdict": "FAIL",
+    "old_evidence_applicable_to_current_prices": false,
+    "prior_accepted_assessment": true,
+    "current_acceptance_state": "verifying",
+    "current_subject_verdict": "unverified (checker not rerun)"
+  },
+  "limitations": [
+    "Read/hash tool success proves only that observation completed.",
+    "No new checker exit is supplied or inferred.",
+    "Prior current-version statements are historical; current prices have changed.",
+    "Sequential/non-atomic smoke observations on a shared host."
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "plan-only material observation; no product check",
+  "workspace": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+  "observations": [
+    {
+      "tool": "exec_command",
+      "request": {
+        "cmd": "/bin/cat inputs/tax-rate.txt skill/agents/openai.yaml",
+        "max_output_tokens": 2000
+      },
+      "result": {
+        "chunk_id": "772545",
+        "wall_time_seconds": 0.000002666,
+        "exit_code": 0,
+        "original_token_count": 75,
+        "output": "0.05\ninterface:\n  display_name: \"Task Harness\"\n  short_description: \"拆分任務、追蹤依賴與負責範圍，協調執行並以直接證據驗收及續作\"\n  default_prompt: \"使用 $task-harness 將這個目標拆成可驗收任務，建立清單，依依賴分配與執行並記錄結果。\"\n"
+      }
+    },
+    {
+      "tool": "exec_command",
+      "request": {
+        "cmd": "cksum inputs/prices.txt inputs/tax-rate.txt project-setting.md skill/SKILL.md",
+        "max_output_tokens": 1000
+      },
+      "result": {
+        "chunk_id": "e5abd2",
+        "wall_time_seconds": 0.000002916,
+        "exit_code": 0,
+        "original_token_count": 33,
+        "output": "2869352896 9 inputs/prices.txt\n3510201678 5 inputs/tax-rate.txt\n2385846425 217 project-setting.md\n3891422151 19532 skill/SKILL.md\n"
+      }
+    }
+  ],
+  "fingerprintKind": "cksum CRC and byte length; non-cryptographic",
+  "baselineObservations": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "555302",
+        "wall_time_seconds": 0.000002708,
+        "exit_code": 0,
+        "original_token_count": 25,
+        "output": "inputs/prices.txt\ninputs/tax-rate.txt\nproject-setting.md\nskill/SKILL.md\nskill/agents/openai.yaml\n"
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "5cebee",
+        "wall_time_seconds": 9.17e-7,
+        "exit_code": 1,
+        "original_token_count": 38,
+        "output": "xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun\n"
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "83fa32",
+        "wall_time_seconds": 0.000002667,
+        "exit_code": 1,
+        "original_token_count": 38,
+        "output": "xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun\n"
+      }
+    }
+  ]
+}

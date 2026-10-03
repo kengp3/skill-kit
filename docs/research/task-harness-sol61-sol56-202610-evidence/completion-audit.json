@@ -1,0 +1,32 @@
+{
+  "objective": "Revalidate current task-harness with 6.1 sol and 5.6 sol, collect errors, defer skill fixes",
+  "requirements": [
+    {
+      "requirement": "both requested models actually execute",
+      "state": "proven",
+      "evidence": "model-observation.json; 10 native turn_context identities/models"
+    },
+    {
+      "requirement": "three fresh cases per model end with reviewable artifacts",
+      "state": "proven",
+      "evidence": "sol61/, sol56/, native-traces/root-dispatch-and-status.json"
+    },
+    {
+      "requirement": "revalidate outputs against original checks/protection and current skill",
+      "state": "proven",
+      "evidence": "sol61/verification.json, sol56/verification.json, official-checks.json"
+    },
+    {
+      "requirement": "collect actual errors and quality gaps",
+      "state": "proven",
+      "evidence": "findings.json; 4 observations and 4 patch errors with native call/result ids; expected environment and contract differences separated"
+    },
+    {
+      "requirement": "defer fixes and preserve current source/history",
+      "state": "proven",
+      "evidence": "preservation.json; 192 original fingerprints unchanged; final skill copies match current"
+    }
+  ],
+  "scope": "Completion means test execution and error collection; does not mean observed defects are fixed or all harness quality criteria passed.",
+  "remaining_required_collection_work": []
+}

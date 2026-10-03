@@ -1,0 +1,13 @@
+Plan validation, 2026-10-02
+
+- Mode: plan-only; no implementation or runtime acceptance command executed.
+- Authoritative tracker: tasks.md.
+- Task IDs: T1 only; dependency `none`; therefore no missing ID, self-dependency, or cycle.
+- Requirement mapping:
+  - name plus integer amount list: T1 inputs and Acceptance items 1-2
+  - output name plus total: T1 Acceptance item 3 and Verify case 1
+  - empty name fails: T1 Acceptance item 1 and Verify case 2
+  - invalid input exits nonzero: T1 Acceptance item 4 and Verify cases 2-4
+- Existing material inspected: app.py contains `total(values) = sum(values)`.
+- Baseline app.py SHA-256: 3251dbf18617cd67c47707cb9bd1611dbac212ff0ee9814a75b8ce1f34b85aad
+- Repository state: project root is not a Git repository; fingerprint is used instead of a revision.

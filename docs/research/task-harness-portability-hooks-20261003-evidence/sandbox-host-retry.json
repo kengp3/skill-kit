@@ -1,0 +1,20 @@
+{
+  "id": "E7-host-retry",
+  "reason": "First attempt could not start nested sandbox (exit 71), so retry once through approved host execution with same restricted inner profile.",
+  "input": {
+    "cmd": "'codex' 'sandbox' '-P' 'portability_p1' '-C' '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture' '-c' 'permissions.portability_p1.filesystem={\":root\"=\"deny\",\":minimal\"=\"read\",\"/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture\"=\"read\"}' '--' '/bin/sh' '-c' 'test -r \"$1\" || exit 42; if test -r \"$2\"; then exit 41; fi; printf \"fixture readable; history unreadable\\n\"' 'p1-probe' '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture/expected.txt' '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-handoff-research-poc-20261003-evidence/offline-result.json'",
+    "workdir": "/Users/kengp3/Workspaces/mine/simple-skills",
+    "login": false,
+    "max_output_tokens": 1800,
+    "sandbox_permissions": "require_escalated",
+    "justification": "是否允許在外層 sandbox 外啟動一次更嚴格、唯讀的 Codex sandbox，驗證 fixture 可讀且歷史 evidence 不可讀？這不修改設定、不執行模型。"
+  },
+  "result": {
+    "chunk_id": "051eb0",
+    "wall_time_seconds": 0.0361645,
+    "exit_code": 0,
+    "original_token_count": 10,
+    "output": "fixture readable; history unreadable\n"
+  }
+}
+

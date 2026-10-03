@@ -1,0 +1,20 @@
+{
+  "input": {
+    "cmd": "'codex' 'exec' '--ignore-user-config' '--skip-git-repo-check' '--json' '--model' 'gpt-6.1-sol' '--enable' 'code_mode' '--enable' 'code_mode_only' '--disable' 'apps' '--disable' 'browser_use' '--disable' 'computer_use' '--disable' 'skill_mcp_dependency_install' '-c' 'model_reasoning_effort=\"high\"' '-c' 'approval_policy=\"never\"' '-c' 'default_permissions=\"portability_p3\"' '-c' 'permissions.portability_p3.filesystem={\":root\"=\"deny\",\":minimal\"=\"read\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\"=\"write\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/skill\"=\"read\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/inputs\"=\"read\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/project-setting.md\"=\"read\"}' '-c' 'permissions.portability_p3.network.enabled=false' '-C' '/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution' '-' < '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/runs/p3_61_native-execution/initial-prompt.txt' > '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/runs/p3_61_native-execution/initial.jsonl' 2> '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/runs/p3_61_native-execution/initial.stderr'",
+    "workdir": "/Users/kengp3/Workspaces/mine/simple-skills",
+    "login": false,
+    "max_output_tokens": 1000,
+    "yield_time_ms": 1000,
+    "sandbox_permissions": "require_escalated",
+    "justification": "是否允許啟動固定矩陣的 6.1 plan-only 驗收？此 CLI 使用單次受限 profile，模型只能讀寫該 fixture，無命令網路且不可提權；不修改全域設定。"
+  },
+  "result": {
+    "chunk_id": "000e74",
+    "wall_time_seconds": 1.002274625,
+    "session_id": 98003,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "phase": "plan-only and isolation preflight"
+}
+

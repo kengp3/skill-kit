@@ -1,0 +1,81 @@
+{
+  "status": "achieved_test_execution_and_error_collection",
+  "objective": "重新驗證測試，實際使用6.1sol與5.6sol，收集錯誤待後續修正",
+  "requirements": {
+    "fresh_current_source": {
+      "status": "pass",
+      "evidence": [
+        "run.json",
+        "runtime-check.json",
+        "sol61/original-inputs.json",
+        "sol56/original-inputs.json"
+      ]
+    },
+    "requested_models_actual_attempts": {
+      "status": "pass",
+      "evidence": [
+        "actors.json",
+        "model-observation.json",
+        "trace-verification.json"
+      ]
+    },
+    "eight_cases_terminal_and_archived": {
+      "status": "pass",
+      "evidence": [
+        "case-results.json",
+        "lifecycle-observation.json",
+        "native-traces/manifest.json"
+      ]
+    },
+    "direct_results_and_errors_collected": {
+      "status": "pass",
+      "evidence": [
+        "receipt-integrity.json",
+        "observed-process-errors.json",
+        "findings.json",
+        "collector-errors.json",
+        "parallel-overlap.json"
+      ]
+    },
+    "validation_commands": {
+      "status": "pass",
+      "evidence": [
+        "static-validation.json",
+        "runner-tests.json",
+        "sol61/verification-process.json",
+        "sol56/verification-process.json"
+      ]
+    },
+    "source_history_protected_inputs_preserved": {
+      "status": "pass",
+      "evidence": [
+        "preservation-check.json",
+        "runtime-check.json",
+        "receipt-integrity.json",
+        "sol61/verification.json",
+        "sol56/verification.json"
+      ]
+    },
+    "report_plan_and_no_remediation": {
+      "status": "pass",
+      "evidence": [
+        "../task-harness-revalidation-20261003.research.md",
+        "../../plans/task-harness-revalidation-20261003.plan.md",
+        "findings.json"
+      ]
+    }
+  },
+  "behavioral_failures_or_gaps": [
+    "REVAL-PAR-61",
+    "REVAL-ATTEMPT-56",
+    "REVAL-HANDOFF-56"
+  ],
+  "remediation_performed": false,
+  "acceptance_boundary": "Collection is complete with test failures/gaps preserved; does not claim all behavioral gates passed",
+  "artifact_hashes": {
+    "docs/plans/task-harness-revalidation-20261003.plan.md": "73d31b013ccaacf0d6e42643f1040efef0441bdaeab2e00dd15a91d255bc28bf",
+    "docs/research/task-harness-revalidation-20261003.research.md": "516063db7d95e0b55b516e2a47567f619c36188ec4ad40b7e358992ba0313a06",
+    "docs/research/task-harness-revalidation-20261003-evidence/findings.json": "755e345274daf88f9d4c61ef7462d16b33c1606e71b6f6ca30bbc1e9e45ac2d3",
+    "docs/research/task-harness-revalidation-20261003-evidence/case-results.json": "f7530b5512688541314839cf2e5df1be8c0420d3c87d4237415882732d713d44"
+  }
+}

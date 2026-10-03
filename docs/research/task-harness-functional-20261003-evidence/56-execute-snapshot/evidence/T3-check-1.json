@@ -1,0 +1,38 @@
+{
+  "schema": "task-harness-native-exec-receipt/v1",
+  "check_id": "T3-check",
+  "attempt": 1,
+  "generated_by": "host built-in code mode from native exec_command input/result",
+  "exec_command": {
+    "input": {
+      "cmd": "zsh -c 'set -eu; command -v cksum >/dev/null; command -v od >/dev/null; command -v tr >/dev/null; before_inputs_prices=$(cksum inputs/prices.txt); before_inputs_rate=$(cksum inputs/tax-rate.txt); before_subtotal=$(cksum output/subtotal.txt); before_tax=$(cksum output/tax.txt); before_total=$(cksum output/total.txt); before_t1_receipt=$(cksum evidence/T1-check-1.json); before_t2_receipt=$(cksum evidence/T2-check-1.json); printf \"fingerprint.before.inputs_prices=%s\\n\" \"$before_inputs_prices\"; printf \"fingerprint.before.inputs_rate=%s\\n\" \"$before_inputs_rate\"; printf \"fingerprint.before.subtotal=%s\\n\" \"$before_subtotal\"; printf \"fingerprint.before.tax=%s\\n\" \"$before_tax\"; printf \"fingerprint.before.total=%s\\n\" \"$before_total\"; printf \"fingerprint.before.t1_receipt=%s\\n\" \"$before_t1_receipt\"; printf \"fingerprint.before.t2_receipt=%s\\n\" \"$before_t2_receipt\"; subtotal=$(< output/subtotal.txt); tax=$(< output/tax.txt); total=$(< output/total.txt); case \"$subtotal:$tax:$total\" in (*[!0-9:]*|:*|*::*|*:) exit 30;; esac; expected_subtotal=$(printf \"%s\\n\" \"$subtotal\" | od -An -t x1 | tr -d \" \\n\"); expected_tax=$(printf \"%s\\n\" \"$tax\" | od -An -t x1 | tr -d \" \\n\"); expected_total=$(printf \"%s\\n\" \"$((subtotal + tax))\" | od -An -t x1 | tr -d \" \\n\"); [ \"$(od -An -t x1 output/subtotal.txt | tr -d \" \\n\")\" = \"$expected_subtotal\" ]; [ \"$(od -An -t x1 output/tax.txt | tr -d \" \\n\")\" = \"$expected_tax\" ]; [ \"$(od -An -t x1 output/total.txt | tr -d \" \\n\")\" = \"$expected_total\" ]; after_inputs_prices=$(cksum inputs/prices.txt); after_inputs_rate=$(cksum inputs/tax-rate.txt); after_subtotal=$(cksum output/subtotal.txt); after_tax=$(cksum output/tax.txt); after_total=$(cksum output/total.txt); after_t1_receipt=$(cksum evidence/T1-check-1.json); after_t2_receipt=$(cksum evidence/T2-check-1.json); printf \"fingerprint.after.inputs_prices=%s\\n\" \"$after_inputs_prices\"; printf \"fingerprint.after.inputs_rate=%s\\n\" \"$after_inputs_rate\"; printf \"fingerprint.after.subtotal=%s\\n\" \"$after_subtotal\"; printf \"fingerprint.after.tax=%s\\n\" \"$after_tax\"; printf \"fingerprint.after.total=%s\\n\" \"$after_total\"; printf \"fingerprint.after.t1_receipt=%s\\n\" \"$after_t1_receipt\"; printf \"fingerprint.after.t2_receipt=%s\\n\" \"$after_t2_receipt\"; [ \"$before_inputs_prices\" = \"$after_inputs_prices\" ]; [ \"$before_inputs_rate\" = \"$after_inputs_rate\" ]; [ \"$before_subtotal\" = \"$after_subtotal\" ]; [ \"$before_tax\" = \"$after_tax\" ]; [ \"$before_total\" = \"$after_total\" ]; [ \"$before_t1_receipt\" = \"$after_t1_receipt\" ]; [ \"$before_t2_receipt\" = \"$after_t2_receipt\" ]'",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_56_native-execution",
+      "yield_time_ms": 10000,
+      "max_output_tokens": 20000
+    },
+    "result": {
+      "chunk_id": "520ad5",
+      "wall_time_seconds": 0.000003375,
+      "exit_code": 0,
+      "original_token_count": 216,
+      "output": "fingerprint.before.inputs_prices=2869352896 9 inputs/prices.txt\nfingerprint.before.inputs_rate=3510201678 5 inputs/tax-rate.txt\nfingerprint.before.subtotal=596333413 3 output/subtotal.txt\nfingerprint.before.tax=4164007125 2 output/tax.txt\nfingerprint.before.total=568501996 3 output/total.txt\nfingerprint.before.t1_receipt=3029169497 1842 evidence/T1-check-1.json\nfingerprint.before.t2_receipt=3918888123 2808 evidence/T2-check-1.json\nfingerprint.after.inputs_prices=2869352896 9 inputs/prices.txt\nfingerprint.after.inputs_rate=3510201678 5 inputs/tax-rate.txt\nfingerprint.after.subtotal=596333413 3 output/subtotal.txt\nfingerprint.after.tax=4164007125 2 output/tax.txt\nfingerprint.after.total=568501996 3 output/total.txt\nfingerprint.after.t1_receipt=3029169497 1842 evidence/T1-check-1.json\nfingerprint.after.t2_receipt=3918888123 2808 evidence/T2-check-1.json\n"
+    },
+    "merged_output_field": "exec_command.result.output"
+  },
+  "fingerprints": {
+    "fingerprint.before.inputs_prices": "2869352896 9 inputs/prices.txt",
+    "fingerprint.before.inputs_rate": "3510201678 5 inputs/tax-rate.txt",
+    "fingerprint.before.subtotal": "596333413 3 output/subtotal.txt",
+    "fingerprint.before.tax": "4164007125 2 output/tax.txt",
+    "fingerprint.before.total": "568501996 3 output/total.txt",
+    "fingerprint.before.t1_receipt": "3029169497 1842 evidence/T1-check-1.json",
+    "fingerprint.before.t2_receipt": "3918888123 2808 evidence/T2-check-1.json",
+    "fingerprint.after.inputs_prices": "2869352896 9 inputs/prices.txt",
+    "fingerprint.after.inputs_rate": "3510201678 5 inputs/tax-rate.txt",
+    "fingerprint.after.subtotal": "596333413 3 output/subtotal.txt",
+    "fingerprint.after.tax": "4164007125 2 output/tax.txt",
+    "fingerprint.after.total": "568501996 3 output/total.txt",
+    "fingerprint.after.t1_receipt": "3029169497 1842 evidence/T1-check-1.json",
+    "fingerprint.after.t2_receipt": "3918888123 2808 evidence/T2-check-1.json"
+  }
+}

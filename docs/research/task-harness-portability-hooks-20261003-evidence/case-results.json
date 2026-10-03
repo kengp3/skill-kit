@@ -1,0 +1,60 @@
+{
+  "decision": "Inconclusive",
+  "coordinator_sessions_started": 1,
+  "skill_behavior_runs_completed": 0,
+  "workers_spawned": 0,
+  "raw_evidence": "runs/p3_61_native-execution/initial.jsonl",
+  "raw_sha256": "a148617ef0037a1b5b1d6237f181189d444b5380807a36254edfa3ccbe0ed3e3",
+  "native_command_result_line": 6,
+  "native_command_result": {
+    "id": "item_2",
+    "type": "command_execution",
+    "command": "/bin/zsh -lc \"if test -r inputs/prices.txt; then printf 'INPUT_READABLE=yes\\\\n'; else printf 'INPUT_READABLE=no\\\\n'; fi\nif test -r /private/tmp/task-harness-portability-u3tqwccr/outside-canary.txt; then printf 'OUTSIDE_READABLE=yes\\\\n'; else printf 'OUTSIDE_READABLE=no\\\\n'; fi\"",
+    "aggregated_output": "INPUT_READABLE=yes\nOUTSIDE_READABLE=yes\n",
+    "exit_code": 0,
+    "status": "completed"
+  },
+  "cases": [
+    {
+      "id": "p3_61_native-execution",
+      "model_requested": "gpt-6.1-sol",
+      "state": "stopped_at_isolation_preflight",
+      "skill_behavior": "unverified",
+      "workers_spawned": 0,
+      "runtime_unchanged": true,
+      "products_created": false,
+      "tracker_created": false
+    },
+    {
+      "id": "p3_61_resume-negative",
+      "model_requested": "gpt-6.1-sol",
+      "state": "not_started_due_to_gate",
+      "skill_behavior": "unverified",
+      "workers_spawned": 0,
+      "runtime_unchanged": true,
+      "products_created": false,
+      "tracker_created": false
+    },
+    {
+      "id": "p3_56_native-execution",
+      "model_requested": "gpt-5.6-sol",
+      "state": "not_started_due_to_gate",
+      "skill_behavior": "unverified",
+      "workers_spawned": 0,
+      "runtime_unchanged": true,
+      "products_created": false,
+      "tracker_created": false
+    },
+    {
+      "id": "p3_56_resume-negative",
+      "model_requested": "gpt-5.6-sol",
+      "state": "not_started_due_to_gate",
+      "skill_behavior": "unverified",
+      "workers_spawned": 0,
+      "runtime_unchanged": true,
+      "products_created": false,
+      "tracker_created": false
+    }
+  ],
+  "remaining_cases_disposition": "Not run under preregistered isolation stop condition; not substituted, retried, or counted as pass."
+}

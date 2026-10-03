@@ -1,0 +1,17 @@
+{
+  "input": {
+    "cmd": "'codex' 'sandbox' '-P' 'portability_diagnostic' '-C' '/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution' '-c' 'permissions.portability_diagnostic.filesystem={\":root\"=\"deny\",\":minimal\"=\"read\",\"/private/tmp/task-harness-portability-u3tqwccr\"=\"deny\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\"=\"write\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/skill\"=\"read\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/inputs\"=\"read\",\"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/project-setting.md\"=\"read\"}' '--' '/bin/sh' '-c' 'printf \"OWN_INPUT\\n\"; /bin/cat \"$1\"; own=$?; printf \"OWN_EXIT=%s\\n\" \"$own\"; printf \"OUTSIDE_INPUT\\n\"; /bin/cat \"$2\"; outside=$?; printf \"OUTSIDE_EXIT=%s\\n\" \"$outside\"; test \"$own\" -eq 0 && test \"$outside\" -ne 0' 'probe' '/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution/inputs/prices.txt' '/private/tmp/task-harness-portability-u3tqwccr/outside-canary.txt'",
+    "workdir": "/Users/kengp3/Workspaces/mine/simple-skills",
+    "login": false,
+    "max_output_tokens": 1500,
+    "sandbox_permissions": "require_escalated",
+    "justification": "以單次受限 sandbox 對無敏感 canary 驗證明確 parent deny 能否約束 macOS tmp 隱含存取，僅讀取測試檔案、不改全域設定。"
+  },
+  "result": {
+    "chunk_id": "3e04db",
+    "wall_time_seconds": 0.043033917,
+    "exit_code": 0,
+    "original_token_count": 39,
+    "output": "OWN_INPUT\n10\n20\n30\nOWN_EXIT=0\nOUTSIDE_INPUT\ncat: /private/tmp/task-harness-portability-u3tqwccr/outside-canary.txt: Operation not permitted\nOUTSIDE_EXIT=1\n"
+  }
+}

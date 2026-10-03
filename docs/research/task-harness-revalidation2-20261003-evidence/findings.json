@@ -1,0 +1,144 @@
+{
+  "objective": "完成重新測試與錯誤收集；本輪不修正",
+  "findings": [
+    {
+      "id": "REVAL2-HANDOFF-ORDER-56",
+      "severity": "medium",
+      "category": "workflow_deviation",
+      "case": "gpt-5.6-sol / parallel",
+      "status": "collected_pending_fix",
+      "title": "前置 done 與相依任務 running 同 patch，缺少先後保存邊界",
+      "contract": "skills/task-harness/SKILL.md:115，先成功保存前置 receipt/done，才重新檢查 readiness 並保存相依 start。",
+      "actual": "source105 同時 T2 running→done、T3 pending→running；108成功，114才開始 receipt.py。",
+      "impact": "功能與來源驗收成功，沒有早於 patch success 寫產品；但重現固定流程偏差，不能以最終綠燈證明兩段 handoff 已發生。",
+      "suggested_followup": "後續修正先確認為何既有明文規則未被遵守；採最小變更，僅重測受影響 parallel，保留 done-write success 與 successor-start success 的不同 evidence。",
+      "evidence": [
+        {
+          "artifact": "native-traces/reval2_56_parallel.json",
+          "source_lines": [
+            98,
+            101,
+            105,
+            108,
+            114,
+            117,
+            121,
+            124,
+            128,
+            131,
+            135,
+            138,
+            142,
+            145
+          ],
+          "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+        },
+        "sol56/parallel/tasks.md",
+        "sol56/parallel/evidence/T3-check-1.json"
+      ]
+    },
+    {
+      "id": "REVAL2-COORD-HANDLE-56",
+      "severity": "low",
+      "category": "metadata_observation",
+      "case": "gpt-5.6-sol / plan",
+      "status": "collected_followup",
+      "title": "tracker coordinator 僅寫本 agent，缺實際 handle",
+      "contract": "skills/task-harness/SKILL.md:36，actual handle if available。",
+      "actual": "Current coordinator 為「本 agent」；native context 有 /root/reval2_56_plan。",
+      "impact": "可從外部 trace 還原，未造成錯誤派工；但 tracker 自身無法直接識別本次 coordinator。",
+      "suggested_followup": "沿用既有 coordinator 欄位填入真實 handle，不新增身分機制。",
+      "evidence": [
+        "sol56/plan/tasks.md",
+        {
+          "artifact": "native-traces/reval2_56_plan.json",
+          "source_lines": [
+            43,
+            46,
+            52,
+            55
+          ],
+          "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+        },
+        "model-observation.json"
+      ]
+    },
+    {
+      "id": "REVAL2-RECEIPT-COPY-56",
+      "severity": "low",
+      "category": "evidence_hygiene_observation",
+      "case": "gpt-5.6-sol / misleading",
+      "status": "collected_followup",
+      "title": "完整 digest 與 process exits 手工複製到 tracker",
+      "contract": "skills/task-harness/SKILL.md:113，cite receipt path 而非 manually copying commands/exits/digests。",
+      "actual": "source102 patch 含完整 digest 與 exit7/0；109 用相同 literal 對 receipt stdout 再核對。",
+      "impact": "這次 copied digest/exits 均正確；不是 F-HASH/F-EXIT 重現或 evidence falsification。仍留下重複手抄的風險。",
+      "suggested_followup": "結論引用 receipt，避免重抄完整 digest；不要為此新增 runtime。",
+      "evidence": [
+        {
+          "artifact": "native-traces/reval2_56_misleading.json",
+          "source_lines": [
+            102,
+            105,
+            109,
+            112
+          ],
+          "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+        },
+        "sol56/misleading/tasks.md",
+        "sol56/misleading/evidence/T1-sha256-1.json"
+      ]
+    },
+    {
+      "id": "REVAL2-WORKER-ATTEMPT-56",
+      "severity": "low",
+      "category": "checkpoint_location_observation",
+      "case": "gpt-5.6-sol / parallel workers",
+      "status": "collected_followup",
+      "title": "worker 未在各自 evidence scope 保存獨立 check-attempt entry",
+      "contract": "skills/task-harness/SKILL.md:106，workers save check attempts in assigned evidence paths。",
+      "actual": "coordinator source50/63 先保存 assigned check1/path；worker 檔案中僅有最終 process receipt，沒有像6.1的 T1/T2-attempt.md。",
+      "impact": "當次 check attempt 仍有先於 invocation 的 coordinator 記錄，並非完全沒有 checkpoint；差異限於約定的保存者／位置，個別驗收仍可追溯。",
+      "suggested_followup": "後續釐清是否接受 coordinator 預先分配的 check record 等價於 worker local entry；若仍要求 local entry，沿用現有 evidence，不新增第二 tracker。",
+      "evidence": [
+        {
+          "artifact": "native-traces/reval2_56_parallel.json",
+          "source_lines": [
+            50,
+            53,
+            63,
+            66
+          ],
+          "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+        },
+        {
+          "artifact": "native-traces/reval2_56_parallel--subtotal_worker.json",
+          "source_lines": [
+            31,
+            34,
+            36,
+            39
+          ],
+          "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+        },
+        {
+          "artifact": "native-traces/reval2_56_parallel--label_worker.json",
+          "source_lines": [
+            28,
+            31,
+            35,
+            38
+          ],
+          "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+        },
+        "sol56/parallel/evidence/T1-check-1.json",
+        "sol56/parallel/evidence/T2-check-1.json"
+      ]
+    }
+  ],
+  "disposition": "全部保留供後續；medium/low 不阻塞本次收集結案，亦不宣稱被評估 Skill 所有流程通過。",
+  "raw_errors": "error-classification.json",
+  "fixes_applied": false,
+  "sampling_reruns": 0,
+  "historical_evidence": "前次 remediation 結案保留，本輪新 observation 不回寫舊結果。"
+}

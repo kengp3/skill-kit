@@ -1,0 +1,9 @@
+labels.py SHA-256: bf323853530fd47713761cb3c51f6b548f4dafa5ea8602b2a5f00d69bbf5fe1e
+
+Command: python3 -c 'from labels import label; assert label("  Alice  ") == "Alice"; print(repr(label("  Alice  ")))'
+Exit status: 0
+Result: 'Alice'
+
+Command: python3 -c 'from labels import label; assert label(" ") == "Guest"; print(repr(label(" ")))'
+Exit status: 0
+Result: 'Guest'

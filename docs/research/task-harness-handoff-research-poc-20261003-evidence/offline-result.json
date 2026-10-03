@@ -1,0 +1,1163 @@
+{
+  "fixture_sha256": "3b2ce31197537459a81baeee182fb509595239691c72329946c4d25b324c662f",
+  "checker_sha256": "f08a75b4a781d63d32a4b65ee6101f72ecce3611bd0461536baeeffab2ec59b1",
+  "temporary_root": "/private/tmp/task-harness-offline-o6nudcb6",
+  "branches": 21,
+  "matched": 21,
+  "results": [
+    {
+      "id": "O1",
+      "kind": "historical_manual_normalization",
+      "observed": {
+        "strict": "pass",
+        "state": {
+          "prerequisite": "done",
+          "successor": "running"
+        },
+        "early_product": false,
+        "errors": [],
+        "marker": null
+      },
+      "expected": {
+        "strict": "pass",
+        "marker": null,
+        "state": {
+          "prerequisite": "done",
+          "successor": "running"
+        },
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "references": [
+          {
+            "source_line": 82,
+            "raw_line_sha256": "8d625147bf1308b1687e54827a827a490091c9e149a2c06feaf2a63891b65892",
+            "verified": true
+          },
+          {
+            "source_line": 86,
+            "raw_line_sha256": "bdc76335c35e647d0f60423dd0d54f75ff6c9ef05ea0d9d95a98be6c2de65748",
+            "verified": true
+          },
+          {
+            "source_line": 88,
+            "raw_line_sha256": "81b6df47be1833d348372e6f267ceaf33e5d1422046a44f96f49f489627385d8",
+            "verified": true
+          },
+          {
+            "source_line": 84,
+            "raw_line_sha256": "c80137523c4662e64287b7cf6fcc2d9cc17aa5b03ab4bed5426dabe804d3229b",
+            "verified": true
+          },
+          {
+            "source_line": 85,
+            "raw_line_sha256": "e54b50af7769dfcd55e70232733766c46d71140aa05e80d1fae8d0266c76f1b1",
+            "verified": true
+          },
+          {
+            "source_line": 90,
+            "raw_line_sha256": "d982ca48578918c9de41b4db7c0de04efe7e30bfc76c3064a8e4b3045aa20d86",
+            "verified": true
+          }
+        ],
+        "receipts": [
+          {
+            "path": "docs/research/task-harness-revalidation2-20261003-evidence/sol61/parallel/evidence/T1-check-1.json",
+            "sha256": "5c6f7229594ef999f2692f945dc3d56a0442bf739c1a493b8c11b596410f4b14"
+          },
+          {
+            "path": "docs/research/task-harness-revalidation2-20261003-evidence/sol61/parallel/evidence/T2-check-1.json",
+            "sha256": "4f5d873f92276ead3dc1ba44ef7fba44da3f721651b83380e7ae7eba1df4a3e0"
+          }
+        ],
+        "atomicity": "unknown",
+        "events": [
+          {
+            "op": "receipt",
+            "valid": true
+          },
+          {
+            "op": "write_call",
+            "target": "done",
+            "id": "d"
+          },
+          {
+            "op": "write_result",
+            "id": "d",
+            "ok": true
+          },
+          {
+            "op": "write_call",
+            "target": "start",
+            "id": "s"
+          },
+          {
+            "op": "write_result",
+            "id": "s",
+            "ok": true
+          },
+          {
+            "op": "product"
+          }
+        ]
+      }
+    },
+    {
+      "id": "O2",
+      "kind": "historical_manual_normalization",
+      "observed": {
+        "strict": "fail",
+        "state": {
+          "prerequisite": "done",
+          "successor": "running"
+        },
+        "early_product": false,
+        "errors": [
+          "start write lacks an earlier successful done write",
+          "done and start combined in one write"
+        ],
+        "marker": null
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": null,
+        "state": {
+          "prerequisite": "done",
+          "successor": "running"
+        },
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "references": [
+          {
+            "source_line": 98,
+            "raw_line_sha256": "adc1d2d16e9f7e16f2556ba2c09aac00be2232201261e152f6baed5c235ff9a3",
+            "verified": true
+          },
+          {
+            "source_line": 105,
+            "raw_line_sha256": "3b9f4335b1f7882f228a132f09213b18ef582c75a2c1f41186e4f30ad1126672",
+            "verified": true
+          },
+          {
+            "source_line": 108,
+            "raw_line_sha256": "b9593b5d3802e92aa97ba35b347b0cbc038cea0db0b30fda1bccd07546261016",
+            "verified": true
+          },
+          {
+            "source_line": 114,
+            "raw_line_sha256": "0d2f092ffd2a9dc7e01dd79e2a1da015c9e04ebd4722f957ef524fd7021834da",
+            "verified": true
+          },
+          {
+            "source_line": 117,
+            "raw_line_sha256": "72c6472af8aae00d449f3a4b5c73786d94bb2613e24471e9eb76881c949e7457",
+            "verified": true
+          },
+          {
+            "source_line": 100,
+            "raw_line_sha256": "127109d5aa9b89ae1d75900ebec13ca128e6bf24e0c5a2abc1972fa59092b56e",
+            "verified": true
+          },
+          {
+            "source_line": 106,
+            "raw_line_sha256": "f16b995385937198ffbd9a19dca890a78b2a7a47d61464a08000da1bd5a33e97",
+            "verified": true
+          },
+          {
+            "source_line": 115,
+            "raw_line_sha256": "e019f281d7dffa54a79d775dd62d08c5f4612adc781bca15f5ba78aee44423f9",
+            "verified": true
+          }
+        ],
+        "receipts": [
+          {
+            "path": "docs/research/task-harness-revalidation2-20261003-evidence/sol56/parallel/evidence/T1-check-1.json",
+            "sha256": "7d5521bff11f14063ccdf1f3dade26f5820938d2e98c7d1d4191bf691792824e"
+          },
+          {
+            "path": "docs/research/task-harness-revalidation2-20261003-evidence/sol56/parallel/evidence/T2-check-1.json",
+            "sha256": "d4a898c3bcce14bdc413d6da4fd62688d009ef6a2e8ebe9f2920bf1c0400cb75"
+          }
+        ],
+        "atomicity": "unknown",
+        "events": [
+          {
+            "op": "receipt",
+            "valid": true
+          },
+          {
+            "op": "write_call",
+            "target": "both",
+            "id": "b"
+          },
+          {
+            "op": "write_result",
+            "id": "b",
+            "ok": true
+          },
+          {
+            "op": "product"
+          }
+        ]
+      }
+    },
+    {
+      "id": "O3-missing-stop",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "pass",
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "early_product": false,
+        "errors": [],
+        "marker": false
+      },
+      "expected": {
+        "strict": "pass",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O3-missing-stop",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": false
+          },
+          {
+            "op": "reload",
+            "state": {
+              "prerequisite": "pending",
+              "successor": "pending"
+            },
+            "marker": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "O3-missing-attempt",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "fail",
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": false,
+        "errors": [
+          "write attempted with missing, failed, or stale prerequisite receipt",
+          "start write lacks an earlier successful done write"
+        ],
+        "marker": false
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O3-missing-attempt",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": false
+          },
+          {
+            "op": "write_call",
+            "id": 0,
+            "target": "start"
+          },
+          {
+            "op": "write_result",
+            "id": 0,
+            "ok": true
+          },
+          {
+            "op": "reload",
+            "state": {
+              "prerequisite": "pending",
+              "successor": "running"
+            },
+            "marker": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "O3-missing-continue",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "fail",
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": true,
+        "errors": [
+          "write attempted with missing, failed, or stale prerequisite receipt",
+          "start write lacks an earlier successful done write",
+          "product action lacks valid receipt and successful required checkpoints"
+        ],
+        "marker": true
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": true,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": true
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O3-missing-continue",
+        "marker": true,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": false
+          },
+          {
+            "op": "write_call",
+            "id": 0,
+            "target": "start"
+          },
+          {
+            "op": "write_result",
+            "id": 0,
+            "ok": true
+          },
+          {
+            "op": "product"
+          },
+          {
+            "op": "reload",
+            "state": {
+              "prerequisite": "pending",
+              "successor": "running"
+            },
+            "marker": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "O3-failed-stop",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "pass",
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "early_product": false,
+        "errors": [],
+        "marker": false
+      },
+      "expected": {
+        "strict": "pass",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O3-failed-stop",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": false
+          },
+          {
+            "op": "reload",
+            "state": {
+              "prerequisite": "pending",
+              "successor": "pending"
+            },
+            "marker": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "O3-failed-attempt",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "fail",
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": false,
+        "errors": [
+          "write attempted with missing, failed, or stale prerequisite receipt",
+          "start write lacks an earlier successful done write"
+        ],
+        "marker": false
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O3-failed-attempt",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": false
+          },
+          {
+            "op": "write_call",
+            "id": 0,
+            "target": "start"
+          },
+          {
+            "op": "write_result",
+            "id": 0,
+            "ok": true
+          },
+          {
+            "op": "reload",
+            "state": {
+              "prerequisite": "pending",
+              "successor": "running"
+            },
+            "marker": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "O3-failed-continue",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "fail",
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": true,
+        "errors": [
+          "write attempted with missing, failed, or stale prerequisite receipt",
+          "start write lacks an earlier successful done write",
+          "product action lacks valid receipt and successful required checkpoints"
+        ],
+        "marker": true
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": true,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": true
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O3-failed-continue",
+        "marker": true,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": false
+          },
+          {
+            "op": "write_call",
+            "id": 0,
+            "target": "start"
+          },
+          {
+            "op": "write_result",
+            "id": 0,
+            "ok": true
+          },
+          {
+            "op": "product"
+          },
+          {
+            "op": "reload",
+            "state": {
+              "prerequisite": "pending",
+              "successor": "running"
+            },
+            "marker": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "O4-stop",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "pass",
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "early_product": false,
+        "errors": [],
+        "marker": false
+      },
+      "expected": {
+        "strict": "pass",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O4-stop",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": false
+          },
+          {
+            "op": "reload",
+            "state": {
+              "prerequisite": "pending",
+              "successor": "pending"
+            },
+            "marker": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "O4-continue",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "fail",
+        "state": {
+          "prerequisite": "done",
+          "successor": "running"
+        },
+        "early_product": true,
+        "errors": [
+          "write attempted with missing, failed, or stale prerequisite receipt",
+          "write attempted with missing, failed, or stale prerequisite receipt",
+          "product action lacks valid receipt and successful required checkpoints"
+        ],
+        "marker": true
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": true,
+        "state": {
+          "prerequisite": "done",
+          "successor": "running"
+        },
+        "early_product": true
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O4-continue",
+        "marker": true,
+        "state": {
+          "prerequisite": "done",
+          "successor": "running"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": false
+          },
+          {
+            "op": "write_call",
+            "id": 0,
+            "target": "done"
+          },
+          {
+            "op": "write_result",
+            "id": 0,
+            "ok": true
+          },
+          {
+            "op": "write_call",
+            "id": 1,
+            "target": "start"
+          },
+          {
+            "op": "write_result",
+            "id": 1,
+            "ok": true
+          },
+          {
+            "op": "product"
+          },
+          {
+            "op": "reload",
+            "state": {
+              "prerequisite": "done",
+              "successor": "running"
+            },
+            "marker": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "O5-stop",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "pass",
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "early_product": false,
+        "errors": [],
+        "marker": false
+      },
+      "expected": {
+        "strict": "pass",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O5-stop",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": true
+          },
+          {
+            "op": "write_call",
+            "id": 0,
+            "target": "done"
+          },
+          {
+            "op": "write_result",
+            "id": 0,
+            "ok": false
+          },
+          {
+            "op": "reload",
+            "state": {
+              "prerequisite": "pending",
+              "successor": "pending"
+            },
+            "marker": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "O5-continue",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "fail",
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": true,
+        "errors": [
+          "start write lacks an earlier successful done write",
+          "product action lacks valid receipt and successful required checkpoints"
+        ],
+        "marker": true
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": true,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": true
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O5-continue",
+        "marker": true,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": true
+          },
+          {
+            "op": "write_call",
+            "id": 0,
+            "target": "done"
+          },
+          {
+            "op": "write_result",
+            "id": 0,
+            "ok": false
+          },
+          {
+            "op": "reload",
+            "state": {
+              "prerequisite": "pending",
+              "successor": "pending"
+            },
+            "marker": false
+          },
+          {
+            "op": "write_call",
+            "id": 2,
+            "target": "start"
+          },
+          {
+            "op": "write_result",
+            "id": 2,
+            "ok": true
+          },
+          {
+            "op": "product"
+          }
+        ]
+      }
+    },
+    {
+      "id": "O6-stop",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "pass",
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "early_product": false,
+        "errors": [],
+        "marker": false
+      },
+      "expected": {
+        "strict": "pass",
+        "marker": false,
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O6-stop",
+        "marker": false,
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": true
+          },
+          {
+            "op": "write_call",
+            "id": 0,
+            "target": "done"
+          },
+          {
+            "op": "write_result",
+            "id": 0,
+            "ok": true
+          },
+          {
+            "op": "write_call",
+            "id": 1,
+            "target": "start"
+          },
+          {
+            "op": "write_result",
+            "id": 1,
+            "ok": false
+          },
+          {
+            "op": "reload",
+            "state": {
+              "prerequisite": "done",
+              "successor": "pending"
+            },
+            "marker": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "O6-continue",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "fail",
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "early_product": true,
+        "errors": [
+          "product action lacks valid receipt and successful required checkpoints"
+        ],
+        "marker": true
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": true,
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "early_product": true
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O6-continue",
+        "marker": true,
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": true
+          },
+          {
+            "op": "write_call",
+            "id": 0,
+            "target": "done"
+          },
+          {
+            "op": "write_result",
+            "id": 0,
+            "ok": true
+          },
+          {
+            "op": "write_call",
+            "id": 1,
+            "target": "start"
+          },
+          {
+            "op": "write_result",
+            "id": 1,
+            "ok": false
+          },
+          {
+            "op": "reload",
+            "state": {
+              "prerequisite": "done",
+              "successor": "pending"
+            },
+            "marker": false
+          },
+          {
+            "op": "product"
+          }
+        ]
+      }
+    },
+    {
+      "id": "O6-false-claim",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "fail",
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "early_product": false,
+        "errors": [
+          "successor claim contradicts persisted state"
+        ],
+        "marker": false
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": false,
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O6-false-claim",
+        "marker": false,
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": true
+          },
+          {
+            "op": "write_call",
+            "id": 0,
+            "target": "done"
+          },
+          {
+            "op": "write_result",
+            "id": 0,
+            "ok": true
+          },
+          {
+            "op": "write_call",
+            "id": 1,
+            "target": "start"
+          },
+          {
+            "op": "write_result",
+            "id": 1,
+            "ok": false
+          },
+          {
+            "op": "reload",
+            "state": {
+              "prerequisite": "done",
+              "successor": "pending"
+            },
+            "marker": false
+          },
+          {
+            "op": "claim",
+            "successor": "running"
+          }
+        ]
+      }
+    },
+    {
+      "id": "O7-missing-result",
+      "kind": "synthetic_fake_writer",
+      "observed": {
+        "strict": "unverified",
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "early_product": false,
+        "errors": [],
+        "marker": false
+      },
+      "expected": {
+        "strict": "unverified",
+        "marker": false,
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {
+        "path": "/private/tmp/task-harness-offline-o6nudcb6/O7-missing-result",
+        "marker": false,
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "events": [
+          {
+            "op": "receipt",
+            "valid": true
+          },
+          {
+            "op": "write_call",
+            "id": 0,
+            "target": "done"
+          }
+        ]
+      }
+    },
+    {
+      "id": "O7-missing-observation",
+      "kind": "synthetic_missing_observation",
+      "observed": {
+        "strict": "unverified",
+        "state": null,
+        "early_product": false,
+        "errors": [
+          "missing native observation"
+        ],
+        "marker": null
+      },
+      "expected": {
+        "strict": "unverified",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {}
+    },
+    {
+      "id": "O8-valid",
+      "kind": "synthetic_projection",
+      "observed": {
+        "strict": "pass",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      },
+      "expected": {
+        "strict": "pass",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {}
+    },
+    {
+      "id": "O8-id",
+      "kind": "synthetic_projection",
+      "observed": {
+        "strict": "fail",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {}
+    },
+    {
+      "id": "O8-model",
+      "kind": "synthetic_projection",
+      "observed": {
+        "strict": "fail",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {}
+    },
+    {
+      "id": "O8-hash",
+      "kind": "synthetic_projection",
+      "observed": {
+        "strict": "fail",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      },
+      "matched": true,
+      "mismatch": {},
+      "evidence": {}
+    }
+  ],
+  "limits": [
+    "Only explicit failure and reload; no crash or durability claim.",
+    "Historical normalization requires human review; this is not a general trace parser.",
+    "Synthetic tests calibrate oracle only; no model or Skill improvement claim.",
+    "Native JSONL and archived files must remain available to verify source bindings."
+  ]
+}

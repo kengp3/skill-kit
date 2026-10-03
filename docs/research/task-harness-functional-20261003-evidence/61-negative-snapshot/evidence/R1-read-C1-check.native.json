@@ -1,0 +1,19 @@
+{
+  "id": "R1-read-C1-check",
+  "input": {
+    "cmd": "cat evidence/C1-attempt-1.native.json",
+    "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_resume-negative",
+    "login": false,
+    "max_output_tokens": 3000
+  },
+  "result": {
+    "chunk_id": "d543a8",
+    "wall_time_seconds": 0.000001792,
+    "exit_code": 0,
+    "original_token_count": 225,
+    "output": "{\n  \"tool\": \"exec_command\",\n  \"task_id\": \"T1\",\n  \"check_id\": \"C1\",\n  \"check_attempt\": 1,\n  \"input\": {\n    \"cmd\": \"/bin/sh output/prices-negative-check.sh inputs/prices.txt\",\n    \"workdir\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_resume-negative\",\n    \"login\": false,\n    \"max_output_tokens\": 2000\n  },\n  \"result\": {\n    \"chunk_id\": \"ed2a13\",\n    \"wall_time_seconds\": 0.000004542,\n    \"exit_code\": 7,\n    \"original_token_count\": 2,\n    \"output\": \"PASS\\n\"\n  },\n  \"output_format\": \"merged (stdout/stderr not independently exposed)\",\n  \"command_representation\": \"native command string, not a process argv receipt\",\n  \"source_versions_before\": \"evidence/C1-before.native.json\",\n  \"source_versions_after\": \"evidence/C1-after.native.json\",\n  \"serialization\": \"Actual input object and returned result serialized directly by host native code mode; no manually copied exit codes or digests.\"\n}\n"
+  },
+  "tool": "exec_command",
+  "output_format": "merged",
+  "scope": "Resume read/version observation only; never checker replay."
+}

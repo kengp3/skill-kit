@@ -1,0 +1,59 @@
+--- SKILL.before.md
++++ skills/task-harness/SKILL.md
+@@ -37,9 +37,9 @@
+ Workspace / baseline: <actual root, revision and relevant dirty files, or artifact versions>
+ Available tools / execution limits / permissions:
+ 
+-| ID | Outcome | Depends on | Owner / handle | State |
+-| --- | --- | --- | --- | --- |
+-| T1 | ... | none | unassigned | pending |
++| ID | Outcome | Depends on | Owner / handle | Task attempt | State | Acceptance receipt |
++| --- | --- | --- | --- | --- | --- | --- |
++| T1 | ... | none | unassigned | not started | pending | none |
+ 
+ ## T1
+ Write scope / shared resources:
+@@ -47,7 +47,8 @@
+ Task completion criteria: <what this task must deliver; an assessment delivers a supported verdict>
+ Subject pass/fail criteria (assessment only): <how the evaluated object is judged; a negative verdict can complete the assessment>
+ Verify: <command or observable scenario and expected result>
+-Attempt / last update:
++Check attempts: <check ID, numeric attempt, receipt path; separate from task/dispatch attempt>
++Last update:
+ Evidence: <receipt artifact path or resolvable native receipt ID; keep exact commands, results and fingerprints in the receipt>
+ Blocker / next action:
+ 
+@@ -75,7 +76,7 @@
+ ```text
+ Task ID / outcome:
+ Inputs: exact workspace, instructions, source paths, dependency outputs.
+-Ownership: files/resources you may change; excluded areas.
++Ownership: product files/resources AND a distinct authorized evidence path for this task's checks; excluded areas. If only product writes are authorized, the coordinator owns receipt-producing verification before acceptance.
+ You are not alone in this workspace. Preserve others' changes and adapt to them.
+ Task completion criteria and verification: requested deliverable and direct checks; separate subject pass/fail criteria for assessments.
+ Limits: authorized operations, relevant runtime/user limits, stopping condition.
+@@ -99,9 +100,10 @@
+ 
+ These are task-list labels, not instructions to change a host's persistent-goal status. Follow the host's own lifecycle rules.
+ 
+-1. **Start one task.** Follow the applicable sequence, completing its tracker write before another dispatch or other work:
+-   - Delegated: dispatch one worker → use the returned handle to persist owner, attempt and running → select the next ready task. If output is already available, record verifying instead. A failed dispatch does not mean running; do not batch several successful dispatches into one later checkpoint.
+-   - Coordinator-owned, including a separately tracked check: persist owner, attempt and running → wait for that write to succeed → issue the task's first action. Keep this checkpoint separate from product mutations; a combined multi-file patch does not establish a preceding checkpoint.
++1. **Start one task.** First confirm each dependency has valid acceptance evidence and its done write succeeded. This gate applies before implementation, including coordinator work; deferring only the final check does not satisfy it. Follow the applicable sequence, completing its tracker write before another dispatch or other work:
++   - Delegated: dispatch one worker → use the returned handle to persist owner, numeric task attempt and running → select the next ready task. If output is already available, record verifying instead. A failed dispatch does not mean running; do not batch several successful dispatches into one later checkpoint.
++   - Coordinator-owned, including a separately tracked check: persist owner, numeric attempt and running → wait for that write to succeed → issue the task's first action. Keep this checkpoint separate from product mutations; a combined multi-file patch does not establish a preceding checkpoint.
++   The first task execution/dispatch attempt is 1. A new execution increments that task's known attempt after reconciling prior state. If historical counts are absent, retain `historical attempts: unknown`; a prior done/running entry does not prove a total count of 1. After reconciling artifacts, worker liveness and side effects, use an explicitly named resume epoch with local task/check counters starting at 1 for safe new work; this does not authorize replay of an unknown side effect. Track check attempts separately by check ID; before a coordinator-run check or safe retry, persist its numeric attempt and new receipt path, then wait for that write to succeed before invoking it. Workers save their check attempts in their assigned evidence paths and return the references for the coordinator to record. Do not infer a task restart from a check retry or overwrite earlier receipts.
+    If a tracker write fails, reconcile before proceeding.
+ 2. **Produce and inspect.** Execute the smallest change within ownership, then inspect actual artifacts and relevant diffs. Update coordination before widening scope. Integrate into the authoritative workspace and check the affected combined path; isolated success does not prove the final combination works. Preserve unrelated changes.
+ 3. **Check and retain receipts.** Map task completion criteria to direct checks, including relevant boundaries and user-visible flows. For local acceptance or retry checks, use Python 3 and the bundled [run_check.py](scripts/run_check.py) to save the actual process result and relevant source fingerprints. Give each attempt its own authorized evidence path and run one command per receipt:
+@@ -109,8 +111,8 @@
+    python3 <skill-dir>/scripts/run_check.py --output evidence/T1-check-1.json --source module.py --source check.py -- python3 check.py
+    ```
+    The runner does not retry or use shell expansion. Do not wrap several acceptance commands in a shell pipeline/batch: its receipt covers only the invoked process. Read the saved JSON; require state `finished` and stable sources before accepting a version. A nonzero command returncode is a failed check, even if stdout says PASS. `started` or `unknown` requires reconciliation; `not_started` has no process exit code. The runner's own exit can differ on launch failure or source changes, so the JSON is authoritative. Cite the receipt path rather than manually copying commands, exit codes or digests. Native structured observations may instead use a resolvable native receipt; do not invent shell exits for them. If Python 3 is unavailable, record that command-receipt verification is blocked rather than fabricating evidence. Equivalent reproduction commands must be labeled separately from actual invocations.
+-4. **Accept the tested version.** Bind receipts to revision plus relevant dirty-file information, or artifact fingerprints. Fill missing worker version evidence only after confirming those artifacts are unchanged since testing; otherwise rerun the affected checks. When accepted inputs or outputs change, reopen affected acceptance checks. A success message, running test, screenshot without the required interaction, or old green log is not acceptance. Missing required verification keeps the task verifying or blocked. For meaningful risk or subjective criteria, use an independent evaluator when permitted, with requirements and raw artifacts rather than a desired verdict; do not build a reviewer hierarchy by default.
+-5. **Persist and hand off.** Only after coordinator acceptance, persist done successfully before starting dependent work. A final batch update cannot replace this handoff. If the write fails, reconcile before proceeding.
++4. **Accept the tested version.** Read each task's own receipt and check its actual command, cwd, result and source fingerprints against the artifacts being accepted. Bind receipts to revision plus relevant dirty-file information, or artifact fingerprints. If a worker cannot supply attributable verification, keep the task verifying and have the coordinator check the current artifacts using a new authorized receipt; label it as coordinator verification. Do not substitute a successor's later integration receipt for prerequisite acceptance. When accepted inputs or outputs change, reopen affected acceptance checks. A success message, running test, screenshot without the required interaction, or old green log is not acceptance. Missing required verification keeps the task verifying or blocked. For meaningful risk or subjective criteria, use an independent evaluator when permitted, with requirements and raw artifacts rather than a desired verdict; do not build a reviewer hierarchy by default.
++5. **Persist and hand off.** After coordinator acceptance, save the task's receipt reference and done successfully. Only then recheck readiness and save the dependent task's start checkpoint before its first product action. A final batch update cannot replace this handoff. If the write fails, reconcile before proceeding.
+ 
+ ## Recover without replaying blindly
+ 

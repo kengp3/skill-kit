@@ -1,0 +1,46 @@
+{
+  "status": "preliminary; independent review pending",
+  "candidate_sha256": "6c2dfcfc7b0d4c9fdcdbfbfffb7f562e7c246cf41e0fc4a0cda51ce4b4d77cdf",
+  "observations": [
+    {
+      "id": "F-READY-56",
+      "status": "observed",
+      "scope": "sol56 parallel",
+      "detail": "T3 depends on T1,T2; T3 set running then receipt.py edited before prerequisite acceptance. Final integration passes, but readiness gate is violated.",
+      "trace": "native-traces/remfix5_56_parallel.json",
+      "evidence": [
+        {
+          "call_id": "call_ke4RPubM2uxSvA9hbTB5gUKS",
+          "call_line": 59,
+          "result_line": 62
+        },
+        {
+          "call_id": "call_s8VbZyduJt6fdc7nx1LvCH4f",
+          "call_line": 70,
+          "result_line": 73
+        },
+        {
+          "call_id": "call_po5UdzhaqKozQwSThruKheMf",
+          "call_line": 103,
+          "result_line": 106
+        },
+        {
+          "call_id": "call_yfHQVJLJg4YUPOVJbV59QJvZ",
+          "call_line": 122,
+          "result_line": 125
+        }
+      ]
+    },
+    {
+      "id": "F-DISPATCH-56",
+      "status": "observed",
+      "scope": "sol56 parallel",
+      "detail": "Each actual handle/state checkpoint precedes the next dispatch, but attempt is absent from tracker writes.",
+      "trace": "native-traces/remfix5_56_parallel.json",
+      "call_ids": [
+        "call_qWBlphtfsflDdtM0a4VkeILF",
+        "call_ke4RPubM2uxSvA9hbTB5gUKS"
+      ]
+    }
+  ]
+}

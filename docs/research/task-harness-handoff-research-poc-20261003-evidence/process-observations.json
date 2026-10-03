@@ -1,0 +1,154 @@
+{
+  "nonzero_commands": [
+    {
+      "actor": "/root/hpoc_61_2",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T18-31-10-01a10151-57b6-7bb3-be78-75f8a668df86.jsonl",
+      "source_line": 106,
+      "raw_line_sha256": "09d9d4eb5b70fa8c4cf24a5fefb0965eecc201c9ff8d38eda04d6d8ce9609a28",
+      "timestamp": "2026-10-03T10:34:27.024Z",
+      "item": {
+        "type": "CommandExecution",
+        "id": "exec-5be528a5-9031-4730-b64f-7a4807860afa",
+        "process_id": "48503",
+        "command": [
+          "/bin/zsh",
+          "-lc",
+          "python3 - <<'PY'\nimport json,hashlib\nfrom pathlib import Path\nr=json.loads(Path('evidence/T2/label-direct-1.json').read_text())\nassert r['cwd']==str(Path.cwd())\nassert r['state']=='finished' and r['returncode']==0 and r['sources_stable'] is True\nassert r['argv']==['python3','evidence/T2/check_labels.py']\nfor p,d in r['sources_after'].items():\n    assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==d,p\nprint('T2 receipt inspected and current fingerprints matched')\nPY"
+        ],
+        "cwd": "file:///private/tmp/task-harness-handoff-poc-xuahb0zu/hpoc_61_2/project",
+        "parsed_cmd": [
+          {
+            "type": "unknown",
+            "cmd": "python3 - <<'PY'\nimport json,hashlib\nfrom pathlib import Path\nr=json.loads(Path('evidence/T2/label-direct-1.json').read_text())\nassert r['cwd']==str(Path.cwd())\nassert r['state']=='finished' and r['returncode']==0 and r['sources_stable'] is True\nassert r['argv']==['python3','evidence/T2/check_labels.py']\nfor p,d in r['sources_after'].items():\n    assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==d,p\nprint('T2 receipt inspected and current fingerprints matched')\nPY"
+          }
+        ],
+        "source": "unified_exec_startup",
+        "status": "failed",
+        "stdout": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+        "stderr": "",
+        "aggregated_output": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+        "exit_code": 1,
+        "duration": {
+          "secs": 0,
+          "nanos": 10236666
+        },
+        "formatted_output": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n"
+      }
+    },
+    {
+      "actor": "/root/hpoc_56_2/subtotal_worker",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T18-32-43-01a10152-c1eb-7832-88b2-b1dda66c438b.jsonl",
+      "source_line": 27,
+      "raw_line_sha256": "2978fe5c7d0840d28fe5620dfda818d0658f80172aac5952667d4b480dcc472b",
+      "timestamp": "2026-10-03T10:32:58.285Z",
+      "item": {
+        "type": "CommandExecution",
+        "id": "exec-078f8e61-97eb-4c3a-beee-fe9bd1d9f73a",
+        "process_id": "89125",
+        "command": [
+          "/bin/zsh",
+          "-lc",
+          "find evidence -maxdepth 2 -type f -print 2>/dev/null"
+        ],
+        "cwd": "file:///private/tmp/task-harness-handoff-poc-xuahb0zu/hpoc_56_2/project",
+        "parsed_cmd": [
+          {
+            "type": "unknown",
+            "cmd": "find evidence -maxdepth 2 -type f -print 2>/dev/null"
+          }
+        ],
+        "source": "unified_exec_startup",
+        "status": "failed",
+        "stdout": "",
+        "stderr": "",
+        "aggregated_output": "",
+        "exit_code": 1,
+        "duration": {
+          "secs": 0,
+          "nanos": 4833
+        },
+        "formatted_output": ""
+      }
+    },
+    {
+      "actor": "/root/hpoc_56_3",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T18-37-01-01a10156-b1f7-7760-8060-8b838de85488.jsonl",
+      "source_line": 21,
+      "raw_line_sha256": "e9861dcc6989531f0722946b835a5377c1b87e2f2b71527d29d3457e2e618678",
+      "timestamp": "2026-10-03T10:37:15.817Z",
+      "item": {
+        "type": "CommandExecution",
+        "id": "exec-1ab848cd-3cc2-44e5-9232-8225dfaaca6e",
+        "process_id": "44840",
+        "command": [
+          "/bin/zsh",
+          "-lc",
+          "rg --files -g 'AGENTS.md' -g '!**/.git/**' . .."
+        ],
+        "cwd": "file:///private/tmp/task-harness-handoff-poc-xuahb0zu/hpoc_56_3/project",
+        "parsed_cmd": [
+          {
+            "type": "list_files",
+            "cmd": "rg --files -g AGENTS.md -g '!**/.git/**' . ..",
+            "path": "."
+          }
+        ],
+        "source": "unified_exec_startup",
+        "status": "failed",
+        "stdout": "",
+        "stderr": "",
+        "aggregated_output": "",
+        "exit_code": 1,
+        "duration": {
+          "secs": 0,
+          "nanos": 3833
+        },
+        "formatted_output": ""
+      }
+    }
+  ],
+  "tool_errors": [
+    {
+      "actor": "/root/hpoc_56_1",
+      "source_line": 30,
+      "output": [
+        {
+          "type": "input_text",
+          "text": "Script failed\nWall time 0.0 seconds\nOutput:\n"
+        },
+        {
+          "type": "input_text",
+          "text": "Script error:\napply_patch verification failed: invalid patch: multiple operations target /private/tmp/task-harness-handoff-poc-xuahb0zu/hpoc_56_1/project/tasks.md"
+        }
+      ]
+    },
+    {
+      "actor": "/root/hpoc_56_3",
+      "source_line": 42,
+      "output": [
+        {
+          "type": "input_text",
+          "text": "Script failed\nWall time 0.0 seconds\nOutput:\n"
+        },
+        {
+          "type": "input_text",
+          "text": "Script error:\napply_patch verification failed: invalid patch: multiple operations target /private/tmp/task-harness-handoff-poc-xuahb0zu/hpoc_56_3/project/tasks.md"
+        }
+      ]
+    },
+    {
+      "actor": "/root/hpoc_56_4",
+      "source_line": 35,
+      "output": [
+        {
+          "type": "input_text",
+          "text": "Script failed\nWall time 0.0 seconds\nOutput:\n"
+        },
+        {
+          "type": "input_text",
+          "text": "Script error:\napply_patch verification failed: invalid patch: multiple operations target /private/tmp/task-harness-handoff-poc-xuahb0zu/hpoc_56_4/project/tasks.md"
+        }
+      ]
+    }
+  ]
+}

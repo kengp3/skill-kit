@@ -1,0 +1,25 @@
+{
+  "scope": "Non-blocking follow-ups under user-adjusted closure contract; no automatic execution",
+  "items": [
+    {
+      "id": "F5-DISPATCH",
+      "status": "open",
+      "blocking": false,
+      "severity": "low",
+      "scope": "sol56 parallel dispatch and resume retry tracker",
+      "evidence": "review-final.md; native-traces/remfix5_56_parallel.json lines 46/49 and 59/62; remfix5_56_resume.json retry calls",
+      "impact": "Attempt is missing/stale in tracker; actual single dispatches and per-attempt receipts remain attributable in tested cases.",
+      "next_action": "Consider a compact start record containing owner, attempt, state; do not automatically execute in this goal."
+    },
+    {
+      "id": "F5-READY",
+      "status": "open",
+      "blocking": false,
+      "severity": "medium",
+      "scope": "sol56 parallel integration implementation",
+      "evidence": "review-final.md; native-traces/remfix5_56_parallel.json lines 59/62,70/73,103/106,122/125,131/134,143/146",
+      "impact": "T3 implementation began before prerequisite acceptance; actual integration check and final acceptance occurred after valid prerequisite receipts. No fixed incorrect-acceptance/deadlock gate failure demonstrated.",
+      "next_action": "Future targeted work should enforce readiness before dependent implementation; no automatic attempt6."
+    }
+  ]
+}

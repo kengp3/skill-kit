@@ -1,0 +1,209 @@
+{
+  "schema": "task-harness-native-tool-receipt",
+  "task_id": "T3",
+  "task_attempt": 1,
+  "check_id": "C-TOTAL",
+  "check_attempt": 1,
+  "owner": "/root",
+  "workspace": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+  "sources": [
+    "inputs/prices.txt",
+    "inputs/tax-rate.txt",
+    "output/subtotal.txt",
+    "output/tax.txt"
+  ],
+  "product": "output/total.txt",
+  "native_output_kind": "merged",
+  "command_representation": "actual exec_command request cmd string; not process argv",
+  "fingerprint_method": "cksum CRC and byte length; noncryptographic",
+  "prerequisite_receipt_reads": [
+    {
+      "tool": "exec_command",
+      "request": {
+        "cmd": "/bin/cat evidence/T1/C-SUB-1.json",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+        "max_output_tokens": 10000
+      },
+      "result": {
+        "chunk_id": "167136",
+        "wall_time_seconds": 0.000002292,
+        "exit_code": 0,
+        "original_token_count": 793,
+        "output": "{\n  \"schema\": \"task-harness-native-receipt-v1\",\n  \"task_id\": \"T1\",\n  \"task_attempt\": 1,\n  \"owner\": \"/root/subtotal\",\n  \"check_id\": \"C-SUB\",\n  \"check_attempt\": 1,\n  \"check_start\": \"evidence/T1/C-SUB-1-start.json\",\n  \"receipt_path\": \"evidence/T1/C-SUB-1.json\",\n  \"workdir\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\",\n  \"sources\": [\n    \"inputs/prices.txt\"\n  ],\n  \"products\": [\n    \"output/subtotal.txt\"\n  ],\n  \"fingerprint_kind\": \"cksum CRC and byte length; noncryptographic\",\n  \"tool_result_output\": \"merged\",\n  \"production\": {\n    \"request\": {\n      \"cmd\": \"/bin/cat inputs/prices.txt\",\n      \"workdir\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\",\n      \"max_output_tokens\": 2000\n    },\n    \"result\": {\n      \"chunk_id\": \"cb7e1c\",\n      \"wall_time_seconds\": 0.000002333,\n      \"exit_code\": 0,\n      \"original_token_count\": 3,\n      \"output\": \"10\\n20\\n30\\n\"\n    },\n    \"subtotal\": \"60\"\n  },\n  \"before\": {\n    \"request\": {\n      \"cmd\": \"cksum inputs/prices.txt output/subtotal.txt\",\n      \"workdir\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\",\n      \"max_output_tokens\": 2000\n    },\n    \"result\": {\n      \"chunk_id\": \"2d97b2\",\n      \"wall_time_seconds\": 0.000003167,\n      \"exit_code\": 0,\n      \"original_token_count\": 16,\n      \"output\": \"2869352896 9 inputs/prices.txt\\n596333413 3 output/subtotal.txt\\n\"\n    }\n  },\n  \"check\": {\n    \"request\": {\n      \"cmd\": \"set -eu\\nset -o pipefail\\nsubtotal=0\\ncount=0\\nwhile IFS= read -r price || [ -n \\\"$price\\\" ]; do\\n  case \\\"$price\\\" in\\n    ''|*[!0-9]*) print -u2 -- 'Invalid unsigned integer price'; exit 1 ;;\\n  esac\\n  if [ \\\"${#price}\\\" -gt 9 ]; then\\n    print -u2 -- 'Price exceeds safe parser bound'; exit 1\\n  fi\\n  amount=$((10#$price))\\n  if (( subtotal > 9223372036854775807 - amount )); then\\n    print -u2 -- 'Subtotal overflow'; exit 1\\n  fi\\n  subtotal=$((subtotal + amount))\\n  count=$((count + 1))\\ndone < inputs/prices.txt\\nif (( count == 0 )); then print -u2 -- 'No prices'; exit 1; fi\\nprintf '%s\\\\n' \\\"$subtotal\\\" | cmp - output/subtotal.txt\\nprint -- 'C-SUB: independent sum and exact byte comparison passed'\",\n      \"workdir\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\",\n      \"shell\": \"/bin/zsh\",\n      \"login\": false,\n      \"max_output_tokens\": 2000\n    },\n    \"result\": {\n      \"chunk_id\": \"105fb0\",\n      \"wall_time_seconds\": 0.000002417,\n      \"exit_code\": 0,\n      \"original_token_count\": 14,\n      \"output\": \"C-SUB: independent sum and exact byte comparison passed\\n\"\n    }\n  },\n  \"after\": {\n    \"request\": {\n      \"cmd\": \"cksum inputs/prices.txt output/subtotal.txt\",\n      \"workdir\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\",\n      \"max_output_tokens\": 2000\n    },\n    \"result\": {\n      \"chunk_id\": \"9d5544\",\n      \"wall_time_seconds\": 0.000002334,\n      \"exit_code\": 0,\n      \"original_token_count\": 16,\n      \"output\": \"2869352896 9 inputs/prices.txt\\n596333413 3 output/subtotal.txt\\n\"\n    }\n  },\n  \"observations\": {\n    \"final_checker_result_present\": true,\n    \"checker_passed\": true,\n    \"source_and_product_fingerprints_stable\": true\n  }\n}\n"
+      }
+    },
+    {
+      "tool": "exec_command",
+      "request": {
+        "cmd": "/bin/cat evidence/T2/C-TAX-1.json",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+        "max_output_tokens": 12000
+      },
+      "result": {
+        "chunk_id": "e41c06",
+        "wall_time_seconds": 0.000002791,
+        "exit_code": 0,
+        "original_token_count": 1122,
+        "output": "{\n  \"schema\": \"task-harness-native-tool-receipt\",\n  \"task_id\": \"T2\",\n  \"task_attempt\": 1,\n  \"check_id\": \"C-TAX\",\n  \"check_attempt\": 1,\n  \"owner\": \"/root/tax\",\n  \"workspace\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\",\n  \"start_metadata_path\": \"evidence/T2/C-TAX-1-start.json\",\n  \"sources\": [\n    \"inputs/prices.txt\",\n    \"inputs/tax-rate.txt\"\n  ],\n  \"product\": \"output/tax.txt\",\n  \"native_output_kind\": \"merged\",\n  \"command_representation\": \"actual exec_command request cmd string; not process argv\",\n  \"fingerprint_method\": \"cksum CRC and byte count; noncryptographic\",\n  \"material_read\": {\n    \"request\": {\n      \"cmd\": \"/bin/cat inputs/prices.txt inputs/tax-rate.txt\",\n      \"workdir\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\",\n      \"max_output_tokens\": 1000\n    },\n    \"result\": {\n      \"chunk_id\": \"5a710d\",\n      \"wall_time_seconds\": 0.000002125,\n      \"exit_code\": 0,\n      \"original_token_count\": 4,\n      \"output\": \"10\\n20\\n30\\n0.05\\n\"\n    }\n  },\n  \"before\": {\n    \"request\": {\n      \"cmd\": \"/usr/bin/cksum inputs/prices.txt inputs/tax-rate.txt output/tax.txt\",\n      \"workdir\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\",\n      \"max_output_tokens\": 1000\n    },\n    \"result\": {\n      \"chunk_id\": \"824d75\",\n      \"wall_time_seconds\": 0.000002291,\n      \"exit_code\": 0,\n      \"original_token_count\": 23,\n      \"output\": \"2869352896 9 inputs/prices.txt\\n3510201678 5 inputs/tax-rate.txt\\n4164007125 2 output/tax.txt\\n\"\n    }\n  },\n  \"checker\": {\n    \"request\": {\n      \"workdir\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\",\n      \"shell\": \"/bin/sh\",\n      \"login\": false,\n      \"max_output_tokens\": 2000,\n      \"cmd\": \"set -eu\\nfail() { printf '%s\\\\n' \\\"$1\\\" >&2; exit 1; }\\nsum=0\\ncount=0\\nwhile IFS= read -r price || [ -n \\\"$price\\\" ]; do\\n  case \\\"$price\\\" in ''|*[!0-9]*) fail \\\"invalid price integer\\\";; esac\\n  while [ \\\"${price#0}\\\" != \\\"$price\\\" ]; do price=${price#0}; done\\n  price=${price:-0}\\n  [ \\\"${#price}\\\" -le 9 ] || fail \\\"price exceeds safe arithmetic bound\\\"\\n  sum=$((sum + price))\\n  [ \\\"$sum\\\" -le 1000000000 ] || fail \\\"sum exceeds safe arithmetic bound\\\"\\n  count=$((count + 1))\\ndone < inputs/prices.txt\\n[ \\\"$count\\\" -gt 0 ] || fail \\\"no prices\\\"\\nrate=$(/bin/cat inputs/tax-rate.txt)\\nprintf '%s\\\\n' \\\"$rate\\\" | /usr/bin/cmp -s - inputs/tax-rate.txt || fail \\\"rate must be one line with LF\\\"\\ncase \\\"$rate\\\" in *.*) ;; *) fail \\\"decimal rate required\\\";; esac\\nwhole=${rate%%.*}\\nfraction=${rate#*.}\\ncase \\\"$whole\\\" in ''|*[!0-9]*) fail \\\"invalid decimal whole part\\\";; esac\\ncase \\\"$fraction\\\" in ''|*[!0-9]*) fail \\\"invalid decimal fractional part\\\";; esac\\n[ \\\"${#fraction}\\\" -le 6 ] || fail \\\"rate exceeds safe precision bound\\\"\\ndenominator=1\\nremaining=$fraction\\nwhile [ -n \\\"$remaining\\\" ]; do\\n  denominator=$((denominator * 10))\\n  remaining=${remaining#?}\\ndone\\nwhile [ \\\"${whole#0}\\\" != \\\"$whole\\\" ]; do whole=${whole#0}; done\\nwhole=${whole:-0}\\nwhile [ \\\"${fraction#0}\\\" != \\\"$fraction\\\" ]; do fraction=${fraction#0}; done\\nfraction=${fraction:-0}\\n[ \\\"${#whole}\\\" -le 3 ] || fail \\\"rate exceeds safe arithmetic bound\\\"\\nnumerator=$((whole * denominator + fraction))\\nscaled=$((sum * numerator))\\n[ \\\"$((scaled % denominator))\\\" -eq 0 ] || fail \\\"noninteger tax requires rounding guidance\\\"\\nexpected=$((scaled / denominator))\\nprintf '%s\\\\n' \\\"$expected\\\" | /usr/bin/cmp -s - output/tax.txt || fail \\\"tax bytes do not match independently recomputed integer plus LF\\\"\\nprintf '%s\\\\n' 'PASS C-TAX: independent source calculation and exact byte comparison'\\n\"\n    },\n    \"result\": {\n      \"chunk_id\": \"d96503\",\n      \"wall_time_seconds\": 0.000002875,\n      \"exit_code\": 0,\n      \"original_token_count\": 18,\n      \"output\": \"PASS C-TAX: independent source calculation and exact byte comparison\\n\"\n    }\n  },\n  \"after\": {\n    \"request\": {\n      \"cmd\": \"/usr/bin/cksum inputs/prices.txt inputs/tax-rate.txt output/tax.txt\",\n      \"workdir\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution\",\n      \"max_output_tokens\": 1000\n    },\n    \"result\": {\n      \"chunk_id\": \"92a5bb\",\n      \"wall_time_seconds\": 0.000002458,\n      \"exit_code\": 0,\n      \"original_token_count\": 23,\n      \"output\": \"2869352896 9 inputs/prices.txt\\n3510201678 5 inputs/tax-rate.txt\\n4164007125 2 output/tax.txt\\n\"\n    }\n  },\n  \"observations\": {\n    \"finished\": true,\n    \"checker_pass\": true,\n    \"fingerprints_stable\": true\n  }\n}\n"
+      }
+    }
+  ],
+  "prerequisite_acceptance_observations": [
+    {
+      "tool": "exec_command",
+      "request": {
+        "cmd": "cksum inputs/prices.txt output/subtotal.txt",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+        "max_output_tokens": 2000
+      },
+      "result": {
+        "chunk_id": "4636f7",
+        "wall_time_seconds": 0.000002292,
+        "exit_code": 0,
+        "original_token_count": 16,
+        "output": "2869352896 9 inputs/prices.txt\n596333413 3 output/subtotal.txt\n"
+      }
+    },
+    {
+      "tool": "exec_command",
+      "request": {
+        "cmd": "/usr/bin/cksum inputs/prices.txt inputs/tax-rate.txt output/tax.txt",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+        "max_output_tokens": 2000
+      },
+      "result": {
+        "chunk_id": "bcfe59",
+        "wall_time_seconds": 0.0000025,
+        "exit_code": 0,
+        "original_token_count": 23,
+        "output": "2869352896 9 inputs/prices.txt\n3510201678 5 inputs/tax-rate.txt\n4164007125 2 output/tax.txt\n"
+      }
+    }
+  ],
+  "dependency_gate_observations": [
+    {
+      "tool": "exec_command",
+      "request": {
+        "cmd": "/bin/cat tasks.md",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+        "max_output_tokens": 12000
+      },
+      "result": {
+        "chunk_id": "97e6ee",
+        "wall_time_seconds": 7.5e-7,
+        "exit_code": 0,
+        "original_token_count": 2908,
+        "output": "# Run：prices 小計、稅額與總額\n\n## Objective\n以 `inputs/prices.txt` 產生 `output/subtotal.txt`；另一個 native worker 獨立依 prices 與 `inputs/tax-rate.txt` 產生 `output/tax.txt`。兩項各自驗收、保存原生 evidence 並由 coordinator 寫入 done 後，才整合 `output/total.txt`。\n\n## Background / Materials\n- 本回合模式：execute（使用者已明確授權）。一般功能 smoke test，沿用普通資料夾與標準 workspace-write；授權兩個 native workers 與 coordinator 產出並驗收三項產品。\n- Workspace：`/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution`。\n- 唯一 tracker / Authority：本檔 `tasks.md`。\n- Current coordinator：native agent `/root`；worker handles 以任務表的實際 dispatch 結果為準。\n- 指示：`project-setting.md`、`skill/SKILL.md` 及本 session 的使用者限制。\n- 已讀輸入：prices 為 10、20、30；tax-rate 為 0.05。\n- 規劃用預期值：subtotal 60、tax 3、total 63。這是輸入算術推導，沒有執行產品驗收。\n- 材料、原生工具結果及實際檔案指紋：`evidence/plan-materials-1.json`。此檔是規劃診斷 receipt，不是產品驗收 receipt。\n- Git 指令無法執行（host Command Line Tools 缺失）；revision 與 Git dirty state 未確認，不臆測 clean。以實際檔案指紋作本次材料基準，不修復 host。\n\n## Boundaries / Assumptions\n- 禁止讀取其他研究、其他 run、歷史 verdict、private Codex session；不使用外部服務或 app/MCP，不傳送外部訊息、不安裝套件、不改 host 設定。\n- 不修改 `inputs/`、`skill/`、`project-setting.md`；保留無關檔案。\n- 後續執行限定兩個 native workers，加上 coordinator；workers 不再委派。\n- 每個文字產品只能含十進位整數及一個結尾 LF，不含空白、標籤或額外行。\n- 稅額使用十進位有理數精確運算；本組輸入可整除，無需 rounding。若新輸入令稅額不是整數，停止該項並確認 rounding 規則，不自行截斷。\n- 證據只用宿主 code mode、內建工具與現有基本檔案能力；不呼叫 Python、Node、Ruby、Perl、jq 或其他 language process，不新增 evidence wrapper script。\n- 金額與 decimal rate 的 shell 運算須避免浮點數及 leading-zero 的八進位解讀；遇無法安全解析或溢位的輸入就阻擋驗收。\n\n## 工具／測試邊界（本回合已修訂）\n- 使用者已取消強 read-deny、canary 與 agent registry 隔離 gate。先前 preflight 僅為歷史診斷，本回合不重測、不以其判定安全隔離。\n- 寫入仍限本 workspace 的 ownership；不得讀取其他研究、案例、歷史 verdict 或 private session export。禁止外部服務、安裝、runtime wrappers，禁止修改 host 設定。\n- 可用：`exec_command`、`apply_patch`、原生 collaboration tools、宿主 code mode、host shell、`cksum`。\n- 原生 evidence 能力已實測：code mode 直接序列化實際工具 request/result，以 `apply_patch` 寫入診斷 receipt；`/bin/cat` 讀回後與序列化原文逐字相同。\n- `cksum` 記錄 CRC 與 byte length，屬非密碼學指紋，不宣稱 SHA 或 Git revision。\n- shell checker 使用 host shell；這是產品 checker，與 Harness receipt 的直接序列化分開。\n- 本次 core-only 安裝沒有 scripts/run_check.py；不補裝、不從其他位置取得。直接使用原生 code mode 保存工具原始結果。\n\n## Definition of Done\nT1 與 T2 各自通過 direct checker、保留可讀回的原生 receipt、確認被驗收版本仍一致，由 coordinator 分別成功保存 done。T3 在這兩個 checkpoint 之後開始，產生並驗收 total、保存 receipt 與 done。三個產品均符合整數加單一 LF 的格式；所有 prerequisite evidence 對當前版本有效。\n\n| ID | Outcome | Depends on | Owner / handle | Task attempt | State | Acceptance receipt |\n| --- | --- | --- | --- | --- | --- | --- |\n| T1 | prices 小計 → output/subtotal.txt | none | /root/subtotal | 1 | done | evidence/T1/C-SUB-1.json |\n| T2 | 獨立計算稅額 → output/tax.txt | none | /root/tax | 1 | done | evidence/T2/C-TAX-1.json |\n| T3 | 已驗收小計＋稅額 → output/total.txt | T1, T2 | coordinator /root | not started | pending | none |\n\n## T1\n- Ownership：只寫 `output/subtotal.txt` 與 `evidence/T1/`；prices 唯讀。不寫 tax、total、tasks.md 或其他任務 evidence。\n- Inputs：`inputs/prices.txt`。\n- Completion：合計所有 prices，輸出符合精確文字格式；自行檢查並回傳 evidence。\n- Verify（待此項 check 執行）：host shell checker 重新讀取及驗證 prices 的整數格式，獨立算出小計，使用 byte comparison 比對預期整數加 LF 與產品；不得僅用 command substitution 比較文字，因其會移除結尾 LF。目前材料的預期為 60 加 LF。\n- Check ID：C-SUB；check attempt 1 已完成；start metadata：`evidence/T1/C-SUB-1-start.json`。\n- Acceptance evidence：`evidence/T1/C-SUB-1.json`；coordinator 已讀 receipt、檢查 final result、前後穩定性與當前版本相符。\n- Task attempt 首次為 1，與 check attempt 分開計數。\n- Last update：worker 已完成且 terminal；coordinator 接受 current version，done 保存。\n- Blocker / next action：無；作為 T3 prerequisite，變更時須 reopen。\n\n## T2\n- Ownership：只寫 `output/tax.txt` 與 `evidence/T2/`；prices、tax-rate 唯讀。不讀 subtotal 作計算來源，不寫 subtotal、total、tasks.md 或其他任務 evidence。\n- Inputs：`inputs/prices.txt`、`inputs/tax-rate.txt`。\n- Completion：獨立合計 prices，以 tax-rate 計算整數稅額，輸出符合精確格式；自行檢查並回傳 evidence。\n- Verify（待此項 check 執行）：host shell checker 重新讀 prices 與 rate；將 0.05 精確表示為 5/100，算出稅額並要求餘數為零；使用 byte comparison 比對整數加 LF。目前材料的預期為 3 加 LF。checker 不依賴 T1 產品。\n- Check ID：C-TAX；check attempt 1 已完成；start metadata：`evidence/T2/C-TAX-1-start.json`。\n- Acceptance evidence：`evidence/T2/C-TAX-1.json`；coordinator 已讀 receipt、檢查 final result、前後穩定性與當前版本相符。\n- Task attempt 首次為 1，與 check attempt 分開計數。\n- Last update：worker 已完成且 terminal；coordinator 接受 current version，done 保存。\n- Blocker / next action：無；作為 T3 prerequisite，變更時須 reopen。\n\n## T3\n- Ownership：coordinator 只寫 `output/total.txt` 與 `evidence/T3/`；coordinator 同時是 tasks.md 唯一 writer。\n- Inputs：已驗收且版本仍有效的 `output/subtotal.txt`、`output/tax.txt`，及原始 prices/rate 用於 integration check。\n- Start gate：T1、T2 各自 receipt 可讀且有效，done tracker writes 均成功；重新核對當前指紋，再單獨保存 T3 owner、attempt 1、running，寫入成功後才開始 total 的第一個產品動作。\n- Completion：相加已驗收的 subtotal 與 tax，輸出精確格式，完成 integration check。\n- Verify（待此項 check 執行）：host shell checker 確認三個產品的 bytes／格式，total 等於 subtotal＋tax，且根據原始 prices/rate 重算的結果一致；目前材料預期為 63 加 LF。\n- Check ID：C-TOTAL；numeric check attempt 未開始，首次為 1。\n- 預定 evidence：`evidence/T3/C-TOTAL-1.json`，含 prices、tax-rate、三個產品的 check 前後指紋。\n- 此 integration receipt 不替代 T1、T2 的個別 acceptance。\n- Last update：execute 已授權；等待相依任務驗收。\n- Blocker / next action：等待 T1、T2 各自完成驗收及 done 保存。\n\n## 原生 receipt 方法（本回合沿用）\n1. 每項 check 有獨立 attempt 和新 receipt path；禁止覆寫。worker 在自身 evidence 目錄保存 check 開始紀錄；coordinator-run check 先在 tasks.md 保存 attempt/path，寫入成功才跑 checker。\n2. 宿主 code mode 保留 `exec_command` 的原始 request object（明確 workdir、實際 cmd 字串）與最終 result object。不把 cmd 字串冒充 process argv，不把 orchestration 成功冒充 checker exit。\n3. 用 `cksum` 在 checker 前後讀取該項所有 source/product；保留實際 fingerprint tool requests/results。一次 receipt 只對應一個 host shell checker 的最終結果，不將 shell 內個別動作聲稱為獨立檢查結果。\n4. receipt 以 code mode 的直接序列化配合內建 `apply_patch` 保存原始 objects，包含 checker、cwd、來源、前後指紋及合併輸出標示。不得人工重建 exit、hash 或命令結果。\n5. 用本機讀取工具讀回 receipt，code mode 比對序列化原文，確認最終 checker exit 為零、內容與指紋穩定且檢查完整；running session／缺少最終 result／unknown 不算 pass。\n6. coordinator 接收後讀每項 receipt，重新核對目前 source/product 指紋；只在有效時更新 acceptance receipt reference 與 done，等待該 tracker write 成功。tracker 記錄引用與判定，不抄原始 exit/hash 冒充 receipt。\n7. 若工具無法保留、讀回或歸屬 evidence，保持 verifying／blocked，說明缺口；不新增 runtime 或 wrapper。非零結果要診斷與修正，再開新 check attempt；不覆寫原 receipt。\n8. accepted source/product 一旦變更，就重新開啟受影響驗收及相依任務；舊 receipt 不適用新版本。\n\n## 後續 dispatch / ownership protocol\n- coordinator 先處理 readiness、建立共用 output/evidence 父目錄，給每項 evidence 目錄單一 writer；不讓 worker 修改共用 tracker。\n- 選定 T1/T2 作同一個無衝突 dispatch group；先 dispatch T1，取得真實 handle，保存 owner、numeric task attempt、running（若產品已可用則 verifying），寫入成功後才 dispatch T2 並保存其 checkpoint。\n- 完成兩個 dispatch checkpoint 後才主動等待、收集或驗收；不插入等待來製造重疊，也不假定必有 execution overlap。\n- worker contract 必須包含精確 workspace、輸入、ownership、驗收及 receipt 方法、禁止區域、停止條件、回傳產品/evidence paths，並明示：「你不是 workspace 中唯一工作者；保留他人變更並配合其修改。不得改 shared tracker 或再委派。」\n- 只用實際 returned handles，不預造 actor identity。原生 worker 訊息限本 workspace 的任務協作。\n- 失敗 dispatch 不標 running；tracker write 失敗先 reconcile；不得在舊 worker 仍可能寫入時派替代 worker。\n- T1/T2 acceptance 包含在各自任務內，不另設互相等待的 check-only successor。\n- T3 只能在 T1/T2 各自 done checkpoint 成功後開始。\n\n## Checkpoint\n- Completed and accepted：既有規劃；本回合 current materials 已讀回，未接受任何產品。\n- Active worker handles：無；/root/subtotal、/root/tax 均 terminal，實際 handle 歷史保留於任務表。\n- Completed and accepted（產品）：T1、T2 done，各自 receipts 已讀且 current fingerprints 相符。\n- 未完成：T3 pending；T1/T2 task attempts 與 check attempts 均為 1。\n- Side effects：更新 tracker、建立共用目錄、依序 dispatch T1→checkpoint→T2→checkpoint；產品與 receipts 由各 ownership worker 執行。既有診斷 receipt 保留。\n- Next ready tasks：T1/T2 done checkpoints 均已成功；核對兩項當前版本與 tracker 後，保存 T3 start checkpoint，再開始整合。\n- Authorization：本回合明確 execution 授權；完成直接驗收或遇必要能力 blocker 後回報並停止。\n"
+      }
+    },
+    {
+      "tool": "exec_command",
+      "request": {
+        "cmd": "cksum inputs/prices.txt output/subtotal.txt",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+        "max_output_tokens": 2000
+      },
+      "result": {
+        "chunk_id": "118302",
+        "wall_time_seconds": 0.000002625,
+        "exit_code": 0,
+        "original_token_count": 16,
+        "output": "2869352896 9 inputs/prices.txt\n596333413 3 output/subtotal.txt\n"
+      }
+    },
+    {
+      "tool": "exec_command",
+      "request": {
+        "cmd": "/usr/bin/cksum inputs/prices.txt inputs/tax-rate.txt output/tax.txt",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+        "max_output_tokens": 1000
+      },
+      "result": {
+        "chunk_id": "f2c693",
+        "wall_time_seconds": 6.67e-7,
+        "exit_code": 0,
+        "original_token_count": 23,
+        "output": "2869352896 9 inputs/prices.txt\n3510201678 5 inputs/tax-rate.txt\n4164007125 2 output/tax.txt\n"
+      }
+    }
+  ],
+  "check_start_tracker_readback": {
+    "tool": "exec_command",
+    "request": {
+      "cmd": "/bin/cat tasks.md",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+      "max_output_tokens": 12000
+    },
+    "result": {
+      "chunk_id": "b9460e",
+      "wall_time_seconds": 0.000003042,
+      "exit_code": 0,
+      "original_token_count": 2938,
+      "output": "# Run：prices 小計、稅額與總額\n\n## Objective\n以 `inputs/prices.txt` 產生 `output/subtotal.txt`；另一個 native worker 獨立依 prices 與 `inputs/tax-rate.txt` 產生 `output/tax.txt`。兩項各自驗收、保存原生 evidence 並由 coordinator 寫入 done 後，才整合 `output/total.txt`。\n\n## Background / Materials\n- 本回合模式：execute（使用者已明確授權）。一般功能 smoke test，沿用普通資料夾與標準 workspace-write；授權兩個 native workers 與 coordinator 產出並驗收三項產品。\n- Workspace：`/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution`。\n- 唯一 tracker / Authority：本檔 `tasks.md`。\n- Current coordinator：native agent `/root`；worker handles 以任務表的實際 dispatch 結果為準。\n- 指示：`project-setting.md`、`skill/SKILL.md` 及本 session 的使用者限制。\n- 已讀輸入：prices 為 10、20、30；tax-rate 為 0.05。\n- 規劃用預期值：subtotal 60、tax 3、total 63。這是輸入算術推導，沒有執行產品驗收。\n- 材料、原生工具結果及實際檔案指紋：`evidence/plan-materials-1.json`。此檔是規劃診斷 receipt，不是產品驗收 receipt。\n- Git 指令無法執行（host Command Line Tools 缺失）；revision 與 Git dirty state 未確認，不臆測 clean。以實際檔案指紋作本次材料基準，不修復 host。\n\n## Boundaries / Assumptions\n- 禁止讀取其他研究、其他 run、歷史 verdict、private Codex session；不使用外部服務或 app/MCP，不傳送外部訊息、不安裝套件、不改 host 設定。\n- 不修改 `inputs/`、`skill/`、`project-setting.md`；保留無關檔案。\n- 後續執行限定兩個 native workers，加上 coordinator；workers 不再委派。\n- 每個文字產品只能含十進位整數及一個結尾 LF，不含空白、標籤或額外行。\n- 稅額使用十進位有理數精確運算；本組輸入可整除，無需 rounding。若新輸入令稅額不是整數，停止該項並確認 rounding 規則，不自行截斷。\n- 證據只用宿主 code mode、內建工具與現有基本檔案能力；不呼叫 Python、Node、Ruby、Perl、jq 或其他 language process，不新增 evidence wrapper script。\n- 金額與 decimal rate 的 shell 運算須避免浮點數及 leading-zero 的八進位解讀；遇無法安全解析或溢位的輸入就阻擋驗收。\n\n## 工具／測試邊界（本回合已修訂）\n- 使用者已取消強 read-deny、canary 與 agent registry 隔離 gate。先前 preflight 僅為歷史診斷，本回合不重測、不以其判定安全隔離。\n- 寫入仍限本 workspace 的 ownership；不得讀取其他研究、案例、歷史 verdict 或 private session export。禁止外部服務、安裝、runtime wrappers，禁止修改 host 設定。\n- 可用：`exec_command`、`apply_patch`、原生 collaboration tools、宿主 code mode、host shell、`cksum`。\n- 原生 evidence 能力已實測：code mode 直接序列化實際工具 request/result，以 `apply_patch` 寫入診斷 receipt；`/bin/cat` 讀回後與序列化原文逐字相同。\n- `cksum` 記錄 CRC 與 byte length，屬非密碼學指紋，不宣稱 SHA 或 Git revision。\n- shell checker 使用 host shell；這是產品 checker，與 Harness receipt 的直接序列化分開。\n- 本次 core-only 安裝沒有 scripts/run_check.py；不補裝、不從其他位置取得。直接使用原生 code mode 保存工具原始結果。\n\n## Definition of Done\nT1 與 T2 各自通過 direct checker、保留可讀回的原生 receipt、確認被驗收版本仍一致，由 coordinator 分別成功保存 done。T3 在這兩個 checkpoint 之後開始，產生並驗收 total、保存 receipt 與 done。三個產品均符合整數加單一 LF 的格式；所有 prerequisite evidence 對當前版本有效。\n\n| ID | Outcome | Depends on | Owner / handle | Task attempt | State | Acceptance receipt |\n| --- | --- | --- | --- | --- | --- | --- |\n| T1 | prices 小計 → output/subtotal.txt | none | /root/subtotal | 1 | done | evidence/T1/C-SUB-1.json |\n| T2 | 獨立計算稅額 → output/tax.txt | none | /root/tax | 1 | done | evidence/T2/C-TAX-1.json |\n| T3 | 已驗收小計＋稅額 → output/total.txt | T1, T2 | coordinator /root | 1 | verifying | none |\n\n## T1\n- Ownership：只寫 `output/subtotal.txt` 與 `evidence/T1/`；prices 唯讀。不寫 tax、total、tasks.md 或其他任務 evidence。\n- Inputs：`inputs/prices.txt`。\n- Completion：合計所有 prices，輸出符合精確文字格式；自行檢查並回傳 evidence。\n- Verify（待此項 check 執行）：host shell checker 重新讀取及驗證 prices 的整數格式，獨立算出小計，使用 byte comparison 比對預期整數加 LF 與產品；不得僅用 command substitution 比較文字，因其會移除結尾 LF。目前材料的預期為 60 加 LF。\n- Check ID：C-SUB；check attempt 1 已完成；start metadata：`evidence/T1/C-SUB-1-start.json`。\n- Acceptance evidence：`evidence/T1/C-SUB-1.json`；coordinator 已讀 receipt、檢查 final result、前後穩定性與當前版本相符。\n- Task attempt 首次為 1，與 check attempt 分開計數。\n- Last update：worker 已完成且 terminal；coordinator 接受 current version，done 保存。\n- Blocker / next action：無；作為 T3 prerequisite，變更時須 reopen。\n\n## T2\n- Ownership：只寫 `output/tax.txt` 與 `evidence/T2/`；prices、tax-rate 唯讀。不讀 subtotal 作計算來源，不寫 subtotal、total、tasks.md 或其他任務 evidence。\n- Inputs：`inputs/prices.txt`、`inputs/tax-rate.txt`。\n- Completion：獨立合計 prices，以 tax-rate 計算整數稅額，輸出符合精確格式；自行檢查並回傳 evidence。\n- Verify（待此項 check 執行）：host shell checker 重新讀 prices 與 rate；將 0.05 精確表示為 5/100，算出稅額並要求餘數為零；使用 byte comparison 比對整數加 LF。目前材料的預期為 3 加 LF。checker 不依賴 T1 產品。\n- Check ID：C-TAX；check attempt 1 已完成；start metadata：`evidence/T2/C-TAX-1-start.json`。\n- Acceptance evidence：`evidence/T2/C-TAX-1.json`；coordinator 已讀 receipt、檢查 final result、前後穩定性與當前版本相符。\n- Task attempt 首次為 1，與 check attempt 分開計數。\n- Last update：worker 已完成且 terminal；coordinator 接受 current version，done 保存。\n- Blocker / next action：無；作為 T3 prerequisite，變更時須 reopen。\n\n## T3\n- Ownership：coordinator 只寫 `output/total.txt` 與 `evidence/T3/`；coordinator 同時是 tasks.md 唯一 writer。\n- Inputs：已驗收且版本仍有效的 `output/subtotal.txt`、`output/tax.txt`，及原始 prices/rate 用於 integration check。\n- Start gate：T1、T2 各自 receipt 可讀且有效，done tracker writes 均成功；重新核對當前指紋，再單獨保存 T3 owner、attempt 1、running，寫入成功後才開始 total 的第一個產品動作。\n- Completion：相加已驗收的 subtotal 與 tax，輸出精確格式，完成 integration check。\n- Verify（待此項 check 執行）：host shell checker 確認三個產品的 bytes／格式，total 等於 subtotal＋tax，且根據原始 prices/rate 重算的結果一致；目前材料預期為 63 加 LF。\n- Check ID：C-TOTAL；check attempt 1；receipt path：`evidence/T3/C-TOTAL-1.json`。此 checkpoint 先於 checker。\n- 預定 evidence：`evidence/T3/C-TOTAL-1.json`，含 prices、tax-rate、三個產品的 check 前後指紋。\n- 此 integration receipt 不替代 T1、T2 的個別 acceptance。\n- Last update：T3 start checkpoint 成功後已產生 total；現在 verifying，C-TOTAL attempt 1/path 已在 checker 前保存。\n- Blocker / next action：無；開始整合，之後先保存 C-TOTAL attempt/path 再執行 checker。\n\n## 原生 receipt 方法（本回合沿用）\n1. 每項 check 有獨立 attempt 和新 receipt path；禁止覆寫。worker 在自身 evidence 目錄保存 check 開始紀錄；coordinator-run check 先在 tasks.md 保存 attempt/path，寫入成功才跑 checker。\n2. 宿主 code mode 保留 `exec_command` 的原始 request object（明確 workdir、實際 cmd 字串）與最終 result object。不把 cmd 字串冒充 process argv，不把 orchestration 成功冒充 checker exit。\n3. 用 `cksum` 在 checker 前後讀取該項所有 source/product；保留實際 fingerprint tool requests/results。一次 receipt 只對應一個 host shell checker 的最終結果，不將 shell 內個別動作聲稱為獨立檢查結果。\n4. receipt 以 code mode 的直接序列化配合內建 `apply_patch` 保存原始 objects，包含 checker、cwd、來源、前後指紋及合併輸出標示。不得人工重建 exit、hash 或命令結果。\n5. 用本機讀取工具讀回 receipt，code mode 比對序列化原文，確認最終 checker exit 為零、內容與指紋穩定且檢查完整；running session／缺少最終 result／unknown 不算 pass。\n6. coordinator 接收後讀每項 receipt，重新核對目前 source/product 指紋；只在有效時更新 acceptance receipt reference 與 done，等待該 tracker write 成功。tracker 記錄引用與判定，不抄原始 exit/hash 冒充 receipt。\n7. 若工具無法保留、讀回或歸屬 evidence，保持 verifying／blocked，說明缺口；不新增 runtime 或 wrapper。非零結果要診斷與修正，再開新 check attempt；不覆寫原 receipt。\n8. accepted source/product 一旦變更，就重新開啟受影響驗收及相依任務；舊 receipt 不適用新版本。\n\n## 後續 dispatch / ownership protocol\n- coordinator 先處理 readiness、建立共用 output/evidence 父目錄，給每項 evidence 目錄單一 writer；不讓 worker 修改共用 tracker。\n- 選定 T1/T2 作同一個無衝突 dispatch group；先 dispatch T1，取得真實 handle，保存 owner、numeric task attempt、running（若產品已可用則 verifying），寫入成功後才 dispatch T2 並保存其 checkpoint。\n- 完成兩個 dispatch checkpoint 後才主動等待、收集或驗收；不插入等待來製造重疊，也不假定必有 execution overlap。\n- worker contract 必須包含精確 workspace、輸入、ownership、驗收及 receipt 方法、禁止區域、停止條件、回傳產品/evidence paths，並明示：「你不是 workspace 中唯一工作者；保留他人變更並配合其修改。不得改 shared tracker 或再委派。」\n- 只用實際 returned handles，不預造 actor identity。原生 worker 訊息限本 workspace 的任務協作。\n- 失敗 dispatch 不標 running；tracker write 失敗先 reconcile；不得在舊 worker 仍可能寫入時派替代 worker。\n- T1/T2 acceptance 包含在各自任務內，不另設互相等待的 check-only successor。\n- T3 只能在 T1/T2 各自 done checkpoint 成功後開始。\n\n## Checkpoint\n- Completed and accepted：既有規劃；本回合 current materials 已讀回，未接受任何產品。\n- Active worker handles：無；/root/subtotal、/root/tax 均 terminal，實際 handle 歷史保留於任務表。\n- Completed and accepted（產品）：T1、T2 done，各自 receipts 已讀且 current fingerprints 相符。\n- 未完成：T3 verifying，task attempt 1、C-TOTAL check attempt 1；T1/T2 task/check attempts 均為 1。\n- Side effects：更新 tracker、建立共用目錄、依序 dispatch T1→checkpoint→T2→checkpoint；產品與 receipts 由各 ownership worker 執行。既有診斷 receipt 保留。\n- Next ready tasks：C-TOTAL attempt 1/path checkpoint 已保存；可執行 integration checker。\n- Authorization：本回合明確 execution 授權；完成直接驗收或遇必要能力 blocker 後回報並停止。\n"
+    }
+  },
+  "production": {
+    "tool": "exec_command",
+    "request": {
+      "cmd": "set -eu\nIFS= read -r subtotal < output/subtotal.txt\nIFS= read -r tax < output/tax.txt\nprintf '%s\\n' \"$((subtotal + tax))\" > output/total.txt",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+      "shell": "/bin/sh",
+      "login": false,
+      "max_output_tokens": 2000
+    },
+    "result": {
+      "chunk_id": "d5f33a",
+      "wall_time_seconds": 0.000002167,
+      "exit_code": 0,
+      "original_token_count": 0,
+      "output": ""
+    }
+  },
+  "before": {
+    "tool": "exec_command",
+    "request": {
+      "cmd": "cksum inputs/prices.txt inputs/tax-rate.txt output/subtotal.txt output/tax.txt output/total.txt",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+      "max_output_tokens": 2000
+    },
+    "result": {
+      "chunk_id": "f58e32",
+      "wall_time_seconds": 0.000002417,
+      "exit_code": 0,
+      "original_token_count": 39,
+      "output": "2869352896 9 inputs/prices.txt\n3510201678 5 inputs/tax-rate.txt\n596333413 3 output/subtotal.txt\n4164007125 2 output/tax.txt\n568501996 3 output/total.txt\n"
+    }
+  },
+  "checker": {
+    "tool": "exec_command",
+    "request": {
+      "cmd": "set -eu\nfail() { printf '%s\\n' \"$1\" >&2; exit 1; }\nsum=0\ncount=0\nwhile IFS= read -r price || [ -n \"$price\" ]; do\n  case \"$price\" in ''|*[!0-9]*) fail \"invalid price integer\";; esac\n  while [ \"${price#0}\" != \"$price\" ]; do price=${price#0}; done\n  price=${price:-0}\n  [ \"${#price}\" -le 9 ] || fail \"price exceeds safe arithmetic bound\"\n  sum=$((sum + price))\n  [ \"$sum\" -le 1000000000 ] || fail \"sum exceeds safe arithmetic bound\"\n  count=$((count + 1))\ndone < inputs/prices.txt\n[ \"$count\" -gt 0 ] || fail \"no prices\"\nrate=$(/bin/cat inputs/tax-rate.txt)\nprintf '%s\\n' \"$rate\" | /usr/bin/cmp -s - inputs/tax-rate.txt || fail \"rate must be one line with LF\"\ncase \"$rate\" in *.*) ;; *) fail \"decimal rate required\";; esac\nwhole=${rate%%.*}\nfraction=${rate#*.}\ncase \"$whole\" in ''|*[!0-9]*) fail \"invalid decimal whole part\";; esac\ncase \"$fraction\" in ''|*[!0-9]*) fail \"invalid decimal fractional part\";; esac\n[ \"${#fraction}\" -le 6 ] || fail \"rate exceeds safe precision bound\"\ndenominator=1\nremaining=$fraction\nwhile [ -n \"$remaining\" ]; do\n  denominator=$((denominator * 10))\n  remaining=${remaining#?}\ndone\nwhile [ \"${whole#0}\" != \"$whole\" ]; do whole=${whole#0}; done\nwhole=${whole:-0}\nwhile [ \"${fraction#0}\" != \"$fraction\" ]; do fraction=${fraction#0}; done\nfraction=${fraction:-0}\n[ \"${#whole}\" -le 3 ] || fail \"rate exceeds safe arithmetic bound\"\nnumerator=$((whole * denominator + fraction))\nscaled=$((sum * numerator))\n[ \"$((scaled % denominator))\" -eq 0 ] || fail \"noninteger tax requires rounding guidance\"\nexpected=$((scaled / denominator))\nprintf '%s\\n' \"$sum\" | /usr/bin/cmp -s - output/subtotal.txt || fail \"subtotal bytes differ from source recomputation\"\nprintf '%s\\n' \"$expected\" | /usr/bin/cmp -s - output/tax.txt || fail \"tax bytes differ from source recomputation\"\nIFS= read -r accepted_subtotal < output/subtotal.txt\nIFS= read -r accepted_tax < output/tax.txt\nintegrated=$((accepted_subtotal + accepted_tax))\nsource_total=$((sum + expected))\n[ \"$integrated\" -eq \"$source_total\" ] || fail \"integration differs from source total\"\nprintf '%s\\n' \"$source_total\" | /usr/bin/cmp -s - output/total.txt || fail \"total bytes differ from exact expected integer plus LF\"\nprintf '%s\\n' 'PASS C-TOTAL: source recalculation, integration and all three byte comparisons'\n",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+      "shell": "/bin/sh",
+      "login": false,
+      "max_output_tokens": 3000
+    },
+    "result": {
+      "chunk_id": "8ed7eb",
+      "wall_time_seconds": 0.000003042,
+      "exit_code": 0,
+      "original_token_count": 20,
+      "output": "PASS C-TOTAL: source recalculation, integration and all three byte comparisons\n"
+    }
+  },
+  "after": {
+    "tool": "exec_command",
+    "request": {
+      "cmd": "cksum inputs/prices.txt inputs/tax-rate.txt output/subtotal.txt output/tax.txt output/total.txt",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+      "max_output_tokens": 2000
+    },
+    "result": {
+      "chunk_id": "58fa67",
+      "wall_time_seconds": 0.000001875,
+      "exit_code": 0,
+      "original_token_count": 39,
+      "output": "2869352896 9 inputs/prices.txt\n3510201678 5 inputs/tax-rate.txt\n596333413 3 output/subtotal.txt\n4164007125 2 output/tax.txt\n568501996 3 output/total.txt\n"
+    }
+  }
+}

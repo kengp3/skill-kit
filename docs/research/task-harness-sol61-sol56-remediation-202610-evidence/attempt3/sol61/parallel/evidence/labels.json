@@ -1,0 +1,8 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 python3 - <<'PY'\nfrom labels import label\nimport hashlib\nfrom pathlib import Path\nassert label('  Alice  ') == 'Alice'\nassert label(' ') == 'Guest'\nassert label('') == 'Guest'\nassert label('\\t\\n') == 'Guest'\nprint('PASS: label assertions')\nprint('labels.py SHA256=' + hashlib.sha256(Path('labels.py').read_bytes()).hexdigest())\nPY",
+  "receipt": "worker labels tool chunk e790c9",
+  "exit_code": 0,
+  "output": "PASS: label assertions\nlabels.py SHA256=bf323853530fd47713761cb3c51f6b548f4dafa5ea8602b2a5f00d69bbf5fe1e",
+  "sha256": "bf323853530fd47713761cb3c51f6b548f4dafa5ea8602b2a5f00d69bbf5fe1e",
+  "coordinator_fingerprint_confirmed": true
+}

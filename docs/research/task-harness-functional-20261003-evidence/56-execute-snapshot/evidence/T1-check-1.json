@@ -1,0 +1,24 @@
+{
+  "schema": "task-harness-native-exec-receipt/v1",
+  "check_id": "T1-check",
+  "attempt": 1,
+  "command_input": {
+    "cmd": "zsh -c 'set -eu; before_prices=$(cksum inputs/prices.txt); before_subtotal=$(cksum output/subtotal.txt); printf \"fingerprint_before_prices=%s\\n\" \"$before_prices\"; printf \"fingerprint_before_subtotal=%s\\n\" \"$before_subtotal\"; sum=0; while IFS= read -r price || [ -n \"$price\" ]; do case \"$price\" in (\"\"|*[!0-9-]*) exit 20;; esac; sum=$((sum + price)); done < inputs/prices.txt; expected=$(printf \"%s\\n\" \"$sum\" | od -An -t x1 | tr -d \" \\n\"); actual=$(od -An -t x1 output/subtotal.txt | tr -d \" \\n\"); [ \"$actual\" = \"$expected\" ]; after_prices=$(cksum inputs/prices.txt); after_subtotal=$(cksum output/subtotal.txt); printf \"fingerprint_after_prices=%s\\n\" \"$after_prices\"; printf \"fingerprint_after_subtotal=%s\\n\" \"$after_subtotal\"; [ \"$before_prices\" = \"$after_prices\" ]; [ \"$before_subtotal\" = \"$after_subtotal\" ]'",
+    "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_56_native-execution",
+    "yield_time_ms": 10000,
+    "max_output_tokens": 10000
+  },
+  "command_result": {
+    "exit_code": 0,
+    "merged_output": "fingerprint_before_prices=2869352896 9 inputs/prices.txt\nfingerprint_before_subtotal=596333413 3 output/subtotal.txt\nfingerprint_after_prices=2869352896 9 inputs/prices.txt\nfingerprint_after_subtotal=596333413 3 output/subtotal.txt\n",
+    "wall_time_seconds": 0.00000225,
+    "chunk_id": "8ad4e0",
+    "original_token_count": 58
+  },
+  "fingerprints": {
+    "fingerprint_before_prices": "2869352896 9 inputs/prices.txt",
+    "fingerprint_before_subtotal": "596333413 3 output/subtotal.txt",
+    "fingerprint_after_prices": "2869352896 9 inputs/prices.txt",
+    "fingerprint_after_subtotal": "596333413 3 output/subtotal.txt"
+  }
+}

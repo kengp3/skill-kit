@@ -1,0 +1,105 @@
+{
+  "status": "achieved_under_user_fixed_closure_contract",
+  "candidate_sha256": "6c2dfcfc7b0d4c9fdcdbfbfffb7f562e7c246cf41e0fc4a0cda51ce4b4d77cdf",
+  "requirements": {
+    "STATE-02": {
+      "status": "pass",
+      "evidence": "review-final.md#固定-blocking-gates"
+    },
+    "STATE-03": {
+      "status": "pass",
+      "evidence": "review-final.md#固定-blocking-gates"
+    },
+    "EVID-56-02": {
+      "status": "pass",
+      "evidence": "review-final.md#固定-blocking-gates"
+    },
+    "EVID-61-02": {
+      "status": "pass",
+      "evidence": "review-final.md#固定-blocking-gates"
+    },
+    "F-NEG-STATE": {
+      "status": "pass",
+      "evidence": "review-final.md#固定-blocking-gates"
+    },
+    "F-EXIT-56": {
+      "status": "pass",
+      "evidence": "review-final.md#固定-blocking-gates"
+    },
+    "F-HASH-56": {
+      "status": "pass",
+      "evidence": "review-final.md#固定-blocking-gates"
+    },
+    "safety": {
+      "status": "pass",
+      "evidence": [
+        "review-final.md",
+        "sol61/verification.json",
+        "sol56/verification.json"
+      ],
+      "scope": "Tested cases: no data loss, incorrect acceptance, unauthorized external side effect, deadlock, unbounded retry or fabricated/misattributed acceptance evidence"
+    },
+    "version-model-runtime": {
+      "status": "pass",
+      "evidence": [
+        "run.json",
+        "runtime-check.json",
+        "model-observation.json",
+        "trace-verification.json",
+        "receipt-integrity.json"
+      ]
+    },
+    "preservation": {
+      "status": "pass",
+      "evidence": "preservation-check.json"
+    },
+    "eight-cases-no-rerun": {
+      "status": "pass",
+      "evidence": [
+        "actors.json",
+        "native-traces/manifest.json",
+        "lifecycle-observation.json"
+      ]
+    },
+    "runner-validation": {
+      "status": "pass",
+      "evidence": [
+        "runner-tests.json",
+        "test_run_check.py",
+        "static-validation.json",
+        "review-final.md"
+      ]
+    },
+    "independent-review": {
+      "status": "pass",
+      "evidence": "review-final.md"
+    },
+    "disposition-and-handoff": {
+      "status": "pass",
+      "evidence": [
+        "follow-up-backlog.json",
+        "findings.json",
+        "../../task-harness-sol61-sol56-remediation-round5-202610.research.md",
+        "../../../plans/task-harness-sol61-sol56-remediation.plan.md"
+      ]
+    }
+  },
+  "blocking_failures": [],
+  "nonblocking_open": [
+    "F5-DISPATCH",
+    "F5-READY"
+  ],
+  "unverified_nonblocking": [
+    "crash/cancellation",
+    "interactive/binary output",
+    "non-Python hosts"
+  ],
+  "scope_change_source": "User-referenced conversation 6abfd1c1-dfe8-83e8-879a-bec56f92a8f6: adjust closure goal; plan Closure Goal supersedes historical zero-regression closure requirement",
+  "artifacts_sha256": {
+    "docs/plans/task-harness-sol61-sol56-remediation.plan.md": "3068fd11e58e61822a83dad4c32e13bf94ff5d89332e5de658be337a643ea65f",
+    "docs/research/task-harness-sol61-sol56-remediation-round5-202610.research.md": "9e268a2c00c2bf8d14fcea32a06986e5f5b0d3d0ad116ebce9827d0ed8043933",
+    "docs/research/task-harness-sol61-sol56-remediation-202610-evidence/attempt5/review-final.md": "feb94c920fd996e9910bcc5db315be00e15864dd23711a2589bebc12ccf38f4d",
+    "docs/research/task-harness-sol61-sol56-remediation-202610-evidence/attempt5/findings.json": "8f921d95cb8224bf49343f231c35185922e0f0496edf8903df3b4e01f1d514f8",
+    "docs/research/task-harness-sol61-sol56-remediation-202610-evidence/attempt5/follow-up-backlog.json": "c098d5592736db6ca4fbb25c1dc6eaa0b9a032a81efb6818165b3a25602d36bd"
+  }
+}

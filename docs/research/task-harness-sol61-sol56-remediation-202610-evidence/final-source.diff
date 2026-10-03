@@ -1,0 +1,60 @@
+--- baseline/SKILL.md
++++ final/SKILL.md
+@@ -32,9 +32,9 @@
+ # Run: <objective>
+ Scope / exclusions:
+ Materials and Definition of Done:
+-Authority: <this file or tracker URL>; coordinator: <owner>
++Authority: <this file or tracker URL>; coordinator: <current planning/executing actor, even if future task owners are unassigned>
+ Workspace / baseline: <actual root, revision and relevant dirty files, or artifact versions>
+-Execution limits / permissions:
++Available tools / execution limits / permissions:
+ 
+ | ID | Outcome | Depends on | Owner / handle | State |
+ | --- | --- | --- | --- | --- |
+@@ -46,7 +46,7 @@
+ Acceptance:
+ Verify: <command or observable scenario and expected result>
+ Attempt / last update:
+-Evidence: <actual command, result, artifact path, tested revision or file fingerprint>
++Evidence: <command, individual exit status and result, artifact path, tested revision + dirty state or relevant file fingerprints>
+ Blocker / next action:
+ 
+ ## Checkpoint
+@@ -60,7 +60,7 @@
+ 
+ A task is ready when its dependencies are **done and still valid**, its inputs exist, its scope is authorized, and its write scope does not conflict with active work. `pending` does not itself mean ready.
+ 
+-- Use a single coordinator as the writer of task state. Workers return results; they do not race to edit the shared list. Record the owner, attempt, and actual tool-returned worker handle when dispatch succeeds. Dispatch failure does not mean running.
++- Use a single coordinator as the writer of task state. Workers return results; they do not race to edit the shared list. Immediately after each successful dispatch, persist its owner, attempt, actual returned handle, and running state before dispatching another task or doing other work. If output is already available, record verifying instead; do not leave a successfully started task pending until acceptance. For coordinator-owned work, record running before the first implementation action. Dispatch failure does not mean running.
+ - Use native subagents only when permitted and useful. Independent investigations or disjoint writes may run in parallel; dependent tasks and overlapping writes run sequentially. Without delegation tools or authorization, execute ready tasks serially and record `owner: coordinator`.
+ - Before parallel writes, identify overlapping paths **and shared mutable resources** such as a database, generated outputs, dependency lockfiles, or service ports. Give each resource one writer, isolate it using supported facilities, or serialize. A branch name is not filesystem isolation.
+ - Check existing worker handles before reassignment. Never launch a replacement while a previous worker may still write the same scope. Confirm it stopped or isolate the new attempt first. Record takeover rather than trusting elapsed time as proof of death.
+@@ -75,7 +75,7 @@
+ You are not alone in this workspace. Preserve others' changes and adapt to them.
+ Acceptance and verification: expected behavior and direct checks.
+ Limits: authorized operations, relevant runtime/user limits, stopping condition.
+-Return: changed artifacts, commands and results, tested version, unresolved issues.
++Return: changed artifacts, commands with individual exit status and results, tested revision + dirty state or relevant file fingerprints, unresolved issues.
+ Do not update the shared task list or delegate again unless assigned that responsibility.
+ ```
+ 
+@@ -97,14 +97,14 @@
+ 
+ 1. Execute the smallest change that satisfies the task. Reuse existing tools and checks. Keep implementation within ownership; update coordination before widening a write scope.
+ 2. Inspect each worker's actual artifacts and relevant diff. A success message, running test, screenshot without the required interaction, or old green log is not acceptance evidence.
+-3. Map every acceptance criterion to a concrete check, including relevant error and boundary inputs. In plan-only mode, record these checks without executing implementation steps. During execution, run the task's direct checks and inspect final results. For user-visible behavior, exercise the relevant real flow where feasible; unit tests alone may miss integration failures. Missing required verification keeps the task `verifying` or `blocked`, not `done`.
++3. Map every acceptance criterion to a concrete check, including relevant error and boundary inputs. In plan-only mode, record these checks without executing implementation steps. During execution, capture each acceptance- or retry-relevant command's own exit status and attributable output, using separate calls or explicit return-code collection; a batch's final exit status does not establish earlier commands' success. For user-visible behavior, exercise the relevant real flow where feasible; unit tests alone may miss integration failures. Missing required verification keeps the task `verifying` or `blocked`, not `done`.
+ 4. Integrate into the authoritative workspace and test the affected combined path. Passing in a worker's isolated checkout does not prove the final combination works. Do not revert unrelated changes to make integration easy.
+-5. Record evidence with the tested version: revision plus dirty-file information, or fingerprints of relevant artifacts. When inputs or accepted output change, invalidate affected evidence and reopen dependent acceptance checks; unrelated changes need not trigger a full rerun.
+-6. Mark done only after the coordinator accepts the evidence. For meaningful risk or subjective criteria, use an independent evaluator when permitted, giving it requirements and raw artifacts rather than the author's desired verdict. Use deterministic checks when they settle the question; do not build a reviewer hierarchy by default.
++5. At acceptance, bind evidence to the tested version: revision plus dirty-file information, or fingerprints of relevant artifacts. Fill missing worker version evidence only after confirming those artifacts are unchanged since testing; otherwise rerun the affected checks. When inputs or accepted output change, invalidate affected evidence and reopen dependent acceptance checks; unrelated changes need not trigger a full rerun.
++6. Mark done only after the coordinator accepts the evidence; persist prerequisite done states before starting dependent work. If that write fails, reconcile the tracker before proceeding; a final batch update cannot replace this handoff. For meaningful risk or subjective criteria, use an independent evaluator when permitted, giving it requirements and raw artifacts rather than the author's desired verdict. Use deterministic checks when they settle the question; do not build a reviewer hierarchy by default.
+ 
+ ## Recover without replaying blindly
+ 
+-- Checkpoint after meaningful accepted results and before handing off or ending a session. Record enough to resume: task states, artifact locations, worker handles, verification results, known failures, and the next action. Exclude credentials and unnecessary sensitive output.
++- Checkpoint after meaningful accepted results and before handing off or ending a session. Record task states, artifact locations, verification results, failures, and the next action. Refresh worker liveness separately from task acceptance: move confirmed terminal handles out of the active list while retaining their history, and label unconfirmed liveness explicitly. Exclude credentials and unnecessary sensitive output.
+ - On resume, reread instructions and the authoritative list; inspect actual artifacts, current changes, and live workers. Reconcile differences before dispatch. A saved `running` state is not proof of life, and a saved `done` state is not proof that the current output still passes.
+ - Treat a timeout or lost response as **unknown outcome**. Check receipts, resulting state, and operation IDs before retrying a mutation. Use the service's idempotency facility when available. If a consequential side effect cannot be reconciled safely, block that task and request the needed decision; do not reissue it optimistically.
+ - Use the host's bounded retry policy if one exists. Otherwise, for a safe transient operation, make one retry after checking state. For a failed implementation check, diagnose and make a targeted repair; stop repeating the same failure without new evidence. Replan or block the affected task while continuing unrelated ready work.

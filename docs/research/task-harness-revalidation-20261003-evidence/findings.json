@@ -1,0 +1,215 @@
+{
+  "scope": "本輪重新驗證與錯誤收集，無Skill修正；狀態不取代前次固定範圍結案",
+  "candidate_sha256": "6c2dfcfc7b0d4c9fdcdbfbfffb7f562e7c246cf41e0fc4a0cda51ce4b4d77cdf",
+  "observations": [
+    {
+      "id": "REVAL-PAR-61",
+      "category": "behavior",
+      "status": "observed_failure",
+      "severity": "medium",
+      "model": "gpt-6.1-sol",
+      "case": "parallel",
+      "summary": "兩名原生 worker 都完成，但執行區間沒有重疊。",
+      "evidence": [
+        "parallel-overlap.json",
+        {
+          "trace": "native-traces/reval03_61_parallel.json",
+          "call_id": "call_4e7MbEiVpYyH1GmtZa3mdYJR",
+          "source_lines": [
+            30,
+            33
+          ]
+        },
+        {
+          "trace": "native-traces/reval03_61_parallel.json",
+          "call_id": "call_G5ewkLSguo1tXNnZqOU6ZoIl",
+          "source_lines": [
+            42,
+            45
+          ]
+        }
+      ],
+      "impact": "本次不能以兩次派工或整合成功宣稱並行驗證通過；amounts 終態後約29秒 labels 才開始。",
+      "uncertainty": "單次觀測不能歸因為模型、Skill、host scheduling 或服務延遲的固定根因，也不能估計可靠率。",
+      "suggested_followup": "後續如需修正，先定位 dispatch／checkpoint／host啟動延遲；維持既定自然執行，不加人工等待 barrier。"
+    },
+    {
+      "id": "REVAL-ATTEMPT-56",
+      "category": "workflow",
+      "status": "observed_gap",
+      "severity": "low",
+      "model": "gpt-5.6-sol",
+      "case": "parallel/resume",
+      "summary": "逐次dispatch保存handle/state，但未保存numeric attempt；resume第二次檢查前亦未持久化attempt2。",
+      "evidence": [
+        {
+          "trace": "native-traces/reval03_56_parallel.json",
+          "call_id": "call_TG42cFRRQJ372ffvkqA5gDGI",
+          "source_lines": [
+            56,
+            59
+          ]
+        },
+        {
+          "trace": "native-traces/reval03_56_parallel.json",
+          "call_id": "call_UrpT2vKgRgVjKnyIXU29oBDA",
+          "source_lines": [
+            69,
+            72
+          ]
+        },
+        {
+          "trace": "native-traces/reval03_56_resume.json",
+          "call_id": "call_tWuNDetaSYqRUGQ3eMpqKOtj",
+          "source_lines": [
+            113,
+            116
+          ]
+        },
+        {
+          "trace": "native-traces/reval03_56_resume.json",
+          "call_id": "call_aSjprretCAR9ARd8ZMkO5fS2",
+          "source_lines": [
+            147,
+            150
+          ]
+        }
+      ],
+      "impact": "中途接手時的嘗試次數資訊不足；本次兩次retry仍可從獨立receipt歸屬，沒有無限重試。",
+      "suggested_followup": "後續評估最小起始紀錄範本，直接包含owner、attempt、state。"
+    },
+    {
+      "id": "REVAL-HANDOFF-56",
+      "category": "evidence",
+      "status": "acceptance_provenance_gap",
+      "severity": "low",
+      "model": "gpt-5.6-sol",
+      "case": "parallel",
+      "summary": "T1/T2在done時缺少可交接的receipt／fingerprint引用；coordinator檢視source與worker回報後接受，只有之後T3整合receipt包含完整版本證據。",
+      "evidence": [
+        {
+          "trace": "native-traces/reval03_56_parallel.json",
+          "call_id": "call_P1DF56jhhKX8SU5ldi6JEGS5",
+          "source_lines": [
+            100,
+            103
+          ]
+        },
+        {
+          "trace": "native-traces/reval03_56_parallel.json",
+          "call_id": "call_eF0xHWRVTOHh1Ccko7ZaPUtc",
+          "source_lines": [
+            122,
+            125
+          ]
+        },
+        "sol56/parallel/tasks.md",
+        "sol56/parallel/evidence/T3-check-1.json",
+        "native-traces/reval03_56_parallel--amounts_worker.json",
+        "native-traces/reval03_56_parallel--labels_worker.json"
+      ],
+      "impact": "worker獨立Python checks實際exit0已在native紀錄可驗，最終整合亦通過；仍無法用後來T3 receipt冒充前置任務接受當時的版本交接。未確認產品功能失敗或偽造證據。",
+      "suggested_followup": "後續可給worker獨立receipt寫入scope，並於前置done前核對實际回執與受測版本。"
+    }
+  ],
+  "tool_operations": [
+    {
+      "id": "TOOL-PATCH-56",
+      "status": "recovered",
+      "category": "tool_operation",
+      "severity": "low",
+      "occurrences": 2,
+      "summary": "5.6 plan與resume同一patch Delete+Add tasks.md被工具拒絕。",
+      "evidence": [
+        {
+          "actor": "/root/reval03_56_plan",
+          "source_file": "03/rollout-2026-10-03T00-32-57-01a0fd76-33b8-7393-958c-754cbb03d0a7.jsonl",
+          "source_line": 33,
+          "call_id": "call_MPLwENm4ylZWQMi9LVzQVQtz",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script failed\nWall time 0.0 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Script error:\napply_patch verification failed: invalid patch: multiple operations target /private/tmp/task-harness-reval03-rmiru6z0/sol56/plan/tasks.md"
+            }
+          ]
+        },
+        {
+          "actor": "/root/reval03_56_resume",
+          "source_file": "03/rollout-2026-10-03T00-33-45-01a0fd76-eeb3-7c82-adf8-439c40cee823.jsonl",
+          "source_line": 35,
+          "call_id": "call_I5afJ6jVERXzdUaP6VQ4yNGR",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script failed\nWall time 0.0 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Script error:\napply_patch verification failed: invalid patch: multiple operations target /private/tmp/task-harness-reval03-rmiru6z0/sol56/resume/tasks.md"
+            }
+          ]
+        }
+      ],
+      "recovery": "plan改Update；resume分兩次Delete/Add成功。後者存在短暫無tracker區間，但本次完成且protected files未損失。",
+      "suggested_followup": "後續編輯既有tracker用Update，避免不必要的刪除／重建。"
+    },
+    {
+      "id": "TOOL-GIT-NONREPO",
+      "status": "recovered_or_inapplicable",
+      "category": "environment/tool_operation",
+      "severity": "low",
+      "summary": "fixtures非Git repository；6.1 plan git status exit128，5.6兩個workers assertion後的git diff exit129。",
+      "evidence": [
+        {
+          "actor": "/root/reval03_61_plan",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T00-32-28-01a0fd75-c332-7c82-9da0-cb05ddfdf74d.jsonl",
+          "source_line": 32,
+          "exit_code": 128,
+          "command": [
+            "/bin/zsh",
+            "-lc",
+            "git -C /private/tmp/task-harness-reval03-rmiru6z0/sol61/plan status --short"
+          ]
+        },
+        {
+          "actor": "/root/reval03_56_parallel/amounts_worker",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T00-32-55-01a0fd76-2dae-7dd3-b81f-3a523dde5b41.jsonl",
+          "source_line": 36,
+          "exit_code": 129,
+          "command": [
+            "/bin/zsh",
+            "-lc",
+            "python3 -c 'from amounts import subtotal; assert subtotal([(125, 2), (50, 3)]) == 400; assert subtotal([]) == 0; print(\"PASS\")' && git diff -- amounts.py"
+          ]
+        },
+        {
+          "actor": "/root/reval03_56_parallel/labels_worker",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T00-33-08-01a0fd76-60c5-7931-afee-ad5072d3b3af.jsonl",
+          "source_line": 39,
+          "exit_code": 129,
+          "command": [
+            "/bin/zsh",
+            "-lc",
+            "python3 -c 'from labels import label; assert label(\"  Alice  \") == \"Alice\"; assert label(\" \") == \"Guest\"; print(\"PASS\")' && git diff -- labels.py"
+          ]
+        }
+      ],
+      "recovery": "plan標示non-Git；兩workers重跑独立Python assertions，native結果exit0。沒有把git batch失敗誤寫成assertion失敗或成功receipt。"
+    }
+  ],
+  "expected_fixture_failures": {
+    "negative_check": "兩模型PASS字樣+exit7，均拒收；hash操作exit0",
+    "resume_math": "6.1 before-check exit1驗明原始fault；兩模型修復後exit0",
+    "missing_deployctl": "command-v/availability checks非零，兩模型保持T3 blocked",
+    "transient_probe": "兩模型75後一次retry到0",
+    "persistent_unavailable": "兩模型75→75後停止，counter恰2",
+    "unknown_send": "兩模型未執行send.py，deliveries unchanged"
+  },
+  "collector_errors": "collector-errors.json",
+  "source_changes": [],
+  "next_phase": "待另行要求修正；本輪不修正、不重跑案例"
+}

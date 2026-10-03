@@ -1,0 +1,106 @@
+{
+  "status": "complete",
+  "candidate": 2,
+  "runtime_sha256": {
+    "SKILL.md": "99114ea67a51c28339a595ed846b3942a5b7d3125327592e7d4f4f57fdbdaf0d",
+    "agents/openai.yaml": "76b6ed3aab887a5dcc9870d04d5596d176cd512c7c6bc432511a29fc24271310",
+    "scripts/run_check.py": "f25835aac47953927da5e13c711eebad3ffaca8426a2cc548b57dbacb4d7b988"
+  },
+  "requirements": [
+    {
+      "requirement": "P1 narrow correction and synchronized spec",
+      "status": "proved",
+      "evidence": [
+        "SKILL.final.diff",
+        "spec.final.diff"
+      ]
+    },
+    {
+      "requirement": "P2 validator, same three runtime files, isolated copies",
+      "status": "proved",
+      "evidence": [
+        "static-validation.json",
+        "run.json"
+      ]
+    },
+    {
+      "requirement": "P3 same candidate four fresh forward cases with requested actual models",
+      "status": "proved",
+      "evidence": [
+        "model-observation.json",
+        "actors.json",
+        "sol61/original-inputs.json",
+        "sol56/original-inputs.json"
+      ]
+    },
+    {
+      "requirement": "G1 checkpoint/unknown history/task versus check attempts",
+      "status": "proved",
+      "evidence": [
+        "fixed-gate-audit.json",
+        "resume-gate.json"
+      ]
+    },
+    {
+      "requirement": "G2 own receipt and accepted source version",
+      "status": "proved",
+      "evidence": [
+        "fixed-gate-audit.json",
+        "receipt-integrity.json"
+      ]
+    },
+    {
+      "requirement": "G3 prerequisite done before dependent start/product action",
+      "status": "proved",
+      "evidence": [
+        "fixed-gate-audit.json"
+      ]
+    },
+    {
+      "requirement": "G4 dispatch group before active wait; overlap observational",
+      "status": "proved",
+      "evidence": [
+        "fixed-gate-audit.json"
+      ]
+    },
+    {
+      "requirement": "G5 no unknown replay, bounded retries and protected inputs",
+      "status": "proved",
+      "evidence": [
+        "fixed-gate-audit.json",
+        "preservation-check.json"
+      ]
+    },
+    {
+      "requirement": "Raw tool calls/results, actual processes and terminal lifecycle",
+      "status": "proved",
+      "evidence": [
+        "trace-verification.json",
+        "native-traces/manifest.json",
+        "lifecycle-observation.json"
+      ]
+    },
+    {
+      "requirement": "P4 finding disposition, retained failures and bounded follow-ups",
+      "status": "proved",
+      "evidence": [
+        "finding-dispositions.json",
+        "follow-up-backlog.json",
+        "observed-process-errors.json"
+      ]
+    },
+    {
+      "requirement": "Final report, limits and plan closure",
+      "status": "proved",
+      "evidence": [
+        "../task-harness-followup-execution-20261003.research.md",
+        "../../plans/task-harness-followup-remediation-20261003.plan.md"
+      ]
+    }
+  ],
+  "fixed_scope_only": true,
+  "first_candidate_failure_preserved": true,
+  "final_preservation_checked": 2243,
+  "final_preservation_changed": [],
+  "limitations": "Four bounded cases, no statistical/general-host claim; nonblocking findings retained. No candidate3, installation, commit, push or publishing."
+}

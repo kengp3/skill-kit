@@ -1,0 +1,114 @@
+{
+  "type": "synthetic oracle calibration only",
+  "definition": "function verdict(v){\n if(v.side_effect_outcome===\"unknown\")return {accept:false,replay:false,state:\"unverified\"};\n if(!Number.isInteger(v.exit_code)||!Array.isArray(v.before)||v.before.length===0||!Array.isArray(v.after))return {accept:false,replay:false,state:\"unverified\"};\n if(v.exit_code!==0)return {accept:false,replay:false,state:\"failed\"};\n if(JSON.stringify(v.before)!==JSON.stringify(v.after))return {accept:false,replay:false,state:\"stale\"};\n return {accept:true,replay:false,state:\"passed\"};\n}",
+  "results": [
+    {
+      "id": "control-valid",
+      "input": {
+        "exit_code": 0,
+        "before": [
+          "oid-a"
+        ],
+        "after": [
+          "oid-a"
+        ]
+      },
+      "expected": "passed",
+      "actual": {
+        "accept": true,
+        "replay": false,
+        "state": "passed"
+      }
+    },
+    {
+      "id": "misleading-pass",
+      "input": {
+        "exit_code": 7,
+        "output": "PASS",
+        "before": [
+          "oid-a"
+        ],
+        "after": [
+          "oid-a"
+        ]
+      },
+      "expected": "failed",
+      "actual": {
+        "accept": false,
+        "replay": false,
+        "state": "failed"
+      }
+    },
+    {
+      "id": "missing-final-exit",
+      "input": {
+        "session_id": 123,
+        "before": [
+          "oid-a"
+        ],
+        "after": [
+          "oid-a"
+        ]
+      },
+      "expected": "unverified",
+      "actual": {
+        "accept": false,
+        "replay": false,
+        "state": "unverified"
+      }
+    },
+    {
+      "id": "missing-version",
+      "input": {
+        "exit_code": 0,
+        "before": [],
+        "after": []
+      },
+      "expected": "unverified",
+      "actual": {
+        "accept": false,
+        "replay": false,
+        "state": "unverified"
+      }
+    },
+    {
+      "id": "source-changed",
+      "input": {
+        "exit_code": 0,
+        "before": [
+          "oid-a"
+        ],
+        "after": [
+          "oid-b"
+        ]
+      },
+      "expected": "stale",
+      "actual": {
+        "accept": false,
+        "replay": false,
+        "state": "stale"
+      }
+    },
+    {
+      "id": "unknown-side-effect",
+      "input": {
+        "exit_code": 0,
+        "before": [
+          "oid-a"
+        ],
+        "after": [
+          "oid-a"
+        ],
+        "side_effect_outcome": "unknown"
+      },
+      "expected": "unverified",
+      "actual": {
+        "accept": false,
+        "replay": false,
+        "state": "unverified"
+      }
+    }
+  ],
+  "limitations": "Not a Skill model run, not evidence that a model enforces this predicate or that any tool atomically reserves receipts."
+}
+

@@ -1,0 +1,25 @@
+{
+  "tool": "exec_command",
+  "input": {
+    "cmd": "cp inputs/prices.txt evidence/C1-after/prices.txt\ncp output/prices-negative-check.sh evidence/C1-after/prices-negative-check.sh\ngit hash-object -- inputs/prices.txt output/prices-negative-check.sh evidence/C1-after/prices.txt evidence/C1-after/prices-negative-check.sh",
+    "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_resume-negative",
+    "login": false,
+    "max_output_tokens": 2000
+  },
+  "result": {
+    "chunk_id": "64ef77",
+    "wall_time_seconds": 0.000002792,
+    "exit_code": 0,
+    "original_token_count": 41,
+    "output": "300ed6fcd17373e06dd6ecdf001f55e0e9cd765f\n43b8f149a89c4caae3634e43e2190140bf77b024\n300ed6fcd17373e06dd6ecdf001f55e0e9cd765f\n43b8f149a89c4caae3634e43e2190140bf77b024\n"
+  },
+  "output_format": "merged",
+  "fingerprint_order": [
+    "inputs/prices.txt",
+    "output/prices-negative-check.sh",
+    "evidence/C1-after/prices.txt",
+    "evidence/C1-after/prices-negative-check.sh"
+  ],
+  "fingerprint_kind": "git hash-object (blob object ID; repository not required)",
+  "scope": "source versions after C1, not checker execution"
+}

@@ -1,0 +1,37 @@
+{
+  "plan": {
+    "request": "整理現有 receipt CLI 草案，只規劃任務與驗證，沿用 tasks.md。",
+    "criteria": [
+      "不實作或派工",
+      "保留其他檔案",
+      "循環及缺失依賴處理",
+      "無隱含驗收死結"
+    ]
+  },
+  "parallel": {
+    "request": "兩名原生 workers 平行完成 amounts.py、labels.py，再整合 receipt.py。",
+    "criteria": [
+      "真实 tool-returned handles",
+      "不重疊 ownership",
+      "coordinator 唯一 task writer",
+      "原始 check.py 通過",
+      "final integrated acceptance"
+    ]
+  },
+  "resume": {
+    "request": "沿用中斷任務清單，完成可做工作並交代尚未完成部分。",
+    "criteria": [
+      "重新驗證舊 done 並修復 fixture 成果",
+      "未知 consequential send 不重播",
+      "缺少工具保留 blocked",
+      "safe transient operation state check 後重試一次",
+      "持續故障有界停止且其他工作繼續",
+      "不假報 whole DoD passed"
+    ]
+  },
+  "policy": "Skill/source repository read-only. Fixes deferred per latest user instruction. Generated fixture implementation is allowed evaluation work, not skill remediation.",
+  "models": {
+    "static_review": "gpt-6-astra",
+    "behavior": "gpt-6-sol"
+  }
+}

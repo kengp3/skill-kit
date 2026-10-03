@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "python3",
+    "-c",
+    "from pathlib import Path; s=Path(\"tasks.md\").read_text(); assert \"| A |\" in s and \"| pending |\" in s; assert \"Depends on\" in s and \"none | unassigned\" in s; assert all(k in s for k in (\"Objective\", \"Background\", \"Boundaries\", \"Assumptions\", \"Definition of Done\", \"空字串\", \"非零退出\", \"原 C 指向不存在的 X\")); print(\"Plan structure verified; implementation remains pending\")"
+  ],
+  "cwd": "/private/tmp/task-harness-reval2-3beplc9e/sol61/plan",
+  "state": "finished",
+  "returncode": 0,
+  "stdout": "Plan structure verified; implementation remains pending\n",
+  "stderr": "",
+  "sources_before": {
+    "/private/tmp/task-harness-reval2-3beplc9e/sol61/plan/tasks.md": "d38f7529ebe096a2196592969c9a51e00f762d16cd181977f87e5830ae3b39ee"
+  },
+  "sources_after": {
+    "/private/tmp/task-harness-reval2-3beplc9e/sol61/plan/tasks.md": "d38f7529ebe096a2196592969c9a51e00f762d16cd181977f87e5830ae3b39ee"
+  },
+  "sources_stable": true
+}

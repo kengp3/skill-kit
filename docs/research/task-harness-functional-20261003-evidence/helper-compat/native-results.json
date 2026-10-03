@@ -1,0 +1,47 @@
+[
+  {
+    "input": {
+      "cmd": "'python3' '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/candidate/task-harness/scripts/run_check.py' '--output' '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-functional-20261003-evidence/helper-compat/check-1.json' '--source' '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-functional-20261003-evidence/helper-compat/input.txt' '--' '/bin/cat' '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-functional-20261003-evidence/helper-compat/input.txt'",
+      "workdir": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-functional-20261003-evidence/helper-compat",
+      "login": false,
+      "max_output_tokens": 700
+    },
+    "result": {
+      "chunk_id": "6d561c",
+      "wall_time_seconds": 0.086996625,
+      "exit_code": 0,
+      "original_token_count": 32,
+      "output": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-functional-20261003-evidence/helper-compat/check-1.json\n"
+    }
+  },
+  {
+    "input": {
+      "cmd": "'python3' '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/candidate/task-harness/scripts/run_check.py' '--output' '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-functional-20261003-evidence/helper-compat/check-1.json' '--source' '/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-functional-20261003-evidence/helper-compat/input.txt' '--' '/bin/sh' '-c' 'printf replayed > replay-marker.txt'",
+      "workdir": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-functional-20261003-evidence/helper-compat",
+      "login": false,
+      "max_output_tokens": 700
+    },
+    "result": {
+      "chunk_id": "de2057",
+      "wall_time_seconds": 0.045821209,
+      "exit_code": 2,
+      "original_token_count": 39,
+      "output": "usage: run_check.py [-h] --output OUTPUT [--source SOURCE] ...\nrun_check.py: error: receipt already exists; reconcile it or choose a new authorized attempt\n"
+    }
+  },
+  {
+    "input": {
+      "cmd": "cat check-1.json; test ! -e replay-marker.txt",
+      "workdir": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-functional-20261003-evidence/helper-compat",
+      "login": false,
+      "max_output_tokens": 1000
+    },
+    "result": {
+      "chunk_id": "147be3",
+      "wall_time_seconds": 0.000006791,
+      "exit_code": 0,
+      "original_token_count": 217,
+      "output": "{\n  \"argv\": [\n    \"/bin/cat\",\n    \"/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-functional-20261003-evidence/helper-compat/input.txt\"\n  ],\n  \"cwd\": \"/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-functional-20261003-evidence/helper-compat\",\n  \"state\": \"finished\",\n  \"returncode\": 0,\n  \"stdout\": \"optional-helper-fixture\\n\",\n  \"stderr\": \"\",\n  \"sources_before\": {\n    \"/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-functional-20261003-evidence/helper-compat/input.txt\": \"1105af220a0b0b5a59884379388067a32b141c0b530a08083b8c21ce03875687\"\n  },\n  \"sources_after\": {\n    \"/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-functional-20261003-evidence/helper-compat/input.txt\": \"1105af220a0b0b5a59884379388067a32b141c0b530a08083b8c21ce03875687\"\n  },\n  \"sources_stable\": true\n}\n"
+    }
+  }
+]

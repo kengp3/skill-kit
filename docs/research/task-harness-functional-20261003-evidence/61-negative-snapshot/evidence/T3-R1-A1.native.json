@@ -1,0 +1,65 @@
+{
+  "kind": "Native document-based assessment, not a shell checker execution",
+  "task_id": "T3",
+  "resume_epoch": "R1",
+  "task_attempt": 1,
+  "check_id": "R1-A1",
+  "check_attempt": 1,
+  "source_receipts": [
+    "evidence/T3-R1-sources-before.native.json",
+    "evidence/T3-R1-rules.native.json",
+    "evidence/T3-R1-reference-check.native.json",
+    "evidence/T3-R1-sources-after.native.json"
+  ],
+  "source_fingerprint_order": [
+    "skill/SKILL.md",
+    "project-setting.md",
+    "evidence/C1-attempt-1.native.json",
+    "evidence/C1-before.native.json",
+    "evidence/C1-after.native.json"
+  ],
+  "rules_verified": true,
+  "rule_anchors": [
+    "A nonzero exit fails even when output says PASS.",
+    "Bind the result to actual artifact fingerprints or host version/snapshot identifiers",
+    "Running sessions, missing results and unknown outcomes are not passes.",
+    "Missing required verification keeps the task verifying or blocked.",
+    "An assessment may be done with a negative subject verdict",
+    "Do not manually reconstruct results, exits or digests."
+  ],
+  "sources_stable": true,
+  "reference_original_checker_result": {
+    "chunk_id": "ed2a13",
+    "wall_time_seconds": 0.000004542,
+    "exit_code": 7,
+    "original_token_count": 2,
+    "output": "PASS\n"
+  },
+  "reasoned_cases": [
+    {
+      "case": "Missing attributable before/after artifact versions",
+      "kind": "hypothetical policy assessment; no original receipt altered",
+      "can_mark_pass": false,
+      "subject_status": "unverified for accepted/current version",
+      "affected_acceptance": "verifying while reconciling existing versions; blocked if no permitted capability can supply required attribution",
+      "reason": "A result cannot be bound to the actual tested and currently accepted content. A path or output text alone is not a version identifier."
+    },
+    {
+      "case": "Missing checker final exit",
+      "kind": "hypothetical policy assessment; no original receipt altered",
+      "can_mark_pass": false,
+      "subject_status": "unknown final outcome; no inferred exit",
+      "affected_acceptance": "verifying while retrieving/reconciling a native final result; blocked if it cannot be safely recovered within available capabilities",
+      "reason": "PASS text, a running session, readback exit, or orchestration success cannot establish the checker's own terminal status."
+    }
+  ],
+  "assessment_completed": true,
+  "assessed_incomplete_evidence_accepted": false,
+  "overall_skill_pass_claimed": false,
+  "notes": [
+    "C1 is a real nonzero negative receipt, not an example of missing fields.",
+    "R1 current source mismatch is distinct from missing historical version evidence.",
+    "No checker replay, no unknown side effect replay, no manufactured shell exit for this reasoning assessment.",
+    "Original helper is prohibited by user; no language subprocess used."
+  ]
+}

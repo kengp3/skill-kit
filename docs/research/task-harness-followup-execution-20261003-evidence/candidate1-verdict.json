@@ -1,0 +1,26 @@
+{
+  "candidate": 1,
+  "status": "fail",
+  "blocking": [
+    {
+      "gate": "G1",
+      "case": "C56-R",
+      "finding": "Historical attempt counts not supplied by fixture; tracker assigns T2 attempt 1 and T1 attempt 2 without qualifying as a local resume epoch.",
+      "evidence": "native-traces/followup_56_resume.json source_line 38; sol56/original-inputs.json",
+      "repair": "Preserve unknown historical counts explicitly; use a named resume epoch and local counter rather than infer cumulative counts."
+    }
+  ],
+  "other_gates": "G2/G3/G4 parallel and G5 recovery inspected; receipts and native provenance validated.",
+  "collector_errors": [
+    {
+      "chunk": "183eaf",
+      "reason": "if wrapper trailing ; fi was parsed as argv",
+      "resolution": "tokenize shell punctuation preserving quoted Python code"
+    },
+    {
+      "chunk": "26c560",
+      "reason": "git diff && runner was matched although git failed before runner launched",
+      "resolution": "require runner emitted receipt-path completion output; preserve batch error separately"
+    }
+  ]
+}

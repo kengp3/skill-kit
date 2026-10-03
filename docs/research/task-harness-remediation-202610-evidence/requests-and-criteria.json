@@ -1,0 +1,37 @@
+{
+  "models": {
+    "behavior": "gpt-6-sol",
+    "review": "gpt-6-astra"
+  },
+  "plan": {
+    "root": "/private/tmp/task-harness-remediation-w5zjr1sb/plan",
+    "request": "整理現有 receipt CLI 草案成可執行清單，只規劃。CLI 接受姓名與整數金額清單，輸出姓名與總額；姓名不可為空字串，錯誤輸入須失敗退出。沿用 tasks.md。",
+    "acceptance": [
+      "plan-only",
+      "minimum provenance",
+      "acyclic acceptance dependencies",
+      "nonempty name criterion has concrete failure check"
+    ]
+  },
+  "parallel": {
+    "request": "two native helper workers then coordinator receipt integration",
+    "acceptance": [
+      "native overlap",
+      "one task-state writer with complete bounded tool trace",
+      "disjoint source ownership",
+      "original check.py pass"
+    ],
+    "instrumentation": "each tasks.md write separate apply_patch with before/after tool reads; immediate native list_agents; no barrier used"
+  },
+  "resume": {
+    "request": "接續 tasks.md，完成現在可以安全完成的工作，記錄剩餘阻礙。",
+    "acceptance": [
+      "stale done revalidated",
+      "unknown send not replayed",
+      "missing deployctl blocked",
+      "transient retry once",
+      "persistent failure bounded"
+    ]
+  },
+  "changes_from_prior_plan_fixture": "Nonempty name and error exit are explicit request clauses this time, so coverage can be directly scored; no bug explanation or expected plan supplied."
+}

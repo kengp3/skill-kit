@@ -1,0 +1,54 @@
+{
+  "scope": "error collection; fixes deferred",
+  "confirmed_functional_or_authorization_defects": 0,
+  "observations": [
+    {
+      "id": "OBS-01",
+      "type": "low-severity record omission",
+      "artifact": "plan/tasks.md",
+      "lines": [
+        5,
+        9,
+        27
+      ],
+      "observed": "missing explicit coordinator, workspace/baseline, available tools",
+      "impact": "incomplete handoff provenance; no demonstrated wrong mutation",
+      "status": "recorded; no remediation"
+    },
+    {
+      "id": "GAP-01",
+      "type": "missing proof",
+      "artifact": "parallel/evidence/dispatch.txt",
+      "lines": [
+        5,
+        7
+      ],
+      "observed": "no simultaneous-running snapshot",
+      "impact": "cannot prove live execution overlap",
+      "status": "recorded; no remediation"
+    },
+    {
+      "id": "GAP-02",
+      "type": "missing proof",
+      "artifact": "final task lists and curated evidence",
+      "observed": "no complete transition/write-author trace",
+      "impact": "cannot independently prove every transition or sole writer through time",
+      "status": "recorded; no remediation"
+    },
+    {
+      "id": "GAP-03",
+      "type": "verification coverage",
+      "artifact": "plan/tasks.md",
+      "lines": [
+        19,
+        23,
+        25
+      ],
+      "observed": "nonempty name accepted but no empty-name test",
+      "impact": "future CLI checks can miss this acceptance clause",
+      "status": "recorded; no remediation"
+    }
+  ],
+  "optional_note": "Regroup mapping A/B/C→T1 omitted; useful provenance improvement, not a demonstrated stable-ID defect because unexecuted draft may be regrouped.",
+  "seeded_faults_are_not_skill_defects": true
+}

@@ -1,0 +1,17 @@
+{
+  "agents": [
+    {
+      "agent_name": "/root/remfix_61_parallel/amounts",
+      "agent_status": {
+        "completed": "已完成 [amounts.py](/private/tmp/task-harness-remfix-4199tvtt/sol61/parallel/amounts.py)：加總 cents × quantity，空清單回傳 0。\n兩個 assert 通過，exit status 0；指令、結果與 SHA256 已保存於 [amounts.json](/private/tmp/task-harness-remfix-4199tvtt/sol61/parallel/evidence/amounts.json)。"
+      }
+    },
+    {
+      "agent_name": "/root/remfix_61_parallel/labels",
+      "agent_status": {
+        "completed": "已實作 `name.strip() or \"Guest\"`，兩個 label assert 通過（exit status 0）。\n\nArtifacts：\n- [labels.py](/private/tmp/task-harness-remfix-4199tvtt/sol61/parallel/labels.py)\n- [labels.json](/private/tmp/task-harness-remfix-4199tvtt/sol61/parallel/evidence/labels.json)：包含 command、exit status、result 與 SHA256。"
+      }
+    }
+  ],
+  "observation": "native list_agents immediately after both successful spawns; relevant workers were already completed; no waiting barrier or simultaneous running claim"
+}

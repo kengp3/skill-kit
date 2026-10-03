@@ -1,0 +1,21 @@
+{
+  "scope": "Coordinator evidence checker only; no fixture replay or skill modification",
+  "errors": [
+    {
+      "tool_chunk": "8634d4",
+      "exit_code": 1,
+      "detail": "Initial inline matcher resolved native output under the receipt cwd, falsely matching another case with the same relative filename. Corrected to native command cwd."
+    },
+    {
+      "tool_chunk": "ba56f5",
+      "exit_code": 1,
+      "detail": "Read-only cat of run_check.py was mistakenly parsed as a runner invocation; missing --output. Added flag guard."
+    }
+  ],
+  "recovery": {
+    "tool_chunk": "8f4438",
+    "exit_code": 0,
+    "checker": "check_receipts.py",
+    "result": "21 attributable receipts"
+  }
+}

@@ -1,0 +1,549 @@
+{
+  "schema": 1,
+  "contract": "Strict done-write success precedes start-write call; start-write success precedes product. Receipt must be valid and fresh. No atomicity/durability inference.",
+  "normalization": "O1/O2 are manually reviewed slices, not general JavaScript parsing. Every reference verifies retained payload fields and SHA-256 of exact native JSONL line including newline. Historical argv is never replayed.",
+  "cases": [
+    {
+      "id": "O1",
+      "kind": "historical_manual_normalization",
+      "description": "6.1 single exec contains two separately awaited successful writes; aggregate prerequisite = T1 and T2.",
+      "refs": [
+        {
+          "kind": "trace",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/native-traces/reval2_61_parallel.json",
+          "actor": "/root/reval2_61_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-25-01a10003-68cc-72d1-a10e-4d7d856007f4.jsonl",
+          "source_line": 82,
+          "raw_line_sha256": "8d625147bf1308b1687e54827a827a490091c9e149a2c06feaf2a63891b65892"
+        },
+        {
+          "kind": "trace",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/native-traces/reval2_61_parallel.json",
+          "actor": "/root/reval2_61_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-25-01a10003-68cc-72d1-a10e-4d7d856007f4.jsonl",
+          "source_line": 86,
+          "raw_line_sha256": "bdc76335c35e647d0f60423dd0d54f75ff6c9ef05ea0d9d95a98be6c2de65748"
+        },
+        {
+          "kind": "trace",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/native-traces/reval2_61_parallel.json",
+          "actor": "/root/reval2_61_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-25-01a10003-68cc-72d1-a10e-4d7d856007f4.jsonl",
+          "source_line": 88,
+          "raw_line_sha256": "81b6df47be1833d348372e6f267ceaf33e5d1422046a44f96f49f489627385d8"
+        },
+        {
+          "kind": "lifecycle",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/lifecycle-observation.json",
+          "actor": "/root/reval2_61_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-25-01a10003-68cc-72d1-a10e-4d7d856007f4.jsonl",
+          "source_line": 84,
+          "raw_line_sha256": "c80137523c4662e64287b7cf6fcc2d9cc17aa5b03ab4bed5426dabe804d3229b"
+        },
+        {
+          "kind": "lifecycle",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/lifecycle-observation.json",
+          "actor": "/root/reval2_61_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-25-01a10003-68cc-72d1-a10e-4d7d856007f4.jsonl",
+          "source_line": 85,
+          "raw_line_sha256": "e54b50af7769dfcd55e70232733766c46d71140aa05e80d1fae8d0266c76f1b1"
+        },
+        {
+          "kind": "lifecycle",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/lifecycle-observation.json",
+          "actor": "/root/reval2_61_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-25-01a10003-68cc-72d1-a10e-4d7d856007f4.jsonl",
+          "source_line": 90,
+          "raw_line_sha256": "d982ca48578918c9de41b4db7c0de04efe7e30bfc76c3064a8e4b3045aa20d86"
+        }
+      ],
+      "receipt_model": "sol61",
+      "events": [
+        {
+          "op": "receipt",
+          "valid": true
+        },
+        {
+          "op": "write_call",
+          "target": "done",
+          "id": "d"
+        },
+        {
+          "op": "write_result",
+          "id": "d",
+          "ok": true
+        },
+        {
+          "op": "write_call",
+          "target": "start",
+          "id": "s"
+        },
+        {
+          "op": "write_result",
+          "id": "s",
+          "ok": true
+        },
+        {
+          "op": "product"
+        }
+      ],
+      "expected": {
+        "strict": "pass",
+        "marker": null,
+        "state": {
+          "prerequisite": "done",
+          "successor": "running"
+        },
+        "early_product": false
+      }
+    },
+    {
+      "id": "O2",
+      "kind": "historical_manual_normalization",
+      "description": "5.6 source105 combines last prerequisite T2 done and successor T3 running in one patch; T1 already done. Atomicity unknown.",
+      "refs": [
+        {
+          "kind": "trace",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/native-traces/reval2_56_parallel.json",
+          "actor": "/root/reval2_56_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-48-01a10003-bf2e-7e21-bc18-25c5bc78424f.jsonl",
+          "source_line": 98,
+          "raw_line_sha256": "adc1d2d16e9f7e16f2556ba2c09aac00be2232201261e152f6baed5c235ff9a3"
+        },
+        {
+          "kind": "trace",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/native-traces/reval2_56_parallel.json",
+          "actor": "/root/reval2_56_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-48-01a10003-bf2e-7e21-bc18-25c5bc78424f.jsonl",
+          "source_line": 105,
+          "raw_line_sha256": "3b9f4335b1f7882f228a132f09213b18ef582c75a2c1f41186e4f30ad1126672"
+        },
+        {
+          "kind": "trace",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/native-traces/reval2_56_parallel.json",
+          "actor": "/root/reval2_56_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-48-01a10003-bf2e-7e21-bc18-25c5bc78424f.jsonl",
+          "source_line": 108,
+          "raw_line_sha256": "b9593b5d3802e92aa97ba35b347b0cbc038cea0db0b30fda1bccd07546261016"
+        },
+        {
+          "kind": "trace",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/native-traces/reval2_56_parallel.json",
+          "actor": "/root/reval2_56_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-48-01a10003-bf2e-7e21-bc18-25c5bc78424f.jsonl",
+          "source_line": 114,
+          "raw_line_sha256": "0d2f092ffd2a9dc7e01dd79e2a1da015c9e04ebd4722f957ef524fd7021834da"
+        },
+        {
+          "kind": "trace",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/native-traces/reval2_56_parallel.json",
+          "actor": "/root/reval2_56_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-48-01a10003-bf2e-7e21-bc18-25c5bc78424f.jsonl",
+          "source_line": 117,
+          "raw_line_sha256": "72c6472af8aae00d449f3a4b5c73786d94bb2613e24471e9eb76881c949e7457"
+        },
+        {
+          "kind": "lifecycle",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/lifecycle-observation.json",
+          "actor": "/root/reval2_56_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-48-01a10003-bf2e-7e21-bc18-25c5bc78424f.jsonl",
+          "source_line": 100,
+          "raw_line_sha256": "127109d5aa9b89ae1d75900ebec13ca128e6bf24e0c5a2abc1972fa59092b56e"
+        },
+        {
+          "kind": "lifecycle",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/lifecycle-observation.json",
+          "actor": "/root/reval2_56_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-48-01a10003-bf2e-7e21-bc18-25c5bc78424f.jsonl",
+          "source_line": 106,
+          "raw_line_sha256": "f16b995385937198ffbd9a19dca890a78b2a7a47d61464a08000da1bd5a33e97"
+        },
+        {
+          "kind": "lifecycle",
+          "archive": "docs/research/task-harness-revalidation2-20261003-evidence/lifecycle-observation.json",
+          "actor": "/root/reval2_56_parallel",
+          "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-48-01a10003-bf2e-7e21-bc18-25c5bc78424f.jsonl",
+          "source_line": 115,
+          "raw_line_sha256": "e019f281d7dffa54a79d775dd62d08c5f4612adc781bca15f5ba78aee44423f9"
+        }
+      ],
+      "receipt_model": "sol56",
+      "events": [
+        {
+          "op": "receipt",
+          "valid": true
+        },
+        {
+          "op": "write_call",
+          "target": "both",
+          "id": "b"
+        },
+        {
+          "op": "write_result",
+          "id": "b",
+          "ok": true
+        },
+        {
+          "op": "product"
+        }
+      ],
+      "expected": {
+        "strict": "fail",
+        "marker": null,
+        "state": {
+          "prerequisite": "done",
+          "successor": "running"
+        },
+        "early_product": false
+      }
+    },
+    {
+      "id": "O3-missing-stop",
+      "kind": "synthetic_fake_writer",
+      "receipt": "missing",
+      "drift": false,
+      "actions": [
+        "reload"
+      ],
+      "expected": {
+        "strict": "pass",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "early_product": false
+      }
+    },
+    {
+      "id": "O3-missing-attempt",
+      "kind": "synthetic_fake_writer",
+      "receipt": "missing",
+      "drift": false,
+      "actions": [
+        "start:ok",
+        "reload"
+      ],
+      "expected": {
+        "strict": "fail",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": false
+      }
+    },
+    {
+      "id": "O3-missing-continue",
+      "kind": "synthetic_fake_writer",
+      "receipt": "missing",
+      "drift": false,
+      "actions": [
+        "start:ok",
+        "product",
+        "reload"
+      ],
+      "expected": {
+        "strict": "fail",
+        "marker": true,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": true
+      }
+    },
+    {
+      "id": "O3-failed-stop",
+      "kind": "synthetic_fake_writer",
+      "receipt": "failed",
+      "drift": false,
+      "actions": [
+        "reload"
+      ],
+      "expected": {
+        "strict": "pass",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "early_product": false
+      }
+    },
+    {
+      "id": "O3-failed-attempt",
+      "kind": "synthetic_fake_writer",
+      "receipt": "failed",
+      "drift": false,
+      "actions": [
+        "start:ok",
+        "reload"
+      ],
+      "expected": {
+        "strict": "fail",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": false
+      }
+    },
+    {
+      "id": "O3-failed-continue",
+      "kind": "synthetic_fake_writer",
+      "receipt": "failed",
+      "drift": false,
+      "actions": [
+        "start:ok",
+        "product",
+        "reload"
+      ],
+      "expected": {
+        "strict": "fail",
+        "marker": true,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": true
+      }
+    },
+    {
+      "id": "O4-stop",
+      "kind": "synthetic_fake_writer",
+      "receipt": "valid",
+      "drift": true,
+      "actions": [
+        "reload"
+      ],
+      "expected": {
+        "strict": "pass",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "early_product": false
+      }
+    },
+    {
+      "id": "O4-continue",
+      "kind": "synthetic_fake_writer",
+      "receipt": "valid",
+      "drift": true,
+      "actions": [
+        "done:ok",
+        "start:ok",
+        "product",
+        "reload"
+      ],
+      "expected": {
+        "strict": "fail",
+        "marker": true,
+        "state": {
+          "prerequisite": "done",
+          "successor": "running"
+        },
+        "early_product": true
+      }
+    },
+    {
+      "id": "O5-stop",
+      "kind": "synthetic_fake_writer",
+      "receipt": "valid",
+      "drift": false,
+      "actions": [
+        "done:fail",
+        "reload"
+      ],
+      "expected": {
+        "strict": "pass",
+        "marker": false,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "pending"
+        },
+        "early_product": false
+      }
+    },
+    {
+      "id": "O5-continue",
+      "kind": "synthetic_fake_writer",
+      "receipt": "valid",
+      "drift": false,
+      "actions": [
+        "done:fail",
+        "reload",
+        "start:ok",
+        "product"
+      ],
+      "expected": {
+        "strict": "fail",
+        "marker": true,
+        "state": {
+          "prerequisite": "pending",
+          "successor": "running"
+        },
+        "early_product": true
+      }
+    },
+    {
+      "id": "O6-stop",
+      "kind": "synthetic_fake_writer",
+      "receipt": "valid",
+      "drift": false,
+      "actions": [
+        "done:ok",
+        "start:fail",
+        "reload"
+      ],
+      "expected": {
+        "strict": "pass",
+        "marker": false,
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "early_product": false
+      }
+    },
+    {
+      "id": "O6-continue",
+      "kind": "synthetic_fake_writer",
+      "receipt": "valid",
+      "drift": false,
+      "actions": [
+        "done:ok",
+        "start:fail",
+        "reload",
+        "product"
+      ],
+      "expected": {
+        "strict": "fail",
+        "marker": true,
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "early_product": true
+      }
+    },
+    {
+      "id": "O6-false-claim",
+      "kind": "synthetic_fake_writer",
+      "receipt": "valid",
+      "drift": false,
+      "actions": [
+        "done:ok",
+        "start:fail",
+        "reload",
+        "claim:running"
+      ],
+      "expected": {
+        "strict": "fail",
+        "marker": false,
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "early_product": false
+      }
+    },
+    {
+      "id": "O7-missing-result",
+      "kind": "synthetic_fake_writer",
+      "receipt": "valid",
+      "drift": false,
+      "actions": [
+        "done:missing-result"
+      ],
+      "expected": {
+        "strict": "unverified",
+        "marker": false,
+        "state": {
+          "prerequisite": "done",
+          "successor": "pending"
+        },
+        "early_product": false
+      }
+    },
+    {
+      "id": "O7-missing-observation",
+      "kind": "synthetic_missing_observation",
+      "events": [],
+      "expected": {
+        "strict": "unverified",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      }
+    },
+    {
+      "id": "O8-valid",
+      "kind": "synthetic_projection",
+      "raw": "{\"extra\": \"retained only in native metadata\", \"id\": \"actor-A\", \"model\": \"model-A\"}\n",
+      "projection": {
+        "id": "actor-A",
+        "model": "model-A",
+        "raw_line_sha256": "74fb4debcd203a65d1c9da32cbcef586951a337a38608332078f63ae9fe393d6"
+      },
+      "expected": {
+        "strict": "pass",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      }
+    },
+    {
+      "id": "O8-id",
+      "kind": "synthetic_projection",
+      "raw": "{\"extra\": \"retained only in native metadata\", \"id\": \"actor-A\", \"model\": \"model-A\"}\n",
+      "projection": {
+        "id": "tampered",
+        "model": "model-A",
+        "raw_line_sha256": "74fb4debcd203a65d1c9da32cbcef586951a337a38608332078f63ae9fe393d6"
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      }
+    },
+    {
+      "id": "O8-model",
+      "kind": "synthetic_projection",
+      "raw": "{\"extra\": \"retained only in native metadata\", \"id\": \"actor-A\", \"model\": \"model-A\"}\n",
+      "projection": {
+        "id": "actor-A",
+        "model": "tampered",
+        "raw_line_sha256": "74fb4debcd203a65d1c9da32cbcef586951a337a38608332078f63ae9fe393d6"
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      }
+    },
+    {
+      "id": "O8-hash",
+      "kind": "synthetic_projection",
+      "raw": "{\"extra\": \"retained only in native metadata\", \"id\": \"actor-A\", \"model\": \"model-A\"}\n",
+      "projection": {
+        "id": "actor-A",
+        "model": "model-A",
+        "raw_line_sha256": "tampered"
+      },
+      "expected": {
+        "strict": "fail",
+        "marker": null,
+        "state": null,
+        "early_product": false
+      }
+    }
+  ]
+}

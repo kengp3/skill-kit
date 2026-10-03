@@ -1,0 +1,4 @@
+Worker completion: /root/sol_harness_parallel/amounts reported implemented amounts.py; direct assertions passed; SHA-256 d65448402b1b7d8f036255cc1f850116cc56d05e7ba62c2151ac3586d7c24d5a.
+Coordinator command: python3 -c 'from amounts import subtotal; assert subtotal([(125,2),(50,3)]) == 400; assert subtotal([]) == 0; print("PASS amounts")'
+Coordinator result: exit 0, PASS amounts.
+Coordinator inspected implementation: sum(price * quantity for price, quantity in items).

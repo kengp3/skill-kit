@@ -1,0 +1,634 @@
+{
+  "objective": "重新驗證 Task Harness，以 gpt-6.1-sol／gpt-5.6-sol 執行並收集錯誤待後續修正",
+  "audit_time_utc": "2026-10-03T04:49:49.164058+00:00",
+  "completion": "achieved",
+  "meaning": "收集與交付完成，並非受測 Skill 全流程通過或待修問題已修正。",
+  "requirements": [
+    {
+      "requirement": "以兩個指定模型實際執行",
+      "status": "proven",
+      "evidence": "model-observation.json / raw turn_context；12 actors contexts exact model match"
+    },
+    {
+      "requirement": "四類案例各一次，八案例終態",
+      "status": "proven",
+      "evidence": "actors.json / 12 raw task_complete；case-results covers exact 2×4 combinations"
+    },
+    {
+      "requirement": "Skill/runtime 完整且受測版本一致",
+      "status": "proven",
+      "evidence": "run.json / all current, working-fixture and archived runtime bytes fingerprints matched"
+    },
+    {
+      "requirement": "官方 Skill validator 與 runner self-tests",
+      "status": "proven",
+      "evidence": "static-validation.json / runner-tests.json actual process exit0；same current runtime"
+    },
+    {
+      "requirement": "plan-only 依賴、scope、驗收與不實作",
+      "status": "proven",
+      "evidence": "case-results plan gates / tasks.md / raw calls / protected app.py hashes"
+    },
+    {
+      "requirement": "parallel dispatch／ownership／handoff／integration",
+      "status": "proven",
+      "evidence": "case-results parallel gates / native coordinator+worker calls；handoff fail recorded, four safe archived checks exit0"
+    },
+    {
+      "requirement": "resume stale/unknown/tool/retry/counters/history",
+      "status": "proven",
+      "evidence": "case-results resume gates / raw calls / process receipts / counters2 and preserved deliveries"
+    },
+    {
+      "requirement": "misleading PASS exit7／獨立 hash／assessment semantics",
+      "status": "proven",
+      "evidence": "case-results misleading gates / raw check7 hash0 / hash stdout equals payload bytes"
+    },
+    {
+      "requirement": "收集全部觀察到的 process/script errors 與流程 findings",
+      "status": "proven",
+      "evidence": "17 tested-agent native nonzeros＋2 script errors classified；4 scoped findings with raw references；1 root audit checker error separately preserved and corrected；Skill not fixed"
+    },
+    {
+      "requirement": "證據 attribution 與不偽造 exits/hash",
+      "status": "proven",
+      "evidence": "224 raw event hashes／112 call-result pairs／23 exact argv,cwd,process/source receipts verified"
+    },
+    {
+      "requirement": "保留 protected inputs、歷史 evidence 與無關變更",
+      "status": "proven",
+      "evidence": "44 protected-file instances verified against original baseline；2348 existing repo files hashes unchanged"
+    },
+    {
+      "requirement": "本輪只收集、不修改Skill、不為綠燈重跑",
+      "status": "proven",
+      "evidence": "current runtime exact3 files unchanged；all archived fixture bytes equal terminal workspace；sampling_reruns0; non-pass verdicts retained"
+    },
+    {
+      "requirement": "完成結果報告／finding交付／tracker結案",
+      "status": "proven",
+      "evidence": "report＋case-results＋findings read back；all evidence refs resolve；plan C1 done persisted after audit checks"
+    }
+  ],
+  "counts": {
+    "main_cases": 8,
+    "terminal_actors": 12,
+    "tool_events": 224,
+    "call_result_pairs": 112,
+    "receipts": 23,
+    "safe_archived_product_checks": 4,
+    "expected_nonzero_processes": 10,
+    "tool_operation_nonzero_processes": 7,
+    "patch_script_errors": 2,
+    "root_audit_checker_errors": 1,
+    "medium_findings": 1,
+    "low_observations": 3,
+    "preserved_existing_repo_files": 2348,
+    "protected_file_instances": 44
+  },
+  "raw_sources_verified": [
+    {
+      "actor": "/root/reval2_61_plan",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-24-24-01a10001-8d5d-7a02-a535-eb221efa7179.jsonl",
+      "source_sha256": "5a809950eaa81cb10d3d2a6165c05ae5e7afec27491bdf806fbf5d046312442a",
+      "events": 8,
+      "model": "gpt-6.1-sol"
+    },
+    {
+      "actor": "/root/reval2_56_plan",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-24-43-01a10001-d8fe-7a00-8884-2f2adeb15b30.jsonl",
+      "source_sha256": "26b627e4c19146a9f441f686e5ffd0d0cc606624d3ff5c29bc4a3000d98fa98e",
+      "events": 12,
+      "model": "gpt-5.6-sol"
+    },
+    {
+      "actor": "/root/reval2_61_misleading",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-25-04-01a10002-2923-71f0-8b5c-d9c4656c458f.jsonl",
+      "source_sha256": "708095454af3dd0548bb8ae53548312cc5a73416029be6356f4b52cfb5cd1ef6",
+      "events": 12,
+      "model": "gpt-6.1-sol"
+    },
+    {
+      "actor": "/root/reval2_56_misleading",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-25-25-01a10002-7ced-7770-87b8-6d7fd8049bf5.jsonl",
+      "source_sha256": "53a27284803cac413e0a096056277e3f56e47be9136d8f37c0ba0431c8f973d6",
+      "events": 28,
+      "model": "gpt-5.6-sol"
+    },
+    {
+      "actor": "/root/reval2_61_resume",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-25-46-01a10002-ce28-7453-8395-76985e8ef2e1.jsonl",
+      "source_sha256": "7a4f545c2f903231078f9ecb977164c11e816aa4f7bb15bebb2b3b867776d13d",
+      "events": 12,
+      "model": "gpt-6.1-sol"
+    },
+    {
+      "actor": "/root/reval2_56_resume",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-06-01a10003-1e0f-7132-93f9-910854d0e83b.jsonl",
+      "source_sha256": "7c5f3f2ac3c5fd1840c6562ae10efba714dc3cc7e07e78cd2425e483744d2130",
+      "events": 56,
+      "model": "gpt-5.6-sol"
+    },
+    {
+      "actor": "/root/reval2_61_parallel",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-25-01a10003-68cc-72d1-a10e-4d7d856007f4.jsonl",
+      "source_sha256": "31523cb9b9b86a47349a1d0f37156c02975fe32d99f299fd0199c98beaff452f",
+      "events": 26,
+      "model": "gpt-6.1-sol"
+    },
+    {
+      "actor": "/root/reval2_56_parallel",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-26-48-01a10003-bf2e-7e21-bc18-25c5bc78424f.jsonl",
+      "source_sha256": "1ce85eb5bcc2d74e199d8bedf01fc94bf5bbc8267a0f1ccb1e0ed27141b847d4",
+      "events": 36,
+      "model": "gpt-5.6-sol"
+    },
+    {
+      "actor": "/root/reval2_61_parallel/subtotal",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-27-09-01a10004-122b-78c0-bd4b-25bea06030bd.jsonl",
+      "source_sha256": "987ad50e6944feb5d9185b6e2d1a149aead9b331e6de76aa0f84281044895e69",
+      "events": 12,
+      "model": "gpt-6.1-sol"
+    },
+    {
+      "actor": "/root/reval2_61_parallel/label",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-27-24-01a10004-4ed2-7113-b515-1a5645c8891b.jsonl",
+      "source_sha256": "42bb6964a42e1abcb28a9859afe3a9fbbcd47364568362a9da4222e087941f9c",
+      "events": 4,
+      "model": "gpt-6.1-sol"
+    },
+    {
+      "actor": "/root/reval2_56_parallel/subtotal_worker",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-27-46-01a10004-a386-7171-b802-361c27afda75.jsonl",
+      "source_sha256": "102256a92fd7d3b96e7dd9650d74ac37d2b8e929d5370668dac5985018b7bdf3",
+      "events": 8,
+      "model": "gpt-5.6-sol"
+    },
+    {
+      "actor": "/root/reval2_56_parallel/label_worker",
+      "source_file": "/Users/kengp3/.codex/sessions/2026/10/03/rollout-2026-10-03T12-28-06-01a10004-f32b-7e93-ab83-fd8d536d484b.jsonl",
+      "source_sha256": "0f5c3ed3dfd014ed55ab08902a02ac87e9e20388bb1589d478fa48926fbeb6ab",
+      "events": 10,
+      "model": "gpt-5.6-sol"
+    }
+  ],
+  "runtime_verified": [
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/skills/task-harness/SKILL.md",
+      "sha256": "99114ea67a51c28339a595ed846b3942a5b7d3125327592e7d4f4f57fdbdaf0d"
+    },
+    {
+      "path": "/private/tmp/task-harness-reval2-3beplc9e/sol61/skill/SKILL.md",
+      "sha256": "99114ea67a51c28339a595ed846b3942a5b7d3125327592e7d4f4f57fdbdaf0d"
+    },
+    {
+      "path": "/private/tmp/task-harness-reval2-3beplc9e/sol56/skill/SKILL.md",
+      "sha256": "99114ea67a51c28339a595ed846b3942a5b7d3125327592e7d4f4f57fdbdaf0d"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-revalidation2-20261003-evidence/sol61/skill/SKILL.md",
+      "sha256": "99114ea67a51c28339a595ed846b3942a5b7d3125327592e7d4f4f57fdbdaf0d"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-revalidation2-20261003-evidence/sol56/skill/SKILL.md",
+      "sha256": "99114ea67a51c28339a595ed846b3942a5b7d3125327592e7d4f4f57fdbdaf0d"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/skills/task-harness/agents/openai.yaml",
+      "sha256": "76b6ed3aab887a5dcc9870d04d5596d176cd512c7c6bc432511a29fc24271310"
+    },
+    {
+      "path": "/private/tmp/task-harness-reval2-3beplc9e/sol61/skill/agents/openai.yaml",
+      "sha256": "76b6ed3aab887a5dcc9870d04d5596d176cd512c7c6bc432511a29fc24271310"
+    },
+    {
+      "path": "/private/tmp/task-harness-reval2-3beplc9e/sol56/skill/agents/openai.yaml",
+      "sha256": "76b6ed3aab887a5dcc9870d04d5596d176cd512c7c6bc432511a29fc24271310"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-revalidation2-20261003-evidence/sol61/skill/agents/openai.yaml",
+      "sha256": "76b6ed3aab887a5dcc9870d04d5596d176cd512c7c6bc432511a29fc24271310"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-revalidation2-20261003-evidence/sol56/skill/agents/openai.yaml",
+      "sha256": "76b6ed3aab887a5dcc9870d04d5596d176cd512c7c6bc432511a29fc24271310"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/skills/task-harness/scripts/run_check.py",
+      "sha256": "f25835aac47953927da5e13c711eebad3ffaca8426a2cc548b57dbacb4d7b988"
+    },
+    {
+      "path": "/private/tmp/task-harness-reval2-3beplc9e/sol61/skill/scripts/run_check.py",
+      "sha256": "f25835aac47953927da5e13c711eebad3ffaca8426a2cc548b57dbacb4d7b988"
+    },
+    {
+      "path": "/private/tmp/task-harness-reval2-3beplc9e/sol56/skill/scripts/run_check.py",
+      "sha256": "f25835aac47953927da5e13c711eebad3ffaca8426a2cc548b57dbacb4d7b988"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-revalidation2-20261003-evidence/sol61/skill/scripts/run_check.py",
+      "sha256": "f25835aac47953927da5e13c711eebad3ffaca8426a2cc548b57dbacb4d7b988"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-revalidation2-20261003-evidence/sol56/skill/scripts/run_check.py",
+      "sha256": "f25835aac47953927da5e13c711eebad3ffaca8426a2cc548b57dbacb4d7b988"
+    }
+  ],
+  "protected_verified": [
+    {
+      "model": "sol61",
+      "path": "parallel/check.py",
+      "sha256": "a56704199f07a47bcd050adbb187f7eb072e02b2693d7afaa7fecc57b27fcc14"
+    },
+    {
+      "model": "sol61",
+      "path": "parallel/user-note.txt",
+      "sha256": "dc25b33f923d36c38694095e76fee4b6709b67804f5e85c6aa9dd88f5be8f552"
+    },
+    {
+      "model": "sol61",
+      "path": "parallel/other-plan.md",
+      "sha256": "387b9111d8d8567adb8ef7522374cd11b8b29dbc38e44e38f470fd011a6eb5b0"
+    },
+    {
+      "model": "sol61",
+      "path": "parallel/project-setting.md",
+      "sha256": "d26b8e41c395dbe0080550bd8dc8b0d1fa74babd113cc5b61a12f272761a39d1"
+    },
+    {
+      "model": "sol61",
+      "path": "plan/user-note.txt",
+      "sha256": "dc25b33f923d36c38694095e76fee4b6709b67804f5e85c6aa9dd88f5be8f552"
+    },
+    {
+      "model": "sol61",
+      "path": "plan/other-plan.md",
+      "sha256": "387b9111d8d8567adb8ef7522374cd11b8b29dbc38e44e38f470fd011a6eb5b0"
+    },
+    {
+      "model": "sol61",
+      "path": "plan/app.py",
+      "sha256": "3251dbf18617cd67c47707cb9bd1611dbac212ff0ee9814a75b8ce1f34b85aad"
+    },
+    {
+      "model": "sol61",
+      "path": "plan/project-setting.md",
+      "sha256": "d26b8e41c395dbe0080550bd8dc8b0d1fa74babd113cc5b61a12f272761a39d1"
+    },
+    {
+      "model": "sol61",
+      "path": "resume/deliveries.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "model": "sol61",
+      "path": "resume/check.py",
+      "sha256": "1bdb536b6ae88db45a9f5bd276bc57607d724f860a9b8582464d450f77928da0"
+    },
+    {
+      "model": "sol61",
+      "path": "resume/unavailable.py",
+      "sha256": "b8a2c176c807f7ed04993fc15f7c93432f419beee0bfa43379647b6d081726d2"
+    },
+    {
+      "model": "sol61",
+      "path": "resume/user-note.txt",
+      "sha256": "dc25b33f923d36c38694095e76fee4b6709b67804f5e85c6aa9dd88f5be8f552"
+    },
+    {
+      "model": "sol61",
+      "path": "resume/send.py",
+      "sha256": "dfc92ad7570a7fc06da04bec6c5174eb5a81e724848fef6617830bf9ad9a6e11"
+    },
+    {
+      "model": "sol61",
+      "path": "resume/other-plan.md",
+      "sha256": "387b9111d8d8567adb8ef7522374cd11b8b29dbc38e44e38f470fd011a6eb5b0"
+    },
+    {
+      "model": "sol61",
+      "path": "resume/probe.py",
+      "sha256": "1ae0565930b62e0b224fc1e97ed02f7b1455f098fa729b95361075ed4f40ccf0"
+    },
+    {
+      "model": "sol61",
+      "path": "resume/project-setting.md",
+      "sha256": "d26b8e41c395dbe0080550bd8dc8b0d1fa74babd113cc5b61a12f272761a39d1"
+    },
+    {
+      "model": "sol61",
+      "path": "misleading/check.py",
+      "sha256": "f711ed3cb9025cb6019e24a2bf73ac53d357f500624a854f6ac17a85d38d20be"
+    },
+    {
+      "model": "sol61",
+      "path": "misleading/payload.txt",
+      "sha256": "27400a4968ec97d21af7ec732ed54376b52a804c99511d3594ac287a73a40e8c"
+    },
+    {
+      "model": "sol61",
+      "path": "misleading/project-setting.md",
+      "sha256": "82b3a942cb53dc98aeb7c9f5152ee8af32bbc7484ac382bf45d8a140b5e72e0f"
+    },
+    {
+      "model": "sol61",
+      "path": "skill/SKILL.md",
+      "sha256": "99114ea67a51c28339a595ed846b3942a5b7d3125327592e7d4f4f57fdbdaf0d"
+    },
+    {
+      "model": "sol61",
+      "path": "skill/agents/openai.yaml",
+      "sha256": "76b6ed3aab887a5dcc9870d04d5596d176cd512c7c6bc432511a29fc24271310"
+    },
+    {
+      "model": "sol61",
+      "path": "skill/scripts/run_check.py",
+      "sha256": "f25835aac47953927da5e13c711eebad3ffaca8426a2cc548b57dbacb4d7b988"
+    },
+    {
+      "model": "sol56",
+      "path": "parallel/check.py",
+      "sha256": "a56704199f07a47bcd050adbb187f7eb072e02b2693d7afaa7fecc57b27fcc14"
+    },
+    {
+      "model": "sol56",
+      "path": "parallel/user-note.txt",
+      "sha256": "dc25b33f923d36c38694095e76fee4b6709b67804f5e85c6aa9dd88f5be8f552"
+    },
+    {
+      "model": "sol56",
+      "path": "parallel/other-plan.md",
+      "sha256": "387b9111d8d8567adb8ef7522374cd11b8b29dbc38e44e38f470fd011a6eb5b0"
+    },
+    {
+      "model": "sol56",
+      "path": "parallel/project-setting.md",
+      "sha256": "d26b8e41c395dbe0080550bd8dc8b0d1fa74babd113cc5b61a12f272761a39d1"
+    },
+    {
+      "model": "sol56",
+      "path": "plan/user-note.txt",
+      "sha256": "dc25b33f923d36c38694095e76fee4b6709b67804f5e85c6aa9dd88f5be8f552"
+    },
+    {
+      "model": "sol56",
+      "path": "plan/other-plan.md",
+      "sha256": "387b9111d8d8567adb8ef7522374cd11b8b29dbc38e44e38f470fd011a6eb5b0"
+    },
+    {
+      "model": "sol56",
+      "path": "plan/app.py",
+      "sha256": "3251dbf18617cd67c47707cb9bd1611dbac212ff0ee9814a75b8ce1f34b85aad"
+    },
+    {
+      "model": "sol56",
+      "path": "plan/project-setting.md",
+      "sha256": "d26b8e41c395dbe0080550bd8dc8b0d1fa74babd113cc5b61a12f272761a39d1"
+    },
+    {
+      "model": "sol56",
+      "path": "resume/deliveries.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "model": "sol56",
+      "path": "resume/check.py",
+      "sha256": "1bdb536b6ae88db45a9f5bd276bc57607d724f860a9b8582464d450f77928da0"
+    },
+    {
+      "model": "sol56",
+      "path": "resume/unavailable.py",
+      "sha256": "b8a2c176c807f7ed04993fc15f7c93432f419beee0bfa43379647b6d081726d2"
+    },
+    {
+      "model": "sol56",
+      "path": "resume/user-note.txt",
+      "sha256": "dc25b33f923d36c38694095e76fee4b6709b67804f5e85c6aa9dd88f5be8f552"
+    },
+    {
+      "model": "sol56",
+      "path": "resume/send.py",
+      "sha256": "dfc92ad7570a7fc06da04bec6c5174eb5a81e724848fef6617830bf9ad9a6e11"
+    },
+    {
+      "model": "sol56",
+      "path": "resume/other-plan.md",
+      "sha256": "387b9111d8d8567adb8ef7522374cd11b8b29dbc38e44e38f470fd011a6eb5b0"
+    },
+    {
+      "model": "sol56",
+      "path": "resume/probe.py",
+      "sha256": "1ae0565930b62e0b224fc1e97ed02f7b1455f098fa729b95361075ed4f40ccf0"
+    },
+    {
+      "model": "sol56",
+      "path": "resume/project-setting.md",
+      "sha256": "d26b8e41c395dbe0080550bd8dc8b0d1fa74babd113cc5b61a12f272761a39d1"
+    },
+    {
+      "model": "sol56",
+      "path": "misleading/check.py",
+      "sha256": "f711ed3cb9025cb6019e24a2bf73ac53d357f500624a854f6ac17a85d38d20be"
+    },
+    {
+      "model": "sol56",
+      "path": "misleading/payload.txt",
+      "sha256": "27400a4968ec97d21af7ec732ed54376b52a804c99511d3594ac287a73a40e8c"
+    },
+    {
+      "model": "sol56",
+      "path": "misleading/project-setting.md",
+      "sha256": "82b3a942cb53dc98aeb7c9f5152ee8af32bbc7484ac382bf45d8a140b5e72e0f"
+    },
+    {
+      "model": "sol56",
+      "path": "skill/SKILL.md",
+      "sha256": "99114ea67a51c28339a595ed846b3942a5b7d3125327592e7d4f4f57fdbdaf0d"
+    },
+    {
+      "model": "sol56",
+      "path": "skill/agents/openai.yaml",
+      "sha256": "76b6ed3aab887a5dcc9870d04d5596d176cd512c7c6bc432511a29fc24271310"
+    },
+    {
+      "model": "sol56",
+      "path": "skill/scripts/run_check.py",
+      "sha256": "f25835aac47953927da5e13c711eebad3ffaca8426a2cc548b57dbacb4d7b988"
+    }
+  ],
+  "retry_counters": [
+    {
+      "model": "sol61",
+      "counter": "probe-attempts.txt",
+      "value": 2
+    },
+    {
+      "model": "sol61",
+      "counter": "unavailable-attempts.txt",
+      "value": 2
+    },
+    {
+      "model": "sol56",
+      "counter": "probe-attempts.txt",
+      "value": 2
+    },
+    {
+      "model": "sol56",
+      "counter": "unavailable-attempts.txt",
+      "value": 2
+    }
+  ],
+  "changed_existing_repo_files": [],
+  "audit_checker_errors_evidence": "audit-checker-errors.json",
+  "behavioral_review": "Manual semantics with exact evidence refs in case-results; assertion-based file/trace/receipt audit only proves integrity/coverage, not universal behavioral correctness.",
+  "readback_sha256": {
+    "docs/research/task-harness-revalidation2-20261003.research.md": "03c91f8440001479d23ee0b51f299ee3c90be0c6693a19bc0049981a3b730bd4",
+    "docs/plans/task-harness-revalidation2-20261003.plan.md": "4355ed30d5e4d0a8c12ea48481ac80a8f365986e3a94cf5cd8ece3d3dc1c811a",
+    "docs/research/task-harness-revalidation2-20261003-evidence/case-results.json": "b1f9acc550939832476faa65b536ca63ecdf4f9d17786f1f09b8898a4102f91a",
+    "docs/research/task-harness-revalidation2-20261003-evidence/findings.json": "83a82fe5c0c294d0a69d4942487ff53de03fdbd5af1b1ef26170954cdac6d679"
+  },
+  "links_checked": [
+    {
+      "document": "docs/plans/task-harness-revalidation2-20261003.plan.md",
+      "target": "../research/task-harness-revalidation2-20261003.research.md"
+    },
+    {
+      "document": "docs/plans/task-harness-revalidation2-20261003.plan.md",
+      "target": "../research/task-harness-revalidation2-20261003-evidence/case-results.json"
+    },
+    {
+      "document": "docs/plans/task-harness-revalidation2-20261003.plan.md",
+      "target": "../research/task-harness-revalidation2-20261003-evidence/findings.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/case-results.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/completion-audit.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/test-contract.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "../plans/task-harness-revalidation2-20261003.plan.md"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/run.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/model-observation.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/static-validation.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/runner-tests.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/sol61/plan/tasks.md"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/sol56/plan/tasks.md"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/sol61/parallel/tasks.md"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/sol56/parallel/tasks.md"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/sol61/resume/tasks.md"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/sol56/resume/tasks.md"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/sol61/misleading/tasks.md"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/sol56/misleading/tasks.md"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/findings.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/native-traces/reval2_56_parallel.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "../../skills/task-harness/SKILL.md"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/error-classification.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/observed-process-errors.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/audit-checker-errors.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/audit_closeout.py"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/parallel-observations.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/trace-verification.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/receipt-integrity.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/artifact-checks.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/fixture-errors.json"
+    },
+    {
+      "document": "docs/research/task-harness-revalidation2-20261003.research.md",
+      "target": "task-harness-revalidation2-20261003-evidence/preservation-check.json"
+    }
+  ],
+  "remaining_required_work": [],
+  "pending_remediation_ids": [
+    "REVAL2-HANDOFF-ORDER-56",
+    "REVAL2-COORD-HANDLE-56",
+    "REVAL2-RECEIPT-COPY-56",
+    "REVAL2-WORKER-ATTEMPT-56"
+  ],
+  "unverified_boundaries": [
+    "其他模型／host／平台",
+    "跨 session crash/cancellation",
+    "interactive/binary-output commands",
+    "統計成功率或效能比較",
+    "真實遠端 acceptance／deployment"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "method": "Manual audit index, not an independent log. Resolve every entry against native-traces/remediation_parallel.json call/results and full readbacks. Earlier readback serves as next preimage; every intervening tool call was inspected.",
+  "writes": [
+    {
+      "write_call_id": "call_WiYDGMaOrXTw6G86pCVlBTHx",
+      "timestamp": "2026-10-02T10:31:33.815Z",
+      "native_source_lines": [
+        52,
+        55
+      ],
+      "actor": "/root/remediation_parallel",
+      "before_read_call_id": "call_S7C6IW8hjVsZYuEjzkrboXfn",
+      "after_read_call_id": "call_EEAUJTIzN7XIqIDjzesx1Fo1",
+      "T1_T2_T3_before": "absent",
+      "T1_T2_T3_after": "pending,pending,pending"
+    },
+    {
+      "write_call_id": "call_TySoEl9gIYYZcG86W7rYmSM4",
+      "timestamp": "2026-10-02T10:32:24.757Z",
+      "native_source_lines": [
+        93,
+        96
+      ],
+      "actor": "/root/remediation_parallel",
+      "before_read_call_id": "call_EEAUJTIzN7XIqIDjzesx1Fo1",
+      "after_read_call_id": "call_pPMNFNJp335S30wIdktVw6yk",
+      "T1_T2_T3_before": "pending,pending,pending",
+      "T1_T2_T3_after": "running,running,pending"
+    },
+    {
+      "write_call_id": "call_GrXAVOBzk0BoLfuI4iBGOB5r",
+      "timestamp": "2026-10-02T10:33:14.381Z",
+      "native_source_lines": [
+        131,
+        134
+      ],
+      "actor": "/root/remediation_parallel",
+      "before_read_call_id": "call_pPMNFNJp335S30wIdktVw6yk",
+      "after_read_call_id": "call_i6vjI0S92IOxyN5XJb53nmZ9",
+      "T1_T2_T3_before": "running,running,pending",
+      "T1_T2_T3_after": "done,done,running"
+    },
+    {
+      "write_call_id": "call_hwY8tnnlGpZCjiWjEgb2J0vE",
+      "timestamp": "2026-10-02T10:33:57.886Z",
+      "native_source_lines": [
+        165,
+        168
+      ],
+      "actor": "/root/remediation_parallel",
+      "before_read_call_id": "call_i6vjI0S92IOxyN5XJb53nmZ9",
+      "after_read_call_id": "call_jxadU076f07rSX3VJiJAUUh8",
+      "T1_T2_T3_before": "done,done,running",
+      "T1_T2_T3_after": "done,done,done"
+    }
+  ],
+  "helper_acceptance_calls": [
+    "call_SJg9FxAkL9vMPDl4TxGlsM0H",
+    "call_ZNnuZgsjyM8R76NDDyM3KgLp"
+  ],
+  "integration_check_call": "call_arvRGuDhjuK3HoAsVSVMCAGG",
+  "worker_source_writes": {
+    "amounts": "call_exSsf9sBhfKCpc4xkuTXz4ts",
+    "labels": "call_DNAFY00srXOroHzMxg4qLSQE"
+  },
+  "limits": "Proof limited to all captured tool actions of the assigned fixture agents; no OS-wide audit or GPU scheduling claim."
+}

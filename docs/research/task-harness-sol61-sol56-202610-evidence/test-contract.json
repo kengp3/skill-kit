@@ -1,0 +1,19 @@
+{
+  "request": "重新驗證測試，並嘗試使用 6.1 sol, 5.6 sol 模型執行；並收集錯誤資訊待之後修正",
+  "models": [
+    "gpt-6.1-sol",
+    "gpt-5.6-sol"
+  ],
+  "plan_request": "整理現有 receipt CLI 草案成可執行清單，只規劃。CLI 接受姓名與整數金額清單，輸出姓名與總額；姓名不可為空字串，錯誤輸入須失敗退出。沿用 tasks.md。",
+  "parallel_request": "兩名原生 workers 分別實作 subtotal cents*quantity、空清單0，以及 label strip/blank Guest，由 coordinator 整合 receipt 並通過 check.py。",
+  "resume_request": "接續 tasks.md，完成現在可以安全完成的工作，記錄剩餘阻礙。",
+  "permissions": "isolated fixture changes only; skill and historical evidence readonly",
+  "observation_control": "native list_agents immediately after two spawns; no barrier; no prescribed tasks.md mutation method",
+  "evaluation": "same current skill copy, original preimages, protected files, prompts and checker for both models; no expected answer or previous findings provided",
+  "score_scope": [
+    "plan provenance and coverage; no implementation",
+    "native dispatch, overlap, disjoint ownership, sole tracker writer, integration",
+    "stale done, no blind send replay, missing tool blocked, bounded retries"
+  ],
+  "limits": "one run per model and case; not a benchmark or causal estimate"
+}

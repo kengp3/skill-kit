@@ -1,0 +1,81 @@
+{
+  "scope": "Execution of fixed P0-P4 research plan; not portable Skill release approval",
+  "decision": "Inconclusive",
+  "requirements": [
+    {
+      "id": "P0",
+      "status": "complete",
+      "evidence": "approved fixed plan with stop conditions"
+    },
+    {
+      "id": "P1",
+      "status": "complete_tools_only",
+      "evidence": [
+        "native-tool-results.json",
+        "rehydration-source-change.json",
+        "oracle-calibration.json",
+        "sandbox-host-retry.json"
+      ],
+      "limits": "Actual agent resume remains unverified; P1 does not satisfy model gates."
+    },
+    {
+      "id": "P2",
+      "status": "complete_candidate_only",
+      "evidence": [
+        "candidate-freeze.json",
+        "candidate-validation-with-existing-yaml.json"
+      ],
+      "limits": "Not applied or behaviorally approved."
+    },
+    {
+      "id": "P3",
+      "status": "terminated_under_fixed_gate",
+      "evidence": [
+        "case-results.json",
+        "runs/p3_61_native-execution/initial.jsonl"
+      ],
+      "limits": "Isolation requirement failed; 0 Skill behavior runs; other 3 cases not started."
+    },
+    {
+      "id": "P4",
+      "status": "complete_inconclusive",
+      "evidence": [
+        "case-results.json",
+        "../task-harness-portability-hooks-20261003.research.md"
+      ]
+    },
+    {
+      "id": "formal-application",
+      "status": "not_triggered",
+      "reason": "Only allowed after Go; gate was not passed."
+    }
+  ],
+  "release_gates": {
+    "C1": "unverified_at_skill_behavior_level",
+    "C2": "unverified_at_skill_behavior_level",
+    "C3": "unverified_at_skill_behavior_level",
+    "C4": "unverified_at_skill_behavior_level",
+    "C5": "unverified_at_skill_behavior_level",
+    "C6": "unverified_at_skill_behavior_level",
+    "C7": "unverified_at_skill_behavior_level",
+    "C8": "unverified_at_skill_behavior_level"
+  },
+  "formal_and_unrelated_preservation": {
+    "skills/task-harness/SKILL.md": true,
+    "skills/task-harness/agents/openai.yaml": true,
+    "skills/task-harness/scripts/run_check.py": true,
+    "docs/specs/task-harness.spec.md": true,
+    ".codex/hooks.json": true,
+    "README.md": true
+  },
+  "candidate_frozen_unchanged": true,
+  "broken_local_links": [],
+  "review": {
+    "correctness": "Do not approve candidate: no completed Skill behavior runs. Research distinction verified against native results.",
+    "readability": "Protocol, raw evidence, model outcome and decision are separated.",
+    "architecture": "No new production script/runtime/hook/service. Optional-helper proposal remains isolated.",
+    "security": "Canary was only tested for readability; no historical content read by test model. Profile coverage failed and dispatch stopped.",
+    "performance": "Bounded: one actual coordinator preflight, no workers, no repeated model samples."
+  },
+  "evidence_quality_note": "initial-completion.json is explicitly marked manually transcribed summary and excluded from raw receipt assertions."
+}

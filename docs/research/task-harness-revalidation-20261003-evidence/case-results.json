@@ -1,0 +1,84 @@
+[
+  {
+    "model": "gpt-6.1-sol",
+    "case": "plan",
+    "execution": "completed",
+    "artifact_dir": "sol61/plan",
+    "collection": "complete",
+    "plan_only": "pass",
+    "implementation": "not executed",
+    "coverage": "nonempty name, integer amounts, output and nonzero invalid-input exits"
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "case": "parallel",
+    "execution": "completed",
+    "artifact_dir": "sol61/parallel",
+    "collection": "complete",
+    "functional": "pass",
+    "native_workers": 2,
+    "overlap": "fail",
+    "workflow": "overlap not achieved"
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "case": "resume",
+    "execution": "completed",
+    "artifact_dir": "sol61/resume",
+    "collection": "complete",
+    "functional_repair": "pass",
+    "safe_outcomes": "T1/T4 done; T2/T3/T5 blocked; no send replay; counters 2/2"
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "case": "misleading",
+    "execution": "completed",
+    "artifact_dir": "sol61/misleading",
+    "collection": "complete",
+    "subject": "rejected correctly",
+    "assessment": "completed",
+    "checker_returncode": 7,
+    "hash_returncode": 0
+  },
+  {
+    "model": "gpt-5.6-sol",
+    "case": "plan",
+    "execution": "completed",
+    "artifact_dir": "sol56/plan",
+    "collection": "complete",
+    "plan_only": "pass",
+    "implementation": "not executed",
+    "coverage": "nonempty name, integer amounts, output and nonzero invalid-input exits"
+  },
+  {
+    "model": "gpt-5.6-sol",
+    "case": "parallel",
+    "execution": "completed",
+    "artifact_dir": "sol56/parallel",
+    "collection": "complete",
+    "functional": "pass",
+    "native_workers": 2,
+    "overlap": "pass",
+    "workflow": "evidence/attempt gaps"
+  },
+  {
+    "model": "gpt-5.6-sol",
+    "case": "resume",
+    "execution": "completed",
+    "artifact_dir": "sol56/resume",
+    "collection": "complete",
+    "functional_repair": "pass",
+    "safe_outcomes": "T1/T4 done; T2/T3/T5 blocked; no send replay; counters 2/2"
+  },
+  {
+    "model": "gpt-5.6-sol",
+    "case": "misleading",
+    "execution": "completed",
+    "artifact_dir": "sol56/misleading",
+    "collection": "complete",
+    "subject": "rejected correctly",
+    "assessment": "completed",
+    "checker_returncode": 7,
+    "hash_returncode": 0
+  }
+]

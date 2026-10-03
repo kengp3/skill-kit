@@ -1,0 +1,7 @@
+T1 native spawn_agent returned handle: /root/sol_harness_parallel/amounts
+T1 ownership: amounts.py only; no shared task-list or evidence writes.
+T2 native spawn_agent returned handle: /root/sol_harness_parallel/labels
+T2 ownership: labels.py only; no shared task-list or evidence writes.
+Both were dispatched before either completion was accepted, with disjoint file ownership.
+Observed sequence: spawn_agent returned the amounts handle; spawn_agent then returned the labels handle; only afterward did a labels completion message arrive. The first coordinator file inspection found labels implemented and amounts still a stub. A later amounts completion message arrived. A final status query showed both completed.
+Limit: no status snapshot captured both workers simultaneously in the running state, so actual live overlap is unproven. Successful dispatch order alone does not establish simultaneous execution.

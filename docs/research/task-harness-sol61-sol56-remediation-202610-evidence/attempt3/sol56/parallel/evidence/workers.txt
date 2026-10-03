@@ -1,0 +1,9 @@
+T1 invocation: python3 -c 'from amounts import subtotal; assert subtotal([(125, 2), (50, 3)]) == 400; assert subtotal([]) == 0; print("PASS subtotal: 400, empty: 0")'
+T1 observed: exit 0; PASS subtotal: 400, empty: 0
+T1 SHA-256: 34b24b52aaa6d058d4326a4dc2048716945c3794e92bf012074778ed22ff3bd9
+
+T2 invocation: python3 -c 'from labels import label; assert label("  Alice  ") == "Alice"; assert label(" ") == "Guest"; print("PASS label")'
+T2 observed: exit 0; PASS label
+T2 SHA-256: bf323853530fd47713761cb3c51f6b548f4dafa5ea8602b2a5f00d69bbf5fe1e
+
+Coordinator fingerprint check matched both reported hashes.

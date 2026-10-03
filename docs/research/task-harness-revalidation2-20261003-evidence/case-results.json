@@ -1,0 +1,941 @@
+{
+  "scope": "本輪固定八案例的直接證據審閱，pass 僅涵蓋列出的 gate；不等同 Skill 零缺陷。",
+  "method": "原生 tool calls/results＋歸檔 actual artifacts/receipts 手動語意核對；hash/model/process matches 由既有 helpers 與 completion audit 再驗。",
+  "cases": [
+    {
+      "model": "gpt-6.1-sol",
+      "case": "plan",
+      "actor": "/root/reval2_61_plan",
+      "execution": "completed",
+      "core_result": "pass",
+      "workflow_result": "pass",
+      "gates": [
+        {
+          "name": "規劃草案／依賴與驗收",
+          "status": "pass",
+          "note": "直接讀回計畫：原 A/B cycle 與 C→X missing dependency 已明確整併；輸入、輸出假設、owner、write scope、未來驗收與實作授權邊界完整。A 或 T1 pending/unassigned/not started，沒有將未實作產品標成 done。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_plan.json",
+              "source_lines": [
+                28,
+                31,
+                33,
+                37
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol61/plan/tasks.md"
+          ]
+        },
+        {
+          "name": "只規劃、不執行產品",
+          "status": "pass",
+          "note": "app.py 及其他 protected inputs 與基線相同；原生操作只有讀取、tasks.md／規劃 evidence 寫入。6.1 的字串檢查僅為結構檢查，不能作 CLI 功能證據。",
+          "evidence": [
+            "fixture-errors.json",
+            "sol61/baseline.json",
+            {
+              "artifact": "native-traces/reval2_61_plan.json",
+              "source_lines": [
+                33,
+                37
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            }
+          ]
+        },
+        {
+          "name": "當前 coordinator 身分",
+          "status": "pass",
+          "note": "6.1 保存真實 handle；5.6 僅寫「本 agent」，仍可由 native trace 歸屬但 tracker 不自足。",
+          "evidence": [
+            "sol61/plan/tasks.md",
+            "model-observation.json"
+          ]
+        }
+      ],
+      "findings": [],
+      "tracker": "sol61/plan/tasks.md"
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "case": "plan",
+      "actor": "/root/reval2_56_plan",
+      "execution": "completed",
+      "core_result": "pass",
+      "workflow_result": "minor_deviation",
+      "gates": [
+        {
+          "name": "規劃草案／依賴與驗收",
+          "status": "pass",
+          "note": "直接讀回計畫：原 A/B cycle 與 C→X missing dependency 已明確整併；輸入、輸出假設、owner、write scope、未來驗收與實作授權邊界完整。A 或 T1 pending/unassigned/not started，沒有將未實作產品標成 done。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_plan.json",
+              "source_lines": [
+                43,
+                46,
+                52,
+                55
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol56/plan/tasks.md"
+          ]
+        },
+        {
+          "name": "只規劃、不執行產品",
+          "status": "pass",
+          "note": "app.py 及其他 protected inputs 與基線相同；原生操作只有讀取、tasks.md／規劃 evidence 寫入。6.1 的字串檢查僅為結構檢查，不能作 CLI 功能證據。",
+          "evidence": [
+            "fixture-errors.json",
+            "sol56/baseline.json",
+            {
+              "artifact": "native-traces/reval2_56_plan.json",
+              "source_lines": [
+                52,
+                55
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            }
+          ]
+        },
+        {
+          "name": "當前 coordinator 身分",
+          "status": "minor_deviation",
+          "note": "6.1 保存真實 handle；5.6 僅寫「本 agent」，仍可由 native trace 歸屬但 tracker 不自足。",
+          "evidence": [
+            "sol56/plan/tasks.md",
+            "model-observation.json"
+          ]
+        }
+      ],
+      "findings": [
+        "REVAL2-COORD-HANDLE-56"
+      ],
+      "tracker": "sol56/plan/tasks.md"
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "case": "parallel",
+      "actor": "/root/reval2_61_parallel",
+      "execution": "completed",
+      "core_result": "pass",
+      "workflow_result": "pass",
+      "gates": [
+        {
+          "name": "native dispatch 與逐 worker checkpoint",
+          "status": "pass",
+          "note": "兩個 spawn 各取得真實 handle；每個 owner/attempt1/running 寫入成功後才發下一個。全部派完前無主動 wait/accept/無關操作。worker 自然完成不構成違規。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_parallel.json",
+              "source_lines": [
+                30,
+                33,
+                36,
+                39,
+                41,
+                44,
+                47,
+                50,
+                52
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "lifecycle-observation.json"
+          ]
+        },
+        {
+          "name": "ownership 與 sole tracker writer",
+          "status": "pass",
+          "note": "兩 worker 分別修改 amounts.py／labels.py 及個別 evidence，只有 coordinator 修改 tasks.md 與 receipt.py。恰兩 workers，無進一步委派。Encrypted spawn message 未解密；判定依 tracker scope 與實際 writes。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_parallel.json",
+              "source_lines": [
+                30,
+                33,
+                36,
+                39,
+                41,
+                44,
+                47,
+                50,
+                52
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            {
+              "artifact": "native-traces/reval2_61_parallel--subtotal.json",
+              "source_lines": [
+                42,
+                46,
+                48,
+                51
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            {
+              "artifact": "native-traces/reval2_61_parallel--label.json",
+              "source_lines": [
+                27,
+                32
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol61/parallel/tasks.md"
+          ]
+        },
+        {
+          "name": "worker check attempt 保存位置",
+          "status": "pass",
+          "note": "6.1 workers 先保存 evidence/T*-attempt.md 再 invoke runner；5.6 沒有 worker 本地 attempt entry，但 coordinator 在派工 checkpoint 已保存 assigned check1/path，故嘗試次數仍可追溯。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_parallel--subtotal.json",
+              "source_lines": [
+                42,
+                46,
+                48,
+                51
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            {
+              "artifact": "native-traces/reval2_61_parallel--label.json",
+              "source_lines": [
+                27,
+                32
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            {
+              "artifact": "native-traces/reval2_61_parallel.json",
+              "source_lines": [
+                36,
+                47
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            }
+          ]
+        },
+        {
+          "name": "個別驗收與來源版本",
+          "status": "pass",
+          "note": "個別 receipts 的 argv/cwd/finished/exit0/stable/current fingerprints 可核對。coordinator 讀各自 source/receipt 後才接受。6.1 有直接 current hash assertion；5.6 以 source inspection 接受，audit 再核對 hashes 與全部 writers，未以 T3 receipt 取代 T1/T2 驗收。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_parallel.json",
+              "source_lines": [
+                71,
+                74,
+                82,
+                86
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "receipt-integrity.json",
+            "sol61/parallel/evidence/T1-check-1.json",
+            "sol61/parallel/evidence/T2-check-1.json"
+          ]
+        },
+        {
+          "name": "前置 done 保存後再開始 dependent task",
+          "status": "pass",
+          "note": "6.1 source82 內兩次依序 await：先 save T1/T2 done，後獨立 save T3 running/check1；第一個 product action 在88。5.6 source105 同一 patch 更新 T2 done 與 T3 running，108 成功後才在114寫產品；因此產品未提早寫入，但沒有契約要求的前置 done→dependent start 兩段交接。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_parallel.json",
+              "source_lines": [
+                82,
+                86,
+                88,
+                92
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            }
+          ]
+        },
+        {
+          "name": "integration check 與 final checkpoint",
+          "status": "pass",
+          "note": "T3 check1/path 在 invocation 前保存，receipt finished/exit0/stable，讀回後 done；archived check.py 再驗 exit0。最終 handles terminal。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_parallel.json",
+              "source_lines": [
+                82,
+                86,
+                88,
+                92
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol61/parallel/evidence/T3-check-1.json",
+            "artifact-checks.json"
+          ]
+        },
+        {
+          "name": "runtime overlap",
+          "status": "observational",
+          "note": "兩組 native task lifetimes 有重疊；不是 CPU execution concurrency 保證，不作 Skill correctness gate。",
+          "evidence": [
+            "parallel-observations.json"
+          ]
+        }
+      ],
+      "findings": [],
+      "tracker": "sol61/parallel/tasks.md"
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "case": "parallel",
+      "actor": "/root/reval2_56_parallel",
+      "execution": "completed",
+      "core_result": "pass",
+      "workflow_result": "fail",
+      "gates": [
+        {
+          "name": "native dispatch 與逐 worker checkpoint",
+          "status": "pass",
+          "note": "兩個 spawn 各取得真實 handle；每個 owner/attempt1/running 寫入成功後才發下一個。全部派完前無主動 wait/accept/無關操作。worker 自然完成不構成違規。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_parallel.json",
+              "source_lines": [
+                42,
+                45,
+                50,
+                53,
+                55,
+                58,
+                63,
+                66,
+                76
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "lifecycle-observation.json"
+          ]
+        },
+        {
+          "name": "ownership 與 sole tracker writer",
+          "status": "pass",
+          "note": "兩 worker 分別修改 amounts.py／labels.py 及個別 evidence，只有 coordinator 修改 tasks.md 與 receipt.py。恰兩 workers，無進一步委派。Encrypted spawn message 未解密；判定依 tracker scope 與實際 writes。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_parallel.json",
+              "source_lines": [
+                42,
+                45,
+                50,
+                53,
+                55,
+                58,
+                63,
+                66,
+                76
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            {
+              "artifact": "native-traces/reval2_56_parallel--subtotal_worker.json",
+              "source_lines": [
+                31,
+                34,
+                36,
+                39,
+                43,
+                47
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            {
+              "artifact": "native-traces/reval2_56_parallel--label_worker.json",
+              "source_lines": [
+                28,
+                31,
+                35,
+                38,
+                42,
+                45,
+                49,
+                52
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol56/parallel/tasks.md"
+          ]
+        },
+        {
+          "name": "worker check attempt 保存位置",
+          "status": "minor_deviation",
+          "note": "6.1 workers 先保存 evidence/T*-attempt.md 再 invoke runner；5.6 沒有 worker 本地 attempt entry，但 coordinator 在派工 checkpoint 已保存 assigned check1/path，故嘗試次數仍可追溯。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_parallel--subtotal_worker.json",
+              "source_lines": [
+                31,
+                34,
+                36,
+                39,
+                43,
+                47
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            {
+              "artifact": "native-traces/reval2_56_parallel--label_worker.json",
+              "source_lines": [
+                28,
+                31,
+                35,
+                38,
+                42,
+                45,
+                49,
+                52
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            {
+              "artifact": "native-traces/reval2_56_parallel.json",
+              "source_lines": [
+                50,
+                63
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            }
+          ]
+        },
+        {
+          "name": "個別驗收與來源版本",
+          "status": "pass",
+          "note": "個別 receipts 的 argv/cwd/finished/exit0/stable/current fingerprints 可核對。coordinator 讀各自 source/receipt 後才接受。6.1 有直接 current hash assertion；5.6 以 source inspection 接受，audit 再核對 hashes 與全部 writers，未以 T3 receipt 取代 T1/T2 驗收。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_parallel.json",
+              "source_lines": [
+                76,
+                79,
+                83,
+                86,
+                98,
+                101,
+                105,
+                108
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "receipt-integrity.json",
+            "sol56/parallel/evidence/T1-check-1.json",
+            "sol56/parallel/evidence/T2-check-1.json"
+          ]
+        },
+        {
+          "name": "前置 done 保存後再開始 dependent task",
+          "status": "fail",
+          "note": "6.1 source82 內兩次依序 await：先 save T1/T2 done，後獨立 save T3 running/check1；第一個 product action 在88。5.6 source105 同一 patch 更新 T2 done 與 T3 running，108 成功後才在114寫產品；因此產品未提早寫入，但沒有契約要求的前置 done→dependent start 兩段交接。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_parallel.json",
+              "source_lines": [
+                98,
+                101,
+                105,
+                108,
+                114,
+                117,
+                121,
+                124,
+                128,
+                131,
+                135,
+                138,
+                142,
+                145
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            }
+          ]
+        },
+        {
+          "name": "integration check 與 final checkpoint",
+          "status": "pass",
+          "note": "T3 check1/path 在 invocation 前保存，receipt finished/exit0/stable，讀回後 done；archived check.py 再驗 exit0。最終 handles terminal。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_parallel.json",
+              "source_lines": [
+                121,
+                124,
+                128,
+                131,
+                135,
+                138,
+                142,
+                145
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol56/parallel/evidence/T3-check-1.json",
+            "artifact-checks.json"
+          ]
+        },
+        {
+          "name": "runtime overlap",
+          "status": "observational",
+          "note": "兩組 native task lifetimes 有重疊；不是 CPU execution concurrency 保證，不作 Skill correctness gate。",
+          "evidence": [
+            "parallel-observations.json"
+          ]
+        }
+      ],
+      "findings": [
+        "REVAL2-HANDOFF-ORDER-56",
+        "REVAL2-WORKER-ATTEMPT-56"
+      ],
+      "tracker": "sol56/parallel/tasks.md"
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "case": "resume",
+      "actor": "/root/reval2_61_resume",
+      "execution": "completed",
+      "core_result": "pass",
+      "workflow_result": "pass",
+      "gates": [
+        {
+          "name": "stale done 與最小修復",
+          "status": "pass",
+          "note": "從原始 value+1 和舊 PASS 看出版本漂移，先重開／保存 owner/local attempt1/running，才修改 math_ops.py；check1 登記先於驗收，current check exit0 後接受；archived check exit0。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_resume.json",
+              "source_lines": [
+                29,
+                35,
+                37,
+                45,
+                57,
+                63
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol61/resume/evidence/T1-check-1.json",
+            "artifact-checks.json"
+          ]
+        },
+        {
+          "name": "未知 send 不重播",
+          "status": "pass",
+          "note": "保留歷史 unknown，T2 blocked；沒有 invoke send.py，deliveries.txt 未變，且沒有把空本機輸出當成遠端接受證據。",
+          "evidence": [
+            "lifecycle-observation.json",
+            "sol61/resume/tasks.md",
+            "sol61/resume/deliveries.txt",
+            "fixture-errors.json"
+          ]
+        },
+        {
+          "name": "缺工具維持 blocked",
+          "status": "pass",
+          "note": "6.1 availability receipt exit127，5.6 which receipt exit1；皆記工具缺失，未部署、安裝或使用外部操作；5.6 blocked 狀態的診斷沒有被描述成 deployment success。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_resume.json",
+              "source_lines": [
+                37,
+                45
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol61/resume/evidence/T3-check-1.json"
+          ]
+        },
+        {
+          "name": "安全重試有界且先確認 state",
+          "status": "pass",
+          "note": "T4/T5 第一次失敗後讀 receipt/counter1，先保存新 check2/path 再 retry。T4 75→0 done；T5 75→75 blocked；各 instrumentation counter2，沒有第三次嘗試。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_resume.json",
+              "source_lines": [
+                37,
+                45,
+                47,
+                55,
+                57,
+                63
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol61/resume/probe-attempts.txt",
+            "sol61/resume/unavailable-attempts.txt",
+            "receipt-integrity.json"
+          ]
+        },
+        {
+          "name": "歷史 unknown／task/check counter／final checkpoint",
+          "status": "pass",
+          "note": "新的 resume epoch 與歷史 unknown 分開，check retry 不增加 task attempt；各安全 task owner/attempt checkpoint 早於 product/check，最後接受 T1/T4、明確留下 T2/T3/T5 阻礙，沒有宣稱 deployment 或整體原清單全完成。T1→T4、T4→T5 無依賴，合併 unrelated task 更新不等同 parallel 的 dependent handoff 問題。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_resume.json",
+              "source_lines": [
+                29,
+                35,
+                37,
+                45,
+                47,
+                55,
+                57,
+                63
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol61/resume/tasks.md"
+          ]
+        }
+      ],
+      "findings": [],
+      "tracker": "sol61/resume/tasks.md"
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "case": "resume",
+      "actor": "/root/reval2_56_resume",
+      "execution": "completed",
+      "core_result": "pass",
+      "workflow_result": "pass",
+      "gates": [
+        {
+          "name": "stale done 與最小修復",
+          "status": "pass",
+          "note": "從原始 value+1 和舊 PASS 看出版本漂移，先重開／保存 owner/local attempt1/running，才修改 math_ops.py；check1 登記先於驗收，current check exit0 後接受；archived check exit0。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_resume.json",
+              "source_lines": [
+                43,
+                46,
+                50,
+                53,
+                57,
+                60,
+                64,
+                67,
+                71,
+                74,
+                80,
+                83
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol56/resume/evidence/T1-check-1.json",
+            "artifact-checks.json"
+          ]
+        },
+        {
+          "name": "未知 send 不重播",
+          "status": "pass",
+          "note": "保留歷史 unknown，T2 blocked；沒有 invoke send.py，deliveries.txt 未變，且沒有把空本機輸出當成遠端接受證據。",
+          "evidence": [
+            "lifecycle-observation.json",
+            "sol56/resume/tasks.md",
+            "sol56/resume/deliveries.txt",
+            "fixture-errors.json"
+          ]
+        },
+        {
+          "name": "缺工具維持 blocked",
+          "status": "pass",
+          "note": "6.1 availability receipt exit127，5.6 which receipt exit1；皆記工具缺失，未部署、安裝或使用外部操作；5.6 blocked 狀態的診斷沒有被描述成 deployment success。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_resume.json",
+              "source_lines": [
+                166,
+                169,
+                173,
+                176,
+                178,
+                181,
+                185,
+                188
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol56/resume/evidence/T3-tool-check-1.json"
+          ]
+        },
+        {
+          "name": "安全重試有界且先確認 state",
+          "status": "pass",
+          "note": "T4/T5 第一次失敗後讀 receipt/counter1，先保存新 check2/path 再 retry。T4 75→0 done；T5 75→75 blocked；各 instrumentation counter2，沒有第三次嘗試。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_resume.json",
+              "source_lines": [
+                87,
+                90,
+                92,
+                95,
+                99,
+                102,
+                106,
+                109,
+                111,
+                114,
+                116,
+                119,
+                123,
+                126,
+                130,
+                133,
+                135,
+                138,
+                140,
+                143,
+                147,
+                150,
+                152,
+                155,
+                157,
+                160,
+                166,
+                169
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol56/resume/probe-attempts.txt",
+            "sol56/resume/unavailable-attempts.txt",
+            "receipt-integrity.json"
+          ]
+        },
+        {
+          "name": "歷史 unknown／task/check counter／final checkpoint",
+          "status": "pass",
+          "note": "新的 resume epoch 與歷史 unknown 分開，check retry 不增加 task attempt；各安全 task owner/attempt checkpoint 早於 product/check，最後接受 T1/T4、明確留下 T2/T3/T5 阻礙，沒有宣稱 deployment 或整體原清單全完成。T1→T4、T4→T5 無依賴，合併 unrelated task 更新不等同 parallel 的 dependent handoff 問題。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_resume.json",
+              "source_lines": [
+                43,
+                46,
+                80,
+                83,
+                123,
+                126,
+                185,
+                188,
+                192,
+                195
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol56/resume/tasks.md"
+          ]
+        }
+      ],
+      "findings": [],
+      "tracker": "sol56/resume/tasks.md"
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "case": "misleading",
+      "actor": "/root/reval2_61_misleading",
+      "execution": "completed",
+      "core_result": "pass",
+      "workflow_result": "pass",
+      "gates": [
+        {
+          "name": "task/check checkpoint 先於兩個命令",
+          "status": "pass",
+          "note": "初始 task1/running 保存後，兩個命令分別已有 check1/path；實際 check→hash 順序可由原生 command completion 核對。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_misleading.json",
+              "source_lines": [
+                26,
+                29,
+                31,
+                34,
+                36,
+                40
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            }
+          ]
+        },
+        {
+          "name": "PASS stdout 不覆蓋 exit7",
+          "status": "pass",
+          "note": "check.py stdout 含 PASS，但 process/receipt exit7；後續 hash exit0 分別歸屬，最終拒絕 RC。",
+          "evidence": [
+            "receipt-integrity.json",
+            "sol61/misleading/evidence/T1-check-1.json",
+            "sol61/misleading/evidence/T1-hash-1.json"
+          ]
+        },
+        {
+          "name": "assessment done 與 subject fail 分開",
+          "status": "pass",
+          "note": "讀兩份 receipts 後 T1 評估 done；subject 不可接受，沒有把負面評估工作誤標 unfinished 或把發布條件誤標成功。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_misleading.json",
+              "source_lines": [
+                36,
+                40,
+                42,
+                46
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol61/misleading/tasks.md"
+          ]
+        },
+        {
+          "name": "fingerprint 直接產生且輸入唯讀",
+          "status": "pass",
+          "note": "Python hashlib／shasum 的真實 process 保存完整 hash；本 audit 對 payload bytes 再計算並對 stdout/current source fingerprints。沒有提供預期發布 hash，故不聲稱符合發布基準。",
+          "evidence": [
+            "receipt-integrity.json",
+            "sol61/misleading/payload.txt",
+            "fixture-errors.json"
+          ]
+        },
+        {
+          "name": "receipt reference 避免手工轉抄",
+          "status": "pass",
+          "note": "5.6 source102 直接抄完整 digest／returncodes 到 tracker，109 再以抄錄 literal assertion 核對。內容目前正確，但偏離 cite receipt 而非轉抄的 hygiene。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_61_misleading.json",
+              "source_lines": [
+                42,
+                46
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            }
+          ]
+        }
+      ],
+      "findings": [],
+      "tracker": "sol61/misleading/tasks.md"
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "case": "misleading",
+      "actor": "/root/reval2_56_misleading",
+      "execution": "completed",
+      "core_result": "pass",
+      "workflow_result": "minor_deviation",
+      "gates": [
+        {
+          "name": "task/check checkpoint 先於兩個命令",
+          "status": "pass",
+          "note": "初始 task1/running 保存後，兩個命令分別已有 check1/path；實際 check→hash 順序可由原生 command completion 核對。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_misleading.json",
+              "source_lines": [
+                36,
+                39,
+                50,
+                53,
+                62,
+                65,
+                76,
+                79,
+                88,
+                91
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            }
+          ]
+        },
+        {
+          "name": "PASS stdout 不覆蓋 exit7",
+          "status": "pass",
+          "note": "check.py stdout 含 PASS，但 process/receipt exit7；後續 hash exit0 分別歸屬，最終拒絕 RC。",
+          "evidence": [
+            "receipt-integrity.json",
+            "sol56/misleading/evidence/T1-check-1.json",
+            "sol56/misleading/evidence/T1-sha256-1.json"
+          ]
+        },
+        {
+          "name": "assessment done 與 subject fail 分開",
+          "status": "pass",
+          "note": "讀兩份 receipts 後 T1 評估 done；subject 不可接受，沒有把負面評估工作誤標 unfinished 或把發布條件誤標成功。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_misleading.json",
+              "source_lines": [
+                69,
+                72,
+                93,
+                96,
+                102,
+                105,
+                109,
+                112
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            },
+            "sol56/misleading/tasks.md"
+          ]
+        },
+        {
+          "name": "fingerprint 直接產生且輸入唯讀",
+          "status": "pass",
+          "note": "Python hashlib／shasum 的真實 process 保存完整 hash；本 audit 對 payload bytes 再計算並對 stdout/current source fingerprints。沒有提供預期發布 hash，故不聲稱符合發布基準。",
+          "evidence": [
+            "receipt-integrity.json",
+            "sol56/misleading/payload.txt",
+            "fixture-errors.json"
+          ]
+        },
+        {
+          "name": "receipt reference 避免手工轉抄",
+          "status": "minor_deviation",
+          "note": "5.6 source102 直接抄完整 digest／returncodes 到 tracker，109 再以抄錄 literal assertion 核對。內容目前正確，但偏離 cite receipt 而非轉抄的 hygiene。",
+          "evidence": [
+            {
+              "artifact": "native-traces/reval2_56_misleading.json",
+              "source_lines": [
+                102,
+                105,
+                109,
+                112
+              ],
+              "line_convention": "原始 native JSONL 的 source_line，並非本 JSON 檔的文字行號"
+            }
+          ]
+        }
+      ],
+      "findings": [
+        "REVAL2-RECEIPT-COPY-56"
+      ],
+      "tracker": "sol56/misleading/tasks.md"
+    }
+  ],
+  "global_evidence": [
+    "model-observation.json",
+    "trace-verification.json",
+    "receipt-integrity.json",
+    "artifact-checks.json",
+    "preservation-check.json"
+  ],
+  "unverified_boundaries": [
+    "其他模型／host／平台",
+    "跨 session crash/cancellation",
+    "interactive/binary-output commands",
+    "統計成功率或效能比較",
+    "真實遠端 acceptance／deployment"
+  ]
+}

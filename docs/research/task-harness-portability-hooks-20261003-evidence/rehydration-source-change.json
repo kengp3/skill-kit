@@ -1,0 +1,46 @@
+{
+  "schema": "p1-rehydration-source-change-v1",
+  "readInput": {
+    "cmd": "cat native-tool-results.json",
+    "workdir": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence",
+    "login": false,
+    "max_output_tokens": 4000
+  },
+  "readResult": {
+    "chunk_id": "26ea2e",
+    "wall_time_seconds": 0.000007917,
+    "exit_code": 0,
+    "original_token_count": 744,
+    "output": "{\n  \"schema\": \"p1-native-tool-evidence-v1\",\n  \"purpose\": \"research-only capability PoC, not a production runner\",\n  \"host\": \"Codex desktop functions.exec/exec_command/apply_patch\",\n  \"before\": {\n    \"input\": {\n      \"cmd\": \"git hash-object -- expected.txt actual.txt\",\n      \"workdir\": \"/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture\",\n      \"login\": false,\n      \"max_output_tokens\": 1000\n    },\n    \"result\": {\n      \"chunk_id\": \"1b2a60\",\n      \"wall_time_seconds\": 0.0000075,\n      \"exit_code\": 0,\n      \"original_token_count\": 21,\n      \"output\": \"2e31f1f298e0d81233988ef973dc4939f0e3bb30\\n2e31f1f298e0d81233988ef973dc4939f0e3bb30\\n\"\n    }\n  },\n  \"checks\": [\n    {\n      \"id\": \"E1\",\n      \"input\": {\n        \"cmd\": \"git diff --no-index --exit-code -- expected.txt actual.txt\",\n        \"workdir\": \"/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture\",\n        \"login\": false,\n        \"max_output_tokens\": 1000\n      },\n      \"result\": {\n        \"chunk_id\": \"a2c7d8\",\n        \"wall_time_seconds\": 0.000005625,\n        \"exit_code\": 0,\n        \"original_token_count\": 0,\n        \"output\": \"\"\n      }\n    },\n    {\n      \"id\": \"E2\",\n      \"input\": {\n        \"cmd\": \"printf 'PASS\\\\n'; exit 7\",\n        \"workdir\": \"/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture\",\n        \"login\": false,\n        \"max_output_tokens\": 1000\n      },\n      \"result\": {\n        \"chunk_id\": \"942c03\",\n        \"wall_time_seconds\": 0.000012834,\n        \"exit_code\": 7,\n        \"original_token_count\": 2,\n        \"output\": \"PASS\\n\"\n      }\n    },\n    {\n      \"id\": \"E4\",\n      \"input\": {\n        \"cmd\": \"./intentionally-absent-checker\",\n        \"workdir\": \"/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture\",\n        \"login\": false,\n        \"max_output_tokens\": 1000\n      },\n      \"result\": {\n        \"chunk_id\": \"a0b23f\",\n        \"wall_time_seconds\": 0.000006292,\n        \"exit_code\": 127,\n        \"original_token_count\": 17,\n        \"output\": \"zsh:1: no such file or directory: ./intentionally-absent-checker\\n\"\n      }\n    }\n  ],\n  \"after\": {\n    \"input\": {\n      \"cmd\": \"git hash-object -- expected.txt actual.txt\",\n      \"workdir\": \"/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture\",\n      \"login\": false,\n      \"max_output_tokens\": 1000\n    },\n    \"result\": {\n      \"chunk_id\": \"a1c0bb\",\n      \"wall_time_seconds\": 0.000007667,\n      \"exit_code\": 0,\n      \"original_token_count\": 21,\n      \"output\": \"2e31f1f298e0d81233988ef973dc4939f0e3bb30\\n2e31f1f298e0d81233988ef973dc4939f0e3bb30\\n\"\n    }\n  },\n  \"provenance\": \"Tool response objects serialized directly in host code mode; no manually transcribed exits/digests; no exclusive-create or crash durability claim\"\n}\n\n"
+  },
+  "sourceInput": {
+    "cmd": "git hash-object -- expected.txt actual.txt",
+    "workdir": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/task-harness-portability-hooks-20261003-evidence/fixture",
+    "login": false,
+    "max_output_tokens": 1000
+  },
+  "sourceResult": {
+    "chunk_id": "2f857d",
+    "wall_time_seconds": 0.000007791,
+    "exit_code": 0,
+    "original_token_count": 21,
+    "output": "2e31f1f298e0d81233988ef973dc4939f0e3bb30\nac8b7246a047e60a32450cbe8c8478e1c435ab53\n"
+  },
+  "facts": {
+    "e1_actual_exit": 0,
+    "e1_before_after_equal": true,
+    "e2_actual_exit": 7,
+    "e2_actual_output": "PASS\n",
+    "e4_actual_shell_exit": 127,
+    "expected_unchanged": true,
+    "actual_changed": true,
+    "e1_can_accept_current_version": false,
+    "rehydration": "PASS at tool/file level only; fresh agent resume remains unverified"
+  },
+  "limitations": [
+    "This is a new functions.exec isolate, not a new agent or resumed agent session.",
+    "cat and git are declared host utilities; no Python/Node process or bundled run_check invoked.",
+    "Saving tool objects with apply_patch is ordinary file writing, not exclusive reservation."
+  ]
+}
+

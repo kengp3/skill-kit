@@ -1,0 +1,75 @@
+{
+  "observations": [
+    {
+      "id": "host_cli_version",
+      "input": {
+        "cmd": "codex --version",
+        "workdir": "/Users/kengp3/Workspaces/mine/simple-skills",
+        "login": false,
+        "max_output_tokens": 500
+      },
+      "result": {
+        "chunk_id": "327243",
+        "wall_time_seconds": 0.000005292,
+        "exit_code": 0,
+        "original_token_count": 31,
+        "output": "WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)\ncodex-cli 0.160.0\n"
+      }
+    },
+    {
+      "id": "historical_evidence_readable",
+      "input": {
+        "cmd": "test -r docs/research/task-harness-handoff-research-poc-20261003-evidence/offline-result.json",
+        "workdir": "/Users/kengp3/Workspaces/mine/simple-skills",
+        "login": false,
+        "max_output_tokens": 500
+      },
+      "result": {
+        "chunk_id": "1670cf",
+        "wall_time_seconds": 0.0000065,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    {
+      "id": "active_project_hooks",
+      "input": {
+        "cmd": "cat .codex/hooks.json",
+        "workdir": "/Users/kengp3/Workspaces/mine/simple-skills",
+        "login": false,
+        "max_output_tokens": 2200
+      },
+      "result": {
+        "chunk_id": "c322e5",
+        "wall_time_seconds": 0.000007042,
+        "exit_code": 0,
+        "original_token_count": 486,
+        "output": "{\n  \"hooks\": {\n    \"SessionStart\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"echo project-setting: Before document operations, read project-setting.md at the project root confirmed by the user or session. Do not infer the root from tool cwd or use another project. If the root or rules are missing, unreadable, empty or conflicting, report and pause related document writes. Re-read changed rules and verify actual paths. This hook only reminds.\",\n            \"commandWindows\": \"cmd /d /c echo project-setting: Before document operations, read project-setting.md at the project root confirmed by the user or session. Do not infer the root from tool cwd or use another project. If the root or rules are missing, unreadable, empty or conflicting, report and pause related document writes. Re-read changed rules and verify actual paths. This hook only reminds.\",\n            \"timeout\": 5\n          }\n        ]\n      }\n    ],\n    \"SubagentStart\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"echo project-setting: Before document operations, read project-setting.md at the project root confirmed by the user or session. Do not infer the root from tool cwd or use another project. If the root or rules are missing, unreadable, empty or conflicting, report and pause related document writes. Re-read changed rules and verify actual paths. This hook only reminds.\",\n            \"commandWindows\": \"cmd /d /c echo project-setting: Before document operations, read project-setting.md at the project root confirmed by the user or session. Do not infer the root from tool cwd or use another project. If the root or rules are missing, unreadable, empty or conflicting, report and pause related document writes. Re-read changed rules and verify actual paths. This hook only reminds.\",\n            \"timeout\": 5\n          }\n        ]\n      }\n    ]\n  }\n}\n"
+      }
+    },
+    {
+      "id": "cli_isolation_options",
+      "input": {
+        "cmd": "codex exec --help",
+        "workdir": "/Users/kengp3/Workspaces/mine/simple-skills",
+        "login": false,
+        "max_output_tokens": 3500
+      },
+      "result": {
+        "chunk_id": "08c152",
+        "wall_time_seconds": 0.000006875,
+        "exit_code": 0,
+        "original_token_count": 1034,
+        "output": "WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)\nRun Codex non-interactively\n\nUsage: codex exec [OPTIONS] [PROMPT]\n       codex exec [OPTIONS] <COMMAND> [ARGS]\n\nCommands:\n  resume  Resume a previous session by id or pick the most recent with --last\n  fork    Fork a previous session by id into a new session\n  review  Run a code review against the current repository\n  help    Print this message or the help of the given subcommand(s)\n\nArguments:\n  [PROMPT]\n          Initial instructions for the agent. If not provided as an argument (or if `-` is used),\n          instructions are read from stdin. If stdin is piped and a prompt is also provided, stdin\n          is appended as a `<stdin>` block\n\nOptions:\n  -c, --config <key=value>\n          Override a configuration value that would otherwise be loaded from `~/.codex/config.toml`.\n          Use a dotted path (`foo.bar.baz`) to override nested values. The `value` portion is parsed\n          as TOML. If it fails to parse as TOML, the raw string is used as a literal.\n          \n          Examples: - `-c model=\"o3\"` - `-c 'sandbox_permissions=[\"disk-full-read-access\"]'` - `-c\n          shell_environment_policy.inherit=all`\n\n      --enable <FEATURE>\n          Enable a feature (repeatable). Equivalent to `-c features.<name>=true`\n\n      --disable <FEATURE>\n          Disable a feature (repeatable). Equivalent to `-c features.<name>=false`\n\n      --strict-config\n          Error out when config.toml contains fields that are not recognized by this version of\n          Codex\n\n  -i, --image <FILE>...\n          Optional image(s) to attach to the initial prompt\n\n  -m, --model <MODEL>\n          Model the agent should use\n\n      --oss\n          Use open-source provider\n\n      --local-provider <OSS_PROVIDER>\n          Specify which local provider to use (lmstudio or ollama). If not specified with --oss,\n          will use config default or show selection\n\n  -p, --profile <CONFIG_PROFILE_V2>\n          Layer $CODEX_HOME/<name>.config.toml on top of the base user config\n\n  -s, --sandbox <SANDBOX_MODE>\n          Select the sandbox policy to use when executing model-generated shell commands\n          \n          [possible values: read-only, workspace-write, danger-full-access]\n\n      --approve-for-me\n          Route approval requests through automatic review using the workspace-write sandbox\n\n      --dangerously-bypass-approvals-and-sandbox\n          Skip all confirmation prompts and execute commands without sandboxing. EXTREMELY\n          DANGEROUS. Intended solely for running in environments that are externally sandboxed\n\n      --dangerously-bypass-hook-trust\n          Run enabled hooks without requiring persisted hook trust for this invocation. DANGEROUS.\n          Intended only for automation that already vets hook sources\n\n  -C, --cd <DIR>\n          Tell the agent to use the specified directory as its working root\n\n      --worktree\n          Run the session in a new managed Git worktree\n\n      --add-dir <DIR>\n          Additional directories that should be writable alongside the primary workspace\n\n      --thread-source <SOURCE>\n          Source classification for newly created or forked threads\n\n      --skip-git-repo-check\n          Allow running Codex outside a Git repository\n\n      --ephemeral\n          Run without persisting session files to disk\n\n      --ignore-user-config\n          Do not load `$CODEX_HOME/config.toml`; auth still uses `CODEX_HOME`\n\n      --ignore-rules\n          Do not load user or project execpolicy `.rules` files\n\n      --output-schema <FILE>\n          Path to a JSON Schema file describing the model's final response shape\n\n      --color <COLOR>\n          Specifies color settings for use in the output\n          \n          [default: auto]\n          [possible values: always, never, auto]\n\n      --json\n          Print events to stdout as JSONL\n\n  -o, --output-last-message <FILE>\n          Specifies file where the last message from the agent should be written\n\n  -h, --help\n          Print help (see a summary with '-h')\n\n  -V, --version\n          Print version\n"
+      }
+    }
+  ],
+  "scope": "Read-only capability inspection of current coordinator environment; no model execution and no historical verdict contents read.",
+  "limitations": [
+    "Readable historical oracle at current host shows shared-filesystem exposure; it is not a direct execution test of a newly isolated child.",
+    "Configured project hooks are reminders; this does not inventory or prove every user/system host policy.",
+    "CLI availability is not proof desktop nested tools use the same lifecycle implementation."
+  ]
+}
+

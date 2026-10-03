@@ -1,0 +1,29 @@
+{
+  "plan": {
+    "request": "整理既有 receipt CLI 草案，只規劃任務與驗證，沿用 tasks.md。",
+    "acceptance": [
+      "修正 A/B cycle 與 C→X 缺失依賴",
+      "保留既有 stable IDs 或記錄調整理由",
+      "不實作、不派發 workers",
+      "不覆寫其他計畫及原始碼"
+    ]
+  },
+  "parallel": {
+    "request": "以兩名 subagents 平行完成 amounts.py 與 labels.py，整合 receipt.py。",
+    "acceptance": [
+      "兩個真實 tool-returned handles",
+      "各 worker ownership 不重疊，只有 coordinator 更新 tasks.md",
+      "原始 check.py 完整通過",
+      "coordinator 檢視並接受最終整合證據"
+    ]
+  },
+  "resume": {
+    "request": "從舊 tasks.md 繼續完成 double 與先前工作。",
+    "acceptance": [
+      "重驗舊 done 並修正目前 math_ops.py",
+      "不重送結果未知且不能對帳的 send",
+      "缺少 required deployctl 不標為全部完成",
+      "受阻工作不妨礙獨立可完成工作"
+    ]
+  }
+}

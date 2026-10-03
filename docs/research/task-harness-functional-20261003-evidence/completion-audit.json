@@ -1,0 +1,112 @@
+{
+  "decision": "Go for native-first on hosts satisfying the documented evidence capability contract",
+  "requirements": [
+    {
+      "requirement": "native-first Core, optional unchanged helper",
+      "verdict": "pass",
+      "evidence": "formal SKILL.md equals frozen tested candidate; optional helper compatibility native-results.json"
+    },
+    {
+      "requirement": "real plan-only / execute / resume",
+      "verdict": "pass",
+      "evidence": "plan snapshots, four session IDs, seven terminal turns; 6.1 plan-only prior diagnostic snapshot"
+    },
+    {
+      "requirement": "individual checks and stable source endpoints",
+      "verdict": "pass",
+      "evidence": "functional-audit.json; six check receipts; full native calls/results"
+    },
+    {
+      "requirement": "misleading PASS must fail; negative assessment can complete",
+      "verdict": "pass",
+      "evidence": "two initial exit7 native results, initial trackers done/subject FAIL"
+    },
+    {
+      "requirement": "stale evidence not reused; unknown not replayed",
+      "verdict": "pass",
+      "evidence": "source-change records, both resume command lists and final trackers; preserved receipt hashes"
+    },
+    {
+      "requirement": "missing evidence cannot become acceptance; safe independent work can continue",
+      "verdict": "pass in tested scope",
+      "evidence": "current-version acceptance verifying/blocked, independent T3 assessment done; no separate tool-less-host test"
+    },
+    {
+      "requirement": "dispatch/checkpoint/acceptance/handoff order",
+      "verdict": "pass",
+      "evidence": "61 and 56 native tool evidence; reviewed individual successful writes before subsequent dispatch or successor product action"
+    },
+    {
+      "requirement": "attempt references and receipt preservation",
+      "verdict": "pass",
+      "evidence": "receipt fields and native tracker transitions; distinct new resume receipts; all old receipts unchanged"
+    },
+    {
+      "requirement": "Core-only installation does not require helper",
+      "verdict": "pass",
+      "evidence": "both execution skill copies omit scripts/run_check.py; completed products/evidence without external language process"
+    },
+    {
+      "requirement": "static skill and named research validation",
+      "verdict": "pass",
+      "evidence": "final-validators.json; validators do not substitute for behavior"
+    },
+    {
+      "requirement": "docs current and unrelated contents preserved",
+      "verdict": "pass",
+      "evidence": "updated spec and functional research report; README/hooks/UI/helper hashes preserved"
+    },
+    {
+      "requirement": "finite scope, no extra candidate or retry-for-green",
+      "verdict": "pass",
+      "evidence": "four existing-planned coordinators, four workers, one frozen candidate; no new round"
+    }
+  ],
+  "formal_hashes": {
+    "skills/task-harness/SKILL.md": "970a338e499945b21d8ac045f1ed34fdda25e8d6c431735a3fb5d71a3c89d182",
+    "skills/task-harness/agents/openai.yaml": "76b6ed3aab887a5dcc9870d04d5596d176cd512c7c6bc432511a29fc24271310",
+    "skills/task-harness/scripts/run_check.py": "f25835aac47953927da5e13c711eebad3ffaca8426a2cc548b57dbacb4d7b988",
+    "README.md": "0414520439270b820e9e4885ebef636f288d3d0b60812242c3ecf443bdb50aac",
+    ".codex/hooks.json": "9d2ced2edbc757e0a8f86721b508d572c617740b65e8589c4b3f15668549873b"
+  },
+  "spec_sha256": "69b2a9e48a3284a874f37f263a83a4da36cf6b6a413ad3a1cb24b165ae615c9a",
+  "runtime_files": [
+    "SKILL.md",
+    "agents/openai.yaml",
+    "scripts/run_check.py"
+  ],
+  "fixture_checks": {
+    "p3_61_native-execution": {
+      "skill_matches_formal": true,
+      "inputs_match_expected": true
+    },
+    "p3_61_resume-negative": {
+      "skill_matches_formal": true,
+      "inputs_match_expected": true
+    },
+    "p3_56_native-execution": {
+      "skill_matches_formal": true,
+      "inputs_match_expected": true
+    },
+    "p3_56_resume-negative": {
+      "skill_matches_formal": true,
+      "inputs_match_expected": true
+    }
+  },
+  "terminal_results": [
+    "56-execute-terminal.json",
+    "56-negative-initial-terminal.json",
+    "56-negative-resume-terminal.json",
+    "56-plan-terminal.json",
+    "61-execute-terminal.json",
+    "61-negative-initial-terminal.json",
+    "61-negative-resume-terminal.json"
+  ],
+  "limitations": [
+    "shared host, not blind or causal comparison",
+    "no all-platform or entirely tool-less host certification",
+    "CRC and ordinary writes do not imply tamper resistance or atomic reservation",
+    "historical handoff and low backlog are not automatically closed"
+  ],
+  "no_install_no_global_config_no_commit_push": true
+}

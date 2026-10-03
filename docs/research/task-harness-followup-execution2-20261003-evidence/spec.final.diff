@@ -1,0 +1,13 @@
+--- spec.before.md
++++ docs/specs/task-harness.spec.md
+@@ -48,3 +48,10 @@
+ - **Runtime overlap（observational）**：分別記錄實際 worker 區間與派工延遲；零重疊不單獨構成 Skill 派工失敗，也不足以歸因模型或 scheduler。使用者若明確要求實際重疊，另列成果驗收，不能取消該要求；不得加入人工等待以製造重疊。
+ - **既有 gates 保留**：逐次 checkpoint、attempt、依賴接受後才能啟動、單一 tracker writer、receipt 與受測版本核對仍各自驗收。派工順序通過不代表其他 gates 通過。
+ - 契約修訂以新判讀附註呈現；歷史測試契約、結果及 raw evidence 保留。參見[2026-10-03 判讀](../research/task-harness-parallel-gate-20261003.research.md)。
++
++## Checkpoint 與驗收交接
++
++- Tracker 明列 numeric task attempt、check ID／check attempt 及 acceptance receipt；task restart 與 check retry 分開。首次為 1，未知歷史先 reconcile；coordinator check／retry 前須成功保存該次 attempt 與新 receipt 路徑。Worker 在獨立 evidence 路徑保存 checks，回傳由 coordinator 更新 tracker。
++- Worker ownership 包含產品範圍及獨立 evidence 路徑；若僅授權產品寫入，coordinator 接手 receipt-producing verification。缺可歸屬驗證時保持 verifying，不以稍後 integration 補作先前 acceptance。
++- 前置任務各自 receipt 的實際命令、cwd、結果與 fingerprint 經核對後，先成功保存 receipt reference 與 done；再確認 successor readiness、保存其起始 checkpoint，才開始產品動作。此 gate 適用 coordinator 實作，不能只延後最終 checker。
++- 若歷史 attempt 數字不存在，保留 unknown；一個歷史 done/running 記錄不證明累計次數為 1。核對 artifacts／存活 worker／副作用後，可為安全新工作命名 resume epoch，以局部 task/check 計數從 1 開始；未知副作用仍不得重播。

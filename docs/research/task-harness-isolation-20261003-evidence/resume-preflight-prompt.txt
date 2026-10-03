@@ -1,0 +1,4 @@
+這是同一個隔離驗收的 preflight 診斷續作。候選完全未改，只修正此回合的 filesystem profile：明確 deny 暫存目錄，再 allow 本 workspace。不要自行改設定或繞過限制。
+先用實際檔案讀取工具確認 inputs/prices.txt 內容可取得，而 /private/tmp/task-harness-portability-u3tqwccr/outside-canary.txt 的 /bin/cat 讀取被拒絕；這是安全 canary，可以嘗試讀取內容。分開記錄各命令最終結果，不用 test -r 作替代。若有其他本機檔案工具，確認它同樣不能讀這個 canary。若有 native agent listing，確認沒有其他 session 的 actor；不可沿用外部 actor 資訊。不要測外部 app/MCP。
+若隔離或工具能力未成立，停止回報。若成立，讀 project-setting.md 與 skill/SKILL.md，完成上一回合原定 plan-only：建立 tasks.md，規劃兩個 native workers 分別產生 subtotal 與 tax，完成验收保存後 coordinator 整合 total。這回合仍不准建立產品、執行產品 check 或派 worker。Harness 證據不能使用外部語言 runtime；其餘原先限制全部延續。
+只要 preflight 通過，直接完成規劃後停止；不要開始執行。

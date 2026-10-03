@@ -1,0 +1,83 @@
+{
+  "schema": "task-harness-native-receipt-v1",
+  "task_id": "T1",
+  "task_attempt": 1,
+  "owner": "/root/subtotal",
+  "check_id": "C-SUB",
+  "check_attempt": 1,
+  "check_start": "evidence/T1/C-SUB-1-start.json",
+  "receipt_path": "evidence/T1/C-SUB-1.json",
+  "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+  "sources": [
+    "inputs/prices.txt"
+  ],
+  "products": [
+    "output/subtotal.txt"
+  ],
+  "fingerprint_kind": "cksum CRC and byte length; noncryptographic",
+  "tool_result_output": "merged",
+  "production": {
+    "request": {
+      "cmd": "/bin/cat inputs/prices.txt",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+      "max_output_tokens": 2000
+    },
+    "result": {
+      "chunk_id": "cb7e1c",
+      "wall_time_seconds": 0.000002333,
+      "exit_code": 0,
+      "original_token_count": 3,
+      "output": "10\n20\n30\n"
+    },
+    "subtotal": "60"
+  },
+  "before": {
+    "request": {
+      "cmd": "cksum inputs/prices.txt output/subtotal.txt",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+      "max_output_tokens": 2000
+    },
+    "result": {
+      "chunk_id": "2d97b2",
+      "wall_time_seconds": 0.000003167,
+      "exit_code": 0,
+      "original_token_count": 16,
+      "output": "2869352896 9 inputs/prices.txt\n596333413 3 output/subtotal.txt\n"
+    }
+  },
+  "check": {
+    "request": {
+      "cmd": "set -eu\nset -o pipefail\nsubtotal=0\ncount=0\nwhile IFS= read -r price || [ -n \"$price\" ]; do\n  case \"$price\" in\n    ''|*[!0-9]*) print -u2 -- 'Invalid unsigned integer price'; exit 1 ;;\n  esac\n  if [ \"${#price}\" -gt 9 ]; then\n    print -u2 -- 'Price exceeds safe parser bound'; exit 1\n  fi\n  amount=$((10#$price))\n  if (( subtotal > 9223372036854775807 - amount )); then\n    print -u2 -- 'Subtotal overflow'; exit 1\n  fi\n  subtotal=$((subtotal + amount))\n  count=$((count + 1))\ndone < inputs/prices.txt\nif (( count == 0 )); then print -u2 -- 'No prices'; exit 1; fi\nprintf '%s\\n' \"$subtotal\" | cmp - output/subtotal.txt\nprint -- 'C-SUB: independent sum and exact byte comparison passed'",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+      "shell": "/bin/zsh",
+      "login": false,
+      "max_output_tokens": 2000
+    },
+    "result": {
+      "chunk_id": "105fb0",
+      "wall_time_seconds": 0.000002417,
+      "exit_code": 0,
+      "original_token_count": 14,
+      "output": "C-SUB: independent sum and exact byte comparison passed\n"
+    }
+  },
+  "after": {
+    "request": {
+      "cmd": "cksum inputs/prices.txt output/subtotal.txt",
+      "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_native-execution",
+      "max_output_tokens": 2000
+    },
+    "result": {
+      "chunk_id": "9d5544",
+      "wall_time_seconds": 0.000002334,
+      "exit_code": 0,
+      "original_token_count": 16,
+      "output": "2869352896 9 inputs/prices.txt\n596333413 3 output/subtotal.txt\n"
+    }
+  },
+  "observations": {
+    "final_checker_result_present": true,
+    "checker_passed": true,
+    "source_and_product_fingerprints_stable": true
+  }
+}

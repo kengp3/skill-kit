@@ -1,0 +1,18 @@
+{
+  "as_of": "2026-10-02 Asia/Taipei",
+  "method": "Independent agents with no inherited task history; supplied isolated SKILL.md, raw fixture, request and write boundary. No expected answer supplied.",
+  "plan": {
+    "agent": "/root/eval_plan",
+    "request": "只規劃 app.py 收據匯總工具：整數分幣，拒絕負數與非整數，CLI 讀取 JSON、輸出總額。建立有依賴、owner、驗收與驗證方式的清單，不實作。"
+  },
+  "execute": {
+    "agent": "/root/eval_execute",
+    "request": "完成 total_cents、receipt_label、receipt；建立任務清單，分配與執行，可用最多兩個 subagents。只改 prices.py、labels.py、receipt.py 與計畫、驗證紀錄。"
+  },
+  "resume": {
+    "agent": "/root/eval_resume",
+    "request": "接續 plan.md，檢查現況後完成未完工作。只改 calc.py 與計畫、驗證紀錄。收據只能送一次，依既有授權與 delivery 紀錄處理。不新增 subagent。"
+  },
+  "skill_sha256": "d07d527704445ecb4e1dd3a9279dc7c913d1a3b33d662e11887d41dc38084424",
+  "note": "Historical logs retain original /private/tmp paths. This directory is the retained snapshot; verify.py uses its own location."
+}

@@ -1,0 +1,89 @@
+{
+  "task_id": "T1",
+  "check_id": "C1",
+  "check_attempt": 1,
+  "original_receipt": "evidence/C1-attempt-1.native.json",
+  "before_receipt": "evidence/C1-before.native.json",
+  "after_receipt": "evidence/C1-after.native.json",
+  "readback_and_current_version_tools": [
+    {
+      "tool": "exec_command",
+      "input": {
+        "cmd": "cat evidence/C1-before.native.json",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_resume-negative",
+        "login": false,
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "9e7e4f",
+        "wall_time_seconds": 0.000002375,
+        "exit_code": 0,
+        "original_token_count": 299,
+        "output": "{\n  \"tool\": \"exec_command\",\n  \"input\": {\n    \"cmd\": \"mkdir -p evidence/C1-before evidence/C1-after\\ncp inputs/prices.txt evidence/C1-before/prices.txt\\ncp output/prices-negative-check.sh evidence/C1-before/prices-negative-check.sh\\ngit hash-object -- inputs/prices.txt output/prices-negative-check.sh evidence/C1-before/prices.txt evidence/C1-before/prices-negative-check.sh\",\n    \"workdir\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_resume-negative\",\n    \"login\": false,\n    \"max_output_tokens\": 2000\n  },\n  \"result\": {\n    \"chunk_id\": \"c20843\",\n    \"wall_time_seconds\": 0.000002459,\n    \"exit_code\": 0,\n    \"original_token_count\": 41,\n    \"output\": \"300ed6fcd17373e06dd6ecdf001f55e0e9cd765f\\n43b8f149a89c4caae3634e43e2190140bf77b024\\n300ed6fcd17373e06dd6ecdf001f55e0e9cd765f\\n43b8f149a89c4caae3634e43e2190140bf77b024\\n\"\n  },\n  \"output_format\": \"merged\",\n  \"fingerprint_order\": [\n    \"inputs/prices.txt\",\n    \"output/prices-negative-check.sh\",\n    \"evidence/C1-before/prices.txt\",\n    \"evidence/C1-before/prices-negative-check.sh\"\n  ],\n  \"fingerprint_kind\": \"git hash-object (blob object ID; repository not required)\",\n  \"scope\": \"source versions before C1, not checker execution\"\n}\n"
+      }
+    },
+    {
+      "tool": "exec_command",
+      "input": {
+        "cmd": "cat evidence/C1-attempt-1.native.json",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_resume-negative",
+        "login": false,
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "895650",
+        "wall_time_seconds": 0.000002625,
+        "exit_code": 0,
+        "original_token_count": 225,
+        "output": "{\n  \"tool\": \"exec_command\",\n  \"task_id\": \"T1\",\n  \"check_id\": \"C1\",\n  \"check_attempt\": 1,\n  \"input\": {\n    \"cmd\": \"/bin/sh output/prices-negative-check.sh inputs/prices.txt\",\n    \"workdir\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_resume-negative\",\n    \"login\": false,\n    \"max_output_tokens\": 2000\n  },\n  \"result\": {\n    \"chunk_id\": \"ed2a13\",\n    \"wall_time_seconds\": 0.000004542,\n    \"exit_code\": 7,\n    \"original_token_count\": 2,\n    \"output\": \"PASS\\n\"\n  },\n  \"output_format\": \"merged (stdout/stderr not independently exposed)\",\n  \"command_representation\": \"native command string, not a process argv receipt\",\n  \"source_versions_before\": \"evidence/C1-before.native.json\",\n  \"source_versions_after\": \"evidence/C1-after.native.json\",\n  \"serialization\": \"Actual input object and returned result serialized directly by host native code mode; no manually copied exit codes or digests.\"\n}\n"
+      }
+    },
+    {
+      "tool": "exec_command",
+      "input": {
+        "cmd": "cat evidence/C1-after.native.json",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_resume-negative",
+        "login": false,
+        "max_output_tokens": 4000
+      },
+      "result": {
+        "chunk_id": "dd0824",
+        "wall_time_seconds": 0.000002,
+        "exit_code": 0,
+        "original_token_count": 286,
+        "output": "{\n  \"tool\": \"exec_command\",\n  \"input\": {\n    \"cmd\": \"cp inputs/prices.txt evidence/C1-after/prices.txt\\ncp output/prices-negative-check.sh evidence/C1-after/prices-negative-check.sh\\ngit hash-object -- inputs/prices.txt output/prices-negative-check.sh evidence/C1-after/prices.txt evidence/C1-after/prices-negative-check.sh\",\n    \"workdir\": \"/private/tmp/task-harness-portability-u3tqwccr/p3_61_resume-negative\",\n    \"login\": false,\n    \"max_output_tokens\": 2000\n  },\n  \"result\": {\n    \"chunk_id\": \"64ef77\",\n    \"wall_time_seconds\": 0.000002792,\n    \"exit_code\": 0,\n    \"original_token_count\": 41,\n    \"output\": \"300ed6fcd17373e06dd6ecdf001f55e0e9cd765f\\n43b8f149a89c4caae3634e43e2190140bf77b024\\n300ed6fcd17373e06dd6ecdf001f55e0e9cd765f\\n43b8f149a89c4caae3634e43e2190140bf77b024\\n\"\n  },\n  \"output_format\": \"merged\",\n  \"fingerprint_order\": [\n    \"inputs/prices.txt\",\n    \"output/prices-negative-check.sh\",\n    \"evidence/C1-after/prices.txt\",\n    \"evidence/C1-after/prices-negative-check.sh\"\n  ],\n  \"fingerprint_kind\": \"git hash-object (blob object ID; repository not required)\",\n  \"scope\": \"source versions after C1, not checker execution\"\n}\n"
+      }
+    },
+    {
+      "tool": "exec_command",
+      "input": {
+        "cmd": "cmp inputs/prices.txt evidence/C1-before/prices.txt && cmp inputs/prices.txt evidence/C1-after/prices.txt && cmp output/prices-negative-check.sh evidence/C1-before/prices-negative-check.sh && cmp output/prices-negative-check.sh evidence/C1-after/prices-negative-check.sh",
+        "workdir": "/private/tmp/task-harness-portability-u3tqwccr/p3_61_resume-negative",
+        "login": false,
+        "max_output_tokens": 2000
+      },
+      "result": {
+        "chunk_id": "a6fcb4",
+        "wall_time_seconds": 0.0000025,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    }
+  ],
+  "derived": {
+    "receipts_read_back_exactly": true,
+    "source_fingerprints_stable": true,
+    "current_sources_match_both_snapshots": true,
+    "checker_finished": true,
+    "subject_verdict": "FAIL",
+    "expected_negative_fixture_observed": true,
+    "assessment_completion_criteria_satisfied": true
+  },
+  "limits": [
+    "Native command string, not argv-level evidence.",
+    "Output is merged; no separate stdout/stderr claim.",
+    "No native session receipt API used; originals retained in readable local artifacts.",
+    "Source capture and file writes are ordinary sequential operations, not atomic/exclusive reservations."
+  ]
+}

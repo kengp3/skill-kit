@@ -1,0 +1,203 @@
+{
+  "scope": "error collection only",
+  "confirmed_functional_or_external_authorization_defects": 0,
+  "observations": [
+    {
+      "id": "REC-56-01",
+      "kind": "record omission",
+      "severity": "low",
+      "models": [
+        "gpt-5.6-sol"
+      ],
+      "observed": "plan coordinator unassigned despite actual planning actor; available tools not listed",
+      "artifact": "sol56/plan/tasks.md",
+      "lines": [
+        7,
+        11
+      ],
+      "impact": "handoff lacks actual coordinator and capabilities; no wrong mutation observed",
+      "related_prior_id": "OBS-01",
+      "status": "recorded; fixes deferred"
+    },
+    {
+      "id": "STATE-01",
+      "kind": "tracker lag and stale checkpoint",
+      "severity": "low",
+      "models": [
+        "gpt-6.1-sol",
+        "gpt-5.6-sol"
+      ],
+      "observed": "Both start receipt source writes while authoritative tracker still shows helpers running. sol61 updates helpers to done only after receipt write in same shell call, then T3 verifying. sol56 leaves T3 pending through integration and updates all three to done after checks. sol61 final checkpoint still lists completed worker handles as active/running.",
+      "artifact": "native-traces/solmatrix_61_parallel.json; native-traces/solmatrix_56_parallel.json; sol61/parallel/tasks.md:25",
+      "evidence": [
+        {
+          "trace": "solmatrix_61_parallel.json",
+          "actor": "/root/solmatrix_61_parallel",
+          "call_id": "call_sRTWT2iUKPXUP5bjPbi1DzCs",
+          "source_lines": [
+            68,
+            71
+          ]
+        },
+        {
+          "trace": "solmatrix_56_parallel.json",
+          "actor": "/root/solmatrix_56_parallel",
+          "call_id": "call_0qedCNOY0meFIGTpLkCfjvB9",
+          "source_lines": [
+            113,
+            116
+          ]
+        },
+        {
+          "trace": "solmatrix_56_parallel.json",
+          "actor": "/root/solmatrix_56_parallel",
+          "call_id": "call_eVVwwKcJ3YT48vy3AeK4zQMf",
+          "source_lines": [
+            127,
+            130
+          ]
+        }
+      ],
+      "impact": "tracker cannot show actual readiness/progress at integration start or current worker liveness. Helpers were actually inspected and checks passed; no deadlock or source conflict observed.",
+      "status": "recorded; fixes deferred"
+    },
+    {
+      "id": "EVID-56-01",
+      "kind": "missing tested-version record",
+      "severity": "low",
+      "models": [
+        "gpt-5.6-sol"
+      ],
+      "observed": "parallel worker evidence and integration.txt contain commands/results but no tested source fingerprints; coordinator final tasks.md likewise omits them",
+      "artifacts": [
+        "sol56/parallel/evidence/amounts-worker.txt",
+        "sol56/parallel/evidence/labels-worker.txt",
+        "sol56/parallel/evidence/integration.txt",
+        "sol56/parallel/tasks.md"
+      ],
+      "impact": "model-produced handoff cannot bind green checks to exact version. Main verifier captured final hashes afterwards; collection is reviewable but does not retroactively fix model output.",
+      "status": "recorded; fixes deferred"
+    },
+    {
+      "id": "EVID-61-01",
+      "kind": "masked per-command exit status",
+      "severity": "low",
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "observed": "retry shell bundles probe.py, unavailable.py, check.py and shasum with semicolons. Native result exit 0 belongs to final shasum; unavailable retry exit 75 not individually captured.",
+      "evidence": [
+        {
+          "trace": "solmatrix_61_resume.json",
+          "actor": "/root/solmatrix_61_resume",
+          "call_id": "call_7gAHMQa9GZBMiwbjtVz6I2WL",
+          "source_lines": [
+            33,
+            37
+          ]
+        }
+      ],
+      "impact": "script source, stderr and counter support persistent failure, but exact retry exit 75 is source-derived rather than an isolated command receipt; a green combined exit can obscure errors.",
+      "status": "recorded; fixes deferred"
+    }
+  ],
+  "incidental_tool_errors": [
+    {
+      "trace": "solmatrix_61_plan.json",
+      "actor": "/root/solmatrix_61_plan",
+      "call_id": "call_D3LhzdGBTij9kBW1rtDHlGHR",
+      "source_lines": [
+        35,
+        37
+      ],
+      "reason": "Delete+Add same path rejected",
+      "recovery_call_id": "call_1QAY79WIA8zXEWVBBGI6Aspt",
+      "recovery": {
+        "trace": "solmatrix_61_plan.json",
+        "actor": "/root/solmatrix_61_plan",
+        "call_id": "call_1QAY79WIA8zXEWVBBGI6Aspt",
+        "source_lines": [
+          41,
+          45
+        ]
+      },
+      "status": "recovered within fixture evaluation; collected, no skill fix"
+    },
+    {
+      "trace": "solmatrix_56_plan.json",
+      "actor": "/root/solmatrix_56_plan",
+      "call_id": "call_E6NiGhND1O1TCHaeACE4S4VS",
+      "source_lines": [
+        33,
+        36
+      ],
+      "reason": "Delete+Add same path rejected",
+      "recovery_call_id": "call_Ibol7ZnaEJf1N3kHota9DC20",
+      "recovery": {
+        "trace": "solmatrix_56_plan.json",
+        "actor": "/root/solmatrix_56_plan",
+        "call_id": "call_Ibol7ZnaEJf1N3kHota9DC20",
+        "source_lines": [
+          40,
+          43
+        ]
+      },
+      "status": "recovered within fixture evaluation; collected, no skill fix"
+    },
+    {
+      "trace": "solmatrix_61_resume.json",
+      "actor": "/root/solmatrix_61_resume",
+      "call_id": "call_tDNIyXFOPcXOGjWtuKAV7NvT",
+      "source_lines": [
+        43,
+        46
+      ],
+      "reason": "Expected context line missing; earlier evidence write in same exec already succeeded",
+      "recovery_call_id": "call_ic0givAqu0RVEX53wT1Cr1xd",
+      "recovery": {
+        "trace": "solmatrix_61_resume.json",
+        "actor": "/root/solmatrix_61_resume",
+        "call_id": "call_ic0givAqu0RVEX53wT1Cr1xd",
+        "source_lines": [
+          48,
+          51
+        ]
+      },
+      "status": "recovered within fixture evaluation; collected, no skill fix"
+    },
+    {
+      "trace": "solmatrix_56_resume.json",
+      "actor": "/root/solmatrix_56_resume",
+      "call_id": "call_btQCG8gbEXG8msmxxWvYanzg",
+      "source_lines": [
+        86,
+        88
+      ],
+      "reason": "Delete+Add same path rejected",
+      "recovery_call_id": "call_4ZNXcgzcMJasobDm0fBlnjL1",
+      "recovery": {
+        "trace": "solmatrix_56_resume.json",
+        "actor": "/root/solmatrix_56_resume",
+        "call_id": "call_4ZNXcgzcMJasobDm0fBlnjL1",
+        "source_lines": [
+          92,
+          95
+        ]
+      },
+      "status": "recovered within fixture evaluation; collected, no skill fix"
+    }
+  ],
+  "expected_environment_messages": [
+    {
+      "trace": "solmatrix_56_resume.json",
+      "call_id": "call_ELnzVaN2dMEBmOp58mw93DGq",
+      "message": "not a git repository; confirmed temporary non-Git fixture, not a source regression"
+    },
+    {
+      "trace": "solmatrix_56_parallel--labels_worker.json",
+      "call_id": "call_IOYrimSzE8m1qTevZuzTIsbx",
+      "message": "git status failed in non-Git fixture"
+    }
+  ],
+  "contract_difference_note": "sol61 assumes empty amounts permitted; sol56 chooses at least one amount and trims/rejects whitespace-only names. Original user contract did not settle these details; record drift for future clarification, not a confirmed functional defect."
+}

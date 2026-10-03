@@ -1,0 +1,3 @@
+本回合是使用者已授權的正式功能驗收續作。測試方法已決定簡化為普通資料夾：沿用本 workspace，標準 workspace-write，不再要求強 read-deny 或 canary/agent registry 隔離 gate。這是一般功能 smoke test，不是盲測或安全隔離測試。請在 tasks.md 更新這個邊界；不要繼續診斷 sandbox，也不要為測試更改 host 設定。
+其他既有驗收與安全限制全部保留，使用同一 skill/SKILL.md，讀回 tasks.md 及原材料。禁止讀其他研究、案例、歷史 verdict 或 private session export；禁止外部服務、安裝、runtime wrappers。可使用宿主內建 code mode 與現有檔案／命令工具，原始 evidence 必須由工具結果直接保存。
+現在依已保存計畫執行，授權派兩個 native workers（各自獨立產品与 evidence 路徑），coordinator 做最終整合。輸出 subtotal、tax、total。沒有完整 evidence 不得 done；保持原交接與 attempts 契約。本 core-only 安裝沒有 scripts/run_check.py，不得補裝或從其他位置取得。完成直接驗收或遇必要能力 blocker 後回報並停止。
