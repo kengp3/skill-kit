@@ -5,6 +5,7 @@ import hashlib
 import re
 import sys
 from pathlib import Path
+from review import read_regular
 
 
 LINK_HASH = re.compile(
@@ -15,8 +16,8 @@ LINK_HASH = re.compile(
 def main(report_name):
     report = Path(report_name).resolve()
     try:
-        content = report.read_text(encoding="utf-8")
-    except (OSError, UnicodeError) as error:
+        content = read_regular(report).decode("utf-8")
+    except (OSError, UnicodeError, ValueError) as error:
         print(f"cannot read {report}: {error}", file=sys.stderr)
         return 1
     checked = 0
@@ -36,8 +37,8 @@ def main(report_name):
             errors.append(f"line {line}: cannot read {target}: not a regular file")
             continue
         try:
-            actual = hashlib.sha256(path.read_bytes()).hexdigest()
-        except OSError as error:
+            actual = hashlib.sha256(read_regular(path)).hexdigest()
+        except (OSError, ValueError) as error:
             errors.append(f"line {line}: cannot read {target}: {error}")
             continue
         if actual != claimed.lower():

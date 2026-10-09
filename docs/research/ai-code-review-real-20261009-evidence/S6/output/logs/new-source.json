@@ -1,0 +1,11 @@
+{
+  "command": [
+    "sh",
+    "-c",
+    "for p in /private/tmp/ai-review-real-20261009/S6/head/*.py /private/tmp/ai-review-real-20261009/S6/probe.py; do echo \"$p\"; nl -ba \"$p\"; done"
+  ],
+  "timestamp": "2026-10-09T11:31:40.568554+00:00",
+  "stdout": "/private/tmp/ai-review-real-20261009/S6/head/api.py\n     1\tfrom service import execute\n     2\tdef submit(state, key, count):\n     3\t    return execute(state, key, count)\n/private/tmp/ai-review-real-20261009/S6/head/service.py\n     1\tdef execute(state, key, count):\n     2\t    if key in state['done']:\n     3\t        return state['done'][key]\n     4\t    if count < 1 or count > state['stock']:\n     5\t        return 'rejected'\n     6\t    state['stock'] -= count\n     7\t    state['done'][key] = 'accepted'\n     8\t    return 'accepted'\n/private/tmp/ai-review-real-20261009/S6/probe.py\n     1\timport json\n     2\tfrom api import submit\n     3\trows=[]\n     4\tfor ops in [[('a',1)],[('a',0)],[('a',4)],[('a',3)],[('a',1),('a',1)],[('a',1),('a',2)],[('a',2),('b',2)]]:\n     5\t    state={'stock':3,'events':[],'done':{}}\n     6\t    results=[submit(state,k,n) for k,n in ops]\n     7\t    rows.append({'ops':ops,'results':results,'state':state})\n     8\tprint(json.dumps(rows,sort_keys=True))\n",
+  "stderr": "",
+  "exit_code": 0
+}

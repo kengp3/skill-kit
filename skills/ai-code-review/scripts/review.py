@@ -3,13 +3,23 @@
 import argparse
 import hashlib
 import json
+import stat
+import os
 from pathlib import Path, PurePosixPath
 import subprocess
 import sys
 
 
+def read_regular(path):
+    flags = os.O_RDONLY | getattr(os, 'O_NONBLOCK', 0) | getattr(os, 'O_BINARY', 0)
+    with os.fdopen(os.open(path, flags), 'rb') as stream:
+        if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
+            raise ValueError(f'Not a regular file: {path}')
+        return stream.read()
+
+
 def digest(path):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    return hashlib.sha256(read_regular(path)).hexdigest()
 
 
 def read_json(path):
@@ -22,7 +32,7 @@ def read_json(path):
         return result
     def invalid(value):
         raise ValueError(f'Invalid JSON number: {value}')
-    value = json.loads(Path(path).read_text(encoding='utf-8'),
+    value = json.loads(read_regular(path).decode('utf-8'),
                        object_pairs_hook=pairs, parse_constant=invalid, parse_float=invalid)
     if not isinstance(value, dict):
         raise ValueError('Evidence documents must be JSON objects')
@@ -66,7 +76,7 @@ def prepare(old_repo, old_ref, new_repo, new_ref, out):
         commit = git(repo, 'rev-parse', '--verify', '--end-of-options', ref + '^{commit}').decode().strip()
         root = out / 'snapshots' / side
         root.mkdir(parents=True)
-        files, names = {}, set()
+        files, names = {}, {}
         for entry in git(repo, 'ls-tree', '-rz', '--full-tree', commit).split(b'\0'):
             if not entry:
                 continue
@@ -75,9 +85,12 @@ def prepare(old_repo, old_ref, new_repo, new_ref, out):
             name = name.decode('utf-8')
             if mode not in ('100644', '100755') or kind != 'blob':
                 raise ValueError(f'Unsupported tree entry: {side}/{name} ({mode})')
-            if name.casefold() in names:
-                raise ValueError(f'Case collision: {name}')
-            names.add(name.casefold())
+            parts = PurePosixPath(name).parts
+            for depth in range(1, len(parts) + 1):
+                prefix = PurePosixPath(*parts[:depth]).as_posix()
+                previous = names.setdefault(prefix.casefold(), prefix)
+                if previous != prefix:
+                    raise ValueError(f'Case collision: {previous} / {prefix}')
             content = git(repo, 'cat-file', 'blob', oid)
             if content.startswith(b'version https://git-lfs.github.com/spec/v1\n'):
                 raise ValueError(f'Unresolved LFS pointer: {name}')
@@ -100,7 +113,14 @@ def verify(run):
         raise ValueError('Manifest schema or helper version changed; prepare a new run')
     for side in ('old', 'new'):
         root = run / 'snapshots' / side
-        actual = {str(p.relative_to(root)) for p in root.rglob('*') if p.is_file() or p.is_symlink()}
+        actual = set()
+        for path in root.rglob('*'):
+            mode = path.lstat().st_mode
+            if stat.S_ISDIR(mode):
+                continue
+            if not stat.S_ISREG(mode):
+                raise ValueError(f'Unsupported snapshot entry: {side}/{path.relative_to(root)}')
+            actual.add(str(path.relative_to(root)))
         if actual != set(manifest[side]['files']):
             raise ValueError(f'Snapshot file set changed: {side}')
         for name, item in manifest[side]['files'].items():

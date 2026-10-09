@@ -1,0 +1,14 @@
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/base/paging.py:1:def after(ids, cursor, limit):
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/base/paging.py:2:    return [i for i in ids if i >= cursor][:limit]
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/base/api.py:1:from paging import after
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/base/api.py:2:def page(ids, cursor, limit):
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/base/api.py:3:    if type(limit) is not int or limit < 1:
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/base/api.py:4:        raise ValueError("limit")
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/base/api.py:5:    return after(ids, cursor, limit)
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/head/paging.py:1:def after(ids, cursor, limit):
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/head/paging.py:2:    return [i for i in ids if i > cursor][:limit + 1]
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/head/api.py:1:from paging import after
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/head/api.py:2:def page(ids, cursor, limit):
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/head/api.py:3:    if type(limit) is not int or limit < 1:
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/head/api.py:4:        raise ValueError("limit")
+/private/tmp/ai-review-real-20261009/S3/output/snapshots/head/api.py:5:    return after(ids, cursor, limit)

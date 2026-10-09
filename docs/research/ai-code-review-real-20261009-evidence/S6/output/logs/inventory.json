@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python3",
+    "-c",
+    "import pathlib,subprocess; r=pathlib.Path(\"/private/tmp/ai-review-real-20261009/S6\"); [(print(str(r/s)),print(subprocess.check_output([\"git\",\"-C\",str(r/s),\"rev-parse\",\"HEAD\"],text=True)),print(subprocess.check_output([\"git\",\"-C\",str(r/s),\"status\",\"--porcelain=v1\"],text=True)),print(subprocess.check_output([\"git\",\"-C\",str(r/s),\"ls-tree\",\"-r\",\"HEAD\"],text=True))) for s in [\"repo-base\",\"repo-head\"]]"
+  ],
+  "timestamp": "2026-10-09T11:31:23.180086+00:00",
+  "stdout": "/private/tmp/ai-review-real-20261009/S6/repo-base\n0470b8ec7cf06787cc072c1e7829b45127677fcc\n\n\n100644 blob 3edc409999208d0f9a55b6ac4e617468a9c0c8c9\tapi.py\n100644 blob fe628a0f3b7feb1ca1804e061f9c4a44e1694970\tlegacy.py\n\n/private/tmp/ai-review-real-20261009/S6/repo-head\n3112b0916792d386e6a0c9a677619120f4c659ce\n\n\n100644 blob 3b1d33db6adad743a7cb54e8bd8df5bc0810f855\tapi.py\n100644 blob 9d298f5e07c379e2e4f3b71dd7bb7f0d5a17ea35\tservice.py\n\n",
+  "stderr": "",
+  "exit_code": 0
+}

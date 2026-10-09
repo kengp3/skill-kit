@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python3",
+    "/private/tmp/ai-review-real-20261009/S2/output/tmp/test_pagination.py",
+    "/private/tmp/ai-review-real-20261009/S2/output/snapshots/3159b0975832c88522dfec4d13adf851ec8d6ada"
+  ],
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "stdout": "exact-boundary: input=([1, 3, 5], 3, 2) expected=[5] actual=[3, 5] unchanged=True pass=False\nempty: input=([], 3, 2) expected=[] actual=[] unchanged=True pass=True\nbefore-first: input=([1, 3, 5], 0, 2) expected=[1, 3] actual=[1, 3] unchanged=True pass=True\nafter-last: input=([1, 3, 5], 6, 2) expected=[] actual=[] unchanged=True pass=True\nexact-last: input=([1, 3, 5], 5, 2) expected=[] actual=[5] unchanged=True pass=False\nbetween: input=([1, 3, 5], 2, 1) expected=[3] actual=[3] unchanged=True pass=True\ncap: input=([1, 3, 5], 1, 1) expected=[3] actual=[1] unchanged=True pass=False\ninvalid-limit 0: ValueError(\"limit\") PASS\ninvalid-limit -1: ValueError(\"limit\") PASS\ninvalid-limit True: ValueError(\"limit\") PASS\ninvalid-limit False: ValueError(\"limit\") PASS\ninvalid-limit 1.5: ValueError(\"limit\") PASS\ninvalid-limit '2': ValueError(\"limit\") PASS\ninvalid-limit None: ValueError(\"limit\") PASS\noracle cases=1344; total failures=483\n",
+  "stderr": "Traceback (most recent call last):\n  File \"/private/tmp/ai-review-real-20261009/S2/output/tmp/test_pagination.py\", line 53, in <module>\n    assert not failures, repr(failures[:10])\n           ^^^^^^^^^^^^\nAssertionError: ['exact-boundary', 'exact-last', 'cap', 'oracle ((-2,), -2, 1): [-2] != []', 'oracle ((-2,), -2, 2): [-2] != []', 'oracle ((-2,), -2, 3): [-2] != []', 'oracle ((-2,), -2, 4): [-2] != []', 'oracle ((-2,), -2, 5): [-2] != []', 'oracle ((-2,), -2, 6): [-2] != []', 'oracle ((-1,), -1, 1): [-1] != []']\n",
+  "exit_code": 1
+}

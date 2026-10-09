@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python3",
+    "-c",
+    "import pathlib,subprocess,sys; r=pathlib.Path(\"/private/tmp/ai-review-real-20261009/S6\"); print(sys.version);print(subprocess.check_output([\"git\",\"--version\"],text=True)); [(print(s,p.name,\"identical\"), None if p.read_bytes()==(r/\"output/run/snapshots\"/t/p.name).read_bytes()==(r/(\"repo-\"+s)/p.name).read_bytes() else (_ for _ in ()).throw(AssertionError(p))) for s,t in [(\"base\",\"old\"),(\"head\",\"new\")] for p in (r/s).glob(\"*.py\")]"
+  ],
+  "timestamp": "2026-10-09T11:32:49.699254+00:00",
+  "stdout": "3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)]\ngit version 2.56.0\n\nbase legacy.py identical\nbase api.py identical\nhead service.py identical\nhead api.py identical\n",
+  "stderr": "",
+  "exit_code": 0
+}

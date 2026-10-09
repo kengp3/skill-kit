@@ -16,9 +16,9 @@ python3 "$SKILL/scripts/review.py" verify --run /path/new-review-run
 
 產物：manifest.json 與 snapshots/old、snapshots/new。只納入 commit 的普通檔案及 executable mode，不套用 export-ignore／export-subst，不自動 fetch。快照不得改寫或加入建置產物；編譯輸出放 run/build，需原地建置時另複製並核對輸入。未提交來源不納入，工作樹本身保持不動。
 
-symlink、submodule、LFS pointer、大小寫碰撞或非 UTF-8 路徑不支援時明確停止。既有輸出拒絕覆寫；中途失敗目錄保留但沒有成功 manifest，檢查原因後用新 run 重試。不要以此失敗要求使用者刪除正常來源檔案；必要時另採經核對的取證方式。
+symlink、submodule、LFS pointer、大小寫碰撞（含各層目錄）或非 UTF-8 路徑不支援時明確停止。既有輸出拒絕覆寫；中途失敗目錄保留但沒有成功 manifest，檢查原因後用新 run 重試。不要以此失敗要求使用者刪除正常來源檔案；必要時另採經核對的取證方式。
 
-verify 核對快照檔案集合、內容與 executable mode。分支之後移動不影響已固定版本；要審新版本就建立新 run。manifest 與紀錄是本機證據，不是防惡意偽造的簽章或執行證明。
+verify 核對快照檔案集合、內容與 executable mode；快照內的 symlink、FIFO、socket 等非普通檔案明確拒絕，不從盤點中忽略。manifest、contract、old/new JSON 與 artifact 的讀取也只接受普通檔案；POSIX FIFO 以非阻塞方式開啟並檢查型別，拒絕時回傳 UNKNOWN／退出碼 2。分支之後移動不影響已固定版本；要審新版本就建立新 run。manifest 與紀錄是本機證據，不是防惡意偽造的簽章或執行證明。
 
 ## 契約與 runner
 

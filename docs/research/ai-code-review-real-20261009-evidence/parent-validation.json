@@ -1,0 +1,154 @@
+{
+  "input_unchanged": true,
+  "snapshot_checks": [
+    {
+      "case": "S1",
+      "side": "base",
+      "commit": "80c1003ffe599c71564037d272c7ac58993324c9",
+      "file_count": 2,
+      "snapshot_matches_commit": true
+    },
+    {
+      "case": "S1",
+      "side": "head",
+      "commit": "1461797f5ad85f2610fb3ccd88700339110651c2",
+      "file_count": 2,
+      "snapshot_matches_commit": true
+    },
+    {
+      "case": "S2",
+      "side": "base",
+      "commit": "3159b0975832c88522dfec4d13adf851ec8d6ada",
+      "file_count": 2,
+      "snapshot_matches_commit": true
+    },
+    {
+      "case": "S2",
+      "side": "head",
+      "commit": "3d77b50fc326b13369731b13939e841c681742ea",
+      "file_count": 2,
+      "snapshot_matches_commit": true
+    },
+    {
+      "case": "S3",
+      "side": "base",
+      "commit": "3159b0975832c88522dfec4d13adf851ec8d6ada",
+      "file_count": 2,
+      "snapshot_matches_commit": true
+    },
+    {
+      "case": "S3",
+      "side": "head",
+      "commit": "f3ea1892ae704f155c2f837bde3e2312032af50f",
+      "file_count": 2,
+      "snapshot_matches_commit": true
+    },
+    {
+      "case": "S4",
+      "side": "base",
+      "commit": "06ecf76f8d530a58543ea46ab16a2cd8671e5fe6",
+      "file_count": 2,
+      "snapshot_matches_commit": true
+    },
+    {
+      "case": "S4",
+      "side": "head",
+      "commit": "e12142caae223d49fc019618c96a5bf6422a848b",
+      "file_count": 3,
+      "snapshot_matches_commit": true
+    },
+    {
+      "case": "S5",
+      "side": "base",
+      "commit": "0470b8ec7cf06787cc072c1e7829b45127677fcc",
+      "file_count": 2,
+      "snapshot_matches_commit": true
+    },
+    {
+      "case": "S5",
+      "side": "head",
+      "commit": "14b80ec98ef6be7a380060b2fa27632652773163",
+      "file_count": 2,
+      "snapshot_matches_commit": true
+    },
+    {
+      "case": "S6",
+      "side": "base",
+      "commit": "0470b8ec7cf06787cc072c1e7829b45127677fcc",
+      "file_count": 2,
+      "snapshot_matches_commit": true
+    },
+    {
+      "case": "S6",
+      "side": "head",
+      "commit": "3112b0916792d386e6a0c9a677619120f4c659ce",
+      "file_count": 2,
+      "snapshot_matches_commit": true
+    },
+    {
+      "case": "S7",
+      "side": "base",
+      "commit": "a9fabff50c6d3b2be51e1cc18da2527709eaecb3",
+      "file_count": 2,
+      "snapshot_matches_commit": true
+    },
+    {
+      "case": "S7",
+      "side": "head",
+      "commit": "aedb2ff70e63fef785d9210eddf30595e8e72386",
+      "file_count": 2,
+      "snapshot_matches_commit": true
+    }
+  ],
+  "checks": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_migration_review.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "........\n----------------------------------------------------------------------\nRan 8 tests in 4.752s\n\nOK\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_check_report_hashes.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "......\n----------------------------------------------------------------------\nRan 6 tests in 1.700s\n\nOK\n"
+    },
+    {
+      "argv": [
+        "uv",
+        "run",
+        "--offline",
+        "--no-project",
+        "--with",
+        "pyyaml",
+        "python",
+        "-B",
+        "/Users/kengp3/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+        "/private/tmp/ai-review-real-20261009/skill"
+      ],
+      "exit_code": 0,
+      "stdout": "Skill is valid!\n",
+      "stderr": "WARN `--no-project` was provided, but no project was found\n"
+    }
+  ]
+}

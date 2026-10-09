@@ -1,0 +1,176 @@
+[
+  {
+    "command": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S7/repo-base",
+      "rev-parse",
+      "HEAD"
+    ],
+    "stdout": "a9fabff50c6d3b2be51e1cc18da2527709eaecb3\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S7/repo-base",
+      "symbolic-ref",
+      "--short",
+      "HEAD"
+    ],
+    "stdout": "master\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S7/repo-base",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=all"
+    ],
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S7/repo-base",
+      "ls-tree",
+      "-r",
+      "HEAD"
+    ],
+    "stdout": "100644 blob 3edc409999208d0f9a55b6ac4e617468a9c0c8c9\tapi.py\n100644 blob fe628a0f3b7feb1ca1804e061f9c4a44e1694970\tlegacy.py\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S7/repo-head",
+      "rev-parse",
+      "HEAD"
+    ],
+    "stdout": "aedb2ff70e63fef785d9210eddf30595e8e72386\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S7/repo-head",
+      "symbolic-ref",
+      "--short",
+      "HEAD"
+    ],
+    "stdout": "master\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S7/repo-head",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=all"
+    ],
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S7/repo-head",
+      "ls-tree",
+      "-r",
+      "HEAD"
+    ],
+    "stdout": "100644 blob 3b1d33db6adad743a7cb54e8bd8df5bc0810f855\tapi.py\n100644 blob a3789aa7892367467eac9993caac26be38331224\tservice.py\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--no-index",
+      "--no-renames",
+      "--name-status",
+      "/private/tmp/ai-review-real-20261009/S7/base",
+      "/private/tmp/ai-review-real-20261009/S7/head"
+    ],
+    "stdout": "M\t/private/tmp/ai-review-real-20261009/S7/base/api.py\nD\t/private/tmp/ai-review-real-20261009/S7/base/legacy.py\nA\t/private/tmp/ai-review-real-20261009/S7/head/service.py\n",
+    "stderr": "",
+    "exit_code": 1
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--no-index",
+      "--no-renames",
+      "/private/tmp/ai-review-real-20261009/S7/base",
+      "/private/tmp/ai-review-real-20261009/S7/head"
+    ],
+    "stdout": "diff --git a/private/tmp/ai-review-real-20261009/S7/base/api.py b/private/tmp/ai-review-real-20261009/S7/head/api.py\nindex 3edc409..3b1d33d 100644\n--- a/private/tmp/ai-review-real-20261009/S7/base/api.py\n+++ b/private/tmp/ai-review-real-20261009/S7/head/api.py\n@@ -1,3 +1,3 @@\n-from legacy import reserve\n+from service import execute\n def submit(state, key, count):\n-    return reserve(state, key, count)\n+    return execute(state, key, count)\ndiff --git a/private/tmp/ai-review-real-20261009/S7/base/legacy.py b/private/tmp/ai-review-real-20261009/S7/base/legacy.py\ndeleted file mode 100644\nindex fe628a0..0000000\n--- a/private/tmp/ai-review-real-20261009/S7/base/legacy.py\n+++ /dev/null\n@@ -1,9 +0,0 @@\n-def reserve(state, key, count):\n-    if key in state['done']:\n-        return state['done'][key]\n-    if count < 1 or count > state['stock']:\n-        return 'rejected'\n-    state['stock'] -= count\n-    state['events'].append({'key': key, 'count': count})\n-    state['done'][key] = 'accepted'\n-    return 'accepted'\ndiff --git a/private/tmp/ai-review-real-20261009/S7/head/service.py b/private/tmp/ai-review-real-20261009/S7/head/service.py\nnew file mode 100644\nindex 0000000..a3789aa\n--- /dev/null\n+++ b/private/tmp/ai-review-real-20261009/S7/head/service.py\n@@ -0,0 +1,9 @@\n+def execute(state, key, count):\n+    if key in state['done']:\n+        return state['done'][key]\n+    if count < 1 or count > state['stock']:\n+        return 'rejected'\n+    state['stock'] -= count\n+    state['events'].append({'key': key, 'count': count})\n+    state['done'][key] = 'accepted'\n+    return 'accepted'\n",
+    "stderr": "",
+    "exit_code": 1
+  },
+  {
+    "command": [
+      "cat",
+      "/private/tmp/ai-review-real-20261009/S7/base/legacy.py"
+    ],
+    "stdout": "def reserve(state, key, count):\n    if key in state['done']:\n        return state['done'][key]\n    if count < 1 or count > state['stock']:\n        return 'rejected'\n    state['stock'] -= count\n    state['events'].append({'key': key, 'count': count})\n    state['done'][key] = 'accepted'\n    return 'accepted'\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "cat",
+      "/private/tmp/ai-review-real-20261009/S7/base/api.py"
+    ],
+    "stdout": "from legacy import reserve\ndef submit(state, key, count):\n    return reserve(state, key, count)\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "cat",
+      "/private/tmp/ai-review-real-20261009/S7/head/service.py"
+    ],
+    "stdout": "def execute(state, key, count):\n    if key in state['done']:\n        return state['done'][key]\n    if count < 1 or count > state['stock']:\n        return 'rejected'\n    state['stock'] -= count\n    state['events'].append({'key': key, 'count': count})\n    state['done'][key] = 'accepted'\n    return 'accepted'\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "cat",
+      "/private/tmp/ai-review-real-20261009/S7/head/api.py"
+    ],
+    "stdout": "from service import execute\ndef submit(state, key, count):\n    return execute(state, key, count)\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "cat",
+      "/private/tmp/ai-review-real-20261009/S7/probe.py"
+    ],
+    "stdout": "import json\nfrom api import submit\nrows=[]\nfor ops in [[('a',1)],[('a',0)],[('a',4)],[('a',3)],[('a',1),('a',1)],[('a',1),('a',2)],[('a',2),('b',2)]]:\n    state={'stock':3,'events':[],'done':{}}\n    results=[submit(state,k,n) for k,n in ops]\n    rows.append({'ops':ops,'results':results,'state':state})\nprint(json.dumps(rows,sort_keys=True))\n",
+    "stderr": "",
+    "exit_code": 0
+  }
+]

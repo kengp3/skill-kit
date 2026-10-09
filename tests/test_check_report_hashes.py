@@ -11,6 +11,17 @@ SCRIPT = Path(__file__).resolve().parents[1] / "skills/ai-code-review/scripts/ch
 
 
 class CheckReportHashesTest(unittest.TestCase):
+    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'POSIX FIFO')
+    def test_fifo_index_fails_without_blocking(self):
+        with tempfile.TemporaryDirectory() as directory:
+            report = Path(directory) / 'report.md'
+            os.mkfifo(report)
+            result = subprocess.run([sys.executable, '-B', str(SCRIPT), str(report)],
+                                    capture_output=True, text=True, timeout=3)
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertIn('cannot read', result.stderr)
+            self.assertNotIn('Traceback', result.stderr)
+
     def test_malformed_entry_cannot_hide_beside_valid_entry(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

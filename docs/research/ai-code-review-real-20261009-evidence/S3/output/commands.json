@@ -1,0 +1,300 @@
+[
+  {
+    "label": "status",
+    "argv": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S3/repo",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=all"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.179653+00:00",
+    "exit_code": 0,
+    "stdout": "logs/status.stdout",
+    "stderr": "logs/status.stderr"
+  },
+  {
+    "label": "refs",
+    "argv": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S3/repo",
+      "rev-parse",
+      "review-base",
+      "review-head"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.187821+00:00",
+    "exit_code": 0,
+    "stdout": "logs/refs.stdout",
+    "stderr": "logs/refs.stderr"
+  },
+  {
+    "label": "merge-base",
+    "argv": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S3/repo",
+      "merge-base",
+      "review-base",
+      "review-head"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.194185+00:00",
+    "exit_code": 0,
+    "stdout": "logs/merge-base.stdout",
+    "stderr": "logs/merge-base.stderr"
+  },
+  {
+    "label": "files",
+    "argv": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S3/repo",
+      "ls-tree",
+      "-r",
+      "--name-only",
+      "review-head"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.199868+00:00",
+    "exit_code": 0,
+    "stdout": "logs/files.stdout",
+    "stderr": "logs/files.stderr"
+  },
+  {
+    "label": "name-status",
+    "argv": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S3/repo",
+      "diff",
+      "--name-status",
+      "3159b0975832c88522dfec4d13adf851ec8d6ada...f3ea1892ae704f155c2f837bde3e2312032af50f"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.205539+00:00",
+    "exit_code": 0,
+    "stdout": "logs/name-status.stdout",
+    "stderr": "logs/name-status.stderr"
+  },
+  {
+    "label": "patch",
+    "argv": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S3/repo",
+      "diff",
+      "--no-ext-diff",
+      "3159b0975832c88522dfec4d13adf851ec8d6ada...f3ea1892ae704f155c2f837bde3e2312032af50f"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.211680+00:00",
+    "exit_code": 0,
+    "stdout": "logs/patch.stdout",
+    "stderr": "logs/patch.stderr"
+  },
+  {
+    "label": "base-api.py",
+    "argv": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S3/repo",
+      "show",
+      "3159b0975832c88522dfec4d13adf851ec8d6ada:api.py"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.219071+00:00",
+    "exit_code": 0,
+    "stdout": "logs/base-api.py.stdout",
+    "stderr": "logs/base-api.py.stderr"
+  },
+  {
+    "label": "base-paging.py",
+    "argv": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S3/repo",
+      "show",
+      "3159b0975832c88522dfec4d13adf851ec8d6ada:paging.py"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.225349+00:00",
+    "exit_code": 0,
+    "stdout": "logs/base-paging.py.stdout",
+    "stderr": "logs/base-paging.py.stderr"
+  },
+  {
+    "label": "head-api.py",
+    "argv": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S3/repo",
+      "show",
+      "f3ea1892ae704f155c2f837bde3e2312032af50f:api.py"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.231295+00:00",
+    "exit_code": 0,
+    "stdout": "logs/head-api.py.stdout",
+    "stderr": "logs/head-api.py.stderr"
+  },
+  {
+    "label": "head-paging.py",
+    "argv": [
+      "git",
+      "-C",
+      "/private/tmp/ai-review-real-20261009/S3/repo",
+      "show",
+      "f3ea1892ae704f155c2f837bde3e2312032af50f:paging.py"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.237583+00:00",
+    "exit_code": 0,
+    "stdout": "logs/head-paging.py.stdout",
+    "stderr": "logs/head-paging.py.stderr"
+  },
+  {
+    "label": "callers",
+    "argv": [
+      "rg",
+      "-n",
+      "after|page|limit",
+      "/private/tmp/ai-review-real-20261009/S3/output/snapshots"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.243718+00:00",
+    "exit_code": 0,
+    "stdout": "logs/callers.stdout",
+    "stderr": "logs/callers.stderr"
+  },
+  {
+    "label": "python-version",
+    "argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "--version"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.250363+00:00",
+    "exit_code": 0,
+    "stdout": "logs/python-version.stdout",
+    "stderr": "logs/python-version.stderr"
+  },
+  {
+    "label": "git-version",
+    "argv": [
+      "git",
+      "--version"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.259110+00:00",
+    "exit_code": 0,
+    "stdout": "logs/git-version.stdout",
+    "stderr": "logs/git-version.stderr"
+  },
+  {
+    "label": "test-base",
+    "argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/private/tmp/ai-review-real-20261009/S3/output/tmp/test_review.py",
+      "/private/tmp/ai-review-real-20261009/S3/output/snapshots/base"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.263824+00:00",
+    "exit_code": 1,
+    "stdout": "logs/test-base.stdout",
+    "stderr": "logs/test-base.stderr"
+  },
+  {
+    "label": "probe-base",
+    "argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/private/tmp/ai-review-real-20261009/S3/probe.py"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONPATH": "/private/tmp/ai-review-real-20261009/S3/output/snapshots/base"
+    },
+    "started": "2026-10-09T11:31:28.407998+00:00",
+    "exit_code": 0,
+    "stdout": "logs/probe-base.stdout",
+    "stderr": "logs/probe-base.stderr"
+  },
+  {
+    "label": "test-head",
+    "argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/private/tmp/ai-review-real-20261009/S3/output/tmp/test_review.py",
+      "/private/tmp/ai-review-real-20261009/S3/output/snapshots/head"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started": "2026-10-09T11:31:28.455811+00:00",
+    "exit_code": 1,
+    "stdout": "logs/test-head.stdout",
+    "stderr": "logs/test-head.stderr"
+  },
+  {
+    "label": "probe-head",
+    "argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/private/tmp/ai-review-real-20261009/S3/probe.py"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S3",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONPATH": "/private/tmp/ai-review-real-20261009/S3/output/snapshots/head"
+    },
+    "started": "2026-10-09T11:31:28.597661+00:00",
+    "exit_code": 0,
+    "stdout": "logs/probe-head.stdout",
+    "stderr": "logs/probe-head.stderr"
+  }
+]

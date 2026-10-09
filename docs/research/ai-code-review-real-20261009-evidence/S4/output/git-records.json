@@ -1,0 +1,89 @@
+[
+  {
+    "command": [
+      "git",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=all"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S4/repo",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "rev-parse",
+      "review-base",
+      "review-head"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S4/repo",
+    "stdout": "06ecf76f8d530a58543ea46ab16a2cd8671e5fe6\ne12142caae223d49fc019618c96a5bf6422a848b\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "merge-base",
+      "review-base",
+      "review-head"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S4/repo",
+    "stdout": "06ecf76f8d530a58543ea46ab16a2cd8671e5fe6\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--name-status",
+      "review-base...review-head"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S4/repo",
+    "stdout": "M\tcache.py\nA\tpolicy.py\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--no-ext-diff",
+      "--binary",
+      "review-base...review-head"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S4/repo",
+    "stdout": "diff --git a/cache.py b/cache.py\nindex 59a9be4..70f2473 100644\n--- a/cache.py\n+++ b/cache.py\n@@ -1,6 +1,7 @@\n+from policy import fresh\n def lookup(store, key, now):\n     item = store.get(key)\n     if item is None:\n         return None\n     expires, value = item\n-    return value if now < expires else None\n+    return value if fresh(now, expires) else None\ndiff --git a/policy.py b/policy.py\nnew file mode 100644\nindex 0000000..09639fc\n--- /dev/null\n+++ b/policy.py\n@@ -0,0 +1,2 @@\n+def fresh(now, expires):\n+    return now <= expires\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "ls-tree",
+      "-r",
+      "--name-only",
+      "review-base"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S4/repo",
+    "stdout": "cache.py\nviews.py\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "git",
+      "ls-tree",
+      "-r",
+      "--name-only",
+      "review-head"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S4/repo",
+    "stdout": "cache.py\npolicy.py\nviews.py\n",
+    "stderr": "",
+    "exit_code": 0
+  }
+]

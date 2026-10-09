@@ -1,0 +1,8 @@
+diff --git a/paging.py b/paging.py
+index d96e29e..6fa032a 100644
+--- a/paging.py
++++ b/paging.py
+@@ -1,2 +1,2 @@
+ def after(ids, cursor, limit):
+-    return [i for i in ids if i >= cursor][:limit]
++    return [i for i in ids if i > cursor][:limit + 1]

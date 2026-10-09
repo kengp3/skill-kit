@@ -1,0 +1,91 @@
+[
+  {
+    "argv": [
+      "git",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=all"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S1/repo",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "rev-parse",
+      "review-base^{commit}",
+      "review-head^{commit}"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S1/repo",
+    "stdout": "80c1003ffe599c71564037d272c7ac58993324c9\n1461797f5ad85f2610fb3ccd88700339110651c2\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "merge-base",
+      "review-base",
+      "review-head"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S1/repo",
+    "stdout": "80c1003ffe599c71564037d272c7ac58993324c9\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--name-status",
+      "review-base",
+      "review-head"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S1/repo",
+    "stdout": "M\tpricing.py\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--no-ext-diff",
+      "--binary",
+      "review-base",
+      "review-head"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S1/repo",
+    "stdout": "diff --git a/pricing.py b/pricing.py\nindex b4179ce..6dd3400 100644\n--- a/pricing.py\n+++ b/pricing.py\n@@ -1,2 +1,2 @@\n def price(cents):\n-    return cents - 100 if cents > 1000 else cents\n+    return cents - 100 if cents >= 1000 else cents\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "ls-tree",
+      "-r",
+      "--name-only",
+      "review-base"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S1/repo",
+    "stdout": "api.py\npricing.py\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "ls-tree",
+      "-r",
+      "--name-only",
+      "review-head"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S1/repo",
+    "stdout": "api.py\npricing.py\n",
+    "stderr": "",
+    "exit_code": 0
+  }
+]

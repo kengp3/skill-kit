@@ -1,0 +1,24 @@
+# SHA-256 核對索引
+
+- [project-setting.md](/private/tmp/ai-review-real-20261009/S1/project-setting.md) SHA-256 `392bdf7c4c8168cd41e7e660d4b50b0d4c7be6a525b58b5087df7c8d3405a100`
+- [contract.json](/private/tmp/ai-review-real-20261009/S1/contract.json) SHA-256 `8e08b0b8db430600f3da7ba8ddc750a59b204187e941bfb2b2e4d919cca008e6`
+- [targets.json](/private/tmp/ai-review-real-20261009/S1/targets.json) SHA-256 `f05779cb03812975c58b5e445e22aa9bd44252322fc18f5285d01d47acbed45f`
+- [SKILL.md](/private/tmp/ai-review-real-20261009/skill/SKILL.md) SHA-256 `796baa6d83c0328e66043995ae2f45e4201169c6b270e5e72c0c6f804cac2dbe`
+- [deep-review.md](/private/tmp/ai-review-real-20261009/skill/references/deep-review.md) SHA-256 `5b57525acc0dd12d4e5afb017eb170d9fd4d4bd047d672af1d282a79fff724de`
+- [report.md](/private/tmp/ai-review-real-20261009/skill/references/report.md) SHA-256 `9f830006d6ce87d09d94dbdf3dd62ef13d43f4cfa4cd809035ff5616d8f4b8ac`
+- [check_report_hashes.py](/private/tmp/ai-review-real-20261009/skill/scripts/check_report_hashes.py) SHA-256 `73b55d84745bdaf8ba04af14d96753bc8ff8491a5cc4ec39229ed1887efa1167`
+- [environment.json](/private/tmp/ai-review-real-20261009/S1/output/environment.json) SHA-256 `80363a633075ce8b5e3d5ecd925e91cc5fe4686d8860d972adb7aeb5a49395e4`
+- [final-status.json](/private/tmp/ai-review-real-20261009/S1/output/final-status.json) SHA-256 `c96957fd0135ca9af31a4b9b0517c548dac3c94cfadb0aabcba0f6975367cec3`
+- [inspection.json](/private/tmp/ai-review-real-20261009/S1/output/inspection.json) SHA-256 `57ad130fc0369adc62c0dfc0ea5c46fba6001041d4ab30e8099df8e870e91fc4`
+- [phase-1.md](/private/tmp/ai-review-real-20261009/S1/output/phase-1.md) SHA-256 `50fb8876cfd6c7e33d6e3b57c1503a1eafdaaab7bbc8ef98da8b12fcb3f0561d`
+- [phase-2.md](/private/tmp/ai-review-real-20261009/S1/output/phase-2.md) SHA-256 `1ba8298cbae6fdcf89891bcbdd6854dc74d71e82627ff89f66609b2b6d62e594`
+- [report-readback.md](/private/tmp/ai-review-real-20261009/S1/output/report-readback.md) SHA-256 `6415fe6c2f41f36da5acf1348fea9536f809cd861f7c94d29f0b224a7b8af678`
+- [review.md](/private/tmp/ai-review-real-20261009/S1/output/review.md) SHA-256 `182cb4bc1ff8f2f755fb5832fb3084789d825ea6bb21ca5b48bd9a57049094b1`
+- [snapshots/review-base/api.py](/private/tmp/ai-review-real-20261009/S1/output/snapshots/review-base/api.py) SHA-256 `05633db9cc05e31351a829d0c2f40a58ea311bcf3ec770f334ed3ff9b6161f12`
+- [snapshots/review-base/pricing.py](/private/tmp/ai-review-real-20261009/S1/output/snapshots/review-base/pricing.py) SHA-256 `1b28eaa320643c57750e8e923eb733fe81564ff70dffce49759828521295950e`
+- [snapshots/review-head/api.py](/private/tmp/ai-review-real-20261009/S1/output/snapshots/review-head/api.py) SHA-256 `05633db9cc05e31351a829d0c2f40a58ea311bcf3ec770f334ed3ff9b6161f12`
+- [snapshots/review-head/pricing.py](/private/tmp/ai-review-real-20261009/S1/output/snapshots/review-head/pricing.py) SHA-256 `55180ec8e46b9dc427465c026f62634dda4835c918b5ff256be12e7ddc2a65e6`
+- [source-reads.json](/private/tmp/ai-review-real-20261009/S1/output/source-reads.json) SHA-256 `fe616b2c7e2e87bd93afadb40db143c282f23405f471afdf484e89297c41cdd5`
+- [start-clock.json](/private/tmp/ai-review-real-20261009/S1/output/start-clock.json) SHA-256 `09bad6a9e51a4718a05e8adfc8986eaab7c1ee284db9c691453115510e0ab879`
+- [tests.json](/private/tmp/ai-review-real-20261009/S1/output/tests.json) SHA-256 `7933d26f9882dfb9d78630b8a0d76d31f854e2bd8e25dd4af0e2f2894f128f95`
+- [tmp/check_contract.py](/private/tmp/ai-review-real-20261009/S1/output/tmp/check_contract.py) SHA-256 `6e7864b1ddf17b5ca98826193203cdeb6c997a796b20eccc813aaabd5b06ab32`

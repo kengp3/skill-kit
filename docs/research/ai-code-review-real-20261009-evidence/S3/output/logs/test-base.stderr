@@ -1,0 +1,57 @@
+test_after_last (__main__.PaginationContract.test_after_last) ... ok
+test_before_first_cap (__main__.PaginationContract.test_before_first_cap) ... ok
+test_between_ids_cap (__main__.PaginationContract.test_between_ids_cap) ... ok
+test_empty (__main__.PaginationContract.test_empty) ... ok
+test_exact_boundary (__main__.PaginationContract.test_exact_boundary) ... FAIL
+test_invalid_limits (__main__.PaginationContract.test_invalid_limits) ... ok
+test_large_limit_order (__main__.PaginationContract.test_large_limit_order) ... ok
+test_last_cursor (__main__.PaginationContract.test_last_cursor) ... FAIL
+
+======================================================================
+FAIL: test_exact_boundary (__main__.PaginationContract.test_exact_boundary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/ai-review-real-20261009/S3/output/tmp/test_review.py", line 20, in test_exact_boundary
+    self.check_page([1, 2, 3], 2, 2, [3])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/ai-review-real-20261009/S3/output/tmp/test_review.py", line 16, in check_page
+    self.assertEqual(actual, expected)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [2, 3] != [3]
+
+First differing element 0:
+2
+3
+
+First list contains 1 additional elements.
+First extra element 1:
+3
+
+- [2, 3]
++ [3]
+
+======================================================================
+FAIL: test_last_cursor (__main__.PaginationContract.test_last_cursor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/ai-review-real-20261009/S3/output/tmp/test_review.py", line 28, in test_last_cursor
+    self.check_page([1, 2, 3], 3, 1, [])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/ai-review-real-20261009/S3/output/tmp/test_review.py", line 16, in check_page
+    self.assertEqual(actual, expected)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [3] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+3
+
+- [3]
+?  -
+
++ []
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.001s
+
+FAILED (failures=2)

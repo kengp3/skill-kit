@@ -2,7 +2,9 @@
 import importlib.util
 import copy
 import json
+import os
 import shutil
+import socket
 import sys
 from pathlib import Path
 import subprocess
@@ -40,6 +42,101 @@ class ReviewTest(unittest.TestCase):
     def prepare(self):
         return self.review.prepare(self.repos[0], 'refs/heads/legacy',
                                    self.repos[1], 'refs/heads/migration', self.root / 'run')
+
+    def cli(self, *args):
+        return subprocess.run([sys.executable, '-B', str(SCRIPT), *map(str, args)],
+                              capture_output=True, text=True, timeout=3)
+
+    @unittest.skipUnless(hasattr(os, 'mkfifo') and hasattr(socket, 'AF_UNIX'), 'POSIX special files')
+    def test_snapshot_rejects_added_special_files(self):
+        self.prepare()
+        run = self.root / 'run'
+        entry = run / 'snapshots/old/added'
+        for kind in ('fifo', 'socket'):
+            with self.subTest(kind=kind):
+                sock = None
+                try:
+                    if kind == 'fifo':
+                        os.mkfifo(entry)
+                    else:
+                        sock = socket.socket(socket.AF_UNIX)
+                        sock.bind(str(entry))
+                    result = self.cli('verify', '--run', run)
+                    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                    self.assertEqual(json.loads(result.stdout)['status'], 'UNKNOWN')
+                finally:
+                    if sock:
+                        sock.close()
+                    entry.unlink()
+        self.assertEqual(self.cli('verify', '--run', run).returncode, 0)
+
+    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'POSIX FIFO')
+    def test_all_evidence_read_paths_reject_fifo_without_blocking(self):
+        manifest = self.prepare()
+        run = self.root / 'run'
+        (run / 'runner.txt').write_text('runner fixture')
+        case = dict(id='one', input={}, initial_state={}, environment={}, observe=['result'])
+        self.review.write_json(run / 'contract.json', dict(scope='fixture', cases=[case],
+            artifacts={'runner.txt': self.review.digest(run / 'runner.txt')}))
+        for side in ('old', 'new'):
+            record = {k: v for k, v in case.items() if k != 'observe'}
+            record['observed'] = {'result': 'same'}
+            self.review.write_json(run / (side + '.json'), dict(side=side,
+                commit=manifest[side]['commit'], command=['fixture'], exit_code=0, records=[record],
+                manifest_sha256=self.review.digest(run / 'manifest.json'),
+                contract_sha256=self.review.digest(run / 'contract.json')))
+        for name in ('runner.txt', 'manifest.json', 'contract.json', 'old.json', 'new.json'):
+            with self.subTest(path=name):
+                path = run / name
+                original = path.read_bytes()
+                path.unlink()
+                os.mkfifo(path)
+                output = run / (name + '.result')
+                try:
+                    result = self.cli('compare', '--run', run, '--contract', run / 'contract.json',
+                                      '--old', run / 'old.json', '--new', run / 'new.json', '--out', output)
+                    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                    self.assertEqual(json.loads(result.stdout)['status'], 'UNKNOWN')
+                    self.assertFalse(output.exists())
+                finally:
+                    path.unlink()
+                    path.write_bytes(original)
+        result = self.cli('compare', '--run', run, '--contract', run / 'contract.json',
+                          '--old', run / 'old.json', '--new', run / 'new.json', '--out', run / 'ok.json')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(json.loads(result.stdout)['status'], 'PASS')
+
+    def test_prepare_checks_case_collisions_in_every_path_component(self):
+        repo = self.repos[0]
+        blob = git(repo, 'rev-parse', 'HEAD:rule.java').decode().strip()
+        def make_tree(node):
+            entries = []
+            for name, value in node.items():
+                entries.append(f'040000 tree {make_tree(value)}\t{name}\n' if isinstance(value, dict)
+                               else f'100644 blob {blob}\t{name}\n')
+            return subprocess.check_output(['git', '-C', str(repo), 'mktree'],
+                                           input=''.join(entries).encode()).decode().strip()
+        for index, names in enumerate((['A/x', 'a/y'], ['A/B/x', 'A/b/y'],
+                                       ['A/x', 'A/X'], ['A', 'a/y'], ['A/x', 'A/y'])):
+            with self.subTest(paths=names):
+                tree = {}
+                for name in names:
+                    node = tree
+                    parts = name.split('/')
+                    for part in parts[:-1]:
+                        node = node.setdefault(part, {})
+                    node[parts[-1]] = None
+                commit = git(repo, 'commit-tree', make_tree(tree), '-m', 'path fixture').decode().strip()
+                out = self.root / f'case-{index}'
+                result = self.cli('prepare', '--old-repo', repo, '--old-ref', commit,
+                                  '--new-repo', repo, '--new-ref', commit, '--out', out)
+                if index == 4:
+                    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                    self.assertEqual(self.cli('verify', '--run', out).returncode, 0)
+                else:
+                    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                    self.assertEqual(json.loads(result.stdout)['status'], 'UNKNOWN')
+                    self.assertFalse((out / 'manifest.json').exists())
 
     def test_freezes_independent_refs_without_dirty_or_archive_filters(self):
         baseline = git(self.repos[0], 'show', 'HEAD:rule.java')
@@ -165,11 +262,14 @@ class ReviewTest(unittest.TestCase):
 
     def test_poc_cannot_write_inside_source_repo_even_on_failure(self):
         poc = Path(__file__).with_name('poc_migration_demo002.py')
+        self.assertTrue(poc.is_file(), f'Missing test dependency: {poc}')
         output = self.repos[0] / 'evidence'
         result = subprocess.run([sys.executable, '-B', str(poc), '--repo', str(self.repos[0]),
             '--out', str(output), '--spring-context', '/missing.jar', '--spring-core', '/missing.jar'],
-            capture_output=True, text=True)
-        self.assertNotEqual(result.returncode, 0)
+            capture_output=True, text=True, timeout=3)
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertIn('--out must be outside the source repository', result.stderr)
+        self.assertNotIn('Traceback', result.stderr)
         self.assertFalse(output.exists(), result.stderr)
         self.assertEqual(git(self.repos[0], 'status', '--porcelain'), b'')
 

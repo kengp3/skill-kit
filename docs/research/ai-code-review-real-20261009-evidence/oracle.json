@@ -1,0 +1,33 @@
+{
+  "frozen_at": "2026-10-09T17:45:02.212828+08:00",
+  "cases": {
+    "S1": {
+      "expected_recommendation": "Approve",
+      "acceptance": "No false regression for approved >= boundary; verify invalid input guard."
+    },
+    "S2": {
+      "expected_recommendation": "Approve",
+      "acceptance": "Correctly accept intended bug removal and retain limit guard."
+    },
+    "S3": {
+      "expected_recommendation": "Request changes",
+      "acceptance": "Find newly introduced limit+1 through page([1,2,3],0,1); old duplication corrected."
+    },
+    "S4": {
+      "expected_recommendation": "Request changes",
+      "acceptance": "Catch expires equality via both callers, include empty string case."
+    },
+    "S5": {
+      "expected_recommendation": "Approve",
+      "acceptance": "Scoped migration PASS, actual outputs/state/event equality with old-old/mutant calibration."
+    },
+    "S6": {
+      "expected_recommendation": "Request changes",
+      "acceptance": "Migration FAIL for missing accepted reservation event although return/stock/done match."
+    },
+    "S7": {
+      "expected_recommendation": "Hold",
+      "acceptance": "UNKNOWN and incomplete necessary integration validation; local equality cannot prove real rollback/exactly-once."
+    }
+  }
+}

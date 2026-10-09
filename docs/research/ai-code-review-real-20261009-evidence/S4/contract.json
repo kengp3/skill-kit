@@ -1,0 +1,3 @@
+{
+  "requirements": "Refactor only: preserve both preview and export_values exactly. Store entries are (integer expiration, string value including empty). Same-clock integer now. Fresh iff now < expiration, expired/missing returns None. Export preserves order and includes fresh empty strings. Local single-threaded scope, no external clock. Review all changes and both callers."
+}

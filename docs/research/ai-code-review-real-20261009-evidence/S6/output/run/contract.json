@@ -1,0 +1,2828 @@
+{
+  "scope": "S6 contract.json 完整 110 組序列；逐步回值、例外、庫存、done、ordered events",
+  "artifacts": {
+    "harness-source.py": "88da85fb5d7356c62ce724c2ffd78d01b22236d0d98e7b4bd8064173db871536"
+  },
+  "cases": [
+    {
+      "id": "case-000",
+      "input": {
+        "ops": [
+          [
+            "a",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-001",
+      "input": {
+        "ops": [
+          [
+            "a",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-002",
+      "input": {
+        "ops": [
+          [
+            "a",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-003",
+      "input": {
+        "ops": [
+          [
+            "a",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-004",
+      "input": {
+        "ops": [
+          [
+            "a",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-005",
+      "input": {
+        "ops": [
+          [
+            "b",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-006",
+      "input": {
+        "ops": [
+          [
+            "b",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-007",
+      "input": {
+        "ops": [
+          [
+            "b",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-008",
+      "input": {
+        "ops": [
+          [
+            "b",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-009",
+      "input": {
+        "ops": [
+          [
+            "b",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-010",
+      "input": {
+        "ops": [
+          [
+            "a",
+            0
+          ],
+          [
+            "a",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-011",
+      "input": {
+        "ops": [
+          [
+            "a",
+            0
+          ],
+          [
+            "a",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-012",
+      "input": {
+        "ops": [
+          [
+            "a",
+            0
+          ],
+          [
+            "a",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-013",
+      "input": {
+        "ops": [
+          [
+            "a",
+            0
+          ],
+          [
+            "a",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-014",
+      "input": {
+        "ops": [
+          [
+            "a",
+            0
+          ],
+          [
+            "a",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-015",
+      "input": {
+        "ops": [
+          [
+            "a",
+            0
+          ],
+          [
+            "b",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-016",
+      "input": {
+        "ops": [
+          [
+            "a",
+            0
+          ],
+          [
+            "b",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-017",
+      "input": {
+        "ops": [
+          [
+            "a",
+            0
+          ],
+          [
+            "b",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-018",
+      "input": {
+        "ops": [
+          [
+            "a",
+            0
+          ],
+          [
+            "b",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-019",
+      "input": {
+        "ops": [
+          [
+            "a",
+            0
+          ],
+          [
+            "b",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-020",
+      "input": {
+        "ops": [
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-021",
+      "input": {
+        "ops": [
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-022",
+      "input": {
+        "ops": [
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-023",
+      "input": {
+        "ops": [
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-024",
+      "input": {
+        "ops": [
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-025",
+      "input": {
+        "ops": [
+          [
+            "a",
+            1
+          ],
+          [
+            "b",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-026",
+      "input": {
+        "ops": [
+          [
+            "a",
+            1
+          ],
+          [
+            "b",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-027",
+      "input": {
+        "ops": [
+          [
+            "a",
+            1
+          ],
+          [
+            "b",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-028",
+      "input": {
+        "ops": [
+          [
+            "a",
+            1
+          ],
+          [
+            "b",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-029",
+      "input": {
+        "ops": [
+          [
+            "a",
+            1
+          ],
+          [
+            "b",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-030",
+      "input": {
+        "ops": [
+          [
+            "a",
+            2
+          ],
+          [
+            "a",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-031",
+      "input": {
+        "ops": [
+          [
+            "a",
+            2
+          ],
+          [
+            "a",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-032",
+      "input": {
+        "ops": [
+          [
+            "a",
+            2
+          ],
+          [
+            "a",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-033",
+      "input": {
+        "ops": [
+          [
+            "a",
+            2
+          ],
+          [
+            "a",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-034",
+      "input": {
+        "ops": [
+          [
+            "a",
+            2
+          ],
+          [
+            "a",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-035",
+      "input": {
+        "ops": [
+          [
+            "a",
+            2
+          ],
+          [
+            "b",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-036",
+      "input": {
+        "ops": [
+          [
+            "a",
+            2
+          ],
+          [
+            "b",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-037",
+      "input": {
+        "ops": [
+          [
+            "a",
+            2
+          ],
+          [
+            "b",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-038",
+      "input": {
+        "ops": [
+          [
+            "a",
+            2
+          ],
+          [
+            "b",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-039",
+      "input": {
+        "ops": [
+          [
+            "a",
+            2
+          ],
+          [
+            "b",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-040",
+      "input": {
+        "ops": [
+          [
+            "a",
+            3
+          ],
+          [
+            "a",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-041",
+      "input": {
+        "ops": [
+          [
+            "a",
+            3
+          ],
+          [
+            "a",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-042",
+      "input": {
+        "ops": [
+          [
+            "a",
+            3
+          ],
+          [
+            "a",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-043",
+      "input": {
+        "ops": [
+          [
+            "a",
+            3
+          ],
+          [
+            "a",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-044",
+      "input": {
+        "ops": [
+          [
+            "a",
+            3
+          ],
+          [
+            "a",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-045",
+      "input": {
+        "ops": [
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-046",
+      "input": {
+        "ops": [
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-047",
+      "input": {
+        "ops": [
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-048",
+      "input": {
+        "ops": [
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-049",
+      "input": {
+        "ops": [
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-050",
+      "input": {
+        "ops": [
+          [
+            "a",
+            4
+          ],
+          [
+            "a",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-051",
+      "input": {
+        "ops": [
+          [
+            "a",
+            4
+          ],
+          [
+            "a",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-052",
+      "input": {
+        "ops": [
+          [
+            "a",
+            4
+          ],
+          [
+            "a",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-053",
+      "input": {
+        "ops": [
+          [
+            "a",
+            4
+          ],
+          [
+            "a",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-054",
+      "input": {
+        "ops": [
+          [
+            "a",
+            4
+          ],
+          [
+            "a",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-055",
+      "input": {
+        "ops": [
+          [
+            "a",
+            4
+          ],
+          [
+            "b",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-056",
+      "input": {
+        "ops": [
+          [
+            "a",
+            4
+          ],
+          [
+            "b",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-057",
+      "input": {
+        "ops": [
+          [
+            "a",
+            4
+          ],
+          [
+            "b",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-058",
+      "input": {
+        "ops": [
+          [
+            "a",
+            4
+          ],
+          [
+            "b",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-059",
+      "input": {
+        "ops": [
+          [
+            "a",
+            4
+          ],
+          [
+            "b",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-060",
+      "input": {
+        "ops": [
+          [
+            "b",
+            0
+          ],
+          [
+            "a",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-061",
+      "input": {
+        "ops": [
+          [
+            "b",
+            0
+          ],
+          [
+            "a",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-062",
+      "input": {
+        "ops": [
+          [
+            "b",
+            0
+          ],
+          [
+            "a",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-063",
+      "input": {
+        "ops": [
+          [
+            "b",
+            0
+          ],
+          [
+            "a",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-064",
+      "input": {
+        "ops": [
+          [
+            "b",
+            0
+          ],
+          [
+            "a",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-065",
+      "input": {
+        "ops": [
+          [
+            "b",
+            0
+          ],
+          [
+            "b",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-066",
+      "input": {
+        "ops": [
+          [
+            "b",
+            0
+          ],
+          [
+            "b",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-067",
+      "input": {
+        "ops": [
+          [
+            "b",
+            0
+          ],
+          [
+            "b",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-068",
+      "input": {
+        "ops": [
+          [
+            "b",
+            0
+          ],
+          [
+            "b",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-069",
+      "input": {
+        "ops": [
+          [
+            "b",
+            0
+          ],
+          [
+            "b",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-070",
+      "input": {
+        "ops": [
+          [
+            "b",
+            1
+          ],
+          [
+            "a",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-071",
+      "input": {
+        "ops": [
+          [
+            "b",
+            1
+          ],
+          [
+            "a",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-072",
+      "input": {
+        "ops": [
+          [
+            "b",
+            1
+          ],
+          [
+            "a",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-073",
+      "input": {
+        "ops": [
+          [
+            "b",
+            1
+          ],
+          [
+            "a",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-074",
+      "input": {
+        "ops": [
+          [
+            "b",
+            1
+          ],
+          [
+            "a",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-075",
+      "input": {
+        "ops": [
+          [
+            "b",
+            1
+          ],
+          [
+            "b",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-076",
+      "input": {
+        "ops": [
+          [
+            "b",
+            1
+          ],
+          [
+            "b",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-077",
+      "input": {
+        "ops": [
+          [
+            "b",
+            1
+          ],
+          [
+            "b",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-078",
+      "input": {
+        "ops": [
+          [
+            "b",
+            1
+          ],
+          [
+            "b",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-079",
+      "input": {
+        "ops": [
+          [
+            "b",
+            1
+          ],
+          [
+            "b",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-080",
+      "input": {
+        "ops": [
+          [
+            "b",
+            2
+          ],
+          [
+            "a",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-081",
+      "input": {
+        "ops": [
+          [
+            "b",
+            2
+          ],
+          [
+            "a",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-082",
+      "input": {
+        "ops": [
+          [
+            "b",
+            2
+          ],
+          [
+            "a",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-083",
+      "input": {
+        "ops": [
+          [
+            "b",
+            2
+          ],
+          [
+            "a",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-084",
+      "input": {
+        "ops": [
+          [
+            "b",
+            2
+          ],
+          [
+            "a",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-085",
+      "input": {
+        "ops": [
+          [
+            "b",
+            2
+          ],
+          [
+            "b",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-086",
+      "input": {
+        "ops": [
+          [
+            "b",
+            2
+          ],
+          [
+            "b",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-087",
+      "input": {
+        "ops": [
+          [
+            "b",
+            2
+          ],
+          [
+            "b",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-088",
+      "input": {
+        "ops": [
+          [
+            "b",
+            2
+          ],
+          [
+            "b",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-089",
+      "input": {
+        "ops": [
+          [
+            "b",
+            2
+          ],
+          [
+            "b",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-090",
+      "input": {
+        "ops": [
+          [
+            "b",
+            3
+          ],
+          [
+            "a",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-091",
+      "input": {
+        "ops": [
+          [
+            "b",
+            3
+          ],
+          [
+            "a",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-092",
+      "input": {
+        "ops": [
+          [
+            "b",
+            3
+          ],
+          [
+            "a",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-093",
+      "input": {
+        "ops": [
+          [
+            "b",
+            3
+          ],
+          [
+            "a",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-094",
+      "input": {
+        "ops": [
+          [
+            "b",
+            3
+          ],
+          [
+            "a",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-095",
+      "input": {
+        "ops": [
+          [
+            "b",
+            3
+          ],
+          [
+            "b",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-096",
+      "input": {
+        "ops": [
+          [
+            "b",
+            3
+          ],
+          [
+            "b",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-097",
+      "input": {
+        "ops": [
+          [
+            "b",
+            3
+          ],
+          [
+            "b",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-098",
+      "input": {
+        "ops": [
+          [
+            "b",
+            3
+          ],
+          [
+            "b",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-099",
+      "input": {
+        "ops": [
+          [
+            "b",
+            3
+          ],
+          [
+            "b",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-100",
+      "input": {
+        "ops": [
+          [
+            "b",
+            4
+          ],
+          [
+            "a",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-101",
+      "input": {
+        "ops": [
+          [
+            "b",
+            4
+          ],
+          [
+            "a",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-102",
+      "input": {
+        "ops": [
+          [
+            "b",
+            4
+          ],
+          [
+            "a",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-103",
+      "input": {
+        "ops": [
+          [
+            "b",
+            4
+          ],
+          [
+            "a",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-104",
+      "input": {
+        "ops": [
+          [
+            "b",
+            4
+          ],
+          [
+            "a",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-105",
+      "input": {
+        "ops": [
+          [
+            "b",
+            4
+          ],
+          [
+            "b",
+            0
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-106",
+      "input": {
+        "ops": [
+          [
+            "b",
+            4
+          ],
+          [
+            "b",
+            1
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-107",
+      "input": {
+        "ops": [
+          [
+            "b",
+            4
+          ],
+          [
+            "b",
+            2
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-108",
+      "input": {
+        "ops": [
+          [
+            "b",
+            4
+          ],
+          [
+            "b",
+            3
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    },
+    {
+      "id": "case-109",
+      "input": {
+        "ops": [
+          [
+            "b",
+            4
+          ],
+          [
+            "b",
+            4
+          ]
+        ]
+      },
+      "initial_state": {
+        "stock": 3,
+        "events": [],
+        "done": {}
+      },
+      "environment": {
+        "python": "3.14.8"
+      },
+      "observe": [
+        "steps"
+      ]
+    }
+  ]
+}

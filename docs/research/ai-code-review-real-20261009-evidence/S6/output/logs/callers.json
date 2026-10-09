@@ -1,0 +1,14 @@
+{
+  "command": [
+    "rg",
+    "-n",
+    "submit|reserve|execute|events|stock|done",
+    "/private/tmp/ai-review-real-20261009/S6/base",
+    "/private/tmp/ai-review-real-20261009/S6/head",
+    "/private/tmp/ai-review-real-20261009/S6/probe.py"
+  ],
+  "timestamp": "2026-10-09T11:32:49.781108+00:00",
+  "stdout": "/private/tmp/ai-review-real-20261009/S6/probe.py:2:from api import submit\n/private/tmp/ai-review-real-20261009/S6/probe.py:5:    state={'stock':3,'events':[],'done':{}}\n/private/tmp/ai-review-real-20261009/S6/probe.py:6:    results=[submit(state,k,n) for k,n in ops]\n/private/tmp/ai-review-real-20261009/S6/head/api.py:1:from service import execute\n/private/tmp/ai-review-real-20261009/S6/head/api.py:2:def submit(state, key, count):\n/private/tmp/ai-review-real-20261009/S6/head/api.py:3:    return execute(state, key, count)\n/private/tmp/ai-review-real-20261009/S6/base/api.py:1:from legacy import reserve\n/private/tmp/ai-review-real-20261009/S6/base/api.py:2:def submit(state, key, count):\n/private/tmp/ai-review-real-20261009/S6/base/api.py:3:    return reserve(state, key, count)\n/private/tmp/ai-review-real-20261009/S6/head/service.py:1:def execute(state, key, count):\n/private/tmp/ai-review-real-20261009/S6/head/service.py:2:    if key in state['done']:\n/private/tmp/ai-review-real-20261009/S6/head/service.py:3:        return state['done'][key]\n/private/tmp/ai-review-real-20261009/S6/head/service.py:4:    if count < 1 or count > state['stock']:\n/private/tmp/ai-review-real-20261009/S6/head/service.py:6:    state['stock'] -= count\n/private/tmp/ai-review-real-20261009/S6/head/service.py:7:    state['done'][key] = 'accepted'\n/private/tmp/ai-review-real-20261009/S6/base/legacy.py:1:def reserve(state, key, count):\n/private/tmp/ai-review-real-20261009/S6/base/legacy.py:2:    if key in state['done']:\n/private/tmp/ai-review-real-20261009/S6/base/legacy.py:3:        return state['done'][key]\n/private/tmp/ai-review-real-20261009/S6/base/legacy.py:4:    if count < 1 or count > state['stock']:\n/private/tmp/ai-review-real-20261009/S6/base/legacy.py:6:    state['stock'] -= count\n/private/tmp/ai-review-real-20261009/S6/base/legacy.py:7:    state['events'].append({'key': key, 'count': count})\n/private/tmp/ai-review-real-20261009/S6/base/legacy.py:8:    state['done'][key] = 'accepted'\n",
+  "stderr": "",
+  "exit_code": 0
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--no-index",
+    "--",
+    "/private/tmp/ai-review-real-20261009/S5/base",
+    "/private/tmp/ai-review-real-20261009/S5/head"
+  ],
+  "stdout": "diff --git a/private/tmp/ai-review-real-20261009/S5/base/api.py b/private/tmp/ai-review-real-20261009/S5/head/api.py\nindex 3edc409..3b1d33d 100644\n--- a/private/tmp/ai-review-real-20261009/S5/base/api.py\n+++ b/private/tmp/ai-review-real-20261009/S5/head/api.py\n@@ -1,3 +1,3 @@\n-from legacy import reserve\n+from service import execute\n def submit(state, key, count):\n-    return reserve(state, key, count)\n+    return execute(state, key, count)\ndiff --git a/private/tmp/ai-review-real-20261009/S5/base/legacy.py b/private/tmp/ai-review-real-20261009/S5/head/service.py\nsimilarity index 89%\nrename from /private/tmp/ai-review-real-20261009/S5/base/legacy.py\nrename to /private/tmp/ai-review-real-20261009/S5/head/service.py\nindex fe628a0..a3789aa 100644\n--- a/private/tmp/ai-review-real-20261009/S5/base/legacy.py\n+++ b/private/tmp/ai-review-real-20261009/S5/head/service.py\n@@ -1,4 +1,4 @@\n-def reserve(state, key, count):\n+def execute(state, key, count):\n     if key in state['done']:\n         return state['done'][key]\n     if count < 1 or count > state['stock']:\n",
+  "stderr": "",
+  "exit_code": 1
+}

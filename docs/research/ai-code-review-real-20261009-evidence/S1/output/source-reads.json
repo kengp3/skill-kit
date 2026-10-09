@@ -1,0 +1,58 @@
+[
+  {
+    "argv": [
+      "git",
+      "show",
+      "80c1003ffe599c71564037d272c7ac58993324c9:api.py"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S1/repo",
+    "stdout": "from pricing import price\ndef checkout(cents):\n    if type(cents) is not int or cents < 0:\n        raise ValueError(\"amount\")\n    return {\"payable_cents\": price(cents)}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "show",
+      "80c1003ffe599c71564037d272c7ac58993324c9:pricing.py"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S1/repo",
+    "stdout": "def price(cents):\n    return cents - 100 if cents > 1000 else cents\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "show",
+      "1461797f5ad85f2610fb3ccd88700339110651c2:api.py"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S1/repo",
+    "stdout": "from pricing import price\ndef checkout(cents):\n    if type(cents) is not int or cents < 0:\n        raise ValueError(\"amount\")\n    return {\"payable_cents\": price(cents)}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "git",
+      "show",
+      "1461797f5ad85f2610fb3ccd88700339110651c2:pricing.py"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S1/repo",
+    "stdout": "def price(cents):\n    return cents - 100 if cents >= 1000 else cents\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "rg",
+      "-n",
+      "checkout|price",
+      "output/snapshots"
+    ],
+    "cwd": "/private/tmp/ai-review-real-20261009/S1",
+    "stdout": "output/snapshots/review-head/pricing.py:1:def price(cents):\noutput/snapshots/review-head/api.py:1:from pricing import price\noutput/snapshots/review-head/api.py:2:def checkout(cents):\noutput/snapshots/review-head/api.py:5:    return {\"payable_cents\": price(cents)}\noutput/snapshots/review-base/pricing.py:1:def price(cents):\noutput/snapshots/review-base/api.py:1:from pricing import price\noutput/snapshots/review-base/api.py:2:def checkout(cents):\noutput/snapshots/review-base/api.py:5:    return {\"payable_cents\": price(cents)}\n",
+    "stderr": "",
+    "exit_code": 0
+  }
+]

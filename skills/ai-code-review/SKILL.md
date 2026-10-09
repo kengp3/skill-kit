@@ -13,7 +13,7 @@ description: Review pull requests, branches, working-tree changes, bug fixes, re
 
 ## ① 固定來源並盤點所有目標
 
-開始時記錄實際執行時間及時區。取得目標 repo、base/head 或工作樹範圍、需求／規格及適用專案規則。先讀來源與狀態，不切換／清理使用者工作樹。ref 解析成完整 commit 並保留原 branch 名；跨 repo 不猜共同祖先。
+讀取被審來源前，先用可用時鐘工具或 `date -Iseconds` 取得本輪開始時間（含時區），將原始輸出保留在審查紀錄；不要等到寫報告才補記。取得目標 repo、base/head 或工作樹範圍、需求／規格及適用專案規則。先讀來源與狀態，不切換／清理使用者工作樹。ref 解析成完整 commit 並保留原 branch 名；跨 repo 不猜共同祖先。
 
 - 一般 PR／分支：核對 merge-base，以固定 commit 的 `git diff <base>...<head>` 定位改動，同時讀完整方法、caller、guard、配置及相關測試。若使用者要求比較兩個精確版本的內容，採雙點／直接快照比較並明示，不偷換成 merge-base。
 - 工作樹：區分 staged、unstaged、untracked，固定納入的檔案內容與 hash；不假稱全部屬 HEAD。未要求的 untracked 不自動納入。

@@ -1,0 +1,3 @@
+{
+  "requirements": "Bug fix: exclusive cursor pagination must never return cursor itself; sorted unique integer IDs, integer cursor, positive integer limit only (bool invalid). page is sole public caller and validates limit. Preserve order and cap. Run exact-boundary, empty, before-first, after-last and invalid-limit cases. Local in-memory API scope only; old duplicate is a bug, not preserved behavior."
+}

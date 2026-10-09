@@ -1,0 +1,10 @@
+{
+  "command": [
+    "git",
+    "show",
+    "3159b0975832c88522dfec4d13adf851ec8d6ada:api.py"
+  ],
+  "stdout": "from paging import after\ndef page(ids, cursor, limit):\n    if type(limit) is not int or limit < 1:\n        raise ValueError(\"limit\")\n    return after(ids, cursor, limit)\n",
+  "stderr": "",
+  "exit_code": 0
+}

@@ -1,0 +1,26 @@
+# SHA-256 證據索引
+
+- [project-setting.md](/private/tmp/ai-review-real-20261009/S4/project-setting.md) SHA-256 `392bdf7c4c8168cd41e7e660d4b50b0d4c7be6a525b58b5087df7c8d3405a100`
+- [contract.json](/private/tmp/ai-review-real-20261009/S4/contract.json) SHA-256 `b218f65217841df6b4ed1fa54954710df97bd9f757ae0a92dfe9f7cb8519bbfa`
+- [targets.json](/private/tmp/ai-review-real-20261009/S4/targets.json) SHA-256 `9961c400e827d6605455d8873d837a0559fa04a11a21d89104882cbe28cd3a3e`
+- [SKILL.md](/private/tmp/ai-review-real-20261009/skill/SKILL.md) SHA-256 `796baa6d83c0328e66043995ae2f45e4201169c6b270e5e72c0c6f804cac2dbe`
+- [deep-review.md](/private/tmp/ai-review-real-20261009/skill/references/deep-review.md) SHA-256 `5b57525acc0dd12d4e5afb017eb170d9fd4d4bd047d672af1d282a79fff724de`
+- [report.md](/private/tmp/ai-review-real-20261009/skill/references/report.md) SHA-256 `9f830006d6ce87d09d94dbdf3dd62ef13d43f4cfa4cd809035ff5616d8f4b8ac`
+- [check_report_hashes.py](/private/tmp/ai-review-real-20261009/skill/scripts/check_report_hashes.py) SHA-256 `73b55d84745bdaf8ba04af14d96753bc8ff8491a5cc4ec39229ed1887efa1167`
+- [base-test.stderr](/private/tmp/ai-review-real-20261009/S4/output/base-test.stderr) SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
+- [final-source-status.json](/private/tmp/ai-review-real-20261009/S4/output/final-source-status.json) SHA-256 `a503293f0faf34bd4de1f1dac8c95b15623aed82fded1a76a51dc726dc94488b`
+- [git-records.json](/private/tmp/ai-review-real-20261009/S4/output/git-records.json) SHA-256 `bab5d8ec9c0d6beffa27f48199619878a1a08994aa2eb0133c132e5d36acc570`
+- [base-test.stdout](/private/tmp/ai-review-real-20261009/S4/output/base-test.stdout) SHA-256 `1c87276c50e21d52dbf508770b92070a4c764061a2623e1af62871fcdfd5be89`
+- [start-time.json](/private/tmp/ai-review-real-20261009/S4/output/start-time.json) SHA-256 `76c59bfbcba55ebdd900a8edc3e02267b40ee3c6f50e1e487ea7a929da5ee5fa`
+- [head-test.stderr](/private/tmp/ai-review-real-20261009/S4/output/head-test.stderr) SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
+- [test-records.json](/private/tmp/ai-review-real-20261009/S4/output/test-records.json) SHA-256 `78a5e7723b249d69d4eda0cb657a9ad0eac9e97253d98944b8329989667edb67`
+- [review.md](/private/tmp/ai-review-real-20261009/S4/output/review.md) SHA-256 `457bf168a3434e3706f7671310d11d8f74aaf043ff7b884eb3f348d08844711a`
+- [analysis-stages.md](/private/tmp/ai-review-real-20261009/S4/output/analysis-stages.md) SHA-256 `c3d21518bcb0531fcd4aadb3049b81dadd9a725e43cc35302d09dc8a1f08537f`
+- [environment.json](/private/tmp/ai-review-real-20261009/S4/output/environment.json) SHA-256 `2f60894bc4047d52164863c6cd2e5efc167e7565ccae5bc39ba9709015452797`
+- [head-test.stdout](/private/tmp/ai-review-real-20261009/S4/output/head-test.stdout) SHA-256 `ee5050933a25a2b5def10111bb6c08d0f179bb3843550a587eece7c7ca9d5311`
+- [check_behavior.py](/private/tmp/ai-review-real-20261009/S4/output/tmp/check_behavior.py) SHA-256 `1ba6833074fea646ee68f05d4c724c4296f3761c647295890a96b3d679cf5dfd`
+- [policy.py](/private/tmp/ai-review-real-20261009/S4/output/snapshots/head/policy.py) SHA-256 `071baec763c5e07532699e34db346c0b01fd39ffeec7b48d23658bb974b27ffc`
+- [cache.py](/private/tmp/ai-review-real-20261009/S4/output/snapshots/head/cache.py) SHA-256 `7f7d53b70924578ba5ed2e9cb4c0e54ad96f8932760777408c781e84d3315d25`
+- [views.py](/private/tmp/ai-review-real-20261009/S4/output/snapshots/head/views.py) SHA-256 `fb975c4b017cb4807e364631a7906cc6670ee22d7b9f960cf69d046931d0c5a4`
+- [cache.py](/private/tmp/ai-review-real-20261009/S4/output/snapshots/base/cache.py) SHA-256 `aee7e10e71d6e2db30dc997f2c4ec044479650ffe06a408e61e650e87f443ea7`
+- [views.py](/private/tmp/ai-review-real-20261009/S4/output/snapshots/base/views.py) SHA-256 `fb975c4b017cb4807e364631a7906cc6670ee22d7b9f960cf69d046931d0c5a4`

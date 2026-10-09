@@ -1,0 +1,11 @@
+{
+  "command": [
+    "sh",
+    "-c",
+    "for p in /private/tmp/ai-review-real-20261009/S6/base/*.py; do echo \"$p\"; nl -ba \"$p\"; done"
+  ],
+  "timestamp": "2026-10-09T11:31:23.291288+00:00",
+  "stdout": "/private/tmp/ai-review-real-20261009/S6/base/api.py\n     1\tfrom legacy import reserve\n     2\tdef submit(state, key, count):\n     3\t    return reserve(state, key, count)\n/private/tmp/ai-review-real-20261009/S6/base/legacy.py\n     1\tdef reserve(state, key, count):\n     2\t    if key in state['done']:\n     3\t        return state['done'][key]\n     4\t    if count < 1 or count > state['stock']:\n     5\t        return 'rejected'\n     6\t    state['stock'] -= count\n     7\t    state['events'].append({'key': key, 'count': count})\n     8\t    state['done'][key] = 'accepted'\n     9\t    return 'accepted'\n",
+  "stderr": "",
+  "exit_code": 0
+}

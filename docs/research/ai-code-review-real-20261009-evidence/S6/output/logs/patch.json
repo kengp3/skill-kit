@@ -1,0 +1,14 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--no-index",
+    "--no-renames",
+    "/private/tmp/ai-review-real-20261009/S6/base",
+    "/private/tmp/ai-review-real-20261009/S6/head"
+  ],
+  "timestamp": "2026-10-09T11:31:40.652444+00:00",
+  "stdout": "diff --git a/private/tmp/ai-review-real-20261009/S6/base/api.py b/private/tmp/ai-review-real-20261009/S6/head/api.py\nindex 3edc409..3b1d33d 100644\n--- a/private/tmp/ai-review-real-20261009/S6/base/api.py\n+++ b/private/tmp/ai-review-real-20261009/S6/head/api.py\n@@ -1,3 +1,3 @@\n-from legacy import reserve\n+from service import execute\n def submit(state, key, count):\n-    return reserve(state, key, count)\n+    return execute(state, key, count)\ndiff --git a/private/tmp/ai-review-real-20261009/S6/base/legacy.py b/private/tmp/ai-review-real-20261009/S6/base/legacy.py\ndeleted file mode 100644\nindex fe628a0..0000000\n--- a/private/tmp/ai-review-real-20261009/S6/base/legacy.py\n+++ /dev/null\n@@ -1,9 +0,0 @@\n-def reserve(state, key, count):\n-    if key in state['done']:\n-        return state['done'][key]\n-    if count < 1 or count > state['stock']:\n-        return 'rejected'\n-    state['stock'] -= count\n-    state['events'].append({'key': key, 'count': count})\n-    state['done'][key] = 'accepted'\n-    return 'accepted'\ndiff --git a/private/tmp/ai-review-real-20261009/S6/head/service.py b/private/tmp/ai-review-real-20261009/S6/head/service.py\nnew file mode 100644\nindex 0000000..9d298f5\n--- /dev/null\n+++ b/private/tmp/ai-review-real-20261009/S6/head/service.py\n@@ -0,0 +1,8 @@\n+def execute(state, key, count):\n+    if key in state['done']:\n+        return state['done'][key]\n+    if count < 1 or count > state['stock']:\n+        return 'rejected'\n+    state['stock'] -= count\n+    state['done'][key] = 'accepted'\n+    return 'accepted'\n",
+  "stderr": "",
+  "exit_code": 1
+}
