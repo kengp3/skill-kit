@@ -16,9 +16,9 @@
 
 | ID | 成果 | 依賴 | 狀態 |
 | --- | --- | --- | --- |
-| H01 | 合約驅動的恢復、授權核對與一次補救 handler | 無 | pending |
+| H01 | 合約驅動的恢復、授權核對與一次補救 handler | 無 | in_progress |
 | H02 | 必要 hooks 完整候選封裝與套件外執行 | H01、H03 | pending |
-| H03 | 任務生命週期 skill、合約範本與日常接入指南 | 無 | pending |
+| H03 | 任務生命週期 skill、合約範本與日常接入指南 | 無 | in_progress |
 | H04 | 整合驗證、兩軸 review 與證據對帳 | H01–H03 | pending |
 | H05 | Desktop 真實接點與模型遵循資格 | H04、後續試行授權 | blocked |
 
@@ -27,3 +27,9 @@
 保留既有 .codex/config.toml 未提交還原、所有無關未追蹤內容、dist 舊候選與歷史證據。新實作 worktree 只基於整合分支；不複製未提交資料。測試用 tempfile，不操作既有 Desktop 聊天。
 H01/H03 可各自實作，H02 等兩者整合後。依 skill 以獨立 worktree、TDD、固定基線 Standards/Spec 複核；只提交本輪明確檔案，無 push/PR。
 完成後保存實際命令與結果到 research；測試結果不回填成 Desktop 資格。H05 未完成時整體 goal 不標 complete。
+
+## 執行紀錄
+
+- 2026-10-25：規格與 tickets 已保存；H01/H03 在獨立 worktree 實作，兩者僅修改明確責任檔案。
+- 相關既有基線：22 項通過；外層 sandbox 的首次 3 項 grader 未驗證與原樣重跑結果均保留於 [baseline](../research/task-harness-lifecycle-evidence/baseline.json)。
+- 宿主識別查核：[必要 hook 資格缺口](../research/task-harness-lifecycle-host-gap.research.md)。官方欄位不足以直接宣稱原使用者回合與自動續作鏈已驗證。
