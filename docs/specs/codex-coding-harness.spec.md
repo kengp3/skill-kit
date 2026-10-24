@@ -1,7 +1,7 @@
 # 個人 Harness 首版設計規格（Codex Coding）
 
 日期：2026-10-24（Asia/Taipei）
-狀態：N01–N03 的 P0 實作及整合驗收已通過，結果見[P0 報告](../research/codex-harness-p0-20261024.research.md)。本輪 N04、候選離線封裝與 N06 舊資料回放已完成必要本機驗證及兩軸複核，結果及證據見[P1 離線計畫](../plans/codex-harness-p1-offline.plan.md)；不包含 Desktop 接入或新模型 trial。Desktop 為主要日常入口，CLI 為開發評測路徑；本輪另建立 N07 的單一簡單 bug 離線案例（配套計畫第 23 節）；Desktop 實際任務／Stop、N07 其他案例與模型回放、人工效益、公平比較及移植尚未完成。首輪三組 smoke 結果仍見[原交付報告](../research/codex-coding-harness-smoke-20261024.research.md)。
+狀態：N01–N03 的 P0 實作及整合驗收已通過，結果見[P0 報告](../research/codex-harness-p0-20261024.research.md)。本輪 N04、候選離線封裝與 N06 舊資料回放已完成必要本機驗證及兩軸複核，結果及證據見[P1 離線計畫](../plans/codex-harness-p1-offline.plan.md)；不包含 Desktop 接入或新模型 trial。Desktop 為主要日常入口，CLI 為開發評測路徑；本輪 N07 單一簡單 bug 離線案例已完成資格驗證及兩軸複核（配套計畫第 23 節）；Desktop 實際任務／Stop、N07 其他案例與模型回放、人工效益、公平比較及移植尚未完成。首輪三組 smoke 結果仍見[原交付報告](../research/codex-coding-harness-smoke-20261024.research.md)。
 配套：[試行計畫](../plans/codex-coding-harness-pilot.plan.md)
 
 執行授權沿革：P0 的 N01–N03、N04、候選離線封裝與 N06 舊資料回放已完成。本輪授權僅 N07 單一 started／completed 類型衝突案例的離線實作、必要驗證及本規格／計畫範圍修訂；不改全域設定或其他專案、不擴展 OS／watchdog、不執行新模型 trial。下文僅文件或其他階段的授權記述是當時邊界，不能擴張本輪範圍。

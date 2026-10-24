@@ -615,7 +615,7 @@ N06 template 升為 schema v2，`human_takeover` 預設未知，移除人工 obs
 
 ## 23. N07 單一簡單 bug 離線案例與範圍收斂（2026-10-24）
 
-狀態：實作與必要驗證進行中。固定本輪基線 `1c506d8613eb05dea901311f6eb2399075c4a5c8`，採 ask-matt → implement → tdd → code-review，沿用本計畫作本地追蹤；不建立外部 issue、PR 或 push。
+狀態：本輪單一離線案例及範圍修訂已完成，兩軸複核通過。固定本輪基線 `1c506d8613eb05dea901311f6eb2399075c4a5c8`，採 ask-matt → implement → tdd → code-review，沿用本計畫作本地追蹤；不建立外部 issue、PR 或 push。
 
 ### 本輪契約與實作
 
@@ -629,8 +629,10 @@ N06 template 升為 schema v2，`human_takeover` 預設未知，移除人工 obs
 
 - [x] 凍結來源與最小輸入，manifest 指紋可核對。
 - [x] 先觀察缺素材／checker 的 red，再通過定向資格驗證；錯誤版 3 項中 2 項失敗，修正版 3 項全部通過，無 import／執行錯誤，來源不變。
-- [ ] 保存兩版 grader receipts／XML 及 bug 資格，執行適用整合測試。
-- [ ] 規格／計畫的專案啟用與變更範圍一致；既有 skills、封裝、全域設定、日常版本／快取及其他專案不變。
-- [ ] Standards／Spec 獨立複核通過，完成本機提交。
+- [x] 保存兩版 grader receipts／XML 及 bug 資格，執行適用整合測試。
+- [x] 規格／計畫的專案啟用與變更範圍一致；既有 skills、封裝、全域設定、日常版本／快取及其他專案不變。
+- [x] Standards／Spec 獨立複核通過，完成本機提交。
 
-結果將集中於 `docs/research/codex-harness-n07-simple-bug-20261024.research.md` 及同名 evidence 目錄。Desktop 實際載入／取消、其他代表案例、新模型行為與人工效益仍未驗證；D01／D02 的 OS／watchdog 支線已移出目前待辦，不再作本專案開發前置。
+結果集中於[N07 離線報告](../research/codex-harness-n07-simple-bug-20261024.research.md)及同名 evidence 目錄。Desktop 實際載入／取消、其他代表案例、新模型行為與人工效益仍未驗證；D01／D02 的 OS／watchdog 支線已移出目前待辦，不再作本專案開發前置。
+
+本輪最終證據：錯誤版 3項／2 failures／0 errors，修正版 3項全過，兩版來源不變，bug 資格 qualified；完整 unittest 71項、70通過／1 Windows略過。Standards／Spec 各0待處理finding。只完成此單一 N07 離線素材與資格，其餘 N07 及模型行為仍未驗證；不改 runtime／候選版本，只在本機提交。
