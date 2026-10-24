@@ -80,6 +80,7 @@ def load_config(event, config_path):
     cwd = Path(event['cwd'])
     no_links(cwd)
     require(cwd.is_dir(), 'cwd must be an existing directory')
+    cwd = cwd.resolve(strict=True)
     if config_path is None:
         for directory in (cwd, *cwd.parents):
             candidate = directory / 'harness-project.json'
@@ -175,7 +176,7 @@ def validate_contract(contract, root):
 
 def find_contracts(config):
     directory = Path(config['project_root']) / config['contract_dir']
-    paths = sorted(directory.glob('*.md'))
+    paths = sorted(path for path in directory.iterdir() if path.name.endswith('.md'))
     require(len(paths) <= 64, 'contract scan exceeds 64 Markdown files')
     contracts, task_ids, owners = [], set(), set()
     for path in paths:

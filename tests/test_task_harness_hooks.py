@@ -264,6 +264,27 @@ class HookTest(unittest.TestCase):
         self.save()
         self.assert_gap()
 
+    def test_cwd_parent_components_cannot_escape_explicit_project(self):
+        outside = self.root.parent / 'other'
+        outside.mkdir()
+        before = self.contract_path.read_bytes()
+        self.assert_gap(event=self.event(cwd=str(self.root / '..' / 'other')), explicit=True)
+        self.assertFalse((self.root / 'receipts').exists())
+        self.assertEqual(self.contract_path.read_bytes(), before)
+        self.assertEqual(list(outside.iterdir()), [])
+
+    @unittest.skipUnless(os.name == 'posix' and os.geteuid() != 0,
+                         'unreadable directory requires non-root POSIX')
+    def test_unreadable_contract_directory_reports_gap(self):
+        before = self.contract_path.read_bytes()
+        try:
+            self.contracts.chmod(0o000)
+            self.assert_gap()
+        finally:
+            self.contracts.chmod(0o700)
+        self.assertFalse((self.root / 'receipts').exists())
+        self.assertEqual(self.contract_path.read_bytes(), before)
+
     @unittest.skipUnless(hasattr(os, 'mkfifo'), 'FIFO check requires POSIX')
     def test_special_file_is_rejected_without_waiting(self):
         self.contract_path.unlink()

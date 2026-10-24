@@ -1,0 +1,20 @@
+{
+  "build_command": [
+    "/opt/homebrew/opt/python@3.15/bin/python3.15",
+    "-B",
+    "scripts/package_harness.py",
+    "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/hook-review-package-5r0q042h/candidate"
+  ],
+  "verify_command": [
+    "/opt/homebrew/opt/python@3.15/bin/python3.15",
+    "-B",
+    "scripts/package_harness.py",
+    "--verify",
+    "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/hook-review-package-5r0q042h/candidate"
+  ],
+  "verify_stdout": "3d7924929d77a659a7b67237e147f6d8150b5f10146da0e5086e8b08e348b9d5\n/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/hook-review-package-5r0q042h/candidate\n",
+  "source_and_package_policy_equal": true,
+  "policy_file": "skills/task-harness/agents/openai.yaml",
+  "policy_contents": "interface:\n  display_name: \"Task Harness\"\n  short_description: \"以唯一任務合約持續推進、驗收與跨對話續作，必要 hooks 提供有界補救\"\n  default_prompt: \"使用 $task-harness 完成這項任務。先核對授權、必要 hooks 與任務合約，持續推進所有必要成果並驗證；若需接手，先讀取原合約並核對現況。\"\npolicy:\n  allow_implicit_invocation: false\n",
+  "desktop_activation_proven": false
+}
