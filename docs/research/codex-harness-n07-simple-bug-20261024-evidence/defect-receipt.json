@@ -1,0 +1,55 @@
+{
+  "case_id": "item-type-conflict-v1",
+  "kind": "bug",
+  "inputs": {
+    "files": {
+      "checker": "ad21972faebd26b82bf42f5101581876b7f19294265cb703516ea86a3fef3cf5",
+      "fixture": "c1c7a48dad28855c6298d002883856a956842c076108805ee3b707949e730a71",
+      "manifest": "150f4f3f676cdecc415e33ebf3b37834ccdb8ccf3cfccf734cbfcd8d9c0ff7a7",
+      "normal": "b3ec4c51189a33fd7fdacfcf38ea2d5e6cf53d2dbc151a919bd222dcf7345ff3",
+      "requirement": "616372c562594e1cfdf8fde754d2195791c08ea58f3546c9078964a7581ba574",
+      "executable": "a7d8a09da6400b33e78b90281f3f81d058804d082689257b9008290ebd8a3b28"
+    },
+    "dependencies": {
+      "python": "3.15.0 (main, Oct  9 2026, 11:16:41) [Clang 21.0.0 (clang-2100.3.34.2)]"
+    },
+    "environment": {},
+    "command": [
+      "/opt/homebrew/opt/python@3.15/bin/python3.15",
+      "-I",
+      "-B",
+      "/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/item-type-conflict/check.py"
+    ],
+    "reports": {
+      "TEST-item-type-conflict.xml": 3
+    }
+  },
+  "product_id": "defect",
+  "product_fingerprint": "643be9f32713f1b99ca43197a6b51bdd3eeab18a973b0d7cdf83f170ec155a16",
+  "source_before": "643be9f32713f1b99ca43197a6b51bdd3eeab18a973b0d7cdf83f170ec155a16",
+  "argv": [
+    "/opt/homebrew/opt/python@3.15/bin/python3.15",
+    "-I",
+    "-B",
+    "/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/item-type-conflict/check.py",
+    "/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/item-type-conflict/products/defect"
+  ],
+  "status": "graded",
+  "product_passed": false,
+  "test_counts": {
+    "TEST-item-type-conflict.xml": {
+      "tests": 3,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "execution": {
+    "status": "completed",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "test_consistent_command_still_completes (__main__.ItemTypeContract.test_consistent_command_still_completes) ... ok\ntest_reordered_type_conflict (__main__.ItemTypeContract.test_reordered_type_conflict) ... FAIL\ntest_started_completed_type_conflict (__main__.ItemTypeContract.test_started_completed_type_conflict) ... FAIL\n\n======================================================================\nFAIL: test_reordered_type_conflict (__main__.ItemTypeContract.test_reordered_type_conflict)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/item-type-conflict/check.py\", line 32, in test_reordered_type_conflict\n    self.assert_conflict(path)\n    ~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/item-type-conflict/check.py\", line 19, in assert_conflict\n    self.assertEqual(result['coverage'], 'partial')\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'complete' != 'partial'\n- complete\n+ partial\n\n\n======================================================================\nFAIL: test_started_completed_type_conflict (__main__.ItemTypeContract.test_started_completed_type_conflict)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/item-type-conflict/check.py\", line 25, in test_started_completed_type_conflict\n    self.assert_conflict(FIXTURE / 'conflict.jsonl')\n    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/item-type-conflict/check.py\", line 19, in assert_conflict\n    self.assertEqual(result['coverage'], 'partial')\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'complete' != 'partial'\n- complete\n+ partial\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.002s\n\nFAILED (failures=2)\n",
+    "remaining_pids": []
+  },
+  "source_after": "643be9f32713f1b99ca43197a6b51bdd3eeab18a973b0d7cdf83f170ec155a16"
+}

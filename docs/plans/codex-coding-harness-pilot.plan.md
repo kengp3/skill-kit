@@ -521,7 +521,7 @@ C 的 controller 在 reviewer子回合完成時誤判主回合完成；確認實
 
 ### 20.1 已確認決策與事實邊界
 
-本節保留已確認的補強計畫與實作前提案；N01–N03 落地結果見第 21 節。本輪 N04、候選離線封裝與 N06 舊資料回放已完成，實作結果見[P1 離線計畫](codex-harness-p1-offline.plan.md)及第 22 節；N05 Desktop 接入與 N07 尚未執行。R01–R07 對應規格的同名決策；P0／P1／P2 是本輪優先序，與原 P0–P6 階段不同。
+本節保留已確認的補強計畫與實作前提案；N01–N03 落地結果見第 21 節。本輪 N04、候選離線封裝與 N06 舊資料回放已完成，實作結果見[P1 離線計畫](codex-harness-p1-offline.plan.md)及第 22 節；N05 Desktop 接入尚未執行；N07 單一 bug 離線案例見第 23 節，其餘案例及模型回放仍未完成。R01–R07 對應規格的同名決策；P0／P1／P2 是本輪優先序，與原 P0–P6 階段不同。
 
 | 決策 | 落實方式 | 對應工作 |
 | --- | --- | --- |
@@ -529,39 +529,39 @@ C 的 controller 在 reviewer子回合完成時誤判主回合完成；確認實
 | R02 Grader 資格 | 需求／fixture／依賴／環境相關變更按影響重驗；checker 升版重評全部受影響固定產物，不重跑 agent | N03 |
 | R03 風險驗證 | 併發／生命週期按風險測試與獨立 review，共用原則與專案案例分離，不加人工核准 | N04 |
 | R04 自動證據 | 不人工計時／填表／觀察；整理已有事件及產物，人工時間未知保留，失效不阻塞無關日常工作 | N04、N06 |
-| R05 不干擾日常 | 開發測試獨立副本／設定／資源；不改日常全域設定、記憶、資料、既有對話或程序 | N01，全項前置邊界 |
+| R05 不干擾日常 | 共用元件由各專案明確啟用；開發只改本 repo 授權內容及自有暫存資源，不自動更動全域設定、日常版本／快取或其他專案 | 各操作的範圍限制，不是 OS／watchdog 通用前置 |
 | R06 少量代表回歸 | 簡單 bug／小功能／局部重構，按變更影響回放；正確性與不必要流程負擔皆保留證據 | N07 |
 | R07 主要入口 | Desktop 日常、CLI 開發評測；先補 CLI，近期確認 Desktop 實際路徑，其他宿主／第二專案按需後置 | N02、N05 |
 
 已確認問題：B 交付有 P1 死鎖但未證明由舊 skill 導致；C 評測 controller 曾錯判子回合，當輪已修正；V1 grader 曾誤拒合法解法，V2 已修正。後續工作是保留可重複回歸及補足驗證，不冒稱這些修正仍未完成。三組人工時間缺值、共享背景材料及單一熟悉案例，仍不能支持人工效益或能力排名。
 
-四項複核調整已確認：N05 增加 Desktop 任務交付驗收；N01 納入宿主自動寫入與共用資源限制；N01／N02／N03／N06／N07 不再依賴先建整合工具；案例資格按 bug／功能／重構區分。三項主要邊界不變：Desktop 日常入口、開發測試不干擾日常、不要求人工觀察。
+本輪範圍澄清以防止全域變更及跨專案污染為目的；OS 隔離、watchdog 與 D01／D02 支線不列入目前實作待辦或通用前置。四項複核調整按實際操作保留：N05 增加 Desktop 任務交付驗收；N01 的既有邊界只用於其支援的開發檢查，涉及接入時再確認該次設定與產物影響；N01／N02／N03／N06／N07 不再依賴先建整合工具；案例資格按 bug／功能／重構區分。三項主要邊界不變：Desktop 日常入口、開發測試不干擾日常、不要求人工觀察。
 
 ### 20.2 具體待改檔案、接入及完成條件
 
-下列新增路徑是工程安排提案，尚未建立；實作時先確認沒有同名工作。先做最小回歸及可重用控制邏輯，原生工具或現有命令足夠就直接使用；只有重複操作形成需求時才增加薄的執行入口。`tests/harness/evaluate.py` 僅保留為可選落點，不是必建項，也不強制各項集中同一檔案。研究 evidence 目錄維持唯讀，不能直接覆寫原 probe 或 trial；新結果另建唯一 run 目錄。
+下表保留工程安排；已落地檔案及結果以第 21–23 節為準，其餘新增路徑仍為提案，實作時先確認沒有同名工作。先做最小回歸及可重用控制邏輯，原生工具或現有命令足夠就直接使用；只有重複操作形成需求時才增加薄的執行入口。`tests/harness/evaluate.py` 僅保留為可選落點，不是必建項，也不強制各項集中同一檔案。研究 evidence 目錄維持唯讀，不能直接覆寫原 probe 或 trial；新結果另建唯一 run 目錄。
 
 | ID／優先序 | 具體位置與改動 | 重用與接入方式 | 最小完成證據 |
 | --- | --- | --- | --- |
-| N01／P0 測試邊界 | 先於 `tests/test_harness_evaluation.py` 保留必要邊界回歸；只在測試與實際執行需共用時於 `tests/harness/` 放最小控制邏輯，不先建整合入口 | 重用原生 sandbox、首輪指紋／所有權核對；程序內覆寫僅是候選手段。盤點實際涉及的設定、plugin cache、宿主持久狀態與自動生成資料；現有 `.codex/config.toml`、`.codex/hooks.json`、`.agents/plugins/marketplace.json` 只讀，不改日常設定 | 測試寫入與程序有明確專屬範圍，日常快取／狀態不被覆寫；CPU／記憶體、並行程序及共用帳號額度有可執行限制與停止條件；正常／失效收尾只處理測試資源。無法隔離或限制即停止相依測試，不以設定檔未變宣稱安全 |
+| N01／P0 測試邊界 | 已落地 `tests/harness/boundary.py`、`tests/test_harness_boundary.py`，結果見第 21 節 | 只重用既有適用範圍：本 repo／自有暫存執行、必要資源限制與自有程序收尾；全域設定與日常快取只讀，不新增宿主控制平台 | 既有支援範圍內不污染其他專案或既有工作；控制不足只停止相依操作，不擴展 OS／watchdog，也不阻擋無關離線開發 |
 | N02／P0 CLI 控制 | 在 `tests/test_harness_evaluation.py` 先加入歷史事件回放；必要共用邏輯放 `tests/harness/`，不以建立 `evaluate.py` 為前置 | 重用封存 `personal-harness-cli-session.py.txt`、`personal-harness-cli-resume-C.py.txt` 已修正的歸屬／期限／收尾邏輯，移除暫存路徑與特定 C ID 的硬綁定；不用整份 probe 充當通用工具，不擴充 `run_check.py` 為 controller | 子回合、錯誤 ID、快速完成可區分；未知結果先核對，writer 未確認停止不續作，期限不重設。取消／失聯只處理自有程序；靜態事件回歸可獨立完成，不等待其他評測功能 |
 | N03／P0 Grader | 重用 `tests/fixtures/lifecycle/HarnessLifecycleTest.java`、`HarnessFactoryCloseRegressionTest.java` 與 `task.md`；需要可重複選取時才新增 `tests/fixtures/harness-cases.json`，記錄類型、需求、grader、fixture、相關依賴／環境及固定產物參照 | 沿用封存 `personal-harness-grade-smoke.py.txt` 的可用驗收方法與原生命令，先建立資格／重評的最小檢查；重複操作有需要才接薄入口。Java fixture 無需為了有 diff 而修改，原 B 交付不改 | 相關變更能選出受影響檢查；資格依第 5 節類型驗證，不強迫重構先失敗。checker 升版保留歷史，重評所有受影響固定產物且模型啟動次數為零 |
 | N04／P1 共用規則 | 最小修改 `skills/task-harness/SKILL.md` 與 `skills/ai-code-review/SKILL.md` | 在既有風險驗證／review 段補鎖、callback、背景工作及關閉時序的判斷，引用現有內部 review 模式；同步 task-harness 交付段的自動證據、人工時間未知及無人工觀察原則；不複製整套規則，不新增固定角色或 hook。原 metadata／引用僅在內容介面確實受影響時同步 | 具體風險有相稱的驗證理由及必要獨立 review；簡單任務不固定增加文件／角色／人工核准，不要求計時或填表。具體 Java 測試仍在專案／評測 fixture |
 | N05／P1 Desktop 採用 | 後續更新 `README.md` 的 Desktop 入口與分項支援狀態；重用 `packaging/codex/.codex-plugin/plugin.json`、`scripts/package_harness.py`、`tests/test_harness_package.py` 準備候選測試包，發佈內容改變才更新版本 | 在 N01 邊界成立後，於獨立 Desktop 測試情境呼叫候選流程，完成低風險修改、相稱驗證與可追溯交付。原生方式足夠就重用，不建 Desktop controller，不自動更新日常快取／啟用版本 | 分項記錄載入、任務交付、外部取消。前兩項與該任務必要控制均通過，才可標 N05 的最小日常路徑完成；僅載入成功為部分完成。外部取消未驗證獨立保留，不阻擋不依賴它的驗收，也不免除必要控制；不要求人工觀察或手動 Stop |
 | N06／P1 自動證據 | 調整 `tests/fixtures/harness-run.template.json`；實作落點為 `tests/test_harness_evidence.py`，重複的保存事件整理保留於 `tests/harness/evidence.py` | 重用封存 summarize 方法、原生 RPC 與 outcome；修正主／子歸屬，不直接執行封存程式。原始參照、統計與判讀分開；評測工具不安裝到日常環境 | 驗收與全部交付狀態保留，求助／重試／修復無可靠結構化來源時明示未知；錯誤歸屬、缺事件、人工時間不可得均明示，不要求使用者補填；統計失效可繼續，必要驗收缺失不可完成 |
-| N07／P1 代表案例 | 必要最小素材放 `tests/fixtures/harness-cases/`；若已因重複選取建立 `tests/fixtures/harness-cases.json` 就共用，否則先沿用現有 fixture／命令與來源參照 | 少量簡單 bug、小功能與局部重構分別依第 5 節資格；優先重用適合素材，按變更影響選取。可直接執行現有命令，不依賴整合入口；新模型回放須有後續有界授權 | 對應類型的正確性、必要回歸與不必要流程負擔均有證據；重構允許修改前後測試都過，功能不需歷史 bug；依風險判讀，不用固定工具數或單一 LLM 分數判輸贏 |
+| N07／P1 代表案例 | 本輪建立 `tests/fixtures/harness-cases/item-type-conflict/` 與 `tests/test_harness_case.py`；詳第 23 節 | 凍結 started／completed 類型衝突的錯誤／修正版、最小輸入及案例 checker；重用現有 grader，不新增通用 runner。先完成單一 bug，小功能／重構及新模型回放後置 | 錯誤版重現契約失敗、修正版通過正常與衝突情境，來源不變；僅證明離線案例資格，不證明 agent 流程負擔、人工效益或公平比較 |
 
 共用套件繼續重用四個 skills 與既有封裝；`define-task`、`project-setting`、`run_check.py` 目前沒有已確認的必要改動。此次設計沒有新增 mandatory hook，也沒有已確認需要修改全域設定的項目。若後續能力查核發現新缺口，只提出最小必要調整，不為了完成表格而增加元件。
 
 封存來源：[probe manifest](../research/codex-coding-harness-implementation-evidence/probe-sources/manifest.json)、[主回合回歸](../research/codex-coding-harness-implementation-evidence/controller-root-attribution-regression.json)、[grader V2](../research/codex-coding-harness-implementation-evidence/frozen-trial-grader-v2.json)、[品質診斷](../research/codex-coding-harness-implementation-evidence/post-smoke-quality-assessment.json)。封存程式含單次試驗假設，不能直接複製後宣稱通用或執行。
 
-### 20.3 建議執行順序（未執行）
+### 20.3 後續順序（依目前完成狀態）
 
-1. **N01：先確立不干擾邊界。**唯讀核對測試會涉及的設定、快取、宿主自動寫入及共用資源，確定專屬副本、寫入／程序所有權與可執行的資源限制。禁止以先修改再還原日常狀態替代隔離；限制未明就不啟動相依測試。
-2. **N02＋N03：先補最小回歸。**用保存事件與固定產物驗證已知故障；原生命令與現有工具足夠就沿用，不等待整合入口。靜態回放不需先完成整個控制工具；原生取消／失聯實測依賴 N01，只用隔離 canary，不把舊紀錄當當前版本驗證。
-3. **N04：補共用風險原則。**保留精簡核心與專案測試邊界，驗證有必要的高風險行為與小任務成本。
-4. **N05：驗收 Desktop 任務交付。**唯讀盤點可提早進行；完成 N01 邊界與 N04 候選後，先準備測試包，再驗證載入及一個低風險任務的修改→驗證→交付。缺行為證據時 N05 保留部分完成；外部取消另列，不以 CLI 或載入成功替代，不要求人工觀察。
-5. **N06＋N07：自動證據與少量案例回放。**欄位／來源核對可與 N02／N03 一起完成。新模型回放只依賴該操作適用的 N01 限制、N02 控制、N03 案例資格、受測候選及必要原生證據／有界授權；N06 完整統計工具不是啟動前提。只有重複操作有需要才補薄入口，各責任不必集中同檔。CLI 案例可在 Desktop 相依項受阻時獨立完成，兩者證據不得混用。
+1. **確認本次專案範圍。**只修改本 repo 授權內容及自有暫存資源，不自動更動全域設定、日常版本／快取或其他專案。N01–N03 既有能力已完成，按實際操作重用；不追加 OS／watchdog 或全機盤查作為通用前置。
+2. **N02＋N03 已完成，按影響重用。**保存事件控制與固定產物 grader 已有最小回歸；本案例直接重用，不另建整合入口或宿主控制。只在相關改動需要時重驗受影響能力。
+3. **N04 已完成，維持精簡核心。**共用風險原則及自動證據規則維持既有內容；本輪不新增 runtime skill／hook，不因準備案例而修改日常採用版本。
+4. **N07：先完成單一簡單 bug 離線案例。**重用已知 started／completed 類型衝突，固定任務、輸入、錯誤／修正版與 checker，確認 bug 資格；不啟動模型。其餘代表案例依實際需要逐步補上。
+5. **N05／N06：後續實際採用與證據核對。**Desktop 仍是日常入口；取得後續授權後，在明確採用的專案確認載入及低風險任務交付，隨任務核對可取得事件。取消能力分項保留，僅限制真正依賴它的操作；不回到 OS／watchdog 支線，不重跑 A／B／C 或自動刷新日常快取。
 6. **交付核對：**若 runtime 有變，按既有方式建包、核對依賴／版本／啟停回退，更新 README 與這兩份文件的結果及限制；發佈包不含開發評測工具。安裝到日常使用環境另依明確採用授權，不隨測試自動進行。
 
 P2 的第二專案、其他宿主與廣泛能力比較只在實際採用需求出現時安排，不納入這輪補強的完成條件。首輪 smoke 不補跑、不回寫新標準成原先成績；新增案例另立 run 與配置版本。
@@ -571,12 +571,12 @@ P2 的第二專案、其他宿主與廣泛能力比較只在實際採用需求�
 | 缺口／既有證據 | 最小後續驗證（本輪不執行） | 失敗時的限制 |
 | --- | --- | --- |
 | G01／G04 Desktop 有載入預檢，但沒有整條日常路徑驗收 | 獨立測試情境中核對候選版本與信任，再由 Desktop 呼叫流程完成低風險修改、相稱驗證及可追溯交付；記錄載入／交付／外部取消三項狀態 | 僅載入成功不能完成 N05；載入、任務交付與該操作必要控制通過才算最小日常路徑通過，不外推全面支援 |
-| G02 Desktop Stop 未取得有效證據；CLI 取消及指定 fallback 曾通過 | 先查能否不動日常設定建立自有、可自行到期且可獨立收尾的 canary；條件成立才做原生控制驗證，核對 turn／PID／heartbeat | 不反覆要求手動 Stop；無可靠控制就不執行依賴取消的 Desktop trial，不推論所有 skills 不可用 |
-| G02／R05 開發配置、宿主自動寫入及資源占用是否不干擾日常尚須確認 | 盤點實際接觸的設定、plugin cache、持久狀態／生成資料；驗證專屬寫入與收尾，放無關檔案／worker 作負向對照；執行前固定 CPU／記憶體、並行程序及共用帳號額度限制與停止條件，不蒐集無關私人內容 | 程序內覆寫或設定檔未變不等於隔離；不能限制或隔離就停止相依測試，不要求人工看守、不新增日常監控 |
+| G02 Desktop Stop 未取得有效證據 | 保留宿主限制；後續獲准操作若實際需要取消，再核對原生能力，不預先開發控制平台 | 缺口只限制相依操作；不要求人工 Stop，不追加 OS／watchdog，不推論所有 skills 不可用 |
+| G02／R05 專案啟用與測試變更範圍 | 接入或發布前核對該次目標設定、版本與輸出；本 repo 離線測試使用固定素材及自有暫存資源，全域設定、日常快取及其他專案保持原樣 | 未授權的全域／跨專案修改不執行；涉及特定必要控制的操作另行處理，不阻擋無關開發或新增全機監控 |
 | G03／R04 原生事件能否涵蓋需要的自動摘要尚未完整驗證 | 用已存 RPC／outcomes 檢查事件歸屬、去重、缺值與最終產物，再與一個獲准的新執行結果核對 | 揭露覆蓋範圍；輔助統計失效不影響日常，必要驗收缺失仍受阻 |
 | G05 公平比較的配置／答案／記憶隔離不合格 | 在獨立開發環境核對共同材料、實際載入及禁止讀取的 canary；不能更動日常記憶或全域 skills | 只報流程診斷，不排名；不將現有受污染 smoke 升格 |
 | G06／R02 Grader V2 有 bug 資格證據，其他類型及可重複重評仍待驗證 | 先用固定產物核對變更影響與重評範圍；新案例依 bug／功能／重構契約驗證，重構不要求失敗基線；checker 升版重評不啟動模型，不等待整合入口 | 保留原結果，資格未明不作產品成敗判定；已驗證的最小檢查不因整合工具尚未建立而失效 |
-| G07／R06 新代表案例、模型回放數量／預算尚未核定 | 先資格檢查與靜態事件回放；新模型回放前依後續授權固定次數、資源與回饋政策 | 不沿用首輪配額擴樣、不要求人工量測、不宣稱人工省時 |
+| G07／R06 單一已知 bug 先建立離線資格，其他案例及模型回放待辦 | 第 23 節先驗 started／completed 類型衝突的固定產物；後續有需要再補小功能、重構及有界模型試行 | 不將已知開發案例當未見基準，不沿用首輪配額擴樣、不要求人工量測或宣稱省時 |
 
 ### 20.5 本輪文件一致性檢查
 
@@ -612,3 +612,25 @@ N06 template 升為 schema v2，`human_takeover` 預設未知，移除人工 obs
 本輪沒有新的模型 trial、app-server、Desktop 對話或安裝；不要求人工觀察。完整驗證與剩餘缺口見[P1 離線報告](../research/codex-harness-p1-offline-20261024.research.md)。N01–N03 在表 20.2 的早期檔案安排為歷史提案，現行落點以第 21 節為準，不必補建 `test_harness_evaluation.py` 或通用 evaluate 入口。
 
 本輪離線範圍最終完成：69項 unittest（68通過／1 Windows略過）；兩項 N06 Spec finding 已修正及獨立複核，Standards／Spec 皆0待處理finding。候選 manifest 與目前來源相符，日常設定／啟用套件快取、舊證據及無關工作保護核對通過。僅本機提交，未推送；Desktop 接入與新模型 trial 未執行。
+
+## 23. N07 單一簡單 bug 離線案例與範圍收斂（2026-10-24）
+
+狀態：實作與必要驗證進行中。固定本輪基線 `1c506d8613eb05dea901311f6eb2399075c4a5c8`，採 ask-matt → implement → tdd → code-review，沿用本計畫作本地追蹤；不建立外部 issue、PR 或 push。
+
+### 本輪契約與實作
+
+- 案例 `item-type-conflict-v1`：同 identity 的 started／completed 類型衝突應為 partial，命令 outcome unknown；顛倒事件順序結果相同，正常 command 維持 complete。root turn 的 completed 與 item 完整性分開。
+- 素材放 `tests/fixtures/harness-cases/item-type-conflict/`：task、兩份最小 JSONL、來源 manifest、固定 defect／correct 產物及單案例 checker。凍結完整 `evidence.py` 與必要 `control.py`，以 commit 與 hash 記錄來源，不把手寫壞實作冒充歷史缺陷。
+- 錯誤版 `c786ad3139f7fafcf19ca569666607cdd9dc03eb`；修正版 `0a94c63fb25257e0dd5c5fd35db073edaea3dd6b`。測試只用公開 `summarize_events`，不重構現行 runtime 或共用 grader。
+- `tests/test_harness_case.py` 重用 `case_inputs`／`regrade`／`qualify`，同一 checker 對兩版執行三項契約檢查。普通 unittest 產生既有 grader 所需 XML，不新增通用 runner 或依賴。
+- 本輪只處理這一個已知開發案例及兩份文件，不跑模型；實作者材料與維護者修正版／checker 分開列明，不宣稱已取得公平比較或流程負擔資格。
+
+### 驗證與完成條件
+
+- [x] 凍結來源與最小輸入，manifest 指紋可核對。
+- [x] 先觀察缺素材／checker 的 red，再通過定向資格驗證；錯誤版 3 項中 2 項失敗，修正版 3 項全部通過，無 import／執行錯誤，來源不變。
+- [ ] 保存兩版 grader receipts／XML 及 bug 資格，執行適用整合測試。
+- [ ] 規格／計畫的專案啟用與變更範圍一致；既有 skills、封裝、全域設定、日常版本／快取及其他專案不變。
+- [ ] Standards／Spec 獨立複核通過，完成本機提交。
+
+結果將集中於 `docs/research/codex-harness-n07-simple-bug-20261024.research.md` 及同名 evidence 目錄。Desktop 實際載入／取消、其他代表案例、新模型行為與人工效益仍未驗證；D01／D02 的 OS／watchdog 支線已移出目前待辦，不再作本專案開發前置。
