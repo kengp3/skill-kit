@@ -1,0 +1,30 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.15/bin/python3.15",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_harness_control.py",
+    "-v"
+  ],
+  "cwd": "/private/tmp/harness-p0-control",
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "test_cancel_is_not_proof_of_stopping_or_permission_to_resume (test_harness_control.ControlTest.test_cancel_is_not_proof_of_stopping_or_permission_to_resume) ... ok\ntest_conflicting_terminal_events_require_readback_not_last_event_wins (test_harness_control.ControlTest.test_conflicting_terminal_events_require_readback_not_last_event_wins) ... ok\ntest_deadline_expiry_clock_reversal_and_reused_turn_are_rejected (test_harness_control.ControlTest.test_deadline_expiry_clock_reversal_and_reused_turn_are_rejected) ... ok\ntest_early_completion_survives_binding_and_malformed_events_are_ignored (test_harness_control.ControlTest.test_early_completion_survives_binding_and_malformed_events_are_ignored) ... ok\ntest_invalid_identity_and_clock_cannot_start_or_rebind_trial (test_harness_control.ControlTest.test_invalid_identity_and_clock_cannot_start_or_rebind_trial) ... ok\ntest_native_readback_and_late_old_events_cannot_complete_continuation (test_harness_control.ControlTest.test_native_readback_and_late_old_events_cannot_complete_continuation) ... ok\ntest_new_observation_invalidates_old_liveness_and_readback_resolves_conflict (test_harness_control.ControlTest.test_new_observation_invalidates_old_liveness_and_readback_resolves_conflict) ... ok\ntest_recorded_child_completion_does_not_finish_root (test_harness_control.ControlTest.test_recorded_child_completion_does_not_finish_root) ... ok\ntest_recorded_interruption_requires_reconciliation_and_stopped_writers (test_harness_control.ControlTest.test_recorded_interruption_requires_reconciliation_and_stopped_writers) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 0.017s\n\nOK\n",
+  "source_sha256": {
+    "tests/harness/control.py": "fdce55e2de2c3d620f2974ee3e330b0b0fe9dd77edd51e6c04e0c63cdd45b090",
+    "tests/test_harness_control.py": "cb2a8ed9cc08c9c5274426ea6d8be1599d560adc90de2db1a26c332020d2c586"
+  },
+  "recorded_input_sha256": {
+    "docs/research/codex-coding-harness-implementation-evidence/cli-smoke-C/rpc.jsonl": "9aabb8967bbc8374d95ac1f1559b18f4c665a2d557bc743a4da4e2b94593f2dd",
+    "docs/research/codex-coding-harness-implementation-evidence/cli-smoke-C-continuation-1/rpc.jsonl": "f73b73111a244044fd6521940dc9ff6ec5a850ca0903cd37c4ed1c5b02151943",
+    "docs/research/codex-coding-harness-implementation-evidence/cli-smoke-C/interrupted-root-readback.json": "f340c9f58ed1591ec88c7dd77b87bd4ecc14163ed70afed35cc47de6a1e911d4"
+  },
+  "new_model_trials": 0,
+  "app_server_started": false,
+  "remaining_integration": "ticket01 owned-process liveness and cleanup"
+}

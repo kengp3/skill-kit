@@ -1,7 +1,7 @@
 # 個人 Harness 首版設計規格（Codex Coding）
 
 日期：2026-10-24（Asia/Taipei）
-狀態：首輪 smoke 後的設計修訂已確認；本輪僅修訂規格與計畫，未修改 runtime 或執行試行。既有 CLI 首版與三組 smoke 已完成，結果與限制見[交付報告](../research/codex-coding-harness-smoke-20261024.research.md)。Codex Desktop app 是主要日常入口，CLI 是開發評測路徑；Desktop 整體使用路徑與 Stop、人工效益、公平比較及移植仍未取得完整驗證。
+狀態：N01–N03 的 P0 實作及整合驗收已通過，兩軸 review 待完成；結果見[本輪 P0 報告](../research/codex-harness-p0-20261024.research.md)。Desktop 為主要日常入口，CLI 為開發評測路徑；P1、Desktop 實際任務／Stop、人工效益、公平比較及移植尚未完成。首輪三組 smoke 結果仍見[原交付報告](../research/codex-coding-harness-smoke-20261024.research.md)。
 配套：[試行計畫](../plans/codex-coding-harness-pilot.plan.md)
 
 目前執行授權補充（P0）：使用者已核定依本修訂實作 N01–N03，套用 ask-matt／to-tickets／implement-spec，包含必要本機回歸與隔離 canary；不啟動新的模型 trial、不影響 Desktop 日常作業、不要求人工觀察。下文「本輪僅文件」保留為前一輪文件交付的歷史邊界，不限制此次 P0 授權；P1 及後續 trial 仍未授權。
@@ -387,7 +387,7 @@ Reviewer 取得原始需求、目前產物與直接證據，自行判斷；角�
 
 ### Definition of Done
 
-本次文件完成條件：R01–R07 在規格與計畫一致；Desktop 日常／CLI 開發評測、無人工觀察及不干擾日常的邊界明確；計畫列出具體待改檔案、重用／新增、優先序、相依順序與最小驗證。更新失效的現行要求，保留歷史證據並標示時態；核對連結與文件差異。本輪只完成文件，後續實作與測試仍未執行。
+前輪文件完成條件（已達成；本次 P0 實作驗收見計畫第 21 節）：R01–R07 在規格與計畫一致；Desktop 日常／CLI 開發評測、無人工觀察及不干擾日常的邊界明確；計畫列出具體待改檔案、重用／新增、優先序、相依順序與最小驗證。更新失效的現行要求，保留歷史證據並標示時態；核對連結與文件差異。該輪只完成文件；後續 N01–N03 的本次實作結果另見計畫第 21 節，不回寫為該輪已實作。
 
 ### 來源與證據限度
 

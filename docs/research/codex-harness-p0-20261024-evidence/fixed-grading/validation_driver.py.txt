@@ -1,0 +1,111 @@
+"""One-off fixed-artifact validation; no model or native app-server execution."""
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import sys
+import tempfile
+import xml.etree.ElementTree as ET
+
+ROOT = Path('/Users/kengp3/Workspaces/mine/simple-skills')
+sys.path.insert(0, str(ROOT / 'tests'))
+from harness.boundary import Limits
+from harness.grader import case_inputs, regrade, qualify, select_regrades, product_fingerprint
+
+EVIDENCE = ROOT / 'docs/research/codex-coding-harness-implementation-evidence'
+OUTPUT = ROOT / 'docs/research/codex-harness-p0-20261024-evidence/fixed-grading'
+OUTPUT.mkdir(parents=True, exist_ok=False)
+BASE = Path(tempfile.mkdtemp(prefix='harness-p0-fixed-')).resolve()
+checker = BASE / 'fixed_checker.py'
+checker.write_text('''import os,sys,subprocess
+from pathlib import Path
+product, test, maven, repository, settings = sys.argv[1:]
+output = Path.cwd()
+env = dict(os.environ)
+env['JAVA_TOOL_OPTIONS'] = '-Xmx256m -XX:ActiveProcessorCount=1 -Djava.io.tmpdir=' + str(output / 'tmp')
+env['MAVEN_OPTS'] = '-Xmx256m -XX:ActiveProcessorCount=1 -Djava.io.tmpdir=' + str(output / 'tmp')
+argv = [maven, '-B', '-o', '-T', '1', '-s', settings, '-f', str(Path(product) / 'concurrent-request-scope/pom.xml'),
+        '-Dmaven.repo.local=' + repository, '-Dp0.output=' + str(output / 'target'), '-Dtest=' + test,
+        '-DforkCount=1', '-DreuseForks=true', 'test']
+raise SystemExit(subprocess.call(argv, env=env))
+''')
+settings = BASE / 'settings.xml'
+settings.write_text('<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"/>')
+java_home = str(Path(os.environ.get('JAVA_HOME', '/Users/kengp3/.sdkman/candidates/java/current')).resolve())
+maven = str(Path(shutil.which('mvn')).resolve())
+repo = str(Path('/Users/kengp3/.m2/repository').resolve())
+prefix = [sys.executable, '-B', str(checker)]
+namespace = {'m': 'http://maven.apache.org/POM/4.0.0'}
+ET.register_namespace('', namespace['m'])
+
+def prepare(group, fixture):
+    if group == 'parent':
+        old = json.loads((EVIDENCE / 'lifecycle-parent-7.json').read_text())
+        source = Path(old['argv'][4]).parent.parent
+    else:
+        source = Path('/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur') / group
+        for item in json.loads((EVIDENCE / f'cli-smoke-{group}/changed-source.json').read_text()):
+            assert hashlib.sha256((source / item['path']).read_bytes()).hexdigest() == item['after_sha256']
+    product = BASE / (group + '-' + fixture.stem) / 'product'
+    product.mkdir(parents=True)
+    shutil.copyfile(source / 'pom.xml', product / 'pom.xml')
+    shutil.copytree(source / 'concurrent-request-scope', product / 'concurrent-request-scope', ignore=shutil.ignore_patterns('target'))
+    original = product_fingerprint(product)
+    # Build output location is an explicit, identical environment overlay in each copy.
+    pom = product / 'pom.xml'
+    tree = ET.parse(pom)
+    build = tree.getroot().find('m:build', namespace)
+    assert build is not None and build.find('m:directory', namespace) is None
+    ET.SubElement(build, '{' + namespace['m'] + '}directory').text = '${p0.output}'
+    tree.write(pom, encoding='UTF-8', xml_declaration=True)
+    target = product / 'concurrent-request-scope/src/test/java/com/example/concurrentrequestscope' / fixture.name
+    shutil.copyfile(fixture, target)
+    workspace = product.parent / 'execution'
+    workspace.mkdir()
+    return product, workspace, original
+
+records = []
+cases = {}
+for name, groups in [('HarnessLifecycleTest', ['parent', 'A']),
+                     ('HarnessFactoryCloseRegressionTest', ['A', 'B', 'C'])]:
+    fixture = ROOT / f'tests/fixtures/lifecycle/{name}.java'
+    files = {'requirement': ROOT / 'tests/fixtures/lifecycle/task.md',
+             'checker': checker, 'fixture': fixture, 'settings': settings}
+    inputs = case_inputs(files, dependencies={'maven_launcher_sha256': hashlib.sha256(Path(maven).read_bytes()).hexdigest()},
+                         environment={'JAVA_HOME': java_home}, command=prefix,
+                         reports={f'target/surefire-reports/TEST-com.example.concurrentrequestscope.{name}.xml': 2 if name == 'HarnessLifecycleTest' else 1})
+    case = {'case_id': name, 'kind': 'bug', 'inputs': inputs}
+    cases[name] = case
+    for group in groups:
+        product, workspace, original = prepare(group, fixture)
+        argv = prefix + [str(product), name, maven, repo, str(settings)]
+        filename = f'{group}-{name}'
+        result = regrade(case, product_id=group, product_root=product,
+            input_files=files, workspace=workspace, argv=argv,
+            reports={f'target/surefire-reports/TEST-com.example.concurrentrequestscope.{name}.xml': 2 if name == 'HarnessLifecycleTest' else 1},
+            receipt=OUTPUT / (filename + '.json'),
+            limits=Limits(wall_seconds=45, cpu_seconds=25, memory_mb=1024, max_processes=6),
+            env={'JAVA_HOME': java_home})
+        expected = not (group == 'parent' or (group == 'B' and name == 'HarnessFactoryCloseRegressionTest'))
+        records.append(result)
+        print(json.dumps({'group': group, 'case': name, 'status': result['status'], 'passed': result.get('product_passed'), 'expected': expected}), flush=True)
+        assert result['status'] == 'graded' and result['product_passed'] is expected, result
+        assert result['source_before'] == result['source_after']
+        (OUTPUT / (filename + '-setup.json')).write_text(json.dumps({'original_copy_fingerprint': original,
+            'environment_overlay': 'parent build.directory=${p0.output}; append immutable external Java fixture in copied test source',
+            'prepared_fingerprint': result['source_before'], 'original_source': 'retained parent or fixed A/B/C; no original modified'}, indent=2))
+        for report in (workspace / 'target/surefire-reports').glob('TEST-*.xml'):
+            shutil.copyfile(report, OUTPUT / (filename + '-' + report.name))
+    if name == 'HarnessLifecycleTest':
+        qualification = qualify(case, {'defect': records[-2], 'correct': records[-1]})
+    else:
+        qualification = qualify(case, {'defect': records[-2], 'correct': records[-1]})
+    assert qualification['status'] == 'qualified', qualification
+    (OUTPUT / (name + '-qualification.json')).write_text(json.dumps(qualification, indent=2))
+shutil.copyfile(checker, OUTPUT / 'fixed_checker.py.txt')
+shutil.copyfile(Path(__file__), OUTPUT / 'validation_driver.py.txt')
+(OUTPUT / 'summary.json').write_text(json.dumps({'status': 'passed', 'grades': len(records), 'model_trials': 0,
+    'cases': list(cases), 'output': str(OUTPUT), 'scratch': str(BASE),
+    'limits_per_grade': {'wall_seconds': 45, 'cpu_seconds': 25, 'memory_mb': 1024, 'max_processes': 6},
+    'cases_results': [{'case': r['case_id'], 'product': r['product_id'], 'passed': r['product_passed']} for r in records]}, indent=2))

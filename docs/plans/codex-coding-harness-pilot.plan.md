@@ -1,7 +1,7 @@
 # 個人 Harness 首版實作準備與試行計畫（Codex Coding）
 
 日期：2026-10-24（Asia/Taipei）
-狀態：本輪僅同步修訂文件；R01–R07 與後續具體改動／順序見第 20 節，尚未實作或試行。Codex Desktop app 是主要日常入口，CLI 是開發評測路徑。首輪三組 smoke 已完成，原驗收、B 交付後死鎖診斷與 C controller 續作均保留；效益／公平比較／Desktop Stop 未合格。
+狀態：N01–N03 P0 實作及整合驗收已通過，兩軸 review 待完成，見第 21 節與[P0 報告](../research/codex-harness-p0-20261024.research.md)。Desktop 為主要日常入口，CLI 為開發評測路徑；P1 及新的模型 trial 未執行，首輪既有結果與限制保留。
 設計依據：[首版設計規格](../specs/codex-coding-harness.spec.md)
 
 目前執行授權補充（P0）：使用者已核定依本修訂實作 N01–N03，套用 ask-matt／to-tickets／implement-spec，包含必要本機回歸與隔離 canary；不啟動新的模型 trial、不影響 Desktop 日常作業、不要求人工觀察。下文「本輪僅文件」保留為前一輪文件交付的歷史邊界，不限制此次 P0 授權；P1 及後續 trial 仍未授權。
@@ -521,7 +521,7 @@ C 的 controller 在 reviewer子回合完成時誤判主回合完成；確認實
 
 ### 20.1 已確認決策與事實邊界
 
-本節是本輪後續工作的有效計畫，僅文件修訂已獲授權，所有 N 項均待實作。R01–R07 對應規格的同名決策；P0／P1／P2 是本輪優先序，與原 P0–P6 階段不同。
+本節保留已確認的補強計畫與實作前提案；使用者後續已授權 N01–N03，本次落地結果見第 21 節，N04–N07 尚未實作。R01–R07 對應規格的同名決策；P0／P1／P2 是本輪優先序，與原 P0–P6 階段不同。
 
 | 決策 | 落實方式 | 對應工作 |
 | --- | --- | --- |
@@ -583,3 +583,20 @@ P2 的第二專案、其他宿主與廣泛能力比較只在實際採用需求�
 R01–R07、N01–N07 及優先序可互相對照；規格描述行為契約，計畫描述檔案與接入。現行要求不再包含人工觀察窗口、把 Desktop 後置為其他宿主或自動重跑 agent。第 11–19 節歷史事實保留，與本節新決策分開；舊研究報告及原 trial 產物本輪不改。所有新增路徑與驗證均標為提案／未執行。
 
 四項複核調整已逐項核對：Desktop 載入／任務交付／外部取消分項判定；宿主自動寫入與共用資源納入不干擾邊界；最小回歸不依賴整合入口；bug／功能／重構分別驗收。R01–R07、N01–N07、執行順序及能力缺口一致，保留不要求人工觀察的規則。35 個本地相對連結可解析，Markdown 表格欄數及 diff 空白檢查通過；僅兩份文件有 tracked diff，提案工具尚未建立。本次只檢查文件，不代表 Desktop、隔離或資源控制已實測通過。
+
+## 21. P0 實作與整合驗收（2026-10-24）
+
+本次授權依 ask-matt → to-tickets → implement-spec 完成 N01–N03；三張本地票各自實作並合入 `codex/harness-p0`。測試 seam 沿用已確認的程序邊界、原生事件歸屬與 grader 固定產物，不另要求人工核准。票單依 project-setting 採單檔本地計畫，沒有外部 issue、PR 或 push。
+
+| 項目 | 實際落點 | 驗收結果 |
+| --- | --- | --- |
+| N01 | `tests/harness/boundary.py`、`tests/test_harness_boundary.py` | 13項真實canary，寫入／symlink／network拒絕、資源限制、父子程序收尾及無關worker保護通過 |
+| N02 | `tests/harness/control.py`、`tests/test_harness_control.py` | 9項原生記錄回放；主／子回合、早到／衝突事件、未知結果、writer停止與原deadline通過 |
+| N01＋N02 | `tests/test_harness_p0_integration.py` | 真實取消與程序收尾不代替native readback；重新核對後續作，期限維持原值 |
+| N03 | `tests/harness/grader.py`、`tests/test_harness_grader.py` | 7項資格／重評與錯誤路徑；五次固定Java產物重評與已知結果一致，來源前後不變 |
+
+合併後 unittest 56項：55通過、1項原生Windows cmd.exe略過；56項測試的受測Python來源前後指紋相同。551個受保護來源／設定／runtime快取／原trial證據未變，原demo-002狀態與無關未追蹤工作保留。只有開發測試程式與證據新增，未修改runtime skill、hook、發佈版本或Desktop日常採用設定。
+
+P0未建立通用evaluate入口或案例框架，沒有新的模型trial、app-server回合、人工計時或Stop要求。記憶體／程序數限制為20ms抽樣，支援保留自有process group的後代，單工作互斥是一個Python interpreter；不宣稱任意惡意／detached程式的容器保證或Desktop原生控制已重新驗證。
+
+本次P0完成判準：三張票的直接測試／固定產物結果可追溯，整合來源指紋與日常保護核對成立，Standards／Spec兩軸review無待處理問題。前兩項已取得證據，兩軸review待完成；不將P1或Desktop完整驗收納入本次完成聲明。完整證據、命令及限制見[P0報告](../research/codex-harness-p0-20261024.research.md)。

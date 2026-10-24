@@ -1,0 +1,11 @@
+import os,sys,subprocess
+from pathlib import Path
+product, test, maven, repository, settings = sys.argv[1:]
+output = Path.cwd()
+env = dict(os.environ)
+env['JAVA_TOOL_OPTIONS'] = '-Xmx256m -XX:ActiveProcessorCount=1 -Djava.io.tmpdir=' + str(output / 'tmp')
+env['MAVEN_OPTS'] = '-Xmx256m -XX:ActiveProcessorCount=1 -Djava.io.tmpdir=' + str(output / 'tmp')
+argv = [maven, '-B', '-o', '-T', '1', '-s', settings, '-f', str(Path(product) / 'concurrent-request-scope/pom.xml'),
+        '-Dmaven.repo.local=' + repository, '-Dp0.output=' + str(output / 'target'), '-Dtest=' + test,
+        '-DforkCount=1', '-DreuseForks=true', 'test']
+raise SystemExit(subprocess.call(argv, env=env))

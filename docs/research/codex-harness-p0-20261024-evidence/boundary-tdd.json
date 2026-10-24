@@ -1,0 +1,22 @@
+{
+  "ticket": "01",
+  "tests": 13,
+  "passed": 13,
+  "seconds": 3.264,
+  "model_trials": 0,
+  "native_app_servers": 0,
+  "source_sha256": {
+    "tests/harness/boundary.py": "c1962a99648ea3158824d6af4980703ea765f3b37630695552b626acdb9d8fe6",
+    "tests/test_harness_boundary.py": "ba93602ff4a57495d51ef483b1948a5146e8d6a976a9829c2292f5598bb325fa"
+  },
+  "known_limits": [
+    "RSS/process-count watchdog samples at20ms; transient overshoot possible",
+    "descendants retain owned process group",
+    "single active job per Python interpreter"
+  ],
+  "red": [
+    "missing harness.boundary import",
+    "stdout symlink overwrite"
+  ],
+  "evidence": "tool execution output in task transcript"
+}
