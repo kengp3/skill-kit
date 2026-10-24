@@ -1,0 +1,17 @@
+from pathlib import Path
+import hashlib,json,sys,time,unittest
+ROOT=Path('/Users/kengp3/Workspaces/mine/simple-skills')
+sys.path.insert(0,str(ROOT/'tests'))
+paths=sorted(list((ROOT/'tests').glob('test_*.py'))+list((ROOT/'tests/harness').glob('*.py')))
+def hashes():return {str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
+before=hashes();start=time.monotonic()
+suite=unittest.defaultTestLoader.discover(str(ROOT/'tests'),pattern='test_*.py')
+result=unittest.TextTestRunner(verbosity=2).run(suite)
+record={'tests':result.testsRun,'failures':[(str(t),s) for t,s in result.failures],
+        'errors':[(str(t),s) for t,s in result.errors],'skipped':[(str(t),why) for t,why in result.skipped],
+        'elapsed_seconds':time.monotonic()-start,'source_before':before,'source_after':hashes(),
+        'new_model_trials':0,'status':'passed' if result.wasSuccessful() and before==hashes() else 'failed'}
+out=ROOT/'docs/research/codex-harness-p0-20261024-evidence/python-tests-final.json'
+with out.open('x') as stream:json.dump(record,stream,ensure_ascii=False,indent=2)
+print(json.dumps({k:record[k] for k in ['tests','elapsed_seconds','status']}))
+raise SystemExit(0 if record['status']=='passed' else 1)

@@ -16,3 +16,5 @@
 實作證據：純控制介面回放首輪 C 兩段原生 RPC，9 項回歸通過；包含 interrupted readback、早到 terminal、錯誤歸屬、結果不明、取消續作授權、writer liveness 分離及原 deadline。TDD 已觀察缺模組、缺驗證、缺續作 API 與衝突事件等失敗後逐項轉綠。實作當時真實父子程序收尾及負向 worker 尚待 ticket 01 整合（現已完成，見下方整合驗收），本票不自行重複程序掃描；未啟動 app-server 或模型。
 
 整合驗收：合併後 56 項 unittest、55 通過／1 Windows 略過；固定產物原生隔離重評五次，parent lifecycle 失敗、A lifecycle 通過、factory-close A／C 通過而 B 失敗，與已知結果一致。取消程序證據與 native readback／原期限續作已有組合測試；證據見 [P0 報告](../research/codex-harness-p0-20261024.research.md)。
+
+最終修正後驗收：60項unittest（59通過／1 Windows略過）、五次固定Java產物重評完成；新增監測失效收尾、threaded launcher、malformed receipt及報告集合／數量回歸。初次結果保留為歷史，最終證據見P0報告。

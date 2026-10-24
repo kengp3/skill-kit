@@ -1,0 +1,32 @@
+{
+  "reviewed_commit": "f36fb21",
+  "status": "fixed-awaiting-recheck",
+  "standards": [
+    {
+      "priority": "P1",
+      "issue": "preexec_fn can deadlock for supported threaded caller before parent control loop",
+      "source": "tests/harness/boundary.py",
+      "reference": "https://docs.python.org/3/library/subprocess.html#subprocess.Popen"
+    },
+    {
+      "priority": "P2",
+      "issue": "execution=null crashes selection instead of making receipt unsupported",
+      "source": "tests/harness/grader.py"
+    }
+  ],
+  "spec": [
+    {
+      "priority": "P1",
+      "issue": "stored receipt report name/count set not matched to inputs.reports, so insufficient evidence can qualify",
+      "source": "tests/harness/grader.py"
+    },
+    {
+      "priority": "P1",
+      "issue": "ps failure after launch can skip own process-group termination in finally",
+      "source": "tests/harness/boundary.py"
+    }
+  ],
+  "no_new_model_trial": true,
+  "fix_commit": "54daaa13af42844aa7047235ab4e076871099988",
+  "integrated_commit": "99941fb"
+}

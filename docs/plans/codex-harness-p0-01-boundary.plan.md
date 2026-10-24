@@ -16,3 +16,5 @@
 驗收：`python3 -B -m unittest discover -s tests -p test_harness_boundary.py`，13 tests，全部通過，3.264 秒。先觀察到缺少模組的 red，以及輸出 symlink 覆寫的 red；修正後 green。真實 canary 覆蓋直接／symlink 外部寫入拒絕、loopback 拒絕、隔離環境、CPU／RSS／程序數／wall 限制、檔案大小限制、正常／失敗／取消收尾與無關 worker 保護。外層執行 sandbox 不允許嵌套 sandbox-exec，測試以已授權的本機 escalation 執行，沒有模型或原生 app-server 呼叫。
 
 界線：只接受系統暫存區內的空白真實工作目錄，既有輸出不覆寫；CPU 使用 kernel limit 及 group watchdog，單檔 16 MiB kernel limit。RSS 與自有程序數以 20ms 取樣，閾值可能短暫超出；不是 kernel 硬記憶體上限。只支援保留自有 process group 的後代，不宣稱可收容任意 detached 程式；單工作互斥範圍是同一 Python interpreter。限制未成立或收尾未確認即拋出 BoundaryUnavailable，不降級執行。
+
+最終修正後驗收：60項unittest（59通過／1 Windows略過）、五次固定Java產物重評完成；新增監測失效收尾、threaded launcher、malformed receipt及報告集合／數量回歸。初次結果保留為歷史，最終證據見P0報告。

@@ -1,0 +1,39 @@
+{
+  "tests": 39,
+  "failures": [],
+  "errors": [],
+  "skipped": [],
+  "elapsed_seconds": 4.900068292001379,
+  "before": {
+    "tests/harness/boundary.py": "0fed7aeb4f51f56c4e2d19fd761d2617c273ec7c8a641010756611585fbb997f",
+    "tests/harness/grader.py": "0abd447a6ab53b1b4319fdff7f00d1eacf5f19caf7f5777d231d27150aee4574",
+    "tests/test_harness_boundary.py": "79b1eef0af66bead136cd233da9bd22a9d8dd063e4bc09abce8ce5c7116894e4",
+    "tests/test_harness_grader.py": "fdd0235fd5f7146e78eab1bf56d5026ab806948d050337acb7fd8826167b80c2"
+  },
+  "after": {
+    "tests/harness/boundary.py": "0fed7aeb4f51f56c4e2d19fd761d2617c273ec7c8a641010756611585fbb997f",
+    "tests/harness/grader.py": "0abd447a6ab53b1b4319fdff7f00d1eacf5f19caf7f5777d231d27150aee4574",
+    "tests/test_harness_boundary.py": "79b1eef0af66bead136cd233da9bd22a9d8dd063e4bc09abce8ce5c7116894e4",
+    "tests/test_harness_grader.py": "fdd0235fd5f7146e78eab1bf56d5026ab806948d050337acb7fd8826167b80c2"
+  },
+  "status": "passed",
+  "red_before_green": [
+    {
+      "test": "malformed_execution",
+      "observed": "AttributeError for null/list/string execution; missing/null remaining_pids accepted; null observations AttributeError"
+    },
+    {
+      "test": "recorded_receipt",
+      "observed": "wrong count, missing report, extra report returned no regrades instead of selecting A"
+    },
+    {
+      "test": "monitor_failure",
+      "observed": "TimeoutExpired and ResourceWarning still-running root after persistent ps failure; test finally killed own group"
+    },
+    {
+      "test": "threaded_launch",
+      "observed": "RuntimeError from explicit external prohibition of preexec callback; no actual deadlock created"
+    }
+  ],
+  "model_trials": 0
+}

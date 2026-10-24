@@ -18,3 +18,5 @@
 原生 sandbox canary 已核對固定產物寫入遭拒、正常與 assertion 失敗可區分、缺 XML／零測試／數量不符／略過／exit 不一致／超時都不冒稱產品驗收結果；收據不可覆寫。實際執行依賴已整合的 ticket 01，沒有呼叫模型、app-server 或修改 Desktop 設定。公開 lifecycle fixture 與既有固定產品的整合驗收已由整合分支完成，見下方證據。
 
 整合驗收：合併後 56 項 unittest、55 通過／1 Windows 略過；固定產物原生隔離重評五次，parent lifecycle 失敗、A lifecycle 通過、factory-close A／C 通過而 B 失敗，與已知結果一致。取消程序證據與 native readback／原期限續作已有組合測試；證據見 [P0 報告](../research/codex-harness-p0-20261024.research.md)。
+
+最終修正後驗收：60項unittest（59通過／1 Windows略過）、五次固定Java產物重評完成；新增監測失效收尾、threaded launcher、malformed receipt及報告集合／數量回歸。初次結果保留為歷史，最終證據見P0報告。

@@ -1,7 +1,7 @@
 # 個人 Harness 首版實作準備與試行計畫（Codex Coding）
 
 日期：2026-10-24（Asia/Taipei）
-狀態：N01–N03 P0 實作及整合驗收已通過，兩軸 review 待完成，見第 21 節與[P0 報告](../research/codex-harness-p0-20261024.research.md)。Desktop 為主要日常入口，CLI 為開發評測路徑；P1 及新的模型 trial 未執行，首輪既有結果與限制保留。
+狀態：N01–N03 P0 實作及整合驗收已通過，四項 review 修正已合併，兩軸複核待完成，見第 21 節與[P0 報告](../research/codex-harness-p0-20261024.research.md)。Desktop 為主要日常入口，CLI 為開發評測路徑；P1 及新的模型 trial 未執行，首輪既有結果與限制保留。
 設計依據：[首版設計規格](../specs/codex-coding-harness.spec.md)
 
 目前執行授權補充（P0）：使用者已核定依本修訂實作 N01–N03，套用 ask-matt／to-tickets／implement-spec，包含必要本機回歸與隔離 canary；不啟動新的模型 trial、不影響 Desktop 日常作業、不要求人工觀察。下文「本輪僅文件」保留為前一輪文件交付的歷史邊界，不限制此次 P0 授權；P1 及後續 trial 仍未授權。
@@ -590,13 +590,13 @@ R01–R07、N01–N07 及優先序可互相對照；規格描述行為契約，�
 
 | 項目 | 實際落點 | 驗收結果 |
 | --- | --- | --- |
-| N01 | `tests/harness/boundary.py`、`tests/test_harness_boundary.py` | 13項真實canary，寫入／symlink／network拒絕、資源限制、父子程序收尾及無關worker保護通過 |
+| N01 | `tests/harness/boundary.py`、`tests/test_harness_boundary.py` | 15項真實canary（含監測失效及threaded launcher），寫入／symlink／network拒絕、資源限制、父子程序收尾及無關worker保護通過 |
 | N02 | `tests/harness/control.py`、`tests/test_harness_control.py` | 9項原生記錄回放；主／子回合、早到／衝突事件、未知結果、writer停止與原deadline通過 |
 | N01＋N02 | `tests/test_harness_p0_integration.py` | 真實取消與程序收尾不代替native readback；重新核對後續作，期限維持原值 |
-| N03 | `tests/harness/grader.py`、`tests/test_harness_grader.py` | 7項資格／重評與錯誤路徑；五次固定Java產物重評與已知結果一致，來源前後不變 |
+| N03 | `tests/harness/grader.py`、`tests/test_harness_grader.py` | 9項資格／重評與錯誤路徑；五次固定Java產物重評與已知結果一致，來源前後不變 |
 
-合併後 unittest 56項：55通過、1項原生Windows cmd.exe略過；56項測試的受測Python來源前後指紋相同。551個受保護來源／設定／runtime快取／原trial證據未變，原demo-002狀態與無關未追蹤工作保留。只有開發測試程式與證據新增，未修改runtime skill、hook、發佈版本或Desktop日常採用設定。
+修正後最終 unittest 60項：59通過、1項原生Windows cmd.exe略過；60項測試的受測Python來源前後指紋相同。551個受保護來源／設定／runtime快取／原trial證據未變，原demo-002狀態與無關未追蹤工作保留。只有開發測試程式與證據新增，未修改runtime skill、hook、發佈版本或Desktop日常採用設定。
 
 P0未建立通用evaluate入口或案例框架，沒有新的模型trial、app-server回合、人工計時或Stop要求。記憶體／程序數限制為20ms抽樣，支援保留自有process group的後代，單工作互斥是一個Python interpreter；不宣稱任意惡意／detached程式的容器保證或Desktop原生控制已重新驗證。
 
-本次P0完成判準：三張票的直接測試／固定產物結果可追溯，整合來源指紋與日常保護核對成立，Standards／Spec兩軸review無待處理問題。前兩項已取得證據，兩軸review待完成；不將P1或Desktop完整驗收納入本次完成聲明。完整證據、命令及限制見[P0報告](../research/codex-harness-p0-20261024.research.md)。
+本次P0完成判準：三張票的直接測試／固定產物結果可追溯，整合來源指紋與日常保護核對成立，Standards／Spec兩軸review無待處理問題。前兩項已取得證據，四項review發現已修正，兩軸複核待完成；不將P1或Desktop完整驗收納入本次完成聲明。完整證據、命令及限制見[P0報告](../research/codex-harness-p0-20261024.research.md)。
