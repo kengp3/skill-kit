@@ -1,10 +1,10 @@
 # 個人 Harness 首版設計規格（Codex Coding）
 
 日期：2026-10-24（Asia/Taipei）
-狀態：N01–N03 的 P0 實作及整合驗收已通過，結果見[P0 報告](../research/codex-harness-p0-20261024.research.md)。本輪 N04、候選離線封裝與 N06 舊資料回放已完成必要本機驗證及兩軸複核，結果及證據見[P1 離線計畫](../plans/codex-harness-p1-offline.plan.md)；不包含 Desktop 接入或新模型 trial。Desktop 為主要日常入口，CLI 為開發評測路徑；本輪 N07 單一簡單 bug 離線案例已完成資格驗證及兩軸複核（配套計畫第 23 節）；Desktop 實際任務／Stop、N07 其他案例與模型回放、人工效益、公平比較及移植尚未完成。首輪三組 smoke 結果仍見[原交付報告](../research/codex-coding-harness-smoke-20261024.research.md)。
+狀態：N01–N03 的 P0 實作及整合驗收已通過，結果見[P0 報告](../research/codex-harness-p0-20261024.research.md)。本輪 N04、候選離線封裝與 N06 舊資料回放已完成必要本機驗證及兩軸複核，結果及證據見[P1 離線計畫](../plans/codex-harness-p1-offline.plan.md)；不包含 Desktop 接入或新模型 trial。Desktop 為主要日常入口，CLI 為開發評測路徑；本輪 N07 單一簡單 bug 離線案例已完成資格驗證及兩軸複核（配套計畫第 23 節）；本輪另完成 N07 小功能／重構的離線素材與資格驗證（配套計畫第 24 節）；Desktop 實際任務／Stop、模型回放、人工效益、公平比較及移植仍未完成。首輪三組 smoke 結果仍見[原交付報告](../research/codex-coding-harness-smoke-20261024.research.md)。
 配套：[試行計畫](../plans/codex-coding-harness-pilot.plan.md)
 
-執行授權沿革：P0 的 N01–N03、N04、候選離線封裝與 N06 舊資料回放已完成。本輪授權僅 N07 單一 started／completed 類型衝突案例的離線實作、必要驗證及本規格／計畫範圍修訂；不改全域設定或其他專案、不擴展 OS／watchdog、不執行新模型 trial。下文僅文件或其他階段的授權記述是當時邊界，不能擴張本輪範圍。
+執行授權沿革：P0、N04、候選封裝、N06 舊資料及 N07 單一 bug 已完成。本輪依使用者後續開發指示實作 N07 小功能與重構離線案例、必要驗證及文件同步；不改全域設定或其他專案、不改現行 runtime／候選版本、不擴展 OS／watchdog、不執行新模型 trial。此前各階段授權是當時範圍，不能用來擴張本輪。
 
 採用 to-spec 範本；已確認決策與設計建議分列。原設計階段僅產出本地文件，後續依開發授權進行實作；未發布 issue 或設定 ready-for-agent 標籤。
 
@@ -282,7 +282,8 @@ Reviewer 取得原始需求、目前產物與直接證據，自行判斷；角�
 - 自動統計是輔助能力，失效明示後繼續；必要驗收證據缺失仍阻擋完成。不得為量測接管日常工作、安裝背景監控或新增人工核准。
 - 品質是必要條件。只有可靠、可比的人工時間與交付品質資料才可聲稱省時；目前只判讀流程與成果，不能將代理指標換算為人工效益。
 - 在開發測試環境保留少量簡單 bug、小功能與局部重構；按核心流程、模型、工具或宿主改動影響回放。檢查無必要的澄清、文件、委派及重複驗證，依任務風險判斷，不設固定工具次數或禁止 review 的門檻。
-- N07 首個素材為[單一 item 類型衝突 bug](../../tests/fixtures/harness-cases/item-type-conflict/task.md)：固定真實錯誤／修正版與最小輸入，先證明錯誤版不通過、修正版通過。這只建立已知開發案例的離線資格，不代表已測 agent 遵循、流程負擔、人工效益或公平模型比較；小功能／重構與模型回放仍為後續工作。
+- N07 首個素材為[單一 item 類型衝突 bug](../../tests/fixtures/harness-cases/item-type-conflict/task.md)：固定真實錯誤／修正版與最小輸入，先證明錯誤版不通過、修正版通過。這只建立已知開發案例的離線資格，不代表已測 agent 遵循、流程負擔、人工效益或公平模型比較；小功能／重構素材另見下項；模型回放仍為後續工作。
+- 小功能優先選[按 turn 統計命令](../../tests/fixtures/harness-cases/command-counts-by-turn/task.md)：缺新欄位與實作完成版本分別驗證新契約、未知／錯誤邊界及既有行為。重構再選[抽出命令統計](../../tests/fixtures/harness-cases/command-metrics-refactor/task.md)：前後通過相同行為契約，另驗結構抽取並保留舊結構負向對照。兩個 after 是案例專用衍生參考，非歷史或現行 production 變更；詳配套計畫第 24 節。
 - 首個熟悉案例保留為開發案例；需要比較效果時另用未見案例及合格隔離。Desktop 為近期採用重點；第二專案、其他宿主依需求驗證，不綁成本輪完成條件。
 
 三組共同固定外部資源上限、驗收回饋及整次 trial 補跑政策；各組內部的診斷、修復與工具重試策略屬於比較對象，保留差異並計入成本，不為統一策略而修改原生或現行組。

@@ -1,0 +1,55 @@
+{
+  "case_id": "command-metrics-refactor-v1",
+  "kind": "refactor",
+  "inputs": {
+    "files": {
+      "checker": "0338bd9086752d8c988f16568641df386ca46b610a087cc1f81cd1c299f5f6fb",
+      "conflict": "c1c7a48dad28855c6298d002883856a956842c076108805ee3b707949e730a71",
+      "fixture": "0f4eb95579d38836ec4d8ba5a1034c9a39799a14adc0235b4a6179cce6d38565",
+      "manifest": "300e719c5b721055a278b8c8077f85d1682db6db1aa8788e524a19e0d21831e3",
+      "requirement": "d8237cfca3dd030349ca7223205a1d368b6a56981c0c8cffd0804d2f0e264da5",
+      "executable": "a7d8a09da6400b33e78b90281f3f81d058804d082689257b9008290ebd8a3b28"
+    },
+    "dependencies": {
+      "python": "3.15.0 (main, Oct  9 2026, 11:16:41) [Clang 21.0.0 (clang-2100.3.34.2)]"
+    },
+    "environment": {},
+    "command": [
+      "/opt/homebrew/opt/python@3.15/bin/python3.15",
+      "-I",
+      "-B",
+      "/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/command-metrics-refactor/check.py"
+    ],
+    "reports": {
+      "TEST-command-metrics-refactor.xml": 3
+    }
+  },
+  "product_id": "before",
+  "product_fingerprint": "2ce5cfb1ef3749d2f9feb9ee38428d7a1a7be4c96436891ec548b3970cf3756b",
+  "source_before": "2ce5cfb1ef3749d2f9feb9ee38428d7a1a7be4c96436891ec548b3970cf3756b",
+  "argv": [
+    "/opt/homebrew/opt/python@3.15/bin/python3.15",
+    "-I",
+    "-B",
+    "/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/command-metrics-refactor/check.py",
+    "/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/command-metrics-refactor/products/before"
+  ],
+  "status": "graded",
+  "product_passed": true,
+  "test_counts": {
+    "TEST-command-metrics-refactor.xml": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "execution": {
+    "status": "completed",
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "test_conflict_unknown_summary_is_preserved (__main__.Behavior.test_conflict_unknown_summary_is_preserved) ... ok\ntest_invalid_identity_and_missing_source_are_preserved (__main__.Behavior.test_invalid_identity_and_missing_source_are_preserved) ... ok\ntest_normal_summary_is_preserved (__main__.Behavior.test_normal_summary_is_preserved) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+    "remaining_pids": []
+  },
+  "source_after": "2ce5cfb1ef3749d2f9feb9ee38428d7a1a7be4c96436891ec548b3970cf3756b"
+}

@@ -1,0 +1,55 @@
+{
+  "case_id": "command-counts-by-turn-v1",
+  "kind": "feature",
+  "inputs": {
+    "files": {
+      "checker": "13e02ca302add24095f08fe5a32cfc93daaf5bbff45690c566e0211b2aa4e411",
+      "fixture": "0f4eb95579d38836ec4d8ba5a1034c9a39799a14adc0235b4a6179cce6d38565",
+      "manifest": "a9b72c5b988278687613c76cd88c431d62001f30bd982c8f0b95acfda02aa83a",
+      "requirement": "6f880f2874060ccc1efe9c43beeaef3be7bcb47ebe6b12380ccd6544c05df688",
+      "unknown": "c08f4d967d17735900c0c18ca718cadb13e1cc7977b99accbd53fef1a8be0854",
+      "executable": "a7d8a09da6400b33e78b90281f3f81d058804d082689257b9008290ebd8a3b28"
+    },
+    "dependencies": {
+      "python": "3.15.0 (main, Oct  9 2026, 11:16:41) [Clang 21.0.0 (clang-2100.3.34.2)]"
+    },
+    "environment": {},
+    "command": [
+      "/opt/homebrew/opt/python@3.15/bin/python3.15",
+      "-I",
+      "-B",
+      "/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/command-counts-by-turn/check.py"
+    ],
+    "reports": {
+      "TEST-command-counts-by-turn.xml": 4
+    }
+  },
+  "product_id": "missing_feature",
+  "product_fingerprint": "2ce5cfb1ef3749d2f9feb9ee38428d7a1a7be4c96436891ec548b3970cf3756b",
+  "source_before": "2ce5cfb1ef3749d2f9feb9ee38428d7a1a7be4c96436891ec548b3970cf3756b",
+  "argv": [
+    "/opt/homebrew/opt/python@3.15/bin/python3.15",
+    "-I",
+    "-B",
+    "/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/command-counts-by-turn/check.py",
+    "/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/command-counts-by-turn/products/missing_feature"
+  ],
+  "status": "graded",
+  "product_passed": false,
+  "test_counts": {
+    "TEST-command-counts-by-turn.xml": {
+      "tests": 4,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "execution": {
+    "status": "completed",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "test_existing_invalid_turn_ids_are_rejected (__main__.PerTurnCounts.test_existing_invalid_turn_ids_are_rejected) ... ok\ntest_existing_summary_contract_is_preserved (__main__.PerTurnCounts.test_existing_summary_contract_is_preserved) ... ok\ntest_new_counts_include_failed_commands_but_not_duplicates_or_children (__main__.PerTurnCounts.test_new_counts_include_failed_commands_but_not_duplicates_or_children) ... FAIL\ntest_unknown_commands_are_excluded_from_new_counts (__main__.PerTurnCounts.test_unknown_commands_are_excluded_from_new_counts) ... FAIL\n\n======================================================================\nFAIL: test_new_counts_include_failed_commands_but_not_duplicates_or_children (__main__.PerTurnCounts.test_new_counts_include_failed_commands_but_not_duplicates_or_children)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/command-counts-by-turn/check.py\", line 19, in test_new_counts_include_failed_commands_but_not_duplicates_or_children\n    self.assertEqual(result['metrics'].get('commands_by_turn'),\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                     {'first': 2, 'second': 1, 'empty': 0})\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: None != {'first': 2, 'second': 1, 'empty': 0}\n\n======================================================================\nFAIL: test_unknown_commands_are_excluded_from_new_counts (__main__.PerTurnCounts.test_unknown_commands_are_excluded_from_new_counts)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/command-counts-by-turn/check.py\", line 25, in test_unknown_commands_are_excluded_from_new_counts\n    self.assertEqual(result['metrics'].get('commands_by_turn'), {'first': 0})\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: None != {'first': 0}\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=2)\n",
+    "remaining_pids": []
+  },
+  "source_after": "2ce5cfb1ef3749d2f9feb9ee38428d7a1a7be4c96436891ec548b3970cf3756b"
+}

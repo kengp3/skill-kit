@@ -1,0 +1,26 @@
+{
+  "case_id": "command-metrics-refactor-v1",
+  "kind": "refactor",
+  "checker_version": 1,
+  "reports": {
+    "TEST-command-metrics-refactor.xml": 3
+  },
+  "purpose": "Known offline refactoring contract, not a model benchmark",
+  "products": {
+    "before": {
+      "revision": "0a94c63fb25257e0dd5c5fd35db073edaea3dd6b",
+      "files": {
+        "harness/evidence.py": "1d685ae2d5c8eab4cf4b031a2637769806bc75d5da39c147084d1b489e20560d",
+        "harness/control.py": "fdce55e2de2c3d620f2974ee3e330b0b0fe9dd77edd51e6c04e0c63cdd45b090"
+      }
+    },
+    "after": {
+      "base_revision": "0a94c63fb25257e0dd5c5fd35db073edaea3dd6b",
+      "derivation": "Case-only reference: extract _command_metrics while preserving summarize_events behavior; not production code",
+      "files": {
+        "harness/evidence.py": "0f203c1692ab0ddcaff9cca52549d688d0b10ecb7ef4d41b02534dfdfdf94e14",
+        "harness/control.py": "fdce55e2de2c3d620f2974ee3e330b0b0fe9dd77edd51e6c04e0c63cdd45b090"
+      }
+    }
+  }
+}
