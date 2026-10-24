@@ -67,10 +67,10 @@ Script 統一 Python 3、優先標準函式庫；首版來源使用 Python 3.10+
 
 ### D11：事件與邊界
 
-- SessionStart：有關聯時輸出合約位置、識別及核對指示；無關聯時只提供目前 session 識別與條件式啟用/接手指示，不自動綁定或執行。source=compact/fork/resume 不代表新授權。
+- SessionStart：有關聯時輸出合約位置、識別及核對指示；無關聯時只提供目前 session 識別與條件式啟用/接手指示，不自動綁定或執行。source=compact/fork/resume 不代表新授權。只有一份未完成候選也不自動接手；使用者已明確要求續作且任務可唯一確認時，由主責核對後保存接手，不重複要求同一授權。
 - UserPromptSubmit：輸出本次 turn/session 識別與最新要求核對提醒；不以關鍵字分類授權、不寫合約、不重置任何補救收據。
 - Stop：先驗證 event 結構，stop_hook_active=true 時絕不再次要求續作；false 時，必須有唯一綁定、三項 host 資格皆已驗證、當前 turn_id 等於合約 authorization.user_turn_id、mode=execute，才可能補救。
-- host 資格為安裝/驗證環節的聲明，不是 handler 能自證的事實。預設未驗證；不能靠手改 verified 或合成輸入聲稱 Desktop 通過。任一資格不足回傳 systemMessage 缺口、不發 block，不宣稱 harness 已就緒。
+- host 資格為安裝/驗證環節的聲明，不是 handler 能自證的事實。預設未驗證；不能靠手改 verified 或合成輸入聲稱 Desktop 通過。任一資格不足回傳 systemMessage 缺口、不發 block，不宣稱 harness 已就緒。SessionStart 可在 session_identity 合格時保留恢復上下文；UserPromptSubmit 另需 user_turn_identity。部分功能可用仍須同時明示整體未就緒。
 - blocked/cancelled 或 discuss/wait/stop 不要求實作；unknown_operations 非空時只能要求查證與保存，不得重播副作用。
 - in_progress/pending 仍有必要缺口時要求核對並繼續授權工作。done 但成果/evidence 不一致時要求核對，不能假定成功；一致 done 放行但不代替實際驗收。
 - 任何補救以同一 user_turn_id 為界。介入前原子 exclusive-create 技術收據（session、user_turn、task、contract 指紋），存在即不再補救；收據只表示曾要求補救，不是任務完成或執行證據。輸出遺失也不補發，以維持最多一次。receipt 失敗不得輸出 block。
