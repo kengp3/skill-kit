@@ -1,0 +1,15 @@
+{
+  "baseline": "c0c33d7ec99a1a48642da420f1fabbd77bf0e8bb",
+  "implementation_commit": "26f18a6",
+  "standards": {
+    "agent": "/root/n07_more_standards",
+    "findings": 0,
+    "report": "## Standards\n\n未發現需處理的問題，共 0 項 finding。\n\n- 小功能案例：0 項。只在案例專用參考加入 commands_by_turn；歷史基準與 manifest 指紋一致，新增檢查使用公開摘要介面。\n- 重構案例：0 項。統計抽取保留原篩選、未知結果與錯誤處理；行為與結構檢查分開，舊結構保留負向對照。\n- 共用接入及文件：0 項。重用既有 grader，未增加 runner、依賴或日常接入機制；文件位置符合 project-setting.md，明確區分離線資格與模型成效。\n\n已唯讀比對固定 diff c0c33d7..26f18a6、各參考版本差異及來源 SHA-256。tests/harness、skills、scripts、packaging、.codex、.agents 在此 diff 中均無變更。完整來源副本是明定凍結素材，未列為重複程式碼問題。\n\n未重跑會產生輸出的測試，也未驗證 Desktop／模型行為；本審查不擴張離線證據的適用範圍。"
+  },
+  "spec": {
+    "agent": "/root/n07_more_spec",
+    "findings": 0,
+    "report": "## Spec\n\n小功能、重構及共同接入各 0 項 finding，未發現遺漏、越界或與規格不符的實作。\n\n- 小功能符合計畫 §24「只計指定 root／turn 中已結束且 exit code 可確認的命令」；參考版僅新增按 turn 統計，沿用既有歸屬、去重與 unknown 語義。缺功能版 4 項中僅新增需求的 2 項失敗，參考版全通過。\n- 重構符合「前後相同契約，另驗結構抽取」。原有統計與錯誤判斷等價移入 helper；前後行為檢查各 3 項通過，after 結構通過、before 結構 3 項失敗。\n- 共同接入重用既有 grader，沒有新增 runner、依賴或 runtime 改動。獨立重新核對兩案的 qualification、manifest SHA、歷史基準原碼、固定產物指紋及 XML 計數，皆一致。\n- 規格、計畫及報告明確區分衍生參考與歷史版本，沒有把離線資格推論為模型行為、人工效益或公平比較；變更清單符合專案範圍限制。\n\n未重跑完整 unittest 或啟動 Desktop／模型 trial；本審查不證明任意候選實作或所有輸入的正確性。"
+  },
+  "method": "Two independent read-only code-review axes; no new model trial."
+}
