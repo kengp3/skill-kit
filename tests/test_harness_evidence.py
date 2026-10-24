@@ -23,6 +23,21 @@ def completed(thread='root', turn='first', status='completed'):
         'threadId': thread, 'turn': {'id': turn, 'status': status}}}
 
 
+def link_archive(target):
+    names = ['frozen-trial-config.json', 'frozen-trial-grader-v2.json',
+             'flow-smoke-outcomes.json', 'cli-smoke-C/reconciled-state.json',
+             'cli-smoke-C/interrupted-root-readback.json',
+             'cli-smoke-C-continuation-1/rpc.jsonl']
+    for group in 'ABC':
+        names.extend([f'cli-smoke-{group}/state.json', f'cli-smoke-{group}/rpc.jsonl',
+                      f'cli-grade-{group}-v2/result.json',
+                      f'cli-diagnostic-{group}-factory-close/result.json'])
+    for name in names:
+        path = target / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.symlink_to(ARCHIVE / name)
+
+
 class EvidenceTest(unittest.TestCase):
     def test_root_scope_and_duplicate_items_preserve_source_references(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -131,6 +146,52 @@ class EvidenceTest(unittest.TestCase):
         self.assertEqual(result['metrics']['commands_completed'], 0)
         self.assertEqual(result['metrics']['command_outcomes_unknown'], 1)
         self.assertEqual(result['coverage'], 'partial')
+
+    def test_started_completed_type_conflict_remains_unknown_in_either_order(self):
+        started = item()
+        started['method'] = 'item/started'
+        other_type = item()
+        other_type['params']['item']['type'] = 'agentMessage'
+        other_start = json.loads(json.dumps(other_type))
+        other_start['method'] = 'item/started'
+        for events in [[started, other_type], [other_type, started],
+                       [other_start, started, item()]]:
+            with self.subTest(events=events), tempfile.TemporaryDirectory() as temp:
+                path = Path(temp) / 'rpc.jsonl'
+                path.write_text(''.join(json.dumps({'response': event}) + '\n'
+                                        for event in events + [completed()]))
+                result = summarize_events([path], thread_id='root', turn_ids=['first'])
+                self.assertEqual(result['coverage'], 'partial')
+                self.assertEqual(result['metrics']['commands_completed'], 0)
+                self.assertEqual(result['metrics']['command_outcomes_unknown'], 1)
+
+    def test_missing_or_invalid_group_inputs_do_not_abort_other_groups(self):
+        for mode in ['missing_grade', 'malformed_grade', 'missing_field',
+                     'invalid_grade_value', 'malformed_outcome']:
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temp:
+                archive = Path(temp)
+                link_archive(archive)
+                path = archive / ('flow-smoke-outcomes.json' if mode == 'malformed_outcome'
+                                  else 'cli-grade-A-v2/result.json')
+                if mode == 'malformed_outcome':
+                    data = json.loads(path.read_text())
+                    data['groups']['A'] = None
+                elif mode == 'invalid_grade_value':
+                    data = json.loads(path.read_text())
+                    data['product_passed'] = None
+                path.unlink()
+                if mode == 'malformed_grade':
+                    path.write_text('truncated')
+                elif mode == 'missing_field':
+                    path.write_text('{}')
+                elif mode in ('malformed_outcome', 'invalid_grade_value'):
+                    path.write_text(json.dumps(data))
+                results = replay_smoke(archive)
+                self.assertEqual([r['group'] for r in results], ['A', 'B', 'C'])
+                self.assertEqual(results[0]['delivery']['status'], 'unknown')
+                self.assertTrue(results[0]['delivery']['unverified'])
+                self.assertEqual(results[1]['delivery']['status'], 'completed_with_known_defect')
+                self.assertEqual(results[2]['delivery']['status'], 'completed')
 
 
 if __name__ == '__main__':

@@ -1,0 +1,30 @@
+{
+  "baseline": "205ca091bee6bdaaea2819d44bc6b0feb9ac84f7",
+  "initial_review_commit": "c786ad3139f7fafcf19ca569666607cdd9dc03eb",
+  "standards": {
+    "findings": [],
+    "limitations": [
+      "No full test rerun or Desktop/model behavior verification by reviewer."
+    ]
+  },
+  "spec": {
+    "findings": [
+      {
+        "id": "SPEC-01",
+        "priority": "P2",
+        "problem": "Started/completed item types can conflict without partial coverage.",
+        "fix": "Track all observed types per identity; retain unknown outcomes and partial coverage.",
+        "regression": "test_started_completed_type_conflict_remains_unknown_in_either_order",
+        "status": "fixed_pending_verification"
+      },
+      {
+        "id": "SPEC-02",
+        "priority": "P2",
+        "problem": "Missing/malformed non-RPC input aborts all group replay.",
+        "fix": "Disclose input errors per group, preserve unknown acceptance and continue independent groups.",
+        "regression": "test_missing_or_invalid_group_inputs_do_not_abort_other_groups",
+        "status": "fixed_pending_verification"
+      }
+    ]
+  }
+}
