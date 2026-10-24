@@ -1,0 +1,45 @@
+{
+  "evidence_kind": "offline-cli-only",
+  "python": "3.15.0",
+  "records": [
+    {
+      "slice": "registered-hooks",
+      "phase": "red",
+      "command": "PYTHONPATH=tests python3 -B -m unittest test_harness_package.PackageTest.test_registered_hooks_run_from_package_with_spaces -v",
+      "chunk_id": "ee9d7e",
+      "wall_time_seconds": 0.011074209,
+      "exit_code": 1,
+      "original_token_count": 225,
+      "output": "test_registered_hooks_run_from_package_with_spaces (test_harness_package.PackageTest.test_registered_hooks_run_from_package_with_spaces) ... FAIL\n\n======================================================================\nFAIL: test_registered_hooks_run_from_package_with_spaces (test_harness_package.PackageTest.test_registered_hooks_run_from_package_with_spaces)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/kengp3/.codex/worktrees/task-hooks-workflow/simple-skills/tests/test_harness_package.py\", line 24, in test_registered_hooks_run_from_package_with_spaces\n    self.assertEqual(plugin['version'], '0.2.0')\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '0.1.2' != '0.2.0'\n- 0.1.2\n+ 0.2.0\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.040s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "slice": "registered-hooks",
+      "phase": "green",
+      "chunk_id": "e34b20",
+      "wall_time_seconds": 0.168535792,
+      "exit_code": 0,
+      "original_token_count": 61,
+      "output": "test_registered_hooks_run_from_package_with_spaces (test_harness_package.PackageTest.test_registered_hooks_run_from_package_with_spaces) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.207s\n\nOK\n"
+    },
+    {
+      "slice": "required-assets-regression",
+      "phase": "green",
+      "command": "python3 -B -m unittest discover -s tests -p test_harness_package.py -v",
+      "chunk_id": "f6cf67",
+      "wall_time_seconds": 0.840096042,
+      "exit_code": 0,
+      "original_token_count": 305,
+      "output": "test_existing_release_is_never_overwritten (test_harness_package.PackageTest.test_existing_release_is_never_overwritten) ... ok\ntest_missing_or_linked_hooks_are_rejected (test_harness_package.PackageTest.test_missing_or_linked_hooks_are_rejected) ... ok\ntest_missing_or_linked_skill_root_is_rejected (test_harness_package.PackageTest.test_missing_or_linked_skill_root_is_rejected) ... ok\ntest_output_alias_cannot_write_into_runtime_sources (test_harness_package.PackageTest.test_output_alias_cannot_write_into_runtime_sources) ... ok\ntest_package_runs_outside_checkout_and_excludes_research (test_harness_package.PackageTest.test_package_runs_outside_checkout_and_excludes_research) ... ok\ntest_registered_hooks_run_from_package_with_spaces (test_harness_package.PackageTest.test_registered_hooks_run_from_package_with_spaces) ... ok\ntest_verify_detects_changed_or_missing_packaged_hooks (test_harness_package.PackageTest.test_verify_detects_changed_or_missing_packaged_hooks) ... ok\ntest_verify_rejects_changed_and_unlisted_files (test_harness_package.PackageTest.test_verify_rejects_changed_and_unlisted_files) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.903s\n\nOK\n"
+    },
+    {
+      "slice": "integrated-package-and-runtime",
+      "phase": "green",
+      "command": "PYTHONPATH=tests python3 -B -m unittest test_harness_package test_task_harness_hooks -v",
+      "chunk_id": "5736e7",
+      "wall_time_seconds": 3.272115792,
+      "exit_code": 0,
+      "original_token_count": 1229,
+      "output": "test_existing_release_is_never_overwritten (test_harness_package.PackageTest.test_existing_release_is_never_overwritten) ... ok\ntest_missing_or_linked_hooks_are_rejected (test_harness_package.PackageTest.test_missing_or_linked_hooks_are_rejected) ... ok\ntest_missing_or_linked_skill_root_is_rejected (test_harness_package.PackageTest.test_missing_or_linked_skill_root_is_rejected) ... ok\ntest_output_alias_cannot_write_into_runtime_sources (test_harness_package.PackageTest.test_output_alias_cannot_write_into_runtime_sources) ... ok\ntest_package_runs_outside_checkout_and_excludes_research (test_harness_package.PackageTest.test_package_runs_outside_checkout_and_excludes_research) ... ok\ntest_registered_hooks_run_from_package_with_spaces (test_harness_package.PackageTest.test_registered_hooks_run_from_package_with_spaces) ... ok\ntest_verify_detects_changed_or_missing_packaged_hooks (test_harness_package.PackageTest.test_verify_detects_changed_or_missing_packaged_hooks) ... ok\ntest_verify_rejects_changed_and_unlisted_files (test_harness_package.PackageTest.test_verify_rejects_changed_and_unlisted_files) ... ok\ntest_ambiguous_bindings_and_duplicate_task_ids_are_rejected (test_task_harness_hooks.HookTest.test_ambiguous_bindings_and_duplicate_task_ids_are_rejected) ... ok\ntest_configuration_and_discovery_do_not_activate_other_projects (test_task_harness_hooks.HookTest.test_configuration_and_discovery_do_not_activate_other_projects) ... ok\ntest_contract_schema_and_dependencies_are_not_guessed (test_task_harness_hooks.HookTest.test_contract_schema_and_dependencies_are_not_guessed) ... ok\ntest_done_requires_non_cancelled_accepted_outcomes (test_task_harness_hooks.HookTest.test_done_requires_non_cancelled_accepted_outcomes) ... ok\ntest_done_with_accepted_outcomes_allows_closeout (test_task_harness_hooks.HookTest.test_done_with_accepted_outcomes_allows_closeout) ... ok\ntest_duplicate_json_keys_and_multiple_blocks_are_rejected (test_task_harness_hooks.HookTest.test_duplicate_json_keys_and_multiple_blocks_are_rejected) ... ok\ntest_existing_incomplete_reservation_is_not_retried (test_task_harness_hooks.HookTest.test_existing_incomplete_reservation_is_not_retried) ... ok\ntest_existing_native_continuation_never_requests_again (test_task_harness_hooks.HookTest.test_existing_native_continuation_never_requests_again) ... ok\ntest_host_flag_types_missing_event_fields_and_done_unknown_fail_safely (test_task_harness_hooks.HookTest.test_host_flag_types_missing_event_fields_and_done_unknown_fail_safely) ... ok\ntest_invalid_cli_argument_is_visible_without_exit_two (test_task_harness_hooks.HookTest.test_invalid_cli_argument_is_visible_without_exit_two) ... ok\ntest_missing_bad_or_oversized_event_reports_gap (test_task_harness_hooks.HookTest.test_missing_bad_or_oversized_event_reports_gap) ... ok\ntest_new_prompt_does_not_reset_budget_and_stale_authorization_is_rejected (test_task_harness_hooks.HookTest.test_new_prompt_does_not_reset_budget_and_stale_authorization_is_rejected) ... ok\ntest_outside_root_and_symlink_paths_are_rejected (test_task_harness_hooks.HookTest.test_outside_root_and_symlink_paths_are_rejected) ... ok\ntest_parallel_stop_and_lost_output_never_reissue (test_task_harness_hooks.HookTest.test_parallel_stop_and_lost_output_never_reissue) ... ok\ntest_partial_capabilities_keep_context_and_report_overall_gap (test_task_harness_hooks.HookTest.test_partial_capabilities_keep_context_and_report_overall_gap) ... ok\ntest_session_start_recovers_contract_without_mutation (test_task_harness_hooks.HookTest.test_session_start_recovers_contract_without_mutation) ... ok\ntest_special_file_is_rejected_without_waiting (test_task_harness_hooks.HookTest.test_special_file_is_rejected_without_waiting) ... ok\ntest_stop_requests_once_and_preserves_contract (test_task_harness_hooks.HookTest.test_stop_requests_once_and_preserves_contract) ... ok\ntest_stop_respects_modes_terminal_and_blocked_states (test_task_harness_hooks.HookTest.test_stop_respects_modes_terminal_and_blocked_states) ... ok\ntest_task_switch_does_not_reset_same_user_turn_budget (test_task_harness_hooks.HookTest.test_task_switch_does_not_reset_same_user_turn_budget) ... ok\ntest_unknown_results_only_request_reconciliation (test_task_harness_hooks.HookTest.test_unknown_results_only_request_reconciliation) ... ok\ntest_unmarked_docs_are_ignored_but_marked_contract_limits_are_enforced (test_task_harness_hooks.HookTest.test_unmarked_docs_are_ignored_but_marked_contract_limits_are_enforced) ... ok\ntest_unqualified_host_reports_gap_and_never_requests_continuation (test_task_harness_hooks.HookTest.test_unqualified_host_reports_gap_and_never_requests_continuation) ... ok\ntest_unwritable_receipt_location_is_not_continuation (test_task_harness_hooks.HookTest.test_unwritable_receipt_location_is_not_continuation) ... ok\n\n----------------------------------------------------------------------\nRan 32 tests in 3.314s\n\nOK\n"
+    }
+  ]
+}
