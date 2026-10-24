@@ -17,9 +17,9 @@
 | ID | 成果 | 依賴 | 狀態 |
 | --- | --- | --- | --- |
 | H01 | 合約驅動的恢復、授權核對與一次補救 handler | 無 | done |
-| H02 | 必要 hooks 完整候選封裝與套件外執行 | H01、H03 | in_progress |
+| H02 | 必要 hooks 完整候選封裝與套件外執行 | H01、H03 | done |
 | H03 | 任務生命週期 skill、合約範本與日常接入指南 | 無 | done |
-| H04 | 整合驗證、兩軸 review 與證據對帳 | H01–H03 | pending |
+| H04 | 整合驗證、兩軸 review 與證據對帳 | H01–H03 | done |
 | H05 | Desktop 真實接點與模型遵循資格 | H04、後續試行授權 | blocked |
 
 ## 保護與驗證
@@ -35,3 +35,5 @@ H01/H03 可各自實作，H02 等兩者整合後。依 skill 以獨立 worktree�
 - 宿主識別查核：[必要 hook 資格缺口](../research/task-harness-lifecycle-host-gap.research.md)。官方欄位不足以直接宣稱原使用者回合與自動續作鏈已驗證。
 
 - H01/H03 已整合至 d24e2a1；主責在整合來源重跑 hook CLI 24 項通過（2.384 秒，Python 3.15）。H02 開始封裝；H04 尚待最終候選與獨立複核。
+
+- H01–H04 已完成並整合至產品來源 81497d5：最終 101 通過、1 個 Windows 原生測試跳過；兩軸 review 的三個獨立問題修正後均已複核。候選 0.2.0 已建包驗證但未安裝。詳見[整合驗證](../research/task-harness-lifecycle-validation.research.md)。H05 維持 blocked，整體未完成。

@@ -1,0 +1,48 @@
+{
+  "source_head": "81497d5d6c02a05598b6d8a2aadd305378509a87",
+  "candidate_path": "/Users/kengp3/Workspaces/mine/simple-skills/dist/candidates/personal-harness-0.2.0",
+  "manifest_sha256": "3d7924929d77a659a7b67237e147f6d8150b5f10146da0e5086e8b08e348b9d5",
+  "manifest_version": "0.2.0",
+  "manifest_files": 22,
+  "verify_stdout": "3d7924929d77a659a7b67237e147f6d8150b5f10146da0e5086e8b08e348b9d5\n/Users/kengp3/Workspaces/mine/simple-skills/dist/candidates/personal-harness-0.2.0\n",
+  "fixture": {
+    "outputs": [
+      {
+        "hookSpecificOutput": {
+          "hookEventName": "SessionStart",
+          "additionalContext": "Task harness session_id=fixture-session. Contract /private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/task-hook-fixture-v1scsyam/contracts/fixture.md; task_id=fixture-parser-fix. Reconcile current artifacts and authorization before resuming."
+        }
+      },
+      {
+        "hookSpecificOutput": {
+          "hookEventName": "UserPromptSubmit",
+          "additionalContext": "Task harness session_id=fixture-session, turn_id=fixture-user-turn. Reconcile the latest user request and save its effective authorization in the bound contract. Do not infer authorization from old state; a hook continuation is not a new user request and must not reset the original user_turn_id or intervention budget."
+        }
+      },
+      {
+        "decision": "block",
+        "reason": "Task harness closeout reconciliation (same user work turn; no new authority or budget). Reconcile necessary outcomes T2; continue only authorized ready work, or save the concrete blocker. All-cancelled outcomes do not prove successful completion. Recheck the latest user request, acceptance evidence and saved contract. Respect user Stop and cancellation; do not weaken completion criteria."
+      },
+      {}
+    ],
+    "receipt": {
+      "session_id": "fixture-session",
+      "user_turn_id": "fixture-user-turn",
+      "task_id": "fixture-parser-fix",
+      "contract_sha256": "a84df6c9de6251b16d6877bb5f66afbf191a70883ed8b79fbc5cede829a372e5",
+      "operation": "request_closeout_reconciliation"
+    },
+    "contract_unchanged": true,
+    "evidence_kind": "synthetic-cli-only"
+  },
+  "protected_files_checked": 1334,
+  "protected_files_changed": [],
+  "python_3_10_syntax_only": [
+    "packaging/codex/hooks/task_harness.py",
+    "scripts/package_harness.py"
+  ],
+  "python_3_10_runtime_verified": false,
+  "desktop_verified": false,
+  "new_model_trials": 0,
+  "installed": false
+}

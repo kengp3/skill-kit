@@ -1,6 +1,6 @@
 # 非侵入式任務合約與必要 hooks
 
-日期：2026-10-25。狀態：ready-for-agent；目前整套 harness 尚未驗收。
+日期：2026-10-25。狀態：來源與離線候選已完成；目前整套 Desktop harness 尚未驗收（H05）。
 本規格承接本輪已確認決策，取代舊 coding-harness 文件對本輪產品優先順序的描述；歷史試行與結論不改寫。
 
 ## Problem Statement

@@ -1,6 +1,6 @@
 # H01：合約驅動的必要 hook 行為
 
-Status: implemented-offline
+Status: done（來源與離線 CLI 驗證；Desktop 資格仍由 H05 處理）
 Blocked by: None
 Spec: [任務合約與必要 hooks](../specs/task-harness-lifecycle.spec.md)
 

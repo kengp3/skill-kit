@@ -23,7 +23,7 @@ Codex Desktop app 是主要日常入口；CLI 與評測工具留在開發端。�
 - Python 3 標準函式庫為 script runtime；3.10+ 是相容目標，開發環境 3.15 不代表最低版本已實測。不硬編碼 Homebrew、不自動安裝 runtime。
 - 設定中的 session 身分、使用者回合身分與 Stop 延續資格預設 `false`。離線 payload 或單元測試不構成 Desktop 真實事件證據；能力不足明示為缺口，不宣稱 hook 可選或已完整驗收。
 
-本輪交付包含來源、離線驗證與候選封裝。Desktop 真實接點、模型遵循及省時效果另列待驗證；不要求人工監看或新增例行核准點。參見整合計畫的 H05。
+本輪交付包含來源、離線驗證與候選封裝；完成項目與直接證據見[整合驗證報告](docs/research/task-harness-lifecycle-validation.research.md)。Desktop 真實接點、模型遵循及省時效果另列待驗證；不要求人工監看或新增例行核准點。參見整合計畫的 H05。
 
 ## 開發端離線候選
 
