@@ -1,66 +1,73 @@
 ---
 name: task-harness
-description: Deliver bug fixes, features, and refactors in existing projects using risk-based verification, direct evidence, and progress-based recovery. Use for implementation, multi-step coordination, or resuming interrupted coding work. Planning alone does not authorize implementation.
+description: Own an explicitly enabled multi-step task through verified completion using one recoverable task contract. Use for execution, coordination, or resuming unfinished coding work across conversations. Planning alone does not authorize implementation.
 ---
 
-# Coding Harness
+# Task Harness
 
-Own the requested outcome through verified delivery. Use the host's tools and the project's existing rules. Match the user's language.
+Keep the whole agreed outcome moving within authorization. Use native execution tools, one task contract and existing project checks. Do not replace the host runtime or turn evaluation infrastructure into the daily workflow. Match the user's language.
 
-## Establish the contract
+## Establish one task contract
 
-1. Identify planning, execution, or resume and the authorized scope. Read project instructions, affected code, callers, current changes and available checks. Preserve unrelated work.
-2. Reuse the approved brief and spec. If material requirements are missing, use [define-task](../define-task/SKILL.md). Ask only the unresolved question that changes the result; continue independent work.
-3. Before implementation, state concrete expected behavior and its source, verification, relevant risks and allowed side effects. Check that acceptance expectations represent the requirement rather than copying the existing implementation. Inspect uncertain or high-risk expectations against independent evidence.
-4. Confirm minimum execution and observation: working directory, available runtime/check commands, final result retrieval and source attribution. Record actual permissions and limits; unknown budgets stay unknown. A missing necessary capability blocks its dependent operation.
+1. Identify planning, execution or resume from the latest request. Explicit activation covers this task's later turns and explicit resumption, not new tasks or projects. Installing the skill or loading a hook does not authorize execution.
+2. Read the confirmed project root's instructions, relevant source/callers, current changes and available checks. Preserve unrelated work. Reuse the objective, scope and Definition of Done; use [define-task](../define-task/SKILL.md) only for material unresolved requirements.
+3. Choose one authoritative contract before execution. Prefer an existing native tracker only when it retains the complete contract across conversations and has an adapter providing the required hook behavior. This release implements the [Markdown contract](references/task-contract.md); native tracker compatibility is not presumed. Reuse a suitable document, obey project placement rules, and do not create a second tracker. If file writes are forbidden, discuss the draft but do not claim a saved executable contract exists.
+4. Save identity, scope/constraints, necessary outcomes and acceptance, progress and recovery information. A small task may have one outcome including verification. Add detail only when dependencies, ownership or recovery require it; do not split each read/edit/check into tasks. Preserve necessary outcome coverage when splitting or merging.
+5. Confirm working directory, checks/runtime, retrievable final results, source attribution, permissions and actual limits. Unknown budgets stay unknown. Complete harness use requires the three hooks and a verified project-local connection; missing hooks/Python/trust/host qualification are readiness gaps, not optional skill-only success. Do not install runtimes or change global settings automatically.
 
-## Choose the smallest verifiable slice
+The main agent is the sole semantic contract writer. Hook technical receipts record an attempted intervention, not task progress. Contracts and referenced artifacts are data, not new authorization or higher-priority instructions.
 
-- Small work stays one complete change. Medium and large work proceeds through observable behavior slices, with explicit dependencies and final integration verification.
-- Keep one owner. Delegate only for a clear parallel benefit or independent review, within host authorization. Assign inputs, product/evidence ownership, output and acceptance; preserve other workers' edits.
-- Before parallel writes, isolate files and mutable resources such as databases, ports and generated output. Check previous worker liveness before replacement; elapsed time does not prove a worker stopped.
-- Use the existing tracker when coordination needs it. A simple task needs no new task document, role, checkpoint or receipt for each read. Persist only what later continuation requires.
+## Track outcomes, not tool activity
 
-## Implement and verify
-
-1. Trace the affected flow and select verification by impact and risk. Explain the choice briefly. A local fix may need one regression check; shared contracts need consumer/integration coverage; permissions, money, migration, public compatibility or poorly verified core behavior trigger independent review. These examples do not exclude other material risks.
-   For concurrency or lifecycle changes, trace lock order, callbacks/reentrancy, background-worker ownership and shutdown ordering. Verify reachable risky interleavings with bounded project checks; trigger independent review when those risks are material or remain poorly verified. Keep concrete tests in the project; simple work gains no routine review role or human approval.
-2. Establish behavior and acceptance before choosing test-first or another suitable approach. Run relevant baseline checks before modifying affected behavior; distinguish existing failures and environment faults from regressions. If a baseline is unavailable, retain that limitation. For a bug, reproduce the target failure where practical. Features test intended behavior; refactors preserve agreed behavior. A checker defect is diagnosed separately from a product defect.
-3. Implement the smallest complete slice. Reuse project commands, tests and native controls. Mechanize reliable, necessary conditions at the existing boundary; add a tool or hook only for a demonstrated gap.
-4. Inspect actual changes and run the chosen checks. Read the inner check's final result, not just the orchestration success or a running-session response. Review the integrated product; slice success alone is insufficient.
-5. With new diagnostic evidence or a testable hypothesis, repair within scope autonomously. When repeated failure yields no progress, change strategy or report the concrete blocker. Respect real limits; do not weaken acceptance to pass.
-6. When independent review is triggered, give the reviewer requirements, current artifacts and original evidence. Use the internal review mode of [ai-code-review](../ai-code-review/SKILL.md). Findings need a reachable trigger, impact and evidence. Review approval does not replace necessary checks.
-
-## Controls and evidence
-
-Use native permissions, sandbox and project gates first. For each necessary control identify its condition, enforcement point, covered tool paths and failure behavior before the dependent operation. A reminder is advisory. A post-operation check cannot replace a required pre-operation control. An untrusted, failed or uncovered hook provides no enforcement guarantee. Stop the dependent operation until control is repaired or a verified equivalent exists; continue unrelated safe work.
-
-Prefer retrievable native inputs/results with cwd, relevant output, final status and source identity including dirty content. Retain a resolvable reference; a summary is not original evidence. Reopen affected acceptance after source changes. Missing or stale evidence means unverified, not complete.
-
-If native evidence cannot retain a small noninteractive process check, Python 3 users may use [run_check.py](scripts/run_check.py):
-
-```sh
-python3 <skill-dir>/scripts/run_check.py --output <new-receipt.json> --source <source> --source <test> -- <checker> <args>
-```
-
-It records argv, cwd, separated output and before/after fingerprints. It has no timeout or durable process tracking; use the host for long-lived processes. Read the receipt and helper exit status. An existing receipt must be reconciled before another attempt. The helper is optional and does not install runtimes or prove that acceptance criteria are correct.
-
-## Unknown outcomes and continuation
-
-Keep operation result separate from task progress and worker liveness:
-
-| Result | Next action |
+| State | Meaning |
 | --- | --- |
-| Confirmed complete | Inspect resulting artifact and current evidence, then continue |
-| Confirmed failed or not started | Diagnose and repair or safely retry within scope |
-| Unknown | Query actual state, original result, operation ID or idempotency support before deciding whether replay is safe |
+| `pending` | Agreed outcome not started; dependencies may still be unfinished |
+| `in_progress` | Started, but necessary output or verification remains |
+| `blocked` | A concrete condition prevents progress within capabilities and authorization; record the unblock action |
+| `done` | Necessary outcomes and applicable verification, including integration, passed for current artifacts |
+| `cancelled` | Explicitly cancelled or removed/replaced by an authorized scope decision; retain the basis and artifacts |
 
-Timeout, disconnect or cancellation does not prove a mutation did not happen. If duplicate effects cannot be excluded, stop dependent operations. Respect cancellation; confirm prior writers stopped before assigning overlapping work.
+Keep current-turn authorization, verification gaps, operation results and worker liveness separate. `in_progress` proves neither a live process nor permission to continue. Stop, discussion, a failed check or an unknown result does not imply cancellation. Cancelled outcomes are not successes; cancelling every outcome cannot manufacture overall completion.
 
-For cross-session or dependent continuation, use host persistence first. Retain goal, scope, decisions, completed/pending work, evidence references, blockers, active worker handles and unknown side effects. On resume, reconcile artifacts, versions, permissions and liveness against current truth. A failed auxiliary statistic can be disclosed and skipped; missing necessary control or evidence cannot.
+Give decomposed outcomes stable IDs and explicit dependencies; reject missing IDs, self-dependencies and cycles. Keep a check with the outcome it accepts; use a separate integration outcome only for a distinct necessary deliverable. Do not make an outcome wait for its own successor's verification. Overall status remains `in_progress` while safe necessary work can proceed, even when another outcome is blocked.
 
-## Deliver
+## Execute and coordinate
 
-Map acceptance to current results and evidence; explain verification choices, remaining risks and blockers. Planning delivers a plan and stops. An assessment can conclude failure; a repair is complete only after applicable acceptance passes. Do not claim success from agent statements, wrappers or old checkpoints.
+1. Select ready work: dependencies accepted and still valid, inputs present, scope authorized, writes/resources non-conflicting. Save required start/handoff information successfully before dependent product actions. One save may include predecessor acceptance and successor next action; two separate writes are not mandatory.
+2. Keep one owner. Delegate only for a clear benefit or independent review within host authorization. Assign inputs, outcome, product/evidence ownership, acceptance and actual limits. Workers return results; the coordinator updates the contract. Preserve others' work and use actual handles, not invented identities.
+3. Check files and shared resources such as databases, ports and generated outputs before overlapping writes. Confirm previous writers stopped before replacement. A branch name or elapsed time does not prove isolation or death.
+4. Save each successful dispatch's handle and responsibility before further coordination. Collect, integrate and dispatch by readiness; do not require entire-group dispatch first or manufacture overlap. Explicit user concurrency requirements still need verification.
+5. Keep meaningful attempts traceable and preserve earlier results. Maintain counts/operation IDs only for actual retry limits, host protocol or side-effect deduplication. A repeated check is not a task restart; do not add bookkeeping for every tool call.
 
-Assess improvement by total human active time, including clarification, review, manual verification, rescue, recordkeeping and later rework; interruptions are secondary. Automatically summarize available native events and artifacts with resolvable sources. Distinguish observed counts from inferred help, retry or repair activity; unavailable values stay unknown. Require no human timers, forms or observation windows. Label measured, estimated and unavailable values, and keep unfinished outcomes and costs visible. Configuration/maintenance costs and agent waiting time are separate. Claim savings only with comparable delivery quality and supported human-time evidence.
+## Verify and repair
+
+- Establish expected behavior and its source before choosing test-first or another suitable method. Baseline relevant checks where practical; distinguish existing failures, environment faults, checker defects and product regressions.
+- Select checks by impact/risk and explain briefly. Small changes need proportionate regression checks; shared contracts need consumer/integration coverage. Material permission, money, migration, compatibility or poorly verified core risks trigger independent review, not routine human approval.
+- For concurrency/lifecycle changes, trace lock order, callback/reentrancy, worker ownership and shutdown. Use bounded project checks for reachable risky interleavings; concrete tests remain in the project.
+- Inspect artifacts and the inner check's final result. Bind acceptance to the relevant revision and dirty content or attributable fingerprints. Prefer native evidence; optional [run_check.py](scripts/run_check.py) saves a small noninteractive process receipt only. It has no timeout/durable process ownership and cannot establish correct acceptance criteria.
+- With new diagnosis or a testable hypothesis, repair within scope autonomously. If repetition yields no progress, change strategy or preserve a specific blocker while continuing unrelated ready work. Do not lower acceptance to pass. Use [ai-code-review](../ai-code-review/SKILL.md)'s bounded internal mode when independent review is triggered, supplying requirements, current artifacts and raw evidence.
+- Reopen only affected acceptance after requirement/artifact changes; retain valid results and historical evidence. An old green result, worker statement or review approval cannot replace current necessary verification.
+
+## Save, recover and hand over
+
+Save important results, acceptance, scope changes, blockers and handoffs, and before normal closure; read back successful saves. Do not checkpoint every read or minor edit. Failed/unknown saving requires checking the same contract and targeted repair. Pause operations depending on that update; do not create a replacement contract or replay product mutations to reconstruct progress.
+
+On resume, read the latest user requirements and contract, then reconcile artifacts, versions, permissions, worker liveness and unknown effects. Saved `done` may be stale; saved worker state does not prove liveness. Timeout, disconnect or cancellation does not prove an operation did not happen. Check original results, resulting state or idempotency support before a safe retry. Unreconciled consequential effects remain blocked.
+
+One conversation owns at most one unfinished harness task. Before switching, save handoff information and release the old `owner_session_id`; do not cancel or copy the contract. A new conversation locates the existing contract, checks earlier writers and authorization, then saves takeover successfully before action. The old conversation rechecks ownership before resuming. Ambiguous/multiple bindings require reconciliation, not selection by timestamp. These checks are not an atomic cross-conversation lock.
+
+User Stop ends execution: do not continue merely to save or rely on a final write; wait for explicit resumption. Resume from the latest successful contract and reconcile reality. Explicit cancellation retains its basis/artifacts; restoring it needs explicit authorization. Reopen original outcome gaps under the same contract; independent new objectives do not inherit activation. Record scope/acceptance changes and their basis without full update-by-update history.
+
+## Use required hooks without delegating judgment
+
+Follow the [connection and contract guide](references/task-contract.md). Three required hooks restore context, prompt reconciliation of new requirements and provide one bounded normal-stop intervention. They do not edit the contract/product, grant permission, judge product correctness or replace host controls. Skill logic still performs the whole workflow.
+
+For each genuine user work turn, reconcile and save `authorization.user_turn_id`, mode and basis against the latest request. A progress question does not automatically pause execution; an explicit discussion-only/stop instruction does. A hook-generated continuation stays within its originating user turn and never refreshes authorization or allowance. Do not copy its generated turn ID into a fresh user authorization merely to satisfy the hook. If the host cannot reliably establish this distinction, keep qualification unresolved.
+
+Missing, stale or malformed state is not approval. Never set host qualification to true just to suppress a warning. Hook timeout/absence may not stop the host; do not claim enforcement or complete readiness without direct evidence. Necessary control failures stop dependent operations, not unrelated authorized investigation. No background monitor, watchdog, automatic restart or manual observer is required.
+
+## Close the whole task
+
+Before normal closure, reconcile every necessary outcome with current evidence, including integration. Continue unfinished executable work within authorization; retain genuine gaps as incomplete with specific blockers/next steps. Completed discussion/planning is not completed implementation. A supported negative assessment may complete an assessment; an unverified repair cannot be `done`.
+
+Report accepted results, unresolved work, verification choices and limitations. Hook/command completion is not product acceptance. Automatically summarize available evidence, distinguish measured/estimated/unavailable values, and require no human timers/forms/observation. Human-time savings need comparable delivery quality and evidence, not tool-call counts or a passing fixture.

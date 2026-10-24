@@ -1,5 +1,7 @@
 # 個人 Harness 首版實作準備與試行計畫（Codex Coding）
 
+> 2026-10-25 優先規格：本輪執行以[任務合約與必要 hooks 整合計畫](task-harness-lifecycle.plan.md)及[規格](../specs/task-harness-lifecycle.spec.md)為準，恢復非侵入式任務生命週期與必要 hooks。下文完整保留先前研究、試行及授權沿革；其中版本、狀態與授權僅適用當時範圍，不作本輪完成聲明。
+
 日期：2026-10-24（Asia/Taipei）
 狀態：N01–N03 P0 實作及整合驗收已通過，四項 review 修正已合併，兩軸複核通過（0待處理finding），見第 21 節與[P0 報告](../research/codex-harness-p0-20261024.research.md)。Desktop 為主要日常入口，CLI 為開發評測路徑；P1 及新的模型 trial 未執行，首輪既有結果與限制保留。
 設計依據：[首版設計規格](../specs/codex-coding-harness.spec.md)
