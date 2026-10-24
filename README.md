@@ -2,7 +2,28 @@
 
 個人 AI coding harness 的來源與整合 repo。首版以 Codex 處理既有專案的 bug、功能與重構，目標是在維持交付品質下減少人工投入與返工。個別 skill 依其相依內容使用；完整配置另包含發佈內容、專案啟用與驗證機制。
 
-## 本機 Codex runtime（開發中）
+## Codex Desktop 日常入口與離線候選
+
+日常以 Codex Desktop app 使用；CLI 供開發評測。N04 共用規則已補強，N06 可離線回放舊資料。這些檢查不代表 Desktop 已以候選完成任務或通過外部取消驗收。
+
+來源目前準備 `0.1.2` 候選（`0.1.1` 曾用於歷史更新／回退查核）；既有 Desktop 啟用的 `0.1.0`、marketplace 指向與快取維持原樣。只建包，不安裝或刷新宿主：
+
+```sh
+python3 -B scripts/package_harness.py dist/candidates/personal-harness-0.1.2
+python3 -B scripts/package_harness.py --verify dist/candidates/personal-harness-0.1.2
+```
+
+目的地須不存在；需要重建時另選新目的地，保留已驗證產物與可信指紋。評測程式、事件及 grader 留在開發 repo，不放入候選。離線回放：
+
+```sh
+python3 -B -m unittest discover -s tests -p 'test_harness_evidence.py' -v
+```
+
+N06 schema v2 分開原始參照、觀測與判讀；主 thread／turn／item 去重，缺事件或衝突明示，人工時間與無法可靠判定的求助／重試／修復保持未知。候選 Desktop 接入需另驗隔離、有效權限、資源與必要取消能力，不要求人工計時或觀察。完整結果見 [P1 離線交付](docs/research/codex-harness-p1-offline-20261024.research.md)。
+
+## 既有本機接入方式（維護參考）
+
+以下涉及來源註冊、啟停、更新及回退；不屬於離線建包，不應隨開發測試執行。
 
 唯一來源仍是 `skills/`。使用 Python 3 標準函式庫建立獨立套件，不需要 npm：
 

@@ -521,7 +521,7 @@ C 的 controller 在 reviewer子回合完成時誤判主回合完成；確認實
 
 ### 20.1 已確認決策與事實邊界
 
-本節保留已確認的補強計畫與實作前提案；使用者後續已授權 N01–N03，本次落地結果見第 21 節，N04–N07 尚未實作。R01–R07 對應規格的同名決策；P0／P1／P2 是本輪優先序，與原 P0–P6 階段不同。
+本節保留已確認的補強計畫與實作前提案；N01–N03 落地結果見第 21 節。本輪另授權 N04、候選離線封裝與 N06 舊資料回放，實作進度見[P1 離線計畫](codex-harness-p1-offline.plan.md)及第 22 節；N05 Desktop 接入與 N07 尚未執行。R01–R07 對應規格的同名決策；P0／P1／P2 是本輪優先序，與原 P0–P6 階段不同。
 
 | 決策 | 落實方式 | 對應工作 |
 | --- | --- | --- |
@@ -548,7 +548,7 @@ C 的 controller 在 reviewer子回合完成時誤判主回合完成；確認實
 | N03／P0 Grader | 重用 `tests/fixtures/lifecycle/HarnessLifecycleTest.java`、`HarnessFactoryCloseRegressionTest.java` 與 `task.md`；需要可重複選取時才新增 `tests/fixtures/harness-cases.json`，記錄類型、需求、grader、fixture、相關依賴／環境及固定產物參照 | 沿用封存 `personal-harness-grade-smoke.py.txt` 的可用驗收方法與原生命令，先建立資格／重評的最小檢查；重複操作有需要才接薄入口。Java fixture 無需為了有 diff 而修改，原 B 交付不改 | 相關變更能選出受影響檢查；資格依第 5 節類型驗證，不強迫重構先失敗。checker 升版保留歷史，重評所有受影響固定產物且模型啟動次數為零 |
 | N04／P1 共用規則 | 最小修改 `skills/task-harness/SKILL.md` 與 `skills/ai-code-review/SKILL.md` | 在既有風險驗證／review 段補鎖、callback、背景工作及關閉時序的判斷，引用現有內部 review 模式；同步 task-harness 交付段的自動證據、人工時間未知及無人工觀察原則；不複製整套規則，不新增固定角色或 hook。原 metadata／引用僅在內容介面確實受影響時同步 | 具體風險有相稱的驗證理由及必要獨立 review；簡單任務不固定增加文件／角色／人工核准，不要求計時或填表。具體 Java 測試仍在專案／評測 fixture |
 | N05／P1 Desktop 採用 | 後續更新 `README.md` 的 Desktop 入口與分項支援狀態；重用 `packaging/codex/.codex-plugin/plugin.json`、`scripts/package_harness.py`、`tests/test_harness_package.py` 準備候選測試包，發佈內容改變才更新版本 | 在 N01 邊界成立後，於獨立 Desktop 測試情境呼叫候選流程，完成低風險修改、相稱驗證與可追溯交付。原生方式足夠就重用，不建 Desktop controller，不自動更新日常快取／啟用版本 | 分項記錄載入、任務交付、外部取消。前兩項與該任務必要控制均通過，才可標 N05 的最小日常路徑完成；僅載入成功為部分完成。外部取消未驗證獨立保留，不阻擋不依賴它的驗收，也不免除必要控制；不要求人工觀察或手動 Stop |
-| N06／P1 自動證據 | 調整 `tests/fixtures/harness-run.template.json`；在 `tests/test_harness_evaluation.py` 核對歸屬、去重與缺值，重複使用才在 `tests/harness/` 保留最小整理函式 | 重用封存 `personal-harness-summarize-smoke.py.txt`、原生 RPC 與 outcome；可先由 agent 整理現有結果，不等待新執行器。原始參照、統計與判讀分開；評測工具不安裝到日常環境 | 可整理驗收、求助、重試、修復及全部交付狀態；錯誤歸屬、缺事件、人工時間不可得均明示，不要求使用者補填；統計失效可繼續，必要驗收缺失不可完成 |
+| N06／P1 自動證據 | 調整 `tests/fixtures/harness-run.template.json`；實作落點為 `tests/test_harness_evidence.py`，重複的保存事件整理保留於 `tests/harness/evidence.py` | 重用封存 summarize 方法、原生 RPC 與 outcome；修正主／子歸屬，不直接執行封存程式。原始參照、統計與判讀分開；評測工具不安裝到日常環境 | 驗收與全部交付狀態保留，求助／重試／修復無可靠結構化來源時明示未知；錯誤歸屬、缺事件、人工時間不可得均明示，不要求使用者補填；統計失效可繼續，必要驗收缺失不可完成 |
 | N07／P1 代表案例 | 必要最小素材放 `tests/fixtures/harness-cases/`；若已因重複選取建立 `tests/fixtures/harness-cases.json` 就共用，否則先沿用現有 fixture／命令與來源參照 | 少量簡單 bug、小功能與局部重構分別依第 5 節資格；優先重用適合素材，按變更影響選取。可直接執行現有命令，不依賴整合入口；新模型回放須有後續有界授權 | 對應類型的正確性、必要回歸與不必要流程負擔均有證據；重構允許修改前後測試都過，功能不需歷史 bug；依風險判讀，不用固定工具數或單一 LLM 分數判輸贏 |
 
 共用套件繼續重用四個 skills 與既有封裝；`define-task`、`project-setting`、`run_check.py` 目前沒有已確認的必要改動。此次設計沒有新增 mandatory hook，也沒有已確認需要修改全域設定的項目。若後續能力查核發現新缺口，只提出最小必要調整，不為了完成表格而增加元件。
@@ -600,3 +600,13 @@ R01–R07、N01–N07 及優先序可互相對照；規格描述行為契約，�
 P0未建立通用evaluate入口或案例框架，沒有新的模型trial、app-server回合、人工計時或Stop要求。記憶體／程序數限制為20ms抽樣，支援保留自有process group的後代，單工作互斥是一個Python interpreter；不宣稱任意惡意／detached程式的容器保證或Desktop原生控制已重新驗證。
 
 本次P0完成判準：三張票的直接測試／固定產物結果可追溯，整合來源指紋與日常保護核對成立，Standards／Spec兩軸review無待處理問題。三項均已有證據，四項review發現已修正，兩軸複核通過且無待處理finding；不將P1或Desktop完整驗收納入本次完成聲明。完整證據、命令及限制見[P0報告](../research/codex-harness-p0-20261024.research.md)。
+
+## 22. P1 離線實作（2026-10-24）
+
+本輪範圍僅 N04、候選離線封裝與 N06 舊資料回放，詳細完成條件與進度見[P1 離線計畫](codex-harness-p1-offline.plan.md)。N04 沿既有風險段落補鎖順序、callback／重入、背景工作所有權與關閉時序；按風險升級驗證與必要獨立 review，不增加例行人工核准。交付自動整理可取得的事件／產物，人工時間未知保留，不要求計時／填表／觀察。
+
+候選來源 metadata 為 `0.1.2`，建包位置 `dist/candidates/personal-harness-0.1.2`，與現行 `dist/personal-harness`／Desktop `0.1.0` 快取分離；離線建包不變更 marketplace 指向、不刷新宿主。N05 只完成候選準備，不標示 Desktop 載入／任務交付／外部取消通過。
+
+N06 template 升為 schema v2，`human_takeover` 預設未知，移除人工 observation window；保存原始參照、觀測與判讀。A／B／C 舊資料回放使用主 thread 與明確 turn 清單，C 兩段 turn 仍是同一次 trial；原摘要 29 個命令含子回合，新主對話口徑為 26，兩者分開保留。C 首段原生 stream 缺主回合 terminal，仍標部分覆蓋，另外保留 readback 中斷證據。B 的凍結 V2 通過與後續 factory-close 失敗均保留，不能把流程完成當成無缺陷交付。
+
+本輪沒有新的模型 trial、app-server、Desktop 對話或安裝；不要求人工觀察。完整驗證與剩餘缺口見[P1 離線報告](../research/codex-harness-p1-offline-20261024.research.md)。N01–N03 在表 20.2 的早期檔案安排為歷史提案，現行落點以第 21 節為準，不必補建 `test_harness_evaluation.py` 或通用 evaluate 入口。

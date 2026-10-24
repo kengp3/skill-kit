@@ -1,0 +1,803 @@
+{
+  "schema_version": 2,
+  "run_id": "first-smoke-B-offline-v2",
+  "group": "B",
+  "task_source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/frozen-input-common/TASK.md",
+  "acceptance_version": "public-entry-v2",
+  "source_revision": null,
+  "dirty_content_fingerprint": null,
+  "host": "bundled_cli_app_server",
+  "model": "gpt-6.1-sol",
+  "runtime_manifest_sha256": null,
+  "configuration_evidence": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/frozen-trial-config.json",
+  "native_identity": {
+    "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+    "turn_ids": [
+      "01a16c46-b464-7b83-99fc-4955cef1a7cc"
+    ]
+  },
+  "sources": [
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/frozen-trial-config.json",
+      "sha256": "3cfc2a87db9203c2e55f9bdf4def2f7a61ed3532bded1c426c64d1ede1369c4e"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/frozen-trial-grader-v2.json",
+      "sha256": "3fbf8ad55b1a2b951ce7daf10e8973d8a9b16fa2e8ae96556d8edb568834edea"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/state.json",
+      "sha256": "3427c9e0a1463150018945fc8adb9b9945a65bf2f23d0f5f3215a0e6c3ede883"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/flow-smoke-outcomes.json",
+      "sha256": "289935bfa770c8770d1e8f8d29ba0446e65e2782fe0f3331192d1727dd5a16f9"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+      "sha256": "69213afe910d351824d37e36f790980d791d7de1ed55cf62ca0c66df96b3ebd9"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-grade-B-v2/result.json",
+      "sha256": "30657dd5522545d314df0070e4e32179b1bcd92fede9878f006649a3645a60b6"
+    },
+    {
+      "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-diagnostic-B-factory-close/result.json",
+      "sha256": "3ddf2b9f4b3dcc465e2467842737bfb2baad013091be1b8d51ed09c6822176c6"
+    }
+  ],
+  "observations": {
+    "trial_attempts": 1,
+    "whole_trial_restarts": 0,
+    "controller_recoveries": 0,
+    "frozen_external_grade": {
+      "passed": true,
+      "evidence": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-grade-B-v2/result.json"
+    },
+    "later_factory_diagnostic": {
+      "passed": false,
+      "evidence": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-diagnostic-B-factory-close/result.json"
+    }
+  },
+  "event_summary": {
+    "sources": [
+      {
+        "path": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+        "sha256": "69213afe910d351824d37e36f790980d791d7de1ed55cf62ca0c66df96b3ebd9"
+      }
+    ],
+    "turns": [
+      {
+        "id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "status": "completed",
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 1514
+          }
+        ]
+      }
+    ],
+    "coverage": "complete",
+    "final_turn_status": "completed",
+    "items": [
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "01a16c46-bd78-7c81-aeef-25bf165fe4a3",
+        "type": "userMessage",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 35
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "msg_02ae7371d2ab6149016adc3b13a1c4819190b8d0d83433936b",
+        "type": "agentMessage",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 91
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-5e41ba8c-ec7a-41e7-8bd8-0e9edbac360c",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 94
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-9122909f-dcdc-4965-8b55-dbb8f1400436",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 96
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-12f57ccc-48f2-4a98-a2bc-1b4fd3671627",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 101
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-28b88c33-778a-4aa3-a36b-0b6fe9e6706d",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 103
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3b1cdea08191a5929747fbb05acd",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 107
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-50193d78-8e8e-454f-85b3-b198690df649",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 110
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-e1da9e66-8816-48b3-b2b7-a4717cef295f",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 112
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3b20a1fc8191bbd0283e161211e0",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 116
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "msg_02ae7371d2ab6149016adc3b20a1f481918530db68e5a33dae",
+        "type": "agentMessage",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 277
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-67e5ce83-4314-4078-a737-7eb82b224d39",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 280
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-1ee63ac4-af95-45d9-bdb8-cb1afb8948ea",
+        "type": "commandExecution",
+        "status": "failed",
+        "exit_code": 128,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 285
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3b36ab148191bad739f4c38b77ee",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 289
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-8fa074ba-50e7-4ac8-bb54-40dd09998f72",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 292
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3b496eb08191878f66d57179b1cf",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 296
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3b57b794819187e006081561d6ef",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 298
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3b60776c81919839a96f4a479bf5",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 300
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "msg_02ae7371d2ab6149016adc3b608ebc8191a0b9d22f2e0fe93d",
+        "type": "agentMessage",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 399
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-f94fcccd-3949-4f56-aa27-40f6cad04aff",
+        "type": "fileChange",
+        "status": "completed",
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 401
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3b7707888191ae9bf5bcf745bf3f",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 408
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "msg_02ae7371d2ab6149016adc3b7707848191b219f2f800248f1e",
+        "type": "agentMessage",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 482
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-9ebb1f75-d4c5-4192-97fb-84da446feb28",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 485
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-01684d6a-85fe-4de2-b383-79df08502e1f",
+        "type": "commandExecution",
+        "status": "failed",
+        "exit_code": 1,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 548
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3b8e7e548191bbfbc78d07ad29d8",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 550
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3b9a4f388191a3ff2a2e25fb4c0a",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 556
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-bf9897d9-b978-4d32-ab87-f77979604d64",
+        "type": "fileChange",
+        "status": "completed",
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 559
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3bb70c3881919a3d131f070d5b94",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 565
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "msg_02ae7371d2ab6149016adc3bb70c2881918d218435e79bcc03",
+        "type": "agentMessage",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 661
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-3a159b13-dfb4-49f7-88a1-7df27751b5da",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 663
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-d5bf149a-8291-4666-af19-904eaed2e18b",
+        "type": "commandExecution",
+        "status": "failed",
+        "exit_code": 1,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 732
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3bc737ec8191bdeaffa3779d183f",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 734
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-30ad62ac-1666-4014-8db5-d091e628a9cc",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 736
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3bdb24708191baf70a13a3e6ffaa",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 742
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "msg_02ae7371d2ab6149016adc3bdb24708191ab768607f6d2d242",
+        "type": "agentMessage",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 837
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-445f356e-98f9-4952-b4a9-6716bd6bf7a8",
+        "type": "fileChange",
+        "status": "completed",
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 840
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3beaa2008191a4af825e4748fc98",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 846
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "msg_02ae7371d2ab6149016adc3beaa1f0819183fb078ecc37b70b",
+        "type": "agentMessage",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 909
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-a2f240f4-aa31-4ba6-9de5-946a8e803ed4",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 912
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-86ecc9f1-7009-4ecc-ba1e-df0db3e369be",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 1009
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3bfe6af08191908df4cd0226f420",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 1011
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3c0f138c8191beec66f2edf7632b",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 1017
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "msg_02ae7371d2ab6149016adc3c0f138c819187daa3bf4e909c10",
+        "type": "agentMessage",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 1125
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-cf521fa1-baf1-45ec-9892-8481fb6b9e3c",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 1128
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "exec-e0d59380-d98d-42d2-9688-4f9afcc191f2",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 1130
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3c2451888191a56fa5dbde9f9595",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 1135
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "rs_02ae7371d2ab6149016adc3c32e37c8191b6873b06b486dbae",
+        "type": "reasoning",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 1137
+          }
+        ]
+      },
+      {
+        "thread_id": "01a16c46-b436-7520-ae13-a9379a351b13",
+        "turn_id": "01a16c46-b464-7b83-99fc-4955cef1a7cc",
+        "item_id": "msg_02ae7371d2ab6149016adc3c33079481919b79e8fab9acfce3",
+        "type": "agentMessage",
+        "status": null,
+        "exit_code": null,
+        "evidence": [
+          {
+            "source": "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-smoke-B/rpc.jsonl",
+            "line": 1508
+          }
+        ]
+      }
+    ],
+    "metrics": {
+      "commands_completed": 18,
+      "commands_nonzero": 3,
+      "command_outcomes_unknown": 0,
+      "help_requests": null,
+      "retries": null,
+      "repairs": null
+    },
+    "unverified": [
+      "Native command counts do not identify help, retries or repairs."
+    ]
+  },
+  "interpretation": [
+    "Root-thread commands only; child activity is excluded.",
+    "A continuation turn is not a new trial; recovery is not a human rescue.",
+    "Frozen grades and later diagnostics retain their separate scopes.",
+    "Wall time is not human active time; no savings or ranking is inferred."
+  ],
+  "limits": {
+    "wall_clock_minutes": 15.0,
+    "trial_attempts": 1,
+    "feedback_policy": "After model final delivery, external grading only; no grader feedback or model continuation"
+  },
+  "delivery": {
+    "status": "completed_with_known_defect",
+    "evidence": [
+      "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-grade-B-v2/result.json",
+      "/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/cli-diagnostic-B-factory-close/result.json"
+    ],
+    "unverified": [
+      "Desktop behavior, fair comparison and human benefit are not qualified.",
+      "Human takeover, interruptions and help/retry/repair counts are unavailable.",
+      "Native command counts do not identify help, retries or repairs."
+    ],
+    "human_takeover": null
+  },
+  "human_active_time": {
+    "minutes": null,
+    "method": "unavailable",
+    "includes": []
+  },
+  "interruptions": null,
+  "agent_usage": null,
+  "wall_clock_minutes": 4.961860316666813,
+  "setup_maintenance_minutes": null,
+  "trial_result_before_takeover": null
+}
