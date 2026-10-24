@@ -1,0 +1,50 @@
+import hashlib,json,selectors,subprocess,time
+from pathlib import Path
+
+root=Path('/Users/kengp3/Workspaces/mine/simple-skills')
+cwd=Path('/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C')
+evidence=root/'docs/research/codex-coding-harness-implementation-evidence'
+receipt=evidence/'desktop-C-thread-create.json'
+argv=['/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex','app-server','--stdio']
+config=Path('/Users/kengp3/.codex/config.toml')
+record={'state':'started','purpose':'Create exactly one empty persistent C thread for Desktop to take over; no turn/start or model execution',
+        'argv':argv,'cwd':str(cwd),'events':[],'user_config_before':hashlib.sha256(config.read_bytes()).hexdigest()}
+assert cwd.is_dir() and (cwd/'.codex/config.toml').is_file()
+with receipt.open('x') as stream:json.dump(record,stream,indent=2)
+with (evidence/'desktop-C-thread-create.stderr').open('x') as err:
+ p=subprocess.Popen(argv,cwd=cwd,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err)
+ selector=selectors.DefaultSelector();selector.register(p.stdout,selectors.EVENT_READ);pending=b''
+ def call(identity,method,params):
+  global pending
+  request={'id':identity,'method':method,'params':params};record['events'].append({'request':request})
+  receipt.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+  p.stdin.write((json.dumps(request)+'\n').encode());p.stdin.flush();deadline=time.monotonic()+45
+  while time.monotonic()<deadline:
+   if b'\n' not in pending:
+    if not selector.select(timeout=.25):continue
+    chunk=p.stdout.read1(65536)
+    if not chunk:raise RuntimeError('native stdout closed')
+    pending+=chunk
+   while b'\n' in pending:
+    line,pending=pending.split(b'\n',1);response=json.loads(line);record['events'].append({'response':response})
+    receipt.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+    if response.get('id')==identity:
+     if 'error' in response:raise RuntimeError(str(response['error']))
+     return response['result']
+  raise TimeoutError(method+' outcome requires reconciliation, not recreation')
+ try:
+  call(1,'initialize',{'clientInfo':{'name':'personal_harness_prepare_desktop','version':'0.1.0'},'capabilities':{'experimentalApi':True}})
+  p.stdin.write(b'{"method":"initialized"}\n');p.stdin.flush()
+  result=call(2,'thread/start',{'cwd':str(cwd),'runtimeWorkspaceRoots':[str(cwd)],'sandbox':'read-only','ephemeral':False})
+  record['thread_id']=result['thread']['id'];record['reported_cwd']=result.get('cwd');record['state']='created_empty'
+ except Exception as error:record['state']='unknown';record['error']=str(error)
+ finally:
+  p.terminate()
+  try:p.wait(timeout=5)
+  except subprocess.TimeoutExpired:p.kill();p.wait()
+  record['native_preparation_process_returncode']=p.returncode
+  selector.close();p.stdin.close();p.stdout.close()
+record['user_config_after']=hashlib.sha256(config.read_bytes()).hexdigest()
+receipt.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'state':record['state'],'thread_id':record.get('thread_id'),'cwd':record.get('reported_cwd'),'error':record.get('error'),
+                  'user_config_unchanged':record['user_config_before']==record['user_config_after']},ensure_ascii=False))

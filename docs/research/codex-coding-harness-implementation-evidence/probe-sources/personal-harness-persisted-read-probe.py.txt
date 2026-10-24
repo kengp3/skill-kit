@@ -1,0 +1,88 @@
+import hashlib
+import json
+import selectors
+import subprocess
+import tempfile
+import time
+from pathlib import Path
+
+root = Path('/Users/kengp3/Workspaces/mine/simple-skills')
+evidence = root / 'docs/research/codex-coding-harness-implementation-evidence'
+previous = json.loads((evidence / 'native-retrieval.json').read_text())
+expected = previous['events'][0]
+config = Path('/Users/kengp3/.codex/config.toml')
+argv = ['/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex',
+        'app-server', '--stdio']
+destination = evidence / 'native-persisted-read.json'
+if destination.exists():
+    raise SystemExit('existing evidence; inspect before another attempt')
+record = {'purpose': 'Read one previously stored command from two fresh native processes, without resume or model turns',
+          'argv': argv, 'user_config_before': hashlib.sha256(config.read_bytes()).hexdigest(),
+          'processes': []}
+with tempfile.TemporaryDirectory(prefix='harness-read-') as temporary:
+    for attempt in (1, 2):
+        current = {'attempt': attempt, 'cwd': temporary, 'events': []}
+        record['processes'].append(current)
+        with (evidence / f'native-persisted-read-{attempt}.stderr').open('x') as err:
+            process = subprocess.Popen(argv, cwd=temporary, stdin=subprocess.PIPE,
+                                       stdout=subprocess.PIPE, stderr=err)
+            current['pid'] = process.pid
+            selector = selectors.DefaultSelector()
+            selector.register(process.stdout, selectors.EVENT_READ)
+            pending = b''
+
+            def call(identity, method, params):
+                global pending
+                request = {'id': identity, 'method': method, 'params': params}
+                current['events'].append({'request': request})
+                process.stdin.write((json.dumps(request) + '\n').encode())
+                process.stdin.flush()
+                deadline = time.monotonic() + 25
+                while time.monotonic() < deadline:
+                    if b'\n' not in pending:
+                        if not selector.select(timeout=0.5):
+                            if process.poll() is not None:
+                                raise RuntimeError('native process exited')
+                            continue
+                        chunk = process.stdout.read1(65536)
+                        if not chunk:
+                            raise RuntimeError('native process closed stdout')
+                        pending += chunk
+                    while b'\n' in pending:
+                        line, pending = pending.split(b'\n', 1)
+                        response = json.loads(line)
+                        current['events'].append({'response': response})
+                        if response.get('id') == identity:
+                            return response
+                raise TimeoutError(method)
+
+            try:
+                init = call(1, 'initialize', {'clientInfo': {'name': 'personal_harness_read_probe', 'version': '0.1.0'},
+                                             'capabilities': {'experimentalApi': True}})
+                if 'error' in init:
+                    raise RuntimeError(str(init['error']))
+                process.stdin.write(b'{"method":"initialized"}\n')
+                process.stdin.flush()
+                response = call(2, 'thread/items/read', {
+                    'threadId': previous['threadId'], 'turnId': previous['turnId'],
+                    'itemIds': [expected['id']]})
+                current['read_succeeded'] = 'result' in response and bool(response['result'].get('data'))
+            except Exception as error:
+                current['error'] = str(error)
+            finally:
+                selector.close()
+                process.terminate()
+                try:
+                    process.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait()
+                current['process_terminal_returncode'] = process.returncode
+                process.stdin.close()
+                process.stdout.close()
+record['user_config_after'] = hashlib.sha256(config.read_bytes()).hexdigest()
+destination.write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps({'evidence': str(destination),
+                  'reads': [p.get('read_succeeded', False) for p in record['processes']],
+                  'errors': [p.get('error') for p in record['processes']],
+                  'user_config_unchanged': record['user_config_before'] == record['user_config_after']}))

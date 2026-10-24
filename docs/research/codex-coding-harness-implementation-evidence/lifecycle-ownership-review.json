@@ -1,0 +1,21 @@
+{
+  "kind": "independent_read_only_source_review",
+  "reviewer": "/root/spec_review",
+  "verdict": "No established violation of the visible lifecycle contract in the two qualification implementations",
+  "files_sha256": {
+    "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/personal-harness-lifecycle-9q6i4mhs/reference/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/ConcurrentRequestScope.java": "062172941ea8e9dcd148eff95844249a3fccf0aa301d65f807bf8d619cf11523",
+    "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/personal-harness-lifecycle-9q6i4mhs/reference/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeBeanFactoryPostProcessor.java": "5f37de3f999b3137f06a5f5ef8b275822d90e1837a9486d66759d39744607407",
+    "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/personal-harness-lifecycle-9q6i4mhs/reference/concurrent-request-scope/src/test/java/com/example/concurrentrequestscope/HarnessLifecycleTest.java": "3a656d7b37f0e4346a6c588891bf557e6353aaaa75a6dab115467aee5c5b6959",
+    "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/personal-harness-lifecycle-9q6i4mhs/shared-scheduler/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/ConcurrentRequestScope.java": "bfeedfaf17bb058412c77f6b4d85d548cf80865aeda1cca1edd215b2d7e7ac3e",
+    "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/personal-harness-lifecycle-9q6i4mhs/shared-scheduler/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeBeanFactoryPostProcessor.java": "5f37de3f999b3137f06a5f5ef8b275822d90e1837a9486d66759d39744607407",
+    "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/personal-harness-lifecycle-9q6i4mhs/shared-scheduler/concurrent-request-scope/src/test/java/com/example/concurrentrequestscope/HarnessLifecycleTest.java": "3a656d7b37f0e4346a6c588891bf557e6353aaaa75a6dab115467aee5c5b6959"
+  },
+  "reference": "Scope-owned executor, Spring disposal callback, close calls shutdownNow",
+  "shared_alternative": "Shared static scheduler, scope-owned ScheduledFuture, close cancels own task; does not shut down shared owner",
+  "limits": [
+    "Does not guarantee forced termination of an interrupt-ignoring in-flight callback",
+    "Other BeanFactory implementations and shared classloader/application shutdown not exercised",
+    "Every actual trial artifact needs its own ownership and disposal review; grader alone is insufficient"
+  ],
+  "model_trial": false
+}

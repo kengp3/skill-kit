@@ -1,0 +1,83 @@
+import copy
+import hashlib
+import json
+import selectors
+import subprocess
+import time
+import tomllib
+from pathlib import Path
+
+root = Path('/Users/kengp3/Workspaces/mine/simple-skills')
+evidence = root / 'docs/research/codex-coding-harness-implementation-evidence'
+prepared = json.loads((evidence / 'smoke-preparation.json').read_text())
+assert all(g['status'] == 'finished' for g in prepared['groups'].values())
+assert prepared['model_trials_started'] == 3
+config_file = Path('/Users/kengp3/.codex/config.toml')
+before = tomllib.loads(config_file.read_text())
+name = 'personal-harness-trial-C'
+assert Path(before['marketplaces'][name]['source']).resolve() == Path(prepared['groups']['C']['workspace']).resolve()
+expected = copy.deepcopy(before)
+removed = []
+for group in prepared['groups'].values():
+    directory = str(Path(group['workspace']).resolve())
+    assert expected['projects'][directory] == {'trust_level': 'trusted'}
+    del expected['projects'][directory]; removed.append(directory)
+record = {'purpose': 'Remove only this completed trial source and three trial trust entries; retain development adoption',
+          'status': 'starting', 'removed_trust_paths': removed,
+          'config_before_sha256': hashlib.sha256(config_file.read_bytes()).hexdigest(), 'raw_service_settings_not_retained': True}
+destination = evidence / 'trial-environment-cleanup.json'
+with destination.open('x') as stream:
+    json.dump(record, stream, ensure_ascii=False, indent=2)
+cli = '/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex'
+with (evidence / 'trial-environment-cleanup.stderr').open('x') as stderr:
+    server = subprocess.Popen([cli, 'app-server', '--stdio'], cwd=root, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=stderr)
+    selector = selectors.DefaultSelector(); selector.register(server.stdout, selectors.EVENT_READ)
+    pending = b''; serial = 0
+    def call(method, params):
+        global serial, pending
+        serial += 1; identity = serial
+        server.stdin.write((json.dumps({'id': identity, 'method': method, 'params': params}) + '\n').encode()); server.stdin.flush()
+        deadline = time.monotonic() + 20
+        while time.monotonic() < deadline:
+            if b'\n' not in pending:
+                if not selector.select(timeout=.2):
+                    continue
+                chunk = server.stdout.read1(65536)
+                if not chunk:
+                    raise RuntimeError('native cleanup outcome unknown')
+                pending += chunk
+            while b'\n' in pending:
+                line, pending = pending.split(b'\n', 1); response = json.loads(line)
+                if response.get('id') == identity:
+                    if 'error' in response:
+                        raise RuntimeError(str(response['error']))
+                    return response['result']
+        raise TimeoutError('native cleanup outcome unknown; reconcile, do not replay')
+    try:
+        call('initialize', {'clientInfo': {'name': 'personal_harness_trial_cleanup', 'version': '0.1.0'}, 'capabilities': {'experimentalApi': True}})
+        server.stdin.write(b'{"method":"initialized"}\n'); server.stdin.flush()
+        read = call('config/read', {'cwd': str(root), 'includeLayers': True})
+        version = next(x['version'] for x in read['layers'] if x['name']['type'] == 'user')
+        record['project_write_result'] = call('config/value/write', {'filePath': str(config_file), 'expectedVersion': version, 'keyPath': 'projects', 'value': expected['projects'], 'mergeStrategy': 'replace'})
+        assert tomllib.loads(config_file.read_text()) == expected, 'unexpected semantic config change'
+        record['only_trial_trust_removed'] = True
+    except Exception as error:
+        record['status'] = 'unverified'; record['error'] = repr(error)
+    finally:
+        server.terminate()
+        try:
+            server.wait(timeout=3)
+        except subprocess.TimeoutExpired:
+            server.kill(); server.wait(timeout=2)
+        selector.close()
+if record.get('only_trial_trust_removed'):
+    result = subprocess.run([cli, 'plugin', 'marketplace', 'remove', '--json', name], cwd=root, capture_output=True, text=True, timeout=20)
+    record['marketplace_remove'] = {'returncode': result.returncode, 'stdout': result.stdout, 'stderr': result.stderr}
+    del expected['marketplaces'][name]
+    after = tomllib.loads(config_file.read_text())
+    record['only_trial_entries_removed'] = after == expected
+    record['development_source_retained'] = after.get('marketplaces', {}).get('personal-harness-local') == before['marketplaces']['personal-harness-local']
+    record['status'] = 'complete' if result.returncode == 0 and record['only_trial_entries_removed'] and record['development_source_retained'] else 'unverified'
+record['config_after_sha256'] = hashlib.sha256(config_file.read_bytes()).hexdigest()
+destination.write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps({'status': record['status'], 'only_trial_entries_removed': record.get('only_trial_entries_removed'), 'development_source_retained': record.get('development_source_retained'), 'error': record.get('error')}, ensure_ascii=False))

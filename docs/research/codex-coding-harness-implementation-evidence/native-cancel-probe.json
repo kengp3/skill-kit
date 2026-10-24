@@ -1,0 +1,65 @@
+{
+  "argv": [
+    "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex",
+    "app-server",
+    "--stdio"
+  ],
+  "events": [
+    {
+      "request": {
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "clientInfo": {
+            "name": "personal_harness_cancel_probe",
+            "version": "0.1.0"
+          },
+          "capabilities": {
+            "experimentalApi": true
+          }
+        }
+      }
+    },
+    {
+      "response": {
+        "id": 1,
+        "result": {
+          "userAgent": "Codex Desktop/0.163.0-alpha.11.2 (Mac OS 27.0.1; arm64) dumb (personal_harness_cancel_probe; 0.1.0)",
+          "codexHome": "/Users/kengp3/.codex",
+          "platformFamily": "unix",
+          "platformOs": "macos"
+        }
+      }
+    },
+    {
+      "request": {
+        "id": 2,
+        "method": "command/exec",
+        "params": {
+          "command": [
+            "/opt/homebrew/opt/python@3.15/bin/python3.15",
+            "-u",
+            "-c",
+            "import json,os,subprocess,sys,time\nfrom pathlib import Path\nchild = subprocess.Popen([sys.executable, '-c', \"from pathlib import Path; import time; p=Path('heartbeat'); [(p.open('a').write('tick\\n'),time.sleep(0.05)) for _ in range(200)]\"])\nPath('started.json').write_text(json.dumps({'parent':os.getpid(),'child':child.pid}))\nprint('started',flush=True)\ntime.sleep(15)\n"
+          ],
+          "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-cancel-7l5asn9p",
+          "processId": "cancel-fixture",
+          "timeoutMs": 15000,
+          "sandboxPolicy": {
+            "type": "workspaceWrite",
+            "writableRoots": [],
+            "excludeSlashTmp": true,
+            "excludeTmpdirEnvVar": true,
+            "networkAccess": false
+          }
+        }
+      }
+    }
+  ],
+  "user_config_before": "07738ed1f5ed99103e8ba4abd6d06aad23493d9e4a3e3e24c27a48db5cc63eac",
+  "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-cancel-7l5asn9p",
+  "server_pid": 65794,
+  "error": "worker did not prove actual side effect",
+  "server_terminal_returncode": 0,
+  "user_config_after": "07738ed1f5ed99103e8ba4abd6d06aad23493d9e4a3e3e24c27a48db5cc63eac"
+}

@@ -1,0 +1,52 @@
+{
+  "kind": "host_catalog_transcription_and_native_file_observation",
+  "catalog_source": "Host-provided developer skills_instructions in the current Desktop turn; this JSON is a transcription, the original host message is authoritative",
+  "thread_id": "01a169a8-9130-7863-8b22-7daef3a04b37",
+  "workspace": "/Users/kengp3/Workspaces/mine/simple-skills",
+  "entries": [
+    {
+      "name": "personal-harness:ai-code-review",
+      "path": "/Users/kengp3/.codex/plugins/cache/personal-harness-local/personal-harness/0.1.0/skills/ai-code-review/SKILL.md",
+      "sha256": "7d71256a724ee1e0ac67319f77d14ff0ebbca8cf9df14045ef795eaa6f48a6a6"
+    },
+    {
+      "name": "personal-harness:define-task",
+      "path": "/Users/kengp3/.codex/plugins/cache/personal-harness-local/personal-harness/0.1.0/skills/define-task/SKILL.md",
+      "sha256": "df5273d5799b3e795be120f2245b55cc09d7fe4fa3358d17def295d8a037d770"
+    },
+    {
+      "name": "personal-harness:project-setting",
+      "path": "/Users/kengp3/.codex/plugins/cache/personal-harness-local/personal-harness/0.1.0/skills/project-setting/SKILL.md",
+      "sha256": "b770dfcab1e4e353730728ee76c48c6b61f16d94c62e4cf3175f27ee0fa0678c"
+    },
+    {
+      "name": "personal-harness:task-harness",
+      "path": "/Users/kengp3/.codex/plugins/cache/personal-harness-local/personal-harness/0.1.0/skills/task-harness/SKILL.md",
+      "sha256": "8a7479849c563ea88ed8324c9a95a6b78b77e3b93020063d9ee72edb198e17e2"
+    }
+  ],
+  "applied_skill": "personal-harness:task-harness",
+  "native_read_observation": {
+    "tool": "exec_command",
+    "chunk_id": "bdf597",
+    "exit_code": 0,
+    "command": "cat /Users/kengp3/.codex/plugins/cache/personal-harness-local/personal-harness/0.1.0/skills/task-harness/SKILL.md"
+  },
+  "cache_verification_observation": {
+    "tool": "exec_command",
+    "chunk_id": "ded5d9",
+    "exit_code": 0,
+    "command": "python3 -B /Users/kengp3/Workspaces/mine/simple-skills/scripts/package_harness.py --verify /Users/kengp3/.codex/plugins/cache/personal-harness-local/personal-harness/0.1.0",
+    "manifest_sha256": "cdd9c5a7dd48c40993de8eaab226d98cb4bd79faed76ae76b322ef4392f5eb9d"
+  },
+  "proves": [
+    "Current Desktop turn receives the four plugin skill catalog entries",
+    "The listed task-harness was read and selected for this continuation",
+    "Current package contents match the previously trusted manifest"
+  ],
+  "does_not_prove": [
+    "C isolated Desktop task has the same effective configuration",
+    "Coding delivery behavior or full tool-boundary enforcement",
+    "Rendered Desktop UI behavior or any A/B/C smoke result"
+  ]
+}

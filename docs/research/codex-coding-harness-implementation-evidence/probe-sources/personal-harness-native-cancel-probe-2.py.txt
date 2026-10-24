@@ -1,0 +1,115 @@
+import hashlib
+import json
+import selectors
+import subprocess
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+root = Path('/Users/kengp3/Workspaces/mine/simple-skills')
+evidence = root / 'docs/research/codex-coding-harness-implementation-evidence'
+destination = evidence / 'native-cancel-probe-2.json'
+if destination.exists():
+    raise SystemExit('existing evidence; reconcile before any new attempt')
+config = Path('/Users/kengp3/.codex/config.toml')
+argv = ['/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex', 'app-server', '--stdio']
+record = {'argv': argv, 'events': [], 'user_config_before': hashlib.sha256(config.read_bytes()).hexdigest()}
+worker = '''import json,os,subprocess,sys,time
+from pathlib import Path
+child = subprocess.Popen([sys.executable, '-c', "from pathlib import Path; import time; p=Path('heartbeat'); [(p.open('a').write('tick'),time.sleep(0.05)) for _ in range(200)]"])
+Path('started.json').write_text(json.dumps({'parent':os.getpid(),'child':child.pid}))
+print('started',flush=True)
+time.sleep(15)
+'''
+with tempfile.TemporaryDirectory(prefix='harness-cancel-') as temporary:
+    cwd = Path(temporary)
+    record['cwd'] = temporary
+    with (evidence / 'native-cancel-probe-2.stderr').open('x') as stderr:
+        process = subprocess.Popen(argv, cwd=cwd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=stderr)
+        record['server_pid'] = process.pid
+        selector = selectors.DefaultSelector()
+        selector.register(process.stdout, selectors.EVENT_READ)
+        pending = b''
+
+        def send(identity, method, params):
+            request = {'id': identity, 'method': method, 'params': params}
+            record['events'].append({'request': request})
+            process.stdin.write((json.dumps(request) + '\n').encode())
+            process.stdin.flush()
+
+        def receive_until(identity, seconds=25):
+            global pending
+            deadline = time.monotonic() + seconds
+            while time.monotonic() < deadline:
+                if b'\n' not in pending:
+                    if not selector.select(timeout=0.2):
+                        continue
+                    chunk = process.stdout.read1(65536)
+                    if not chunk:
+                        raise RuntimeError('native stdout closed')
+                    pending += chunk
+                while b'\n' in pending:
+                    line, pending = pending.split(b'\n', 1)
+                    message = json.loads(line)
+                    record['events'].append({'response': message})
+                    if message.get('id') == identity:
+                        return message
+            raise TimeoutError(f'response {identity}')
+
+        try:
+            send(1, 'initialize', {'clientInfo': {'name': 'personal_harness_cancel_probe', 'version': '0.1.0'}, 'capabilities': {'experimentalApi': True}})
+            if 'error' in receive_until(1):
+                raise RuntimeError('initialize failed')
+            process.stdin.write(b'{"method":"initialized"}\n'); process.stdin.flush()
+            send(2, 'command/exec', {'command': [sys.executable, '-u', '-c', worker],
+                 'cwd': temporary, 'processId': 'cancel-fixture', 'timeoutMs': 15000,
+                 'sandboxPolicy': {'type': 'workspaceWrite', 'writableRoots': [],
+                    'excludeSlashTmp': True, 'excludeTmpdirEnvVar': True, 'networkAccess': False}})
+            deadline = time.monotonic() + 5
+            while time.monotonic() < deadline:
+                if (cwd/'started.json').exists() and (cwd/'heartbeat').exists():
+                    break
+                time.sleep(0.02)
+            if (cwd/'started.json').exists():
+                record['worker_pids'] = json.loads((cwd/'started.json').read_text())
+            if 'worker_pids' not in record or not (cwd/'heartbeat').exists():
+                receive_until(2)
+                raise RuntimeError('worker did not prove actual side effect')
+            record['heartbeat_before_cancel'] = (cwd/'heartbeat').read_text()
+            send(3, 'command/exec/terminate', {'processId': 'cancel-fixture'})
+            receive_until(3)
+            if not any(e.get('response', {}).get('id') == 2 for e in record['events']):
+                receive_until(2)
+            time.sleep(0.2)
+            record['heartbeat_after_cancel'] = (cwd/'heartbeat').read_text()
+            ids = list(record['worker_pids'].values())
+            state = subprocess.run(['ps','-o','pid=,ppid=,stat=,command=','-p',','.join(map(str,ids))], capture_output=True, text=True)
+            record['worker_ps_after_final'] = {'argv': state.args, 'returncode': state.returncode, 'stdout': state.stdout, 'stderr': state.stderr}
+            time.sleep(0.3)
+            record['heartbeat_after_observation'] = (cwd/'heartbeat').read_text()
+        except Exception as error:
+            record['error'] = str(error)
+        finally:
+            process.terminate()
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill(); process.wait()
+            record['server_terminal_returncode'] = process.returncode
+            selector.close(); process.stdin.close(); process.stdout.close()
+            # The fixture is self-limited even if native cancellation failed.
+            if 'worker_pids' in record:
+                deadline = time.monotonic() + 17
+                while time.monotonic() < deadline:
+                    pids = ','.join(map(str,record['worker_pids'].values()))
+                    state = subprocess.run(['ps','-o','pid=,ppid=,stat=','-p',pids],capture_output=True,text=True)
+                    if not state.stdout.strip() or all('Z' in line.split()[-1] for line in state.stdout.splitlines()):
+                        break
+                    time.sleep(0.1)
+                record['worker_ps_before_cleanup'] = {'argv': state.args, 'returncode': state.returncode, 'stdout': state.stdout, 'stderr': state.stderr}
+record['user_config_after'] = hashlib.sha256(config.read_bytes()).hexdigest()
+destination.write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps({'evidence': str(destination), 'error': record.get('error'),
+                  'worker_ps':record.get('worker_ps_after_final'),
+                  'user_config_unchanged':record['user_config_before']==record['user_config_after']}))

@@ -1,0 +1,53 @@
+[
+  {
+    "ordinal": 84,
+    "event": {
+      "timestamp": "2026-10-24T04:00:59.739Z",
+      "ordinal": 83,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_06ba67386e55a815016adc2d7ad5288191a992d5b6e8bf354e",
+        "status": "completed",
+        "call_id": "call_16f62a91debf4149a1043a80fed721b8",
+        "name": "exec",
+        "input": "text(await tools.apply_patch(\"*** Begin Patch\\n*** Update File: /private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-control-protected-7tlh3igr/patch-guard.txt\\n@@\\n-UNCHANGED-CONTROL\\n+PATCH-CHANGED\\n*** End Patch\"));\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a16c10-f11e-7ea3-9ffb-05ac6178dc38",
+          "create_time": 1792814458.847269
+        }
+      }
+    }
+  },
+  {
+    "ordinal": 86,
+    "event": {
+      "timestamp": "2026-10-24T04:00:59.926Z",
+      "ordinal": 85,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call_output",
+        "id": "ctco_01a16c11-ac16-73a2-84ac-7de3531d8d08",
+        "call_id": "call_16f62a91debf4149a1043a80fed721b8",
+        "output": [
+          {
+            "type": "input_text",
+            "text": "Script failed\nWall time 0.0 seconds\nOutput:\n"
+          },
+          {
+            "type": "input_text",
+            "text": "Script error:\npatch rejected: writing outside of the project; rejected by user approval settings"
+          }
+        ],
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a16c10-f11e-7ea3-9ffb-05ac6178dc38",
+          "create_time": 1792814459.926913
+        }
+      },
+      "metadata": {
+        "client_authored": false,
+        "fallback_token_limit_override": 12000
+      }
+    }
+  }
+]

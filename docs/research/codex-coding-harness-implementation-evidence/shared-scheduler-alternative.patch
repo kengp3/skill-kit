@@ -1,0 +1,35 @@
+--- reference/ConcurrentRequestScope.java
++++ shared-scheduler/ConcurrentRequestScope.java
+@@ -27,6 +27,9 @@
+ 
+     private final ConcurrentRequestScopeState state;
+     private final ScopeKeyResolver keyResolver;
++    private static final ScheduledExecutorService SHARED_CLEANER =
++            Executors.newSingleThreadScheduledExecutor(staleCleanerThreadFactory());
++    private java.util.concurrent.ScheduledFuture<?> cleanupTask;
+     private final ScheduledExecutorService staleEntryCleanupExecutor;
+ 
+     public ConcurrentRequestScope() {
+@@ -119,8 +122,8 @@
+ 
+     @Override
+     public void close() {
+-        if (staleEntryCleanupExecutor != null) {
+-            staleEntryCleanupExecutor.shutdownNow();
++        if (cleanupTask != null) {
++            cleanupTask.cancel(true);
+         }
+     }
+ 
+@@ -171,9 +174,9 @@
+             return null;
+         }
+ 
+-        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(staleCleanerThreadFactory());
++        ScheduledExecutorService executor = SHARED_CLEANER;
+         Duration scanInterval = settings.staleEntryScanInterval();
+-        executor.scheduleWithFixedDelay(
++        cleanupTask = executor.scheduleWithFixedDelay(
+                 this::cleanupStaleEntriesSafely,
+                 scanInterval.toNanos(),
+                 scanInterval.toNanos(),

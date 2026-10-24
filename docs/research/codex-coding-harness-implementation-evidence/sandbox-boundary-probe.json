@@ -1,0 +1,146 @@
+{
+  "argv": [
+    "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex",
+    "app-server",
+    "--stdio"
+  ],
+  "user_config_before": "07738ed1f5ed99103e8ba4abd6d06aad23493d9e4a3e3e24c27a48db5cc63eac",
+  "user_config_after": "07738ed1f5ed99103e8ba4abd6d06aad23493d9e4a3e3e24c27a48db5cc63eac",
+  "events": [
+    {
+      "request": {
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "clientInfo": {
+            "name": "personal_harness_probe",
+            "version": "0.1.0"
+          },
+          "capabilities": {
+            "experimentalApi": true
+          }
+        }
+      }
+    },
+    {
+      "response": {
+        "id": 1,
+        "result": {
+          "userAgent": "Codex Desktop/0.163.0-alpha.11.2 (Mac OS 27.0.1; arm64) dumb (personal_harness_probe; 0.1.0)",
+          "codexHome": "/Users/kengp3/.codex",
+          "platformFamily": "unix",
+          "platformOs": "macos"
+        }
+      }
+    },
+    {
+      "request": {
+        "id": 2,
+        "method": "command/exec",
+        "params": {
+          "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-boundary-9kzseof3",
+          "command": [
+            "/opt/homebrew/opt/python@3.15/bin/python3.15",
+            "-c",
+            "from pathlib import Path; Path(\"allowed\").write_text(\"ok\"); print(\"allowed\")"
+          ],
+          "sandboxPolicy": {
+            "type": "workspaceWrite",
+            "writableRoots": [],
+            "excludeSlashTmp": true,
+            "excludeTmpdirEnvVar": true,
+            "networkAccess": false
+          },
+          "timeoutMs": 5000
+        }
+      }
+    },
+    {
+      "response": {
+        "method": "remoteControl/status/changed",
+        "params": {
+          "status": "disabled",
+          "serverName": "kengp3-MBPR-M4-16.local",
+          "installationId": "98546718-c085-4e7d-b4eb-beb4f9173f26",
+          "environmentId": null
+        },
+        "emittedAtMs": 1792784631414
+      }
+    },
+    {
+      "response": {
+        "id": 2,
+        "result": {
+          "exitCode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    from pathlib import Path; Path(\"allowed\").write_text(\"ok\"); print(\"allowed\")\n                              ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/pathlib/__init__.py\", line 1008, in write_text\n    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/pathlib/__init__.py\", line 970, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nPermissionError: [Errno 1] Operation not permitted: 'allowed'\n"
+        }
+      }
+    },
+    {
+      "request": {
+        "id": 3,
+        "method": "command/exec",
+        "params": {
+          "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-boundary-9kzseof3",
+          "command": [
+            "/opt/homebrew/opt/python@3.15/bin/python3.15",
+            "-c",
+            "from pathlib import Path; import sys; Path(sys.argv[1]).write_text(\"must be denied\")",
+            "/Users/kengp3/Workspaces/mine/simple-skills/__harness_boundary_canary__"
+          ],
+          "sandboxPolicy": {
+            "type": "workspaceWrite",
+            "writableRoots": [],
+            "excludeSlashTmp": true,
+            "excludeTmpdirEnvVar": true,
+            "networkAccess": false
+          },
+          "timeoutMs": 5000
+        }
+      }
+    },
+    {
+      "response": {
+        "id": 3,
+        "result": {
+          "exitCode": 0,
+          "stdout": "",
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "request": {
+        "id": 4,
+        "method": "command/exec",
+        "params": {
+          "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-boundary-9kzseof3",
+          "command": [
+            "/opt/homebrew/opt/python@3.15/bin/python3.15",
+            "-c",
+            "import socket; socket.socket(socket.AF_INET,socket.SOCK_STREAM); print(\"network socket created\")"
+          ],
+          "sandboxPolicy": {
+            "type": "workspaceWrite",
+            "writableRoots": [],
+            "excludeSlashTmp": true,
+            "excludeTmpdirEnvVar": true,
+            "networkAccess": false
+          },
+          "timeoutMs": 5000
+        }
+      }
+    },
+    {
+      "response": {
+        "id": 4,
+        "result": {
+          "exitCode": 0,
+          "stdout": "network socket created\n",
+          "stderr": ""
+        }
+      }
+    }
+  ]
+}

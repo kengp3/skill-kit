@@ -1,0 +1,200 @@
+{
+  "purpose": "Read one previously stored command from two fresh native processes, without resume or model turns",
+  "argv": [
+    "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex",
+    "app-server",
+    "--stdio"
+  ],
+  "user_config_before": "07738ed1f5ed99103e8ba4abd6d06aad23493d9e4a3e3e24c27a48db5cc63eac",
+  "processes": [
+    {
+      "attempt": 1,
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-read-9up4i_0i",
+      "events": [
+        {
+          "request": {
+            "id": 1,
+            "method": "initialize",
+            "params": {
+              "clientInfo": {
+                "name": "personal_harness_read_probe",
+                "version": "0.1.0"
+              },
+              "capabilities": {
+                "experimentalApi": true
+              }
+            }
+          }
+        },
+        {
+          "response": {
+            "id": 1,
+            "result": {
+              "userAgent": "Codex Desktop/0.163.0-alpha.11.2 (Mac OS 27.0.1; arm64) dumb (personal_harness_read_probe; 0.1.0)",
+              "codexHome": "/Users/kengp3/.codex",
+              "platformFamily": "unix",
+              "platformOs": "macos"
+            }
+          }
+        },
+        {
+          "request": {
+            "id": 2,
+            "method": "thread/items/read",
+            "params": {
+              "threadId": "01a169a8-9130-7863-8b22-7daef3a04b37",
+              "turnId": "01a16a2c-cd5b-7853-8f23-1ce46bd157f1",
+              "itemIds": [
+                "exec-deeec5d1-9b38-4e7d-9e5d-0665b1951346"
+              ]
+            }
+          }
+        },
+        {
+          "response": {
+            "method": "remoteControl/status/changed",
+            "params": {
+              "status": "disabled",
+              "serverName": "kengp3-MBPR-M4-16.local",
+              "installationId": "98546718-c085-4e7d-b4eb-beb4f9173f26",
+              "environmentId": null
+            },
+            "emittedAtMs": 1792785670703
+          }
+        },
+        {
+          "response": {
+            "id": 2,
+            "result": {
+              "data": [
+                {
+                  "turnId": "01a16a2c-cd5b-7853-8f23-1ce46bd157f1",
+                  "item": {
+                    "type": "commandExecution",
+                    "id": "exec-deeec5d1-9b38-4e7d-9e5d-0665b1951346",
+                    "pluginId": null,
+                    "scriptPath": null,
+                    "command": "/bin/zsh -lc \"python3 - <<'PY'\nfrom pathlib import Path\np=Path('dist/personal-harness'); archived=Path('dist/releases/initial-candidate')\narchived.parent.mkdir(parents=True,exist_ok=True)\nif archived.exists(): raise SystemExit('archive already exists')\np.rename(archived)\nPY\npython3 -B scripts/package_harness.py dist/personal-harness\npython3 -B scripts/package_harness.py --verify dist/personal-harness\npython3 -B skills/task-harness/scripts/run_check.py --output docs/research/codex-coding-harness-implementation-evidence/python-tests-2.json --source scripts/package_harness.py --source tests/test_harness_package.py --source tests/test_run_check.py --source skills/task-harness/SKILL.md --source skills/ai-code-review/SKILL.md -- python3 -B -m unittest discover -s tests -p 'test_*.py'\"",
+                    "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+                    "processId": "57662",
+                    "source": "unifiedExecStartup",
+                    "status": "completed",
+                    "commandActions": [
+                      {
+                        "type": "unknown",
+                        "command": "python3 - <<'PY'\nfrom pathlib import Path\np=Path('dist/personal-harness'); archived=Path('dist/releases/initial-candidate')\narchived.parent.mkdir(parents=True,exist_ok=True)\nif archived.exists(): raise SystemExit('archive already exists')\np.rename(archived)\nPY\npython3 -B scripts/package_harness.py dist/personal-harness\npython3 -B scripts/package_harness.py --verify dist/personal-harness\npython3 -B skills/task-harness/scripts/run_check.py --output docs/research/codex-coding-harness-implementation-evidence/python-tests-2.json --source scripts/package_harness.py --source tests/test_harness_package.py --source tests/test_run_check.py --source skills/task-harness/SKILL.md --source skills/ai-code-review/SKILL.md -- python3 -B -m unittest discover -s tests -p 'test_*.py'"
+                      }
+                    ],
+                    "aggregatedOutput": "/Users/kengp3/Workspaces/mine/simple-skills/dist/personal-harness\ncdd9c5a7dd48c40993de8eaab226d98cb4bd79faed76ae76b322ef4392f5eb9d\n/Users/kengp3/Workspaces/mine/simple-skills/dist/personal-harness\n/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/python-tests-2.json\n",
+                    "exitCode": 0,
+                    "durationMs": 5749
+                  },
+                  "startedAtMs": 1792783267269,
+                  "completedAtMs": 1792783273019
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "pid": 65611,
+      "read_succeeded": true,
+      "process_terminal_returncode": 0
+    },
+    {
+      "attempt": 2,
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-read-9up4i_0i",
+      "events": [
+        {
+          "request": {
+            "id": 1,
+            "method": "initialize",
+            "params": {
+              "clientInfo": {
+                "name": "personal_harness_read_probe",
+                "version": "0.1.0"
+              },
+              "capabilities": {
+                "experimentalApi": true
+              }
+            }
+          }
+        },
+        {
+          "response": {
+            "id": 1,
+            "result": {
+              "userAgent": "Codex Desktop/0.163.0-alpha.11.2 (Mac OS 27.0.1; arm64) dumb (personal_harness_read_probe; 0.1.0)",
+              "codexHome": "/Users/kengp3/.codex",
+              "platformFamily": "unix",
+              "platformOs": "macos"
+            }
+          }
+        },
+        {
+          "request": {
+            "id": 2,
+            "method": "thread/items/read",
+            "params": {
+              "threadId": "01a169a8-9130-7863-8b22-7daef3a04b37",
+              "turnId": "01a16a2c-cd5b-7853-8f23-1ce46bd157f1",
+              "itemIds": [
+                "exec-deeec5d1-9b38-4e7d-9e5d-0665b1951346"
+              ]
+            }
+          }
+        },
+        {
+          "response": {
+            "method": "remoteControl/status/changed",
+            "params": {
+              "status": "disabled",
+              "serverName": "kengp3-MBPR-M4-16.local",
+              "installationId": "98546718-c085-4e7d-b4eb-beb4f9173f26",
+              "environmentId": null
+            },
+            "emittedAtMs": 1792785670968
+          }
+        },
+        {
+          "response": {
+            "id": 2,
+            "result": {
+              "data": [
+                {
+                  "turnId": "01a16a2c-cd5b-7853-8f23-1ce46bd157f1",
+                  "item": {
+                    "type": "commandExecution",
+                    "id": "exec-deeec5d1-9b38-4e7d-9e5d-0665b1951346",
+                    "pluginId": null,
+                    "scriptPath": null,
+                    "command": "/bin/zsh -lc \"python3 - <<'PY'\nfrom pathlib import Path\np=Path('dist/personal-harness'); archived=Path('dist/releases/initial-candidate')\narchived.parent.mkdir(parents=True,exist_ok=True)\nif archived.exists(): raise SystemExit('archive already exists')\np.rename(archived)\nPY\npython3 -B scripts/package_harness.py dist/personal-harness\npython3 -B scripts/package_harness.py --verify dist/personal-harness\npython3 -B skills/task-harness/scripts/run_check.py --output docs/research/codex-coding-harness-implementation-evidence/python-tests-2.json --source scripts/package_harness.py --source tests/test_harness_package.py --source tests/test_run_check.py --source skills/task-harness/SKILL.md --source skills/ai-code-review/SKILL.md -- python3 -B -m unittest discover -s tests -p 'test_*.py'\"",
+                    "cwd": "/Users/kengp3/Workspaces/mine/simple-skills",
+                    "processId": "57662",
+                    "source": "unifiedExecStartup",
+                    "status": "completed",
+                    "commandActions": [
+                      {
+                        "type": "unknown",
+                        "command": "python3 - <<'PY'\nfrom pathlib import Path\np=Path('dist/personal-harness'); archived=Path('dist/releases/initial-candidate')\narchived.parent.mkdir(parents=True,exist_ok=True)\nif archived.exists(): raise SystemExit('archive already exists')\np.rename(archived)\nPY\npython3 -B scripts/package_harness.py dist/personal-harness\npython3 -B scripts/package_harness.py --verify dist/personal-harness\npython3 -B skills/task-harness/scripts/run_check.py --output docs/research/codex-coding-harness-implementation-evidence/python-tests-2.json --source scripts/package_harness.py --source tests/test_harness_package.py --source tests/test_run_check.py --source skills/task-harness/SKILL.md --source skills/ai-code-review/SKILL.md -- python3 -B -m unittest discover -s tests -p 'test_*.py'"
+                      }
+                    ],
+                    "aggregatedOutput": "/Users/kengp3/Workspaces/mine/simple-skills/dist/personal-harness\ncdd9c5a7dd48c40993de8eaab226d98cb4bd79faed76ae76b322ef4392f5eb9d\n/Users/kengp3/Workspaces/mine/simple-skills/dist/personal-harness\n/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence/python-tests-2.json\n",
+                    "exitCode": 0,
+                    "durationMs": 5749
+                  },
+                  "startedAtMs": 1792783267269,
+                  "completedAtMs": 1792783273019
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "pid": 65621,
+      "read_succeeded": true,
+      "process_terminal_returncode": 0
+    }
+  ],
+  "user_config_after": "07738ed1f5ed99103e8ba4abd6d06aad23493d9e4a3e3e24c27a48db5cc63eac"
+}

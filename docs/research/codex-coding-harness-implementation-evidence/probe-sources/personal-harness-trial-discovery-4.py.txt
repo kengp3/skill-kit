@@ -1,0 +1,57 @@
+import hashlib,json,selectors,subprocess,time
+from pathlib import Path
+
+root=Path('/Users/kengp3/Workspaces/mine/simple-skills')
+evidence=root/'docs/research/codex-coding-harness-implementation-evidence'
+prepared=json.loads((evidence/'smoke-preparation.json').read_text())
+groups={name:str(Path(data['workspace']).resolve()) for name,data in prepared['groups'].items()}
+config=Path('/Users/kengp3/.codex/config.toml')
+record={'argv':['/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex','app-server','--stdio'],
+        'cwd':groups['C'],'events':[],'config_before':hashlib.sha256(config.read_bytes()).hexdigest()}
+output=evidence/'trial-discovery-preflight-4.json'
+if output.exists(): raise SystemExit('existing receipt; reconcile before retry')
+with (evidence/'trial-discovery-preflight-4.stderr').open('x') as err:
+ p=subprocess.Popen(record['argv'],cwd=groups['C'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err)
+ selector=selectors.DefaultSelector();selector.register(p.stdout,selectors.EVENT_READ);pending=b''
+ def call(identity,method,params):
+  global pending
+  request={'id':identity,'method':method,'params':params};record['events'].append({'request':request})
+  p.stdin.write((json.dumps(request)+'\n').encode());p.stdin.flush();deadline=time.monotonic()+30
+  while time.monotonic()<deadline:
+   if b'\n' not in pending:
+    if not selector.select(timeout=.3): continue
+    chunk=p.stdout.read1(65536)
+    if not chunk: raise RuntimeError('native stdout closed')
+    pending+=chunk
+   while b'\n' in pending:
+    line,pending=pending.split(b'\n',1);response=json.loads(line);saved=response
+    if response.get('id')==identity and method=='config/read' and 'result' in response:
+     raw=response['result'];saved={'id':identity,'result':{'layers':[{k:v for k,v in layer.items() if k!='config'} for layer in raw.get('layers',[])],
+       'candidate_plugins':{k:v for k,v in raw.get('config',{}).get('plugins',{}).items() if 'personal-harness' in k}}}
+    record['events'].append({'response':saved})
+    if response.get('id')==identity:
+     if 'error' in response: raise RuntimeError(str(response['error']))
+     return response['result']
+  raise TimeoutError(method)
+ try:
+  call(1,'initialize',{'clientInfo':{'name':'personal_harness_discovery_probe','version':'0.1.0'},'capabilities':{'experimentalApi':True}})
+  p.stdin.write(b'{"method":"initialized"}\n');p.stdin.flush()
+  for identity,directory in enumerate(groups.values(),start=2): call(identity,'config/read',{'cwd':directory,'includeLayers':True})
+  call(6,'plugin/list',{'cwds':list(groups.values()),'marketplaceKinds':['local'],'forceRefetch':True})
+  response=call(5,'skills/list',{'cwds':list(groups.values()),'forceReload':True})
+  record['group_summary']={}
+  for row in response['data']:
+   name=next(name for name,path in groups.items() if path==str(Path(row['cwd']).resolve()))
+   candidate=[s for s in row['skills'] if '/personal-harness-trial-C/' in str(s.get('path',''))]
+   old=[s for s in row['skills'] if '/B/.agents/skills/task-harness/' in str(s.get('path',''))]
+   record['group_summary'][name]={'candidate':[{k:s[k] for k in ('name','path')} for s in candidate],
+                                'old_task_harness':[{k:s[k] for k in ('name','path')} for s in old], 'errors':row.get('errors',[])}
+ except Exception as error: record['error']=str(error)
+ finally:
+  p.terminate()
+  try:p.wait(timeout=5)
+  except subprocess.TimeoutExpired:p.kill();p.wait()
+  record['terminal_returncode']=p.returncode;selector.close();p.stdin.close();p.stdout.close()
+record['config_after']=hashlib.sha256(config.read_bytes()).hexdigest()
+output.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'group_summary':record.get('group_summary'),'error':record.get('error'),'config_unchanged':record['config_before']==record['config_after']},ensure_ascii=False))

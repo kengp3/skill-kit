@@ -1,0 +1,35 @@
+import copy
+import hashlib
+import json
+import subprocess
+import tomllib
+from pathlib import Path
+
+root = Path('/Users/kengp3/Workspaces/mine/simple-skills')
+evidence = root/'docs/research/codex-coding-harness-implementation-evidence'
+prepared = json.loads((evidence/'smoke-preparation.json').read_text())
+workspace = Path(prepared['groups']['C']['workspace']).resolve()
+config = Path('/Users/kengp3/.codex/config.toml')
+output = evidence/'trial-marketplace-registration.json'
+if output.exists():
+    raise SystemExit('existing receipt; reconcile before retry')
+before_bytes = config.read_bytes(); before = tomllib.loads(before_bytes.decode())
+name = 'personal-harness-trial-C'
+expected = copy.deepcopy(before)
+expected.setdefault('marketplaces', {})[name] = {'source_type':'local','source':str(workspace)}
+argv = ['/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex',
+        'plugin','marketplace','add',str(workspace)]
+result = subprocess.run(argv,cwd=workspace,capture_output=True,text=True)
+after_bytes = config.read_bytes(); after = tomllib.loads(after_bytes.decode())
+record = {'argv':argv,'cwd':str(workspace),'returncode':result.returncode,
+          'stdout':result.stdout,'stderr':result.stderr,
+          'before_sha256':hashlib.sha256(before_bytes).hexdigest(),
+          'after_sha256':hashlib.sha256(after_bytes).hexdigest(),
+          'only_source_registration_changed':after==expected,
+          'source':after.get('marketplaces',{}).get(name),
+          'candidate_user_plugin':after.get('plugins',{}).get('personal-harness@'+name),
+          'existing_user_plugins_unchanged':before.get('plugins',{})==after.get('plugins',{})}
+output.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(record,ensure_ascii=False))
+if result.returncode or not record['only_source_registration_changed'] or not record['existing_user_plugins_unchanged']:
+    raise SystemExit('registration differs from expected; reconcile before continuing')

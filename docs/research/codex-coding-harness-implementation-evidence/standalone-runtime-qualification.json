@@ -1,0 +1,235 @@
+{
+  "scope": "Packaged references and review helper imports outside development checkout; no model behavior claim",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "init",
+        "-q",
+        "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/fixture"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "behavior.py"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/fixture",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "user.name=Harness fixture",
+        "-c",
+        "user.email=harness-fixture@example.invalid",
+        "commit",
+        "-q",
+        "--no-gpg-sign",
+        "-m",
+        "fixture baseline"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/fixture",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/fixture",
+      "returncode": 0,
+      "stdout": "1e27e03f1ad216893f1a230c40e17b5d6e944999\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "add",
+        "behavior.py"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/fixture",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "user.name=Harness fixture",
+        "-c",
+        "user.email=harness-fixture@example.invalid",
+        "commit",
+        "-q",
+        "--no-gpg-sign",
+        "-m",
+        "fixture change"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/fixture",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/fixture",
+      "returncode": 0,
+      "stdout": "3b18df5b04a723fa0b031a670050787f2dfec181\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/runtime/skills/ai-code-review/scripts/review.py",
+        "prepare",
+        "--old-repo",
+        "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/fixture",
+        "--old-ref",
+        "1e27e03f1ad216893f1a230c40e17b5d6e944999",
+        "--new-repo",
+        "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/fixture",
+        "--new-ref",
+        "3b18df5b04a723fa0b031a670050787f2dfec181",
+        "--out",
+        "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/review"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6",
+      "returncode": 0,
+      "stdout": "{\"status\": \"PREPARED\", \"out\": \"/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/review\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/runtime/skills/ai-code-review/scripts/review.py",
+        "verify",
+        "--run",
+        "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/review"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6",
+      "returncode": 0,
+      "stdout": "{\"status\": \"VERIFIED\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/runtime/skills/ai-code-review/scripts/check_report_hashes.py",
+        "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/hash-index.md"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6",
+      "returncode": 0,
+      "stdout": "checked 1 linked SHA-256 values\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/runtime/skills/ai-code-review/scripts/check_report_hashes.py",
+        "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/hash-index.md"
+      ],
+      "cwd": "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6",
+      "returncode": 1,
+      "stdout": "checked 1 linked SHA-256 values\n",
+      "stderr": "line 1: SHA-256 mismatch for /var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-standalone-3vjy_4f6/fixture/behavior.py\n"
+    }
+  ],
+  "manifest_sha256": "cdd9c5a7dd48c40993de8eaab226d98cb4bd79faed76ae76b322ef4392f5eb9d",
+  "links": [
+    {
+      "source": "skills/project-setting/SKILL.md",
+      "target": "references/configuration.md"
+    },
+    {
+      "source": "skills/project-setting/SKILL.md",
+      "target": "assets/document-rules.md"
+    },
+    {
+      "source": "skills/project-setting/SKILL.md",
+      "target": "references/configuration.md"
+    },
+    {
+      "source": "skills/project-setting/SKILL.md",
+      "target": "references/configuration.md#停用"
+    },
+    {
+      "source": "skills/task-harness/SKILL.md",
+      "target": "../define-task/SKILL.md"
+    },
+    {
+      "source": "skills/task-harness/SKILL.md",
+      "target": "../ai-code-review/SKILL.md"
+    },
+    {
+      "source": "skills/task-harness/SKILL.md",
+      "target": "scripts/run_check.py"
+    },
+    {
+      "source": "skills/ai-code-review/SKILL.md",
+      "target": "references/evidence.md"
+    },
+    {
+      "source": "skills/ai-code-review/SKILL.md",
+      "target": "references/report.md#圖表說明關係與證據邊界"
+    },
+    {
+      "source": "skills/ai-code-review/SKILL.md",
+      "target": "references/deep-review.md"
+    },
+    {
+      "source": "skills/ai-code-review/SKILL.md",
+      "target": "references/migration.md"
+    },
+    {
+      "source": "skills/ai-code-review/SKILL.md",
+      "target": "references/report.md"
+    },
+    {
+      "source": "skills/ai-code-review/references/report.md",
+      "target": "migration.md"
+    },
+    {
+      "source": "skills/ai-code-review/references/evidence.md",
+      "target": "migration.md"
+    },
+    {
+      "source": "skills/ai-code-review/references/migration.md",
+      "target": "evidence.md"
+    },
+    {
+      "source": "skills/ai-code-review/references/migration.md",
+      "target": "report.md"
+    },
+    {
+      "source": "skills/project-setting/references/configuration.md",
+      "target": "../assets/codex-hooks.json"
+    },
+    {
+      "source": "skills/project-setting/references/configuration.md",
+      "target": "../assets/claude-hooks.json"
+    }
+  ],
+  "runtime_files_stable": true,
+  "reference_count": 18,
+  "result": "passed"
+}

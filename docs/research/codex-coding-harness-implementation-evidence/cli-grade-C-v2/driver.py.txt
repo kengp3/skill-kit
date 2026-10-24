@@ -1,0 +1,135 @@
+import hashlib
+import json
+import os
+import selectors
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+ROOT = Path('/Users/kengp3/Workspaces/mine/simple-skills')
+EVIDENCE = ROOT / 'docs/research/codex-coding-harness-implementation-evidence'
+CLI = '/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex'
+
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def main(group):
+    assert group in ('A', 'B', 'C', 'parent', 'reference', 'shared-scheduler')
+    qualification = group not in ('A', 'B', 'C')
+    if qualification:
+        previous = json.loads((EVIDENCE / ('lifecycle-' + group + '-7.json')).read_text())
+        workspace = Path(previous['argv'][4]).parent.parent.resolve()
+        for filename, expected in previous['sources_before'].items():
+            assert digest(Path(filename)) == expected, 'qualification source changed'
+    else:
+        trial_dir = EVIDENCE / ('cli-smoke-' + group)
+        state_file = trial_dir / 'reconciled-state.json'
+        if not state_file.exists():
+            state_file = trial_dir / 'state.json'
+        trial = json.loads(state_file.read_text())
+        assert trial['status'] == 'finished' and trial['within_wall_limit']
+        assert trial['turn_final']['id'] == trial['turn_id'], 'a child final cannot complete the root trial'
+        assert trial['server_returncode'] is not None and not trial.get('writer_cleanup', {}).get('remaining')
+        workspace = Path(trial['cwd'])
+    out = EVIDENCE / (('cli-qual-' if qualification else 'cli-grade-') + group + '-v2'); out.mkdir()
+    (out / 'driver.py.txt').write_bytes(Path(__file__).read_bytes())
+    base = Path(tempfile.mkdtemp(prefix='harness-smoke-grade-' + group + '-')).resolve()
+    product = base / 'product'; product.mkdir()
+    execution = base / 'execution'; execution.mkdir(); (execution / 'tmp').mkdir()
+    shutil.copyfile(workspace / 'pom.xml', product / 'pom.xml')
+    module = workspace / 'concurrent-request-scope'
+    for f in module.rglob('*'):
+        assert not f.is_symlink(), 'unexpected symlink in product'
+    shutil.copytree(module, product / module.name, ignore=shutil.ignore_patterns('target'))
+    fixture = ROOT / 'tests/fixtures/lifecycle/HarnessLifecycleTest.java'
+    target = product / module.name / 'src/test/java/com/example/concurrentrequestscope/HarnessLifecycleTest.java'
+    assert qualification or not target.exists(), 'agent supplied the external grader name'
+    shutil.copyfile(fixture, target)
+    output_directory = product / module.name / 'target'; output_directory.mkdir()
+    before = {str(f.relative_to(product)): digest(f) for f in product.rglob('*') if f.is_file()}
+    record = {'group': group, 'workspace': str(workspace), 'grade_root': str(base), 'grader_version': 'public-entry-v2',
+              'fixture_sha256': digest(fixture), 'source_before': before,
+              'status': 'running', 'model_trial_restarted': False,
+              'write_scope': [str(execution), str(output_directory)]}
+    dest = out / 'result.json'
+    def save():
+        dest.write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n')
+    save()
+    stderr = (out / 'stderr.txt').open('x'); log = (out / 'rpc.jsonl').open('x')
+    server = subprocess.Popen([CLI, 'app-server', '--stdio'], cwd=execution,
+                              stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=stderr,
+                              start_new_session=True)
+    selector = selectors.DefaultSelector(); selector.register(server.stdout, selectors.EVENT_READ)
+    pending = b''; serial = 0
+    def call(method, params, seconds=15):
+        nonlocal pending, serial
+        serial += 1; identity = serial
+        request = {'id': identity, 'method': method, 'params': params}
+        log.write(json.dumps({'request': request}) + '\n'); log.flush()
+        server.stdin.write((json.dumps(request) + '\n').encode()); server.stdin.flush()
+        deadline = time.monotonic() + seconds
+        while time.monotonic() < deadline:
+            if b'\n' not in pending:
+                if not selector.select(timeout=.2):
+                    continue
+                chunk = server.stdout.read1(65536)
+                if not chunk:
+                    raise RuntimeError('native stdout closed; reconcile grading result')
+                pending += chunk
+            while b'\n' in pending:
+                line, pending = pending.split(b'\n', 1); msg = json.loads(line)
+                log.write(json.dumps({'response': msg}, ensure_ascii=False) + '\n'); log.flush()
+                if msg.get('id') == identity:
+                    if 'error' in msg:
+                        raise RuntimeError(str(msg['error']))
+                    return msg['result']
+        raise TimeoutError('grade operation unknown; do not rerun model')
+    try:
+        record['initialize'] = call('initialize', {'clientInfo': {'name': 'personal_harness_external_grade', 'version': '0.1.0'}, 'capabilities': {'experimentalApi': True}})
+        server.stdin.write(b'{"method":"initialized"}\n'); server.stdin.flush()
+        policy = {'type': 'workspaceWrite', 'writableRoots': [str(output_directory)],
+                  'excludeSlashTmp': True, 'excludeTmpdirEnvVar': True, 'networkAccess': False}
+        # Demonstrate immutable grader source before executing any delivered code.
+        probe = 'from pathlib import Path;import sys;Path(sys.argv[1]).write_text("MUST-DENY")'
+        record['grader_write_probe'] = call('command/exec', {'cwd': str(execution), 'command': [sys.executable, '-c', probe, str(target)], 'sandboxPolicy': policy, 'timeoutMs': 5000})
+        assert record['grader_write_probe']['exitCode'] != 0 and digest(target) == record['fixture_sha256']
+        maven = shutil.which('mvn'); assert maven
+        command = ['/usr/bin/env', 'JAVA_TOOL_OPTIONS=-Djava.io.tmpdir=' + str(execution / 'tmp'),
+                   'MAVEN_OPTS=-Djava.io.tmpdir=' + str(execution / 'tmp'), maven,
+                   '-B', '-o', '-f', str(product / module.name / 'pom.xml'),
+                   '-Dtest=ConcurrentRequestScopePropertiesTest,ConcurrentRequestScopeCreationTest,HarnessLifecycleTest', 'test']
+        record['maven'] = call('command/exec', {'cwd': str(execution), 'command': command,
+                              'sandboxPolicy': policy, 'timeoutMs': 90000}, seconds=100)
+        reports = output_directory / 'surefire-reports'; counts = {}
+        for name in ('ConcurrentRequestScopePropertiesTest', 'ConcurrentRequestScopeCreationTest', 'HarnessLifecycleTest'):
+            f = reports / ('TEST-com.example.concurrentrequestscope.' + name + '.xml')
+            if f.exists():
+                shutil.copyfile(f, out / f.name); counts[name] = ET.parse(f).getroot().attrib
+        record['test_counts'] = counts
+        record['source_after'] = {str(f.relative_to(product)): digest(f) for f in product.rglob('*') if f.is_file() and output_directory not in f.parents}
+        assert record['source_after'] == before, 'immutable product or grader changed during grading'
+        record['product_passed'] = record['maven']['exitCode'] == 0 and len(counts) == 3 and all(int(v['tests']) > 0 and all(int(v.get(k, 0)) == 0 for k in ('failures', 'errors', 'skipped')) for v in counts.values())
+        assert 'HarnessLifecycleTest' not in counts or int(counts['HarnessLifecycleTest']['tests']) == 2
+        record['status'] = 'graded'
+    except Exception as error:
+        record['status'] = 'unverified'; record['error'] = repr(error)
+    finally:
+        server.terminate()
+        try:
+            server.wait(timeout=3)
+        except subprocess.TimeoutExpired:
+            server.kill(); server.wait(timeout=2)
+        record['server_returncode'] = server.returncode
+        save(); log.close(); stderr.close(); selector.close()
+    print(json.dumps({'group': group, 'status': record['status'], 'product_passed': record.get('product_passed'), 'error': record.get('error')}, ensure_ascii=False))
+    return 0 if record['status'] == 'graded' else 2
+
+
+if __name__ == '__main__':
+    raise SystemExit(main(sys.argv[1]))

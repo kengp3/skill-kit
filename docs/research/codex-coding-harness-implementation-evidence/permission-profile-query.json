@@ -1,0 +1,96 @@
+{
+  "argv": [
+    "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex",
+    "app-server",
+    "--stdio"
+  ],
+  "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+  "events": [
+    {
+      "request": {
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "clientInfo": {
+            "name": "personal_harness_permissions_read",
+            "version": "0.1.0"
+          },
+          "capabilities": {
+            "experimentalApi": true
+          }
+        }
+      }
+    },
+    {
+      "response": {
+        "id": 1,
+        "result": {
+          "userAgent": "Codex Desktop/0.164.0-alpha.11.1 (Mac OS 27.0.1; arm64) dumb (personal_harness_permissions_read; 0.1.0)",
+          "codexHome": "/Users/kengp3/.codex",
+          "platformFamily": "unix",
+          "platformOs": "macos"
+        }
+      }
+    },
+    {
+      "request": {
+        "id": 2,
+        "method": "permissionProfile/list",
+        "params": {
+          "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C"
+        }
+      }
+    },
+    {
+      "response": {
+        "method": "remoteControl/status/changed",
+        "params": {
+          "status": "disabled",
+          "serverName": "kengp3-MBPR-M4-16.local",
+          "installationId": "98546718-c085-4e7d-b4eb-beb4f9173f26",
+          "environmentId": null
+        },
+        "emittedAtMs": 1792813404728
+      }
+    },
+    {
+      "response": {
+        "id": 2,
+        "result": {
+          "data": [
+            {
+              "id": ":read-only",
+              "description": null,
+              "allowed": true
+            },
+            {
+              "id": ":workspace",
+              "description": null,
+              "allowed": true
+            },
+            {
+              "id": ":danger-full-access",
+              "description": null,
+              "allowed": true
+            }
+          ],
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "request": {
+        "id": 3,
+        "method": "config/read",
+        "params": {
+          "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+          "includeLayers": false
+        }
+      }
+    }
+  ],
+  "config_before": "f3f83bbed1c418780b3ca0eeaa9ae06aad86dc2307d5e0828926bbf68a4eb495",
+  "error": "'NoneType' object is not iterable",
+  "process_terminal_returncode": 0,
+  "config_after": "f3f83bbed1c418780b3ca0eeaa9ae06aad86dc2307d5e0828926bbf68a4eb495"
+}

@@ -1,0 +1,78 @@
+{
+  "argv": [
+    "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex",
+    "app-server",
+    "--stdio"
+  ],
+  "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+  "target_thread_id": "01a16c0c-7b36-73e3-8a16-209598391f8d",
+  "target_turn_id": "01a16c0d-595b-7d80-9f04-e58f60009f90",
+  "events": [
+    {
+      "request": {
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "clientInfo": {
+            "name": "personal_harness_interrupt_check",
+            "version": "0.1.0"
+          },
+          "capabilities": {
+            "experimentalApi": true
+          }
+        }
+      }
+    },
+    {
+      "response": {
+        "id": 1,
+        "result": {
+          "userAgent": "Codex Desktop/0.164.0-alpha.11.1 (Mac OS 27.0.1; arm64) dumb (personal_harness_interrupt_check; 0.1.0)",
+          "codexHome": "/Users/kengp3/.codex",
+          "platformFamily": "unix",
+          "platformOs": "macos"
+        }
+      }
+    },
+    {
+      "request": {
+        "id": 2,
+        "method": "turn/interrupt",
+        "params": {
+          "threadId": "01a16c0c-7b36-73e3-8a16-209598391f8d",
+          "turnId": "01a16c0d-595b-7d80-9f04-e58f60009f90"
+        }
+      }
+    },
+    {
+      "response": {
+        "method": "remoteControl/status/changed",
+        "params": {
+          "status": "disabled",
+          "serverName": "kengp3-MBPR-M4-16.local",
+          "installationId": "98546718-c085-4e7d-b4eb-beb4f9173f26",
+          "environmentId": null
+        },
+        "emittedAtMs": 1792814185176
+      }
+    },
+    {
+      "response": {
+        "error": {
+          "code": -32600,
+          "message": "thread not found: 01a16c0c-7b36-73e3-8a16-209598391f8d"
+        },
+        "id": 2
+      }
+    }
+  ],
+  "state": "confirmed_response",
+  "interrupt_response": {
+    "error": {
+      "code": -32600,
+      "message": "thread not found: 01a16c0c-7b36-73e3-8a16-209598391f8d"
+    },
+    "id": 2
+  },
+  "native_process_terminal_returncode": 0
+}

@@ -1,0 +1,26 @@
+{
+  "observed_at_unix": 1792816414.268266,
+  "action": "owner_cleanup_not_UI_Stop",
+  "owner_sent_SIGTERM_to_verified_parent": true,
+  "pids": {
+    "parent_pid": 16708,
+    "child_pid": 16709,
+    "limit_seconds": 120,
+    "deadline_monotonic": 77185.443124791
+  },
+  "ps_before": {
+    "returncode": 0,
+    "stdout": "16708 93200 Ss   /opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python -I -B .harness-control/manual-stop-2/worker.py\n16709 16708 S    /opt/homebrew/Cellar/python@3.15/3.15.0_1/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python -I -B .harness-control/manual-stop-2/worker.py\n",
+    "stderr": ""
+  },
+  "ps_after": {
+    "returncode": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  "final": {
+    "parent_stop_signal": 15,
+    "deadline_expired": false,
+    "child_exit_code": 0
+  }
+}

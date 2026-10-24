@@ -1,0 +1,532 @@
+--- a/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/ConcurrentRequestScope.java
++++ b/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/ConcurrentRequestScope.java
+@@ -8,6 +8,7 @@
+ import com.example.concurrentrequestscope.internal.ConcurrentRequestScopeState;
+ import com.example.concurrentrequestscope.internal.ScopeKeyResolver;
+ import org.springframework.beans.factory.ObjectFactory;
++import org.springframework.beans.factory.DisposableBean;
+ import org.springframework.beans.factory.config.Scope;
+ import org.springframework.web.context.request.RequestAttributes;
+ import org.springframework.web.context.request.RequestContextHolder;
+@@ -18,8 +19,9 @@
+ import java.util.concurrent.ScheduledExecutorService;
+ import java.util.concurrent.ThreadFactory;
+ import java.util.concurrent.TimeUnit;
+-
+-public class ConcurrentRequestScope implements Scope {
++import java.util.concurrent.locks.ReentrantReadWriteLock;
++
++public class ConcurrentRequestScope implements Scope, DisposableBean {
+ 
+     private static final System.Logger LOGGER = System.getLogger(ConcurrentRequestScope.class.getName());
+     private static final String CLEANUP_CALLBACK_NAME =
+@@ -28,6 +30,9 @@
+     private final ConcurrentRequestScopeState state;
+     private final ScopeKeyResolver keyResolver;
+     private final ScheduledExecutorService staleEntryCleanupExecutor;
++    private final ReentrantReadWriteLock lifecycleLock = new ReentrantReadWriteLock();
++    private volatile boolean destroyed;
++    private volatile Thread staleCleanerThread;
+ 
+     public ConcurrentRequestScope() {
+         this(ConcurrentRequestScopeSettings.defaults());
+@@ -54,7 +59,14 @@
+     public Object get(String name, ObjectFactory<?> objectFactory) {
+         Objects.requireNonNull(name, "bean name must not be null");
+         Objects.requireNonNull(objectFactory, "objectFactory must not be null");
+-        ConcurrentRequestScopeEntry entry = getOrCreateEntry(RequestContextHolder.currentRequestAttributes());
++        ConcurrentRequestScopeEntry entry;
++        lifecycleLock.readLock().lock();
++        try {
++            assertActive();
++            entry = getOrCreateEntry(RequestContextHolder.currentRequestAttributes());
++        } finally {
++            lifecycleLock.readLock().unlock();
++        }
+         return entry.getOrCreateBean(name, objectFactory);
+     }
+ 
+@@ -72,13 +84,60 @@
+     public void registerDestructionCallback(String name, Runnable callback) {
+         Objects.requireNonNull(name, "bean name must not be null");
+         Objects.requireNonNull(callback, "destruction callback must not be null");
+-        RequestAttributes attrs = RequestContextHolder.currentRequestAttributes();
+-        ConcurrentRequestScopeEntry entry = state.getEntry(keyResolver.scopeKey(attrs));
+-        if (entry == null) {
+-            throw new IllegalStateException(
+-                    "[ConcurrentRequestScope] cannot register destruction callback before request entry exists");
+-        }
+-        entry.registerDestructionCallback(name, callback);
++        ConcurrentRequestScopeEntry entry = null;
++        lifecycleLock.readLock().lock();
++        try {
++            if (!destroyed) {
++                RequestAttributes attrs = RequestContextHolder.currentRequestAttributes();
++                entry = state.getEntry(keyResolver.scopeKey(attrs));
++                if (entry == null) {
++                    throw new IllegalStateException(
++                            "[ConcurrentRequestScope] cannot register destruction callback before request entry exists");
++                }
++            }
++        } finally {
++            lifecycleLock.readLock().unlock();
++        }
++        if (entry != null) {
++            entry.registerDestructionCallback(name, callback);
++        } else {
++            // A bean finishing creation during shutdown must still release its resources.
++            callback.run();
++        }
++    }
++
++    @Override
++    public void destroy() {
++        lifecycleLock.writeLock().lock();
++        try {
++            if (destroyed) {
++                return;
++            }
++            destroyed = true;
++        } finally {
++            lifecycleLock.writeLock().unlock();
++        }
++        if (staleEntryCleanupExecutor != null) {
++            staleEntryCleanupExecutor.shutdownNow();
++            if (Thread.currentThread() != staleCleanerThread) {
++                try {
++                    // shortcut: interrupt-ignoring callbacks may outlive shutdown, use callback isolation if required.
++                    if (!staleEntryCleanupExecutor.awaitTermination(5, TimeUnit.SECONDS)) {
++                        LOGGER.log(System.Logger.Level.WARNING,
++                                "[ConcurrentRequestScope] stale cleaner did not stop after interruption");
++                    }
++                } catch (InterruptedException e) {
++                    Thread.currentThread().interrupt();
++                }
++            }
++        }
++        state.forEachEntry(this::cleanupScopeEntry);
++    }
++
++    private void assertActive() {
++        if (destroyed) {
++            throw new IllegalStateException("[ConcurrentRequestScope] scope has been destroyed");
++        }
+     }
+ 
+     @Override
+@@ -174,12 +233,13 @@
+         return executor;
+     }
+ 
+-    private static ThreadFactory staleCleanerThreadFactory() {
++    private ThreadFactory staleCleanerThreadFactory() {
+         return runnable -> {
+             Thread thread = Thread.ofPlatform()
+                     .name("concurrent-request-scope-stale-cleaner")
+                     .unstarted(runnable);
+             thread.setDaemon(true);
++            staleCleanerThread = thread;
+             return thread;
+         };
+     }
+@@ -196,7 +256,7 @@
+ 
+     private int cleanupStaleEntries() {
+         ConcurrentRequestScopeSettings settings = state.settings();
+-        if (!settings.staleEntryCleanupEnabled()) {
++        if (destroyed || !settings.staleEntryCleanupEnabled()) {
+             return 0;
+         }
+         long ttlNanos = settings.staleEntryTtl().toNanos();
+@@ -204,7 +264,7 @@
+     }
+ 
+     private void cleanupStaleEntry(Object key, ConcurrentRequestScopeEntry expected) {
+-        if (!state.removeEntryIfSame(key, expected)) {
++        if (destroyed || !state.removeEntryIfSame(key, expected)) {
+             return;
+         }
+         try {
+--- a/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeBeanFactoryPostProcessor.java
++++ b/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeBeanFactoryPostProcessor.java
+@@ -6,6 +6,7 @@
+ import io.micrometer.context.ContextRegistry;
+ import org.springframework.beans.BeansException;
+ import org.springframework.beans.factory.BeanCreationException;
++import org.springframework.beans.factory.DisposableBean;
+ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+ import org.springframework.boot.context.properties.bind.Binder;
+@@ -14,9 +15,10 @@
+ 
+ import java.util.Objects;
+ 
+-public final class ConcurrentRequestScopeBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
++public final class ConcurrentRequestScopeBeanFactoryPostProcessor implements BeanFactoryPostProcessor, DisposableBean {
+ 
+     private final Environment environment;
++    private ConcurrentRequestScope scope;
+ 
+     public ConcurrentRequestScopeBeanFactoryPostProcessor(Environment environment) {
+         this.environment = Objects.requireNonNull(environment, "environment must not be null");
+@@ -36,9 +38,15 @@
+                 .bind("concurrent-request-scope", ConcurrentRequestScopeProperties.class)
+                 .orElseGet(ConcurrentRequestScopeProperties::new);
+ 
+-        beanFactory.registerScope(
+-                ConcurrentRequestScopeNames.CONCURRENT_REQUEST_SCOPE,
+-                new ConcurrentRequestScope(properties.toSettings()));
++        scope = new ConcurrentRequestScope(properties.toSettings());
++        beanFactory.registerScope(ConcurrentRequestScopeNames.CONCURRENT_REQUEST_SCOPE, scope);
++    }
++
++    @Override
++    public void destroy() {
++        if (scope != null) {
++            scope.destroy();
++        }
+     }
+ 
+     private static void registerRequestAttributesThreadLocalAccessor() {
+--- a/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeEntry.java
++++ b/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeEntry.java
+@@ -18,6 +18,7 @@
+     private final long createdAtNanos;
+     private final AtomicLong lastAccessAtNanos;
+     private final ThreadLocal<Set<String>> creatingBeans = ThreadLocal.withInitial(HashSet::new);
++    private volatile boolean destroyed;
+ 
+     public ConcurrentRequestScopeEntry(long conversationSequence) {
+         this(conversationSequence, System.nanoTime());
+@@ -52,6 +53,9 @@
+     public Object getOrCreateBean(String name, ObjectFactory<?> objectFactory) {
+         Objects.requireNonNull(name, "bean name must not be null");
+         Objects.requireNonNull(objectFactory, "objectFactory must not be null");
++        if (destroyed) {
++            throw new IllegalStateException("[ConcurrentRequestScope] request entry has been destroyed");
++        }
+         Set<String> creating = creatingBeans.get();
+         if (!creating.add(name)) {
+             throw new BeanCurrentlyInCreationException(name,
+@@ -59,13 +63,20 @@
+         }
+         BeanSlot slot = slots.computeIfAbsent(name, BeanSlot::new);
+         try {
+-            return slot.getOrCreate(objectFactory);
++            Object bean = slot.getOrCreate(objectFactory);
++            if (destroyed) {
++                throw new IllegalStateException("[ConcurrentRequestScope] request entry has been destroyed");
++            }
++            return bean;
+         } catch (RuntimeException | Error e) {
+             if (!slot.initialized()) {
+                 slots.remove(name, slot);
+             }
+             throw e;
+         } finally {
++            if (destroyed) {
++                slots.clear();
++            }
+             creating.remove(name);
+             if (creating.isEmpty()) {
+                 creatingBeans.remove();
+@@ -85,6 +96,11 @@
+     }
+ 
+     public int runDestructionCallbacks(BiConsumer<String, Throwable> failureHandler) {
+-        return destructionCallbacks.runBestEffort(failureHandler);
++        destroyed = true;
++        try {
++            return destructionCallbacks.runBestEffort(failureHandler);
++        } finally {
++            slots.clear();
++        }
+     }
+ }
+--- a/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeState.java
++++ b/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeState.java
+@@ -113,6 +113,10 @@
+         return Math.toIntExact(candidates.get());
+     }
+ 
++    public void forEachEntry(BiConsumer<Object, ConcurrentRequestScopeEntry> cleanup) {
++        entries.forEach(cleanup);
++    }
++
+     public void clearForTesting() {
+         if (!settings.testingClearEnabled()) {
+             throw new ConcurrentRequestScopeBackdoorException(
+--- a/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/DestructionCallbackRegistry.java
++++ b/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/DestructionCallbackRegistry.java
+@@ -10,11 +10,18 @@
+ public final class DestructionCallbackRegistry {
+ 
+     private final ConcurrentHashMap<String, Runnable> callbacks = new ConcurrentHashMap<>();
++    private boolean destroyed;
+ 
+     public void register(String name, Runnable callback) {
+         Objects.requireNonNull(name, "bean name must not be null");
+         Objects.requireNonNull(callback, "destruction callback must not be null");
+-        callbacks.put(name, callback);
++        synchronized (callbacks) {
++            if (!destroyed) {
++                callbacks.put(name, callback);
++                return;
++            }
++        }
++        callback.run();
+     }
+ 
+     public void remove(String name) {
+@@ -24,9 +31,13 @@
+ 
+     public int runBestEffort(BiConsumer<String, Throwable> failureHandler) {
+         Objects.requireNonNull(failureHandler, "failureHandler must not be null");
+-        ArrayList<Map.Entry<String, Runnable>> snapshot = new ArrayList<>(callbacks.entrySet());
++        ArrayList<Map.Entry<String, Runnable>> snapshot;
++        synchronized (callbacks) {
++            destroyed = true;
++            snapshot = new ArrayList<>(callbacks.entrySet());
++            callbacks.clear();
++        }
+         snapshot.sort(Comparator.comparing(Map.Entry::getKey));
+-        callbacks.clear();
+ 
+         int failures = 0;
+         for (Map.Entry<String, Runnable> entry : snapshot) {
+--- /dev/null
++++ b/concurrent-request-scope/src/test/java/com/example/concurrentrequestscope/ConcurrentRequestScopeLifecycleTest.java
+@@ -0,0 +1,233 @@
++package com.example.concurrentrequestscope;
++
++import io.micrometer.context.ContextRegistry;
++import io.micrometer.context.ContextSnapshot;
++import org.junit.jupiter.api.AfterEach;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.ValueSource;
++import org.springframework.context.annotation.AnnotationConfigApplicationContext;
++import org.springframework.context.annotation.Configuration;
++import org.springframework.core.env.MapPropertySource;
++import org.springframework.mock.web.MockHttpServletRequest;
++import org.springframework.test.util.ReflectionTestUtils;
++import org.springframework.web.context.request.RequestAttributesThreadLocalAccessor;
++import org.springframework.web.context.request.RequestContextHolder;
++import org.springframework.web.context.request.ServletRequestAttributes;
++
++import java.util.Map;
++import java.util.concurrent.CountDownLatch;
++import java.util.concurrent.FutureTask;
++import java.util.concurrent.ScheduledExecutorService;
++import java.util.concurrent.TimeUnit;
++import java.util.concurrent.atomic.AtomicInteger;
++import java.util.concurrent.atomic.AtomicReference;
++
++import static com.example.concurrentrequestscope.support.ConcurrentRequestScopeStateAssertions.assertBaseline;
++import static org.junit.jupiter.api.Assertions.*;
++
++class ConcurrentRequestScopeLifecycleTest {
++
++    @AfterEach
++    void resetRequest() {
++        RequestContextHolder.resetRequestAttributes();
++    }
++
++    @ParameterizedTest
++    @ValueSource(booleans = {true, false})
++    void contextCloseReleasesEntriesAndStopsOwnedCleaner(boolean cleanupEnabled) throws Exception {
++        try (var context = context(cleanupEnabled, "1h", "1h")) {
++            ConcurrentRequestScope scope = scope(context);
++            ScheduledExecutorService cleaner = cleaner(scope);
++            var attrs = bindRequest();
++            AtomicInteger destroyed = new AtomicInteger();
++            scope.get("bean", Object::new);
++            scope.registerDestructionCallback("bean", destroyed::incrementAndGet);
++            scope.get("failing", Object::new);
++            scope.registerDestructionCallback("failing", () -> { throw new IllegalStateException("expected"); });
++            var retainedEntry = scope.stateForTesting().getEntry(scope.scopeKeyForTesting(attrs));
++
++            context.close();
++
++            assertEquals(1, destroyed.get());
++            assertEquals(1, scope.stateForTesting().cleanupFailureCount());
++            assertBaseline(scope.stateForTesting());
++            assertTrue(((Map<?, ?>) ReflectionTestUtils.getField(retainedEntry, "slots")).isEmpty());
++            if (cleanupEnabled) {
++                assertTrue(cleaner.isShutdown());
++                assertTrue(cleaner.awaitTermination(2, TimeUnit.SECONDS));
++            } else {
++                assertNull(cleaner);
++            }
++            attrs.requestCompleted();
++            context.close();
++            assertEquals(1, destroyed.get());
++            assertBaseline(scope.stateForTesting());
++            assertThrows(IllegalStateException.class, () -> scope.get("late", Object::new));
++        }
++    }
++
++    @Test
++    void ttlCallbackCanCloseItsOwnContext() throws Exception {
++        var context = context(true, "100ms", "100ms");
++        ConcurrentRequestScope scope = scope(context);
++        CountDownLatch closed = new CountDownLatch(1);
++        bindRequest();
++        scope.get("bean", Object::new);
++        scope.registerDestructionCallback("bean", () -> {
++            context.close();
++            closed.countDown();
++        });
++        RequestContextHolder.resetRequestAttributes();
++
++        assertTrue(closed.await(2, TimeUnit.SECONDS), "callback close must not deadlock or await itself");
++        assertTrue(cleaner(scope).awaitTermination(2, TimeUnit.SECONDS));
++        assertBaseline(scope.stateForTesting());
++    }
++
++    @Test
++    void closeInterruptsAnInFlightTtlCallback() throws Exception {
++        var context = context(true, "100ms", "100ms");
++        ConcurrentRequestScope scope = scope(context);
++        CountDownLatch entered = new CountDownLatch(1);
++        CountDownLatch release = new CountDownLatch(1);
++        CountDownLatch interrupted = new CountDownLatch(1);
++        bindRequest();
++        scope.get("bean", Object::new);
++        scope.registerDestructionCallback("bean", () -> {
++            entered.countDown();
++            try {
++                release.await();
++            } catch (InterruptedException e) {
++                interrupted.countDown();
++                Thread.currentThread().interrupt();
++            }
++        });
++        try {
++            assertTrue(entered.await(2, TimeUnit.SECONDS));
++            FutureTask<Void> closing = new FutureTask<>(() -> { context.close(); return null; });
++            Thread.ofVirtual().start(closing);
++            closing.get(2, TimeUnit.SECONDS);
++            assertEquals(0, interrupted.getCount());
++            assertTrue(cleaner(scope).isTerminated());
++            assertBaseline(scope.stateForTesting());
++        } finally {
++            release.countDown();
++            context.close();
++        }
++    }
++
++    @Test
++    void beanFactoryCanCloseContextAndLateDestructionCallbackStillReleasesBean() {
++        try (var context = context(false, "1h", "1h")) {
++            ConcurrentRequestScope scope = scope(context);
++            bindRequest();
++            AtomicInteger destroyed = new AtomicInteger();
++            assertThrows(IllegalStateException.class, () -> scope.get("bean", () -> {
++                context.close();
++                scope.registerDestructionCallback("bean", destroyed::incrementAndGet);
++                return new Object();
++            }));
++            assertEquals(1, destroyed.get());
++            assertBaseline(scope.stateForTesting());
++        }
++    }
++
++    @Test
++    void entryRetainedAcrossCloseDoesNotLoseLateCallbacksOrBeans() {
++        try (var context = context(false, "1h", "1h")) {
++            ConcurrentRequestScope scope = scope(context);
++            var attrs = bindRequest();
++            scope.get("bean", Object::new);
++            var entry = scope.stateForTesting().getEntry(scope.scopeKeyForTesting(attrs));
++            context.close();
++            AtomicInteger callbacks = new AtomicInteger();
++            entry.registerDestructionCallback("late", callbacks::incrementAndGet);
++            assertEquals(1, callbacks.get());
++            assertEquals(0, entry.runDestructionCallbacks((name, failure) -> fail(failure)));
++            assertEquals(1, callbacks.get());
++            assertThrows(IllegalStateException.class, () -> entry.getOrCreateBean("late", Object::new));
++        }
++    }
++
++    @Test
++    void failedContextStartupAlsoStopsItsCleaner() throws Exception {
++        var context = new AnnotationConfigApplicationContext();
++        AtomicReference<ConcurrentRequestScope> createdScope = new AtomicReference<>();
++        context.register(EnabledConfig.class);
++        context.registerBean("startupFailure", Object.class, () -> {
++            createdScope.set(scope(context));
++            throw new IllegalStateException("expected startup failure");
++        });
++        try {
++            assertThrows(org.springframework.beans.BeansException.class, context::refresh);
++            assertNotNull(createdScope.get());
++            assertTrue(cleaner(createdScope.get()).awaitTermination(2, TimeUnit.SECONDS));
++            assertBaseline(createdScope.get().stateForTesting());
++        } finally {
++            context.close();
++        }
++    }
++
++    @Test
++    void closingOneContextPreservesOtherContextsCleanerAndSharedAccessor() throws Exception {
++        try (var first = context(true, "100ms", "100ms");
++             var second = context(true, "100ms", "100ms")) {
++            ConcurrentRequestScope firstScope = scope(first);
++            ConcurrentRequestScope secondScope = scope(second);
++            var accessor = ContextRegistry.getInstance().getThreadLocalAccessors().stream()
++                    .filter(a -> a instanceof RequestAttributesThreadLocalAccessor).findFirst().orElseThrow();
++            first.close();
++            assertTrue(cleaner(firstScope).awaitTermination(2, TimeUnit.SECONDS));
++            assertFalse(cleaner(secondScope).isShutdown());
++            assertTrue(ContextRegistry.getInstance().getThreadLocalAccessors().contains(accessor));
++
++            var attrs = bindRequest();
++            Object bean = secondScope.get("bean", Object::new);
++            var snapshot = ContextSnapshot.captureAll();
++            RequestContextHolder.resetRequestAttributes();
++            try (var ignored = snapshot.setThreadLocals()) {
++                assertSame(attrs.getRequest(), ((ServletRequestAttributes)
++                        RequestContextHolder.currentRequestAttributes()).getRequest());
++                assertSame(bean, secondScope.get("bean", Object::new));
++            }
++            CountDownLatch expired = new CountDownLatch(1);
++            RequestContextHolder.setRequestAttributes(attrs);
++            secondScope.registerDestructionCallback("bean", expired::countDown);
++            RequestContextHolder.resetRequestAttributes();
++            assertTrue(expired.await(2, TimeUnit.SECONDS), "live context must still run TTL cleanup");
++            second.close();
++            assertBaseline(secondScope.stateForTesting());
++        }
++    }
++
++    private static AnnotationConfigApplicationContext context(boolean enabled, String ttl, String interval) {
++        var context = new AnnotationConfigApplicationContext();
++        context.getEnvironment().getPropertySources().addFirst(new MapPropertySource("test", Map.of(
++                "concurrent-request-scope.stale-entry-cleanup.enabled", enabled,
++                "concurrent-request-scope.stale-entry-cleanup.ttl", ttl,
++                "concurrent-request-scope.stale-entry-cleanup.scan-interval", interval)));
++        context.register(EnabledConfig.class);
++        context.refresh();
++        return context;
++    }
++
++    private static ConcurrentRequestScope scope(AnnotationConfigApplicationContext context) {
++        return (ConcurrentRequestScope) context.getBeanFactory()
++                .getRegisteredScope(ConcurrentRequestScopeNames.CONCURRENT_REQUEST_SCOPE);
++    }
++
++    private static ScheduledExecutorService cleaner(ConcurrentRequestScope scope) {
++        return (ScheduledExecutorService) ReflectionTestUtils.getField(scope, "staleEntryCleanupExecutor");
++    }
++
++    private static ServletRequestAttributes bindRequest() {
++        var attrs = new ServletRequestAttributes(new MockHttpServletRequest());
++        RequestContextHolder.setRequestAttributes(attrs);
++        return attrs;
++    }
++
++    @Configuration(proxyBeanMethods = false)
++    @EnableConcurrentRequestScope
++    static class EnabledConfig {}
++}

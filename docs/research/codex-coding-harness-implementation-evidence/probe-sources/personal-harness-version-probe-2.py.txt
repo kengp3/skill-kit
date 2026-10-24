@@ -1,0 +1,19 @@
+from pathlib import Path
+import subprocess,sys
+m=Path('/Users/kengp3/Workspaces/mine/simple-skills/.agents/plugins/marketplace.json')
+original=m.read_text()
+assert original.count('./dist/personal-harness')==1
+updated=original.replace('./dist/personal-harness','./dist/probes/0.1.1')
+m.write_text(updated)
+try:
+ subprocess.run([sys.executable,'-B','/private/tmp/personal-harness-update-probe-2.py'],check=True)
+ result=subprocess.run([sys.executable,'-B','/Users/kengp3/Workspaces/mine/simple-skills/scripts/package_harness.py','--verify','/Users/kengp3/.codex/plugins/cache/personal-harness-local/personal-harness/0.1.1'],capture_output=True,text=True)
+ import json,hashlib
+ evidence=Path('/Users/kengp3/Workspaces/mine/simple-skills/docs/research/codex-coding-harness-implementation-evidence')
+ expected=hashlib.sha256(Path('/Users/kengp3/Workspaces/mine/simple-skills/dist/probes/0.1.1/runtime-manifest.json').read_bytes()).hexdigest()
+ (evidence/'update-cache-verification.json').write_text(json.dumps({'argv':result.args,'returncode':result.returncode,'stdout':result.stdout,'stderr':result.stderr,'expected_manifest_sha256':expected},indent=2))
+ assert result.returncode==0 and result.stdout.splitlines()[0]==expected
+finally:
+ if m.read_text()!=updated: raise RuntimeError('marketplace changed concurrently; do not overwrite')
+ m.write_text(original)
+subprocess.run([sys.executable,'-B','/private/tmp/personal-harness-rollback-probe-2.py'],check=True)

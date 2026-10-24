@@ -1,0 +1,109 @@
+{
+  "group": "B",
+  "mode": "flow_smoke_only",
+  "configured_model": "gpt-6.1-sol",
+  "configured_effort": "high",
+  "elapsed_seconds_measured": 297.7116190000088,
+  "turn_status": "completed",
+  "within_900_second_limit": true,
+  "attempts": 1,
+  "model_restarts": 0,
+  "writer_cleanup": {
+    "actions": [],
+    "remaining": []
+  },
+  "immutable_input_changes": [],
+  "changed_source": [
+    {
+      "path": "concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/ConcurrentRequestScope.java",
+      "before_sha256": "4e1d1f833fd6dd3235f2acfd5cc284686b3f2520d18865b81e4f5c5332e58fd7",
+      "after_sha256": "282eaf2378695f7c887a82eee7ea11c0cca009c28fa9e3316cf8d7d8e6857ab3"
+    },
+    {
+      "path": "concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeBeanFactoryPostProcessor.java",
+      "before_sha256": "2d9e572ad23d68fbd8d3592e60e1755574259f753863d7d7fbe207d54813e300",
+      "after_sha256": "efc603cd70b385b19a41e311d0cc8fe335530e507cc52990d90fb8486cc764dd"
+    },
+    {
+      "path": "concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeState.java",
+      "before_sha256": "7ba1137b4c35cea3f5df4b6bf857baeef680e69de9213a73360d8e2537c13dc5",
+      "after_sha256": "22f3486cec8eb51ab992bc421a94bcbd8c3ff700cc439c401292179b9c7d14c4"
+    },
+    {
+      "path": "concurrent-request-scope/src/test/java/com/example/concurrentrequestscope/ConcurrentRequestScopeLifecycleTest.java",
+      "before_sha256": null,
+      "after_sha256": "78ec9df692ccc45e13ee181d3707080140c7f09f73b98c0af738a8c254b3125a"
+    }
+  ],
+  "existing_tests_changed": [],
+  "native_completed_item_types": {
+    "userMessage": 1,
+    "agentMessage": 9,
+    "commandExecution": 18,
+    "reasoning": 17,
+    "fileChange": 3
+  },
+  "commands_completed": 18,
+  "commands_nonzero": 3,
+  "final_native_token_usage": {
+    "total": {
+      "totalTokens": 1247477,
+      "inputTokens": 1233221,
+      "cachedInputTokens": 1134592,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 14256,
+      "reasoningOutputTokens": 6138
+    },
+    "last": {
+      "totalTokens": 110075,
+      "inputTokens": 108656,
+      "cachedInputTokens": 102784,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1419,
+      "reasoningOutputTokens": 1034
+    },
+    "modelContextWindow": 475000
+  },
+  "final_model_message": "已完成 T1：修改 3 個 production files、新增 6 個回歸案例，保留既有測試。\n\n- [scope](/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/B/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/ConcurrentRequestScope.java:95)：停止 cleaner、等待執行中掃描、清理 entries 與 callbacks，拒絕關閉後建立資源。\n- [Spring 生命週期接線](/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/B/concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeBeanFactoryPostProcessor.java:40)：由建立者負責銷毀 scope，保留共用 accessor。\n\n離線執行 `mvn -B -o -f concurrent-request-scope/pom.xml test`：**91 tests，全部通過，無略過**。已核對來源指紋與[回歸報告](/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/B/concurrent-request-scope/target/surefire-reports/com.example.concurrentrequestscope.ConcurrentRequestScopeLifecycleTest.txt)，並完成五項品質檢視；15 分鐘內完成，未購買資源。\n\n未執行缺少模組的 root reactor 或外部驗收。自訂 factory／callback 若持續阻塞，仍可能延後關閉。",
+  "external_grade": {
+    "path": "cli-grade-B-v2/result.json",
+    "product_passed": true,
+    "test_counts": {
+      "ConcurrentRequestScopePropertiesTest": {
+        "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation": "https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd",
+        "version": "3.0.2",
+        "name": "com.example.concurrentrequestscope.ConcurrentRequestScopePropertiesTest",
+        "time": "0.027",
+        "tests": "3",
+        "errors": "0",
+        "skipped": "0",
+        "failures": "0"
+      },
+      "ConcurrentRequestScopeCreationTest": {
+        "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation": "https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd",
+        "version": "3.0.2",
+        "name": "com.example.concurrentrequestscope.ConcurrentRequestScopeCreationTest",
+        "time": "0.183",
+        "tests": "8",
+        "errors": "0",
+        "skipped": "0",
+        "failures": "0"
+      },
+      "HarnessLifecycleTest": {
+        "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation": "https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd",
+        "version": "3.0.2",
+        "name": "com.example.concurrentrequestscope.HarnessLifecycleTest",
+        "time": "1.132",
+        "tests": "2",
+        "errors": "0",
+        "skipped": "0",
+        "failures": "0"
+      }
+    }
+  },
+  "human_active_seconds": null,
+  "human_active_time_label": "unavailable",
+  "observed_human_rescue_actions_within_trial": 0,
+  "later_rework_window": "not observed",
+  "paid_resource_purchases": false
+}

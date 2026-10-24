@@ -1,0 +1,141 @@
+{
+  "state": "created_empty",
+  "purpose": "Create exactly one empty persistent C thread for Desktop to take over; no turn/start or model execution",
+  "argv": [
+    "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex",
+    "app-server",
+    "--stdio"
+  ],
+  "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+  "events": [
+    {
+      "request": {
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "clientInfo": {
+            "name": "personal_harness_prepare_desktop",
+            "version": "0.1.0"
+          },
+          "capabilities": {
+            "experimentalApi": true
+          }
+        }
+      }
+    },
+    {
+      "response": {
+        "id": 1,
+        "result": {
+          "userAgent": "Codex Desktop/0.164.0-alpha.11.1 (Mac OS 27.0.1; arm64) dumb (personal_harness_prepare_desktop; 0.1.0)",
+          "codexHome": "/Users/kengp3/.codex",
+          "platformFamily": "unix",
+          "platformOs": "macos"
+        }
+      }
+    },
+    {
+      "request": {
+        "id": 2,
+        "method": "thread/start",
+        "params": {
+          "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+          "runtimeWorkspaceRoots": [
+            "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C"
+          ],
+          "sandbox": "read-only",
+          "ephemeral": false
+        }
+      }
+    },
+    {
+      "response": {
+        "method": "remoteControl/status/changed",
+        "params": {
+          "status": "disabled",
+          "serverName": "kengp3-MBPR-M4-16.local",
+          "installationId": "98546718-c085-4e7d-b4eb-beb4f9173f26",
+          "environmentId": null
+        },
+        "emittedAtMs": 1792812387741
+      }
+    },
+    {
+      "response": {
+        "id": 2,
+        "result": {
+          "thread": {
+            "id": "01a16bf2-0da3-71f2-b435-804b2db8802a",
+            "environments": [
+              {
+                "environmentId": "local",
+                "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+                "runtimeWorkspaceRoots": [
+                  "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C"
+                ]
+              }
+            ],
+            "extra": null,
+            "sessionId": "01a16bf2-0da3-71f2-b435-804b2db8802a",
+            "forkedFromId": null,
+            "parentThreadId": null,
+            "preview": "",
+            "ephemeral": false,
+            "section": null,
+            "sectionEnteredAt": null,
+            "projectId": null,
+            "historyMode": "paginated",
+            "modelProvider": "openai",
+            "model": "gpt-6.1-sol",
+            "reasoningEffort": "high",
+            "createdAt": 1792812387,
+            "updatedAt": 1792812387,
+            "recencyAt": 1792812387,
+            "status": {
+              "type": "idle"
+            },
+            "path": "/Users/kengp3/.codex/sessions/2026/10/24/rollout-2026-10-24T11-26-27-01a16bf2-0da3-71f2-b435-804b2db8802a.jsonl",
+            "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+            "cliVersion": "0.164.0-alpha.11.1",
+            "originator": "Codex Desktop",
+            "source": "vscode",
+            "canAcceptDirectInput": true,
+            "threadSource": null,
+            "agentNickname": null,
+            "agentRole": null,
+            "gitInfo": null,
+            "name": null,
+            "daybreakEnabled": null,
+            "turns": []
+          },
+          "model": "gpt-6.1-sol",
+          "modelProvider": "openai",
+          "serviceTier": "default",
+          "disabledPluginIds": [],
+          "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+          "runtimeWorkspaceRoots": [
+            "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C"
+          ],
+          "instructionSources": [
+            "/Users/kengp3/.codex/AGENTS.md",
+            "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C/AGENTS.md"
+          ],
+          "approvalPolicy": "on-request",
+          "approvalsReviewer": "auto_review",
+          "sandbox": {
+            "type": "readOnly",
+            "networkAccess": false
+          },
+          "activePermissionProfile": null,
+          "reasoningEffort": "high",
+          "multiAgentMode": "explicitRequestOnly"
+        }
+      }
+    }
+  ],
+  "user_config_before": "f3f83bbed1c418780b3ca0eeaa9ae06aad86dc2307d5e0828926bbf68a4eb495",
+  "thread_id": "01a16bf2-0da3-71f2-b435-804b2db8802a",
+  "reported_cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+  "native_preparation_process_returncode": 0,
+  "user_config_after": "f3f83bbed1c418780b3ca0eeaa9ae06aad86dc2307d5e0828926bbf68a4eb495"
+}

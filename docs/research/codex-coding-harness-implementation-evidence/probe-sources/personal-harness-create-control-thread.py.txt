@@ -1,0 +1,65 @@
+import hashlib,json,selectors,subprocess,time
+from pathlib import Path
+
+root=Path('/Users/kengp3/Workspaces/mine/simple-skills')
+cwd=Path('/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C')
+evidence=root/'docs/research/codex-coding-harness-implementation-evidence'
+receipt=evidence/'desktop-control-thread-create.json'
+argv=['/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex','app-server','--stdio']
+config=Path('/Users/kengp3/.codex/config.toml')
+record={'state':'started','purpose':'Create exactly one empty persistent C thread for Desktop to take over; no turn/start or model execution',
+        'argv':argv,'cwd':str(cwd),'events':[],'user_config_before':hashlib.sha256(config.read_bytes()).hexdigest()}
+assert cwd.is_dir() and (cwd/'.codex/config.toml').is_file()
+with receipt.open('x') as stream:json.dump(record,stream,indent=2)
+with (evidence/'desktop-control-thread-create.stderr').open('x') as err:
+ p=subprocess.Popen(argv,cwd=cwd,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err)
+ selector=selectors.DefaultSelector();selector.register(p.stdout,selectors.EVENT_READ);pending=b''
+ def call(identity,method,params,allow_error=False):
+  global pending
+  request={'id':identity,'method':method,'params':params};record['events'].append({'request':request})
+  receipt.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+  p.stdin.write((json.dumps(request)+'\n').encode());p.stdin.flush();deadline=time.monotonic()+45
+  while time.monotonic()<deadline:
+   if b'\n' not in pending:
+    if not selector.select(timeout=.25):continue
+    chunk=p.stdout.read1(65536)
+    if not chunk:raise RuntimeError('native stdout closed')
+    pending+=chunk
+   while b'\n' in pending:
+    line,pending=pending.split(b'\n',1);response=json.loads(line);record['events'].append({'response':response})
+    receipt.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+    if response.get('id')==identity:
+     if 'error' in response:
+      if allow_error:return {'_rpc_error':response['error']}
+      raise RuntimeError(str(response['error']))
+     return response['result']
+  raise TimeoutError(method+' outcome requires reconciliation, not recreation')
+ try:
+  call(1,'initialize',{'clientInfo':{'name':'personal_harness_prepare_desktop','version':'0.1.0'},'capabilities':{'experimentalApi':True}})
+  p.stdin.write(b'{"method":"initialized"}\n');p.stdin.flush()
+  result=call(2,'thread/start',{'cwd':str(cwd),'runtimeWorkspaceRoots':[str(cwd)],'sandbox':'workspace-write','approvalPolicy':'never','ephemeral':False})
+  identity=result['thread']['id'];record['thread_id']=identity;record['reported_cwd']=result.get('cwd')
+  if Path(record['reported_cwd']).resolve()!=cwd.resolve():raise RuntimeError('unexpected cwd')
+  policy=result['sandbox']
+  assert policy['type']=='workspaceWrite' and policy['networkAccess'] is False and policy['excludeTmpdirEnvVar'] is True and policy['excludeSlashTmp'] is True, 'requested control policy not effective'
+  record['effective_preparation_policy']=policy
+  prompt='這是使用者已授權的單一 Desktop 控制預檢對話，第1階段只做唯讀權限與工具清單核對。先以原生工具核對 cwd 為 /private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C，然後整理宿主直接宣告的 sandbox、可寫 roots、網路、升權模式及可用工具命名空間；無直接資料就標未知。此階段不寫檔、不連線、不讀 TASK.md 或研究／答案、不跑 tests/build、不修改程式或配置、不委派、不發訊息到其他對話。Controller 可能中斷本回合以驗證原生停止能力；尊重取消，不自行重啟。完成後交付原始結果參照與未驗證項。後續 canary 階段另由同一 controller 在既有授權內明確指示，不自行開始；不是正式 smoke。'
+  call(5,'thread/inject_items',{'threadId':identity,'items':[{'type':'message','role':'user','content':[{'type':'input_text','text':prompt}]}]})
+  call(6,'thread/name/set',{'threadId':identity,'name':'Desktop 控制預檢'})
+  stored=call(7,'thread/read',{'threadId':identity,'includeTurns':False})
+  path=Path(stored['thread']['path']);deadline=time.monotonic()+5
+  while not path.is_file() and time.monotonic()<deadline:time.sleep(.1)
+  record['rollout_exists_before_shutdown']=path.is_file()
+  record['state']='created_persisted' if path.is_file() else 'created_unmaterialized'
+
+ except Exception as error:record['state']='unknown';record['error']=str(error)
+ finally:
+  p.terminate()
+  try:p.wait(timeout=5)
+  except subprocess.TimeoutExpired:p.kill();p.wait()
+  record['native_preparation_process_returncode']=p.returncode
+  selector.close();p.stdin.close();p.stdout.close()
+record['user_config_after']=hashlib.sha256(config.read_bytes()).hexdigest()
+receipt.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'state':record['state'],'thread_id':record.get('thread_id'),'cwd':record.get('reported_cwd'),'error':record.get('error'),
+                  'user_config_unchanged':record['user_config_before']==record['user_config_after']},ensure_ascii=False))

@@ -1,0 +1,71 @@
+import hashlib,json,selectors,subprocess,time
+from pathlib import Path
+
+root=Path('/Users/kengp3/Workspaces/mine/simple-skills')
+cwd=Path('/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C')
+evidence=root/'docs/research/codex-coding-harness-implementation-evidence'
+receipt=evidence/'desktop-C-thread-create-2.json'
+argv=['/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex','app-server','--stdio']
+config=Path('/Users/kengp3/.codex/config.toml')
+record={'state':'started','purpose':'Create exactly one empty persistent C thread for Desktop to take over; no turn/start or model execution',
+        'argv':argv,'cwd':str(cwd),'events':[],'user_config_before':hashlib.sha256(config.read_bytes()).hexdigest()}
+assert cwd.is_dir() and (cwd/'.codex/config.toml').is_file()
+with receipt.open('x') as stream:json.dump(record,stream,indent=2)
+with (evidence/'desktop-C-thread-create-2.stderr').open('x') as err:
+ p=subprocess.Popen(argv,cwd=cwd,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err)
+ selector=selectors.DefaultSelector();selector.register(p.stdout,selectors.EVENT_READ);pending=b''
+ def call(identity,method,params,allow_error=False):
+  global pending
+  request={'id':identity,'method':method,'params':params};record['events'].append({'request':request})
+  receipt.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+  p.stdin.write((json.dumps(request)+'\n').encode());p.stdin.flush();deadline=time.monotonic()+45
+  while time.monotonic()<deadline:
+   if b'\n' not in pending:
+    if not selector.select(timeout=.25):continue
+    chunk=p.stdout.read1(65536)
+    if not chunk:raise RuntimeError('native stdout closed')
+    pending+=chunk
+   while b'\n' in pending:
+    line,pending=pending.split(b'\n',1);response=json.loads(line);record['events'].append({'response':response})
+    receipt.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+    if response.get('id')==identity:
+     if 'error' in response:
+      if allow_error:return {'_rpc_error':response['error']}
+      raise RuntimeError(str(response['error']))
+     return response['result']
+  raise TimeoutError(method+' outcome requires reconciliation, not recreation')
+ try:
+  call(1,'initialize',{'clientInfo':{'name':'personal_harness_prepare_desktop','version':'0.1.0'},'capabilities':{'experimentalApi':True}})
+  p.stdin.write(b'{"method":"initialized"}\n');p.stdin.flush()
+  previous='01a16bf2-0da3-71f2-b435-804b2db8802a'
+  prior=call(3,'thread/read',{'threadId':previous,'includeTurns':False},allow_error=True)
+  record['previous_thread_reconciliation']=prior
+  if '_rpc_error' not in prior:
+   result=call(4,'thread/resume',{'threadId':previous,'excludeTurns':True})
+  else:
+   message=str(prior['_rpc_error']).lower()
+   if not any(text in message for text in ('not found','no rollout','could not find','not materialized')):
+    raise RuntimeError('previous state is not safely classified: '+message)
+   result=call(2,'thread/start',{'cwd':str(cwd),'runtimeWorkspaceRoots':[str(cwd)],'sandbox':'read-only','ephemeral':False})
+  identity=result['thread']['id'];record['thread_id']=identity;record['reported_cwd']=result.get('cwd')
+  if Path(record['reported_cwd']).resolve()!=cwd.resolve():raise RuntimeError('unexpected cwd')
+  prompt='僅做 Desktop harness 載入與可觀測性純預檢，不開始 bug 修復或正式 smoke。先確認本對話的實際工作目錄是 /private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C；如不符就停止。核對宿主提供的 personal-harness 技能目錄、實際採用的快取入口與內容版本，記錄可直接取得的模型、工具、權限資訊及原始工具結果參照；無直接資訊就標未知，不由 config 檔案存在推斷已載入或控制有效。只讀取必要專案配置與技能，不修改檔案或設定，不執行 TASK.md，不讀研究、答案、其他組或其他 checkout，不發訊息到其他對話。交付已驗證、未驗證及下一個必要邊界測試的清單；此任務不算 A/B/C smoke。這份初始任務已由使用者授權建立，準備階段不執行模型。'
+  call(5,'thread/inject_items',{'threadId':identity,'items':[{'type':'message','role':'user','content':[{'type':'input_text','text':prompt}]}]})
+  call(6,'thread/name/set',{'threadId':identity,'name':'C 純預檢'})
+  stored=call(7,'thread/read',{'threadId':identity,'includeTurns':False})
+  path=Path(stored['thread']['path']);deadline=time.monotonic()+5
+  while not path.is_file() and time.monotonic()<deadline:time.sleep(.1)
+  record['rollout_exists_before_shutdown']=path.is_file()
+  record['state']='created_persisted' if path.is_file() else 'created_unmaterialized'
+
+ except Exception as error:record['state']='unknown';record['error']=str(error)
+ finally:
+  p.terminate()
+  try:p.wait(timeout=5)
+  except subprocess.TimeoutExpired:p.kill();p.wait()
+  record['native_preparation_process_returncode']=p.returncode
+  selector.close();p.stdin.close();p.stdout.close()
+record['user_config_after']=hashlib.sha256(config.read_bytes()).hexdigest()
+receipt.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'state':record['state'],'thread_id':record.get('thread_id'),'cwd':record.get('reported_cwd'),'error':record.get('error'),
+                  'user_config_unchanged':record['user_config_before']==record['user_config_after']},ensure_ascii=False))

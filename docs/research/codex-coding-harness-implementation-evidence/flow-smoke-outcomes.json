@@ -1,0 +1,76 @@
+{
+  "scope": "First native-engine flow smoke only",
+  "date": "2026-10-24",
+  "groups": {
+    "A": {
+      "configured_model": "gpt-6.1-sol",
+      "configured_effort": "high",
+      "trial_contexts": 1,
+      "whole_trial_restarts": 0,
+      "wall_seconds": 236.73784241599787,
+      "frozen_external_V2_passed": true,
+      "module_test_summary": {
+        "tests": 90,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "command_item_id": "exec-a34b1d65-a0f8-480e-b721-a6d074df92ab"
+      },
+      "post_smoke_factory_diagnostic_passed": true,
+      "controller_recoveries": 0,
+      "human_active_seconds": null,
+      "human_active_time_label": "unavailable",
+      "observed_human_rescue_actions_within_trial": 0,
+      "summary": "cli-smoke-A/summary.json"
+    },
+    "B": {
+      "configured_model": "gpt-6.1-sol",
+      "configured_effort": "high",
+      "trial_contexts": 1,
+      "whole_trial_restarts": 0,
+      "wall_seconds": 297.7116190000088,
+      "frozen_external_V2_passed": true,
+      "module_test_summary": {
+        "tests": 91,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "command_item_id": "exec-86ecc9f1-7009-4ecc-ba1e-df0db3e369be"
+      },
+      "post_smoke_factory_diagnostic_passed": false,
+      "controller_recoveries": 0,
+      "human_active_seconds": null,
+      "human_active_time_label": "unavailable",
+      "observed_human_rescue_actions_within_trial": 0,
+      "summary": "cli-smoke-B/summary.json",
+      "quality_status": "Verified P1 deadlock; fixed delivery retained without repair"
+    },
+    "C": {
+      "configured_model": "gpt-6.1-sol",
+      "configured_effort": "high",
+      "trial_contexts": 1,
+      "whole_trial_restarts": 0,
+      "wall_seconds": 657.2472319602966,
+      "frozen_external_V2_passed": true,
+      "module_test_summary": {
+        "tests": 93,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "command_item_id": "exec-21c81399-b67a-433f-bfae-bb95fa45e130"
+      },
+      "post_smoke_factory_diagnostic_passed": true,
+      "controller_recoveries": 1,
+      "human_active_seconds": null,
+      "human_active_time_label": "unavailable",
+      "observed_human_rescue_actions_within_trial": 0,
+      "summary": "cli-smoke-C/summary.json",
+      "quality_status": "Passed after same-trial controller recovery and fixing own reviewer findings"
+    }
+  },
+  "conclusion": "Native CLI trial flow works; no evidence of reduced human effort or general capability superiority",
+  "human_active_time": "unavailable",
+  "fair_comparison_qualified": false,
+  "Desktop_Stop_qualified": false,
+  "trial_restarts": 0
+}

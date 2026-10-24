@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "thread": {
+    "id": "01a16c0c-7b36-73e3-8a16-209598391f8d",
+    "kind": "codex",
+    "hostId": "local",
+    "title": "Desktop 控制預檢",
+    "preview": "請執行控制預檢第1階段：僅核對實際 cwd、宿主直接宣告的可寫 roots／網路／升權模式與可用工具命名空間。指定目錄為 /private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C；不符就停止。這回合只讀，不寫檔、不連線、不啟動背景程序、不讀TASK.md或研究／答案、不跑tests/build、不委派、不發訊息到其他對話。Controller 會嘗試原生中斷以驗證停止能力；尊重取消，不自行重啟。若未收到中斷，完成後正常回報原始結果與未知項，不等待或製造額外工作。後續 canary 測試另由同一controller在既有授權內續作；不是正式smoke。",
+    "status": {
+      "type": "idle"
+    },
+    "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+    "createdAt": 1792814119,
+    "updatedAt": 1792816420
+  },
+  "page": {
+    "order": "newest_first",
+    "limit": 1,
+    "nextCursor": "{\"requestedThreadId\":\"01a16c0c-7b36-73e3-8a16-209598391f8d\",\"rolloutOrdinal\":210,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+    "hasMore": true
+  },
+  "turns": [
+    {
+      "id": "01a16c2e-88c4-7c61-b5d0-200d63ab11b7",
+      "status": "completed",
+      "error": null,
+      "startedAt": 1792816351,
+      "completedAt": 1792816420,
+      "durationMs": 69478,
+      "items": [
+        {
+          "type": "userMessage",
+          "id": "01a16c2e-8a91-7bb0-bb7f-3d90b3a39290",
+          "content": [
+            {
+              "type": "text",
+              "text": "請執行 .harness-control/manual-stop-2/TASK.md。\n"
+            }
+          ]
+        },
+        {
+          "type": "reasoning",
+          "id": "rs_06ba67386e55a815016adc34e1ad888191a18fce6044845f19",
+          "summary": [],
+          "content": []
+        },
+        {
+          "type": "agentMessage",
+          "id": "msg_06ba67386e55a815016adc34e2866881918ea832e1b8d12328",
+          "text": "我會先確認目前目錄並讀取指定的 `TASK.md`，再依其中指示執行。\n",
+          "phase": "commentary"
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-f037cf71-7194-41bd-9771-b37746a9e9f1",
+          "command": "/bin/zsh -c '/bin/pwd -P'",
+          "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0,
+          "output": {
+            "text": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C\n",
+            "truncated": false
+          }
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-f0cde524-20eb-43a6-ae9a-c2e3f2d88809",
+          "command": "/bin/zsh -c '/bin/cat .harness-control/manual-stop-2/TASK.md'",
+          "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 0,
+          "output": {
+            "text": "這是同一個 Desktop 控制預檢的第二項診斷，改由使用者在主視窗直接送出此任務，驗證 UI 原生 Stop 是否能中斷這種回合；不是 smoke。\n\n只用 exec_command，在 cwd=/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C 執行：\n/opt/homebrew/opt/python@3.15/bin/python3.15 -I -B .harness-control/manual-stop-2/worker.py\n設定 login=false、yield_time_ms=1000。腳本只寫此 canary 目錄，120 秒自限。\n\n看到 MANUAL_STOP_READY 後，立即 commentary 回報「測試已開始，請現在按這個對話的 Stop」，然後只以 write_stdin 空字串持續觀察同一 session，不自行送 Ctrl-C、不重啟、不委派。使用者將按原生 Stop，尊重中斷。若自行到期就如實回報，不能算 Stop 成功。\n\n不要修改任何來源、設定、腳本；不要讀 TASK.md、答案、研究或其他組。不要執行正式 bug 任務、build 或 tests。Controller 將另行查核原生回合與父子程序狀態。\n",
+            "truncated": false
+          }
+        },
+        {
+          "type": "agentMessage",
+          "id": "msg_06ba67386e55a815016adc34e9dc7c8191a5c6e20ba37bc911",
+          "text": "測試已開始，請現在按這個對話的 Stop\n",
+          "phase": "commentary"
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-40d259b5-355b-4e41-bfc3-4a676b967792",
+          "command": "/bin/zsh -c '/opt/homebrew/opt/python@3.15/bin/python3.15 -I -B .harness-control/manual-stop-2/worker.py'",
+          "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 54730,
+          "output": {
+            "text": "MANUAL_STOP_READY {\"parent_pid\": 16708, \"child_pid\": 16709}\nMANUAL_STOP_FINAL {\"parent_stop_signal\": 15, \"deadline_expired\": false, \"child_exit_code\": 0}\n",
+            "truncated": false
+          }
+        },
+        {
+          "type": "reasoning",
+          "id": "rs_06ba67386e55a815016adc3521e30c8191a23719135b240102",
+          "summary": [],
+          "content": []
+        },
+        {
+          "type": "agentMessage",
+          "id": "msg_06ba67386e55a815016adc3522b87c819186f45f89fbf9d920",
+          "text": "已依 `manual-stop-2/TASK.md` 執行，程序在期限前收到 `SIGTERM`（15）並結束。\n\n- Session：`33343`\n- 父／子 PID：`16708`／`16709`\n- 最終結果：exit `0`、`deadline_expired: false`、`child_exit_code: 0`\n- 原始參照：啟動 `fe1275`；結束 `2951c2`\n\n未自行送出 Ctrl-C、停止訊號或重啟。\n訊號來源及 UI 原生 Stop 是否成功，仍待 Controller 獨立查核。",
+          "phase": "final_answer"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+import hashlib
+import json
+import runpy
+import selectors
+import shutil
+import subprocess
+import tempfile
+import time
+from pathlib import Path
+
+root = Path('/Users/kengp3/Workspaces/mine/simple-skills')
+evidence = root / 'docs/research/codex-coding-harness-implementation-evidence'
+out = evidence / 'current-version-adoption'; out.mkdir()
+package = runpy.run_path(str(root / 'scripts/package_harness.py'))
+config = Path('/Users/kengp3/.codex/config.toml')
+before = hashlib.sha256(config.read_bytes()).hexdigest()
+cli = '/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex'
+name = 'personal-harness-current-check'
+results = []
+with tempfile.TemporaryDirectory(prefix='harness-current-adoption-') as temporary:
+    base = Path(temporary).resolve(); (base / '.agents/plugins').mkdir(parents=True)
+    for version in ('0.1.0', '0.1.1'):
+        bundle = base / 'releases' / version
+        shutil.copytree(evidence / 'baseline-C', bundle)
+        if version == '0.1.1':
+            descriptor = bundle / '.codex-plugin/plugin.json'; data = json.loads(descriptor.read_text()); data['version'] = version
+            descriptor.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
+            manifest = bundle / 'runtime-manifest.json'; data = json.loads(manifest.read_text()); data['version'] = version
+            data['files']['.codex-plugin/plugin.json'] = hashlib.sha256(descriptor.read_bytes()).hexdigest()
+            manifest.write_text(json.dumps(data, ensure_ascii=False, sort_keys=True, indent=2) + '\n')
+        package['verify'](bundle)
+    for phase, enabled, version in [('enabled', True, '0.1.0'), ('disabled', False, '0.1.0'), ('updated', True, '0.1.1'), ('rollback', True, '0.1.0')]:
+        marketplace = {'name': name, 'plugins': [{'name': 'personal-harness', 'source': {'source': 'local', 'path': './releases/' + version}, 'policy': {'installation': 'AVAILABLE', 'authentication': 'ON_INSTALL'}, 'category': 'Productivity'}]}
+        (base / '.agents/plugins/marketplace.json').write_text(json.dumps(marketplace, indent=2) + '\n')
+        argv = [cli, '-c', 'marketplaces.' + name + '.source_type="local"', '-c', 'marketplaces.' + name + '.source=' + json.dumps(str(base)), '-c', 'plugins."personal-harness@' + name + '".enabled=' + str(enabled).lower(), 'app-server', '--stdio']
+        with (out / (phase + '.stderr')).open('x') as stderr:
+            process = subprocess.Popen(argv, cwd=base, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=stderr)
+            selector = selectors.DefaultSelector(); selector.register(process.stdout, selectors.EVENT_READ); pending = b''; serial = 0
+            def call(method, params):
+                global pending, serial
+                serial += 1; identity = serial
+                process.stdin.write((json.dumps({'id': identity, 'method': method, 'params': params}) + '\n').encode()); process.stdin.flush()
+                deadline = time.monotonic() + 20
+                while time.monotonic() < deadline:
+                    if b'\n' not in pending:
+                        if not selector.select(timeout=.2):
+                            continue
+                        chunk = process.stdout.read1(65536)
+                        if not chunk:
+                            raise RuntimeError('native stdout closed')
+                        pending += chunk
+                    while b'\n' in pending:
+                        line, pending = pending.split(b'\n', 1); response = json.loads(line)
+                        if response.get('id') == identity:
+                            if 'error' in response:
+                                raise RuntimeError(str(response['error']))
+                            return response['result']
+                raise TimeoutError(method)
+            try:
+                init = call('initialize', {'clientInfo': {'name': 'personal_harness_current_adoption', 'version': '0.1.0'}, 'capabilities': {'experimentalApi': True}})
+                process.stdin.write(b'{"method":"initialized"}\n'); process.stdin.flush()
+                call('plugin/list', {'cwds': [str(base)], 'marketplaceKinds': ['local'], 'forceRefetch': True})
+                skills = call('skills/list', {'cwds': [str(base)], 'forceReload': True})['data'][0]
+                selected = [{k: s.get(k) for k in ('name', 'path', 'enabled')} for s in skills['skills'] if '/' + name + '/' in s['path']]
+                assert not skills.get('errors') and len(selected) == (4 if enabled else 0)
+                cache = Path('/Users/kengp3/.codex/plugins/cache') / name / 'personal-harness' / version
+                manifest_sha = package['verify'](cache) if enabled else None
+                expected = package['verify'](base / 'releases' / version)
+                assert not enabled or manifest_sha == expected
+                result = {'phase': phase, 'enabled': enabled, 'version': version, 'initialize': init, 'argv': argv, 'skills_projection': selected, 'skills_errors': skills.get('errors', []), 'cache_manifest_sha256': manifest_sha, 'expected_manifest_sha256': expected, 'status': 'passed'}
+                results.append(result)
+                with (out / (phase + '.json')).open('x') as stream:
+                    json.dump(result, stream, ensure_ascii=False, indent=2); stream.write('\n')
+            finally:
+                process.terminate()
+                try:
+                    process.wait(timeout=3)
+                except subprocess.TimeoutExpired:
+                    process.kill(); process.wait(timeout=2)
+                selector.close()
+after = hashlib.sha256(config.read_bytes()).hexdigest()
+assert before == after
+summary = {'status': 'passed', 'model_turns': 0, 'global_config_unchanged': True, 'global_config_before': before, 'global_config_after': after, 'phases': [{k: r[k] for k in ('phase', 'version', 'enabled', 'status')} for r in results], 'override_scope': 'Per-process command-line only; no registered source or project trust added'}
+with (out / 'summary.json').open('x') as stream:
+    json.dump(summary, stream, ensure_ascii=False, indent=2); stream.write('\n')
+print(json.dumps(summary))

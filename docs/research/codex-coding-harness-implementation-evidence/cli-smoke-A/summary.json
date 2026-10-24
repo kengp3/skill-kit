@@ -1,0 +1,104 @@
+{
+  "group": "A",
+  "mode": "flow_smoke_only",
+  "configured_model": "gpt-6.1-sol",
+  "configured_effort": "high",
+  "elapsed_seconds_measured": 236.73784241599787,
+  "turn_status": "completed",
+  "within_900_second_limit": true,
+  "attempts": 1,
+  "model_restarts": 0,
+  "writer_cleanup": {
+    "actions": [],
+    "remaining": []
+  },
+  "immutable_input_changes": [],
+  "changed_source": [
+    {
+      "path": "concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/ConcurrentRequestScope.java",
+      "before_sha256": "4e1d1f833fd6dd3235f2acfd5cc284686b3f2520d18865b81e4f5c5332e58fd7",
+      "after_sha256": "c37c3525c7f10de9341fbd1f11b40abeda958a2eebc4dd26b8af7e5e7b8c44ff"
+    },
+    {
+      "path": "concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeBeanFactoryPostProcessor.java",
+      "before_sha256": "2d9e572ad23d68fbd8d3592e60e1755574259f753863d7d7fbe207d54813e300",
+      "after_sha256": "7b809d632616487163a856c135ee2f84f822feeeea4e60da06004283a8f8ef6e"
+    },
+    {
+      "path": "concurrent-request-scope/src/test/java/com/example/concurrentrequestscope/ConcurrentRequestScopeLifecycleTest.java",
+      "before_sha256": null,
+      "after_sha256": "da9680de0a8114351b298ba1bd103fc24a562f5c87ab845d32be70c99491bf42"
+    }
+  ],
+  "existing_tests_changed": [],
+  "native_completed_item_types": {
+    "userMessage": 1,
+    "agentMessage": 5,
+    "commandExecution": 16,
+    "reasoning": 15,
+    "fileChange": 4
+  },
+  "commands_completed": 16,
+  "commands_nonzero": 3,
+  "final_native_token_usage": {
+    "total": {
+      "totalTokens": 979465,
+      "inputTokens": 970388,
+      "cachedInputTokens": 888576,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 9077,
+      "reasoningOutputTokens": 4136
+    },
+    "last": {
+      "totalTokens": 86412,
+      "inputTokens": 86029,
+      "cachedInputTokens": 84992,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 383,
+      "reasoningOutputTokens": 150
+    },
+    "modelContextWindow": 475000
+  },
+  "final_model_message": "已完成修正，約 4 分鐘；僅修改 2 個 production 檔、新增 1 個回歸測試檔，既有測試未改動。\n\n- context 關閉或啟動失敗時，停止其 scope cleaner。\n- 保留其他存活 context、共用 accessor 與正常 request cleanup。\n- 新增 5 項生命週期測試。\n\n驗證：`mvn -B -o -f concurrent-request-scope/pom.xml test`，**90 項全部通過，無跳過**。[完整驗證紀錄](/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/A/concurrent-request-scope/target/lifecycle-validation.log)\n\n未執行缺少模組的 root build 或外部驗收；無新增依賴或付費資源。執行中的 callback 若忽略中斷，無法保證立即停止。",
+  "external_grade": {
+    "path": "cli-grade-A-v2/result.json",
+    "product_passed": true,
+    "test_counts": {
+      "ConcurrentRequestScopePropertiesTest": {
+        "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation": "https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd",
+        "version": "3.0.2",
+        "name": "com.example.concurrentrequestscope.ConcurrentRequestScopePropertiesTest",
+        "time": "0.03",
+        "tests": "3",
+        "errors": "0",
+        "skipped": "0",
+        "failures": "0"
+      },
+      "ConcurrentRequestScopeCreationTest": {
+        "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation": "https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd",
+        "version": "3.0.2",
+        "name": "com.example.concurrentrequestscope.ConcurrentRequestScopeCreationTest",
+        "time": "0.187",
+        "tests": "8",
+        "errors": "0",
+        "skipped": "0",
+        "failures": "0"
+      },
+      "HarnessLifecycleTest": {
+        "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation": "https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd",
+        "version": "3.0.2",
+        "name": "com.example.concurrentrequestscope.HarnessLifecycleTest",
+        "time": "1.141",
+        "tests": "2",
+        "errors": "0",
+        "skipped": "0",
+        "failures": "0"
+      }
+    }
+  },
+  "human_active_seconds": null,
+  "human_active_time_label": "unavailable",
+  "observed_human_rescue_actions_within_trial": 0,
+  "later_rework_window": "not observed",
+  "paid_resource_purchases": false
+}

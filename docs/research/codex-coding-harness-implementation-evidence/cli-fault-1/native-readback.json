@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "thread": {
+    "id": "01a16c3c-873b-78b2-a418-f5fe7ed59e3e",
+    "kind": "codex",
+    "hostId": "local",
+    "title": null,
+    "preview": "這是已授權的 CLI 停止控制預檢，不是 bug 修復或 smoke。只以 exec_command 在目前 cwd 執行 /opt/homebrew/opt/python@3.15/bin/python3.15 -I -B .harness-control/cli-fault-1/worker.py，login=false、yield_time_ms=1000。見到 READY 後繼續只以 write_stdin 空字串觀察同一 session。Controller 將以原生 turn/interrupt 停止本回合；尊重取消，不自行重啟、不自行送訊號。不要修改腳本或其他檔案，不讀 TASK.md、研究、答案或其他組，不委派，不跑 tests/build。",
+    "status": {
+      "type": "notLoaded"
+    },
+    "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+    "createdAt": 1792817268,
+    "updatedAt": 1792817275
+  },
+  "page": {
+    "order": "newest_first",
+    "limit": 1,
+    "nextCursor": null,
+    "hasMore": false
+  },
+  "turns": [
+    {
+      "id": "01a16c3c-8766-7431-89a7-3c0ca18546b2",
+      "status": "interrupted",
+      "error": null,
+      "startedAt": 1792817268,
+      "completedAt": 1792817275,
+      "durationMs": 6656,
+      "items": [
+        {
+          "type": "userMessage",
+          "id": "01a16c3c-8ff8-7680-855f-48cabcc95d57",
+          "content": [
+            {
+              "type": "text",
+              "text": "這是已授權的 CLI 停止控制預檢，不是 bug 修復或 smoke。只以 exec_command 在目前 cwd 執行 /opt/homebrew/opt/python@3.15/bin/python3.15 -I -B .harness-control/cli-fault-1/worker.py，login=false、yield_time_ms=1000。見到 READY 後繼續只以 write_stdin 空字串觀察同一 session。Controller 將以原生 turn/interrupt 停止本回合；尊重取消，不自行重啟、不自行送訊號。不要修改腳本或其他檔案，不讀 TASK.md、研究、答案或其他組，不委派，不跑 tests/build。"
+            }
+          ]
+        },
+        {
+          "type": "agentMessage",
+          "id": "msg_0bd2fc396db4274d016adc3878da1c8191b15d118fce7502d2",
+          "text": "我會依指定啟動程序，看到 `READY` 後只以空字串觀察同一 session，並尊重 Controller 的停止指令。\n",
+          "phase": "commentary"
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-aa08aee9-5c28-4cd6-a8f2-faf6ed013037",
+          "command": "/bin/zsh -c '/opt/homebrew/opt/python@3.15/bin/python3.15 -I -B .harness-control/cli-fault-1/worker.py'",
+          "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 393
+        }
+      ]
+    }
+  ]
+}

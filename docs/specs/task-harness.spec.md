@@ -1,5 +1,7 @@
 # Task Harness 規格
 
+本文件保留為舊 task-harness 的歷史設計基線，供 B 組背景追溯。新版流程與相依要求依[個人 Harness 首版規格](codex-coding-harness.spec.md)及其配套計畫；本文正文與歷史驗證結果不追溯改寫，也不作新版已通過驗收的證據。
+
 ## Objective
 
 建立可獨立攜帶的 Codex skill，把多步驟需求轉成有依賴、負責範圍與驗收方式的任務清單，按授權分派、執行、整合及續作。

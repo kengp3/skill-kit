@@ -1,0 +1,165 @@
+{
+  "group": "C",
+  "mode": "flow_smoke_only",
+  "configured_model": "gpt-6.1-sol",
+  "configured_effort": "high",
+  "elapsed_seconds_measured": 657.2472319602966,
+  "turn_status": "completed",
+  "within_900_second_limit": true,
+  "attempts": 1,
+  "model_restarts": 0,
+  "writer_cleanup": {
+    "actions": [],
+    "remaining": []
+  },
+  "immutable_input_changes": [],
+  "changed_source": [
+    {
+      "path": "concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/ConcurrentRequestScope.java",
+      "before_sha256": "4e1d1f833fd6dd3235f2acfd5cc284686b3f2520d18865b81e4f5c5332e58fd7",
+      "after_sha256": "4774a75c08e9d220008c72c2ee0617214b3875aba3883946b3568968d5c17016"
+    },
+    {
+      "path": "concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeBeanFactoryPostProcessor.java",
+      "before_sha256": "2d9e572ad23d68fbd8d3592e60e1755574259f753863d7d7fbe207d54813e300",
+      "after_sha256": "efc603cd70b385b19a41e311d0cc8fe335530e507cc52990d90fb8486cc764dd"
+    },
+    {
+      "path": "concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeEntry.java",
+      "before_sha256": "2fe306f5ed89bbc3982e5f6047fe11c235514bd05f35db56c078733e97623094",
+      "after_sha256": "87c15e5ebf61d95408184888b72f1a2f024a771937476e03eff0fa409e98120c"
+    },
+    {
+      "path": "concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/ConcurrentRequestScopeState.java",
+      "before_sha256": "7ba1137b4c35cea3f5df4b6bf857baeef680e69de9213a73360d8e2537c13dc5",
+      "after_sha256": "22f3486cec8eb51ab992bc421a94bcbd8c3ff700cc439c401292179b9c7d14c4"
+    },
+    {
+      "path": "concurrent-request-scope/src/main/java/com/example/concurrentrequestscope/internal/DestructionCallbackRegistry.java",
+      "before_sha256": "863aea41043e57d28ffa2fe380b0a4cfc945d78f86993c410a9890e412139405",
+      "after_sha256": "d0a773e6c991c130f64cc3482362acf8e5fe28b0a48096dc149e5c7f15055c8e"
+    },
+    {
+      "path": "concurrent-request-scope/src/test/java/com/example/concurrentrequestscope/ConcurrentRequestScopeLifecycleTest.java",
+      "before_sha256": null,
+      "after_sha256": "8ee28c3ef7a262c9af96f65f7d096f0d5cf14e41a333468439a5680eac1c7535"
+    }
+  ],
+  "existing_tests_changed": [],
+  "native_completed_item_types": {
+    "userMessage": 2,
+    "agentMessage": 8,
+    "commandExecution": 29,
+    "reasoning": 33,
+    "fileChange": 6,
+    "subAgentActivity": 3
+  },
+  "commands_completed": 29,
+  "commands_nonzero": 1,
+  "final_native_token_usage": {
+    "total": {
+      "totalTokens": 2222043,
+      "inputTokens": 2201923,
+      "cachedInputTokens": 2098176,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 20120,
+      "reasoningOutputTokens": 9483
+    },
+    "last": {
+      "totalTokens": 119419,
+      "inputTokens": 118689,
+      "cachedInputTokens": 118016,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 730,
+      "reasoningOutputTokens": 428
+    },
+    "modelContextWindow": 475000
+  },
+  "final_model_message": "已完成本地修正：Spring context 關閉時會停止其 TTL cleaner、執行 destruction callbacks 並釋放 bean references；保留其他 context 與共用 accessor。Reviewer 指出的兩項死鎖情境已有回歸測試通過。\n\n- 修改 5 個 production 檔案，新增 8 項測試案例，保留既有測試。\n- 執行 `mvn -B -o -f concurrent-request-scope/pom.xml test`：**93 項通過，0 失敗、0 略過**。\n- [完整測試紀錄](/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C/concurrent-request-scope/target/final-test.log)、[新增回歸測試](/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C/concurrent-request-scope/src/test/java/com/example/concurrentrequestscope/ConcurrentRequestScopeLifecycleTest.java)。\n\n未執行缺少模組的完整專案與外部驗收。限制：忽略 interrupt 的自訂 callback 無法強制終止；關閉最多等待 cleaner 5 秒。",
+  "external_grade": {
+    "path": "cli-grade-C-v2/result.json",
+    "product_passed": true,
+    "test_counts": {
+      "ConcurrentRequestScopePropertiesTest": {
+        "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation": "https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd",
+        "version": "3.0.2",
+        "name": "com.example.concurrentrequestscope.ConcurrentRequestScopePropertiesTest",
+        "time": "0.025",
+        "tests": "3",
+        "errors": "0",
+        "skipped": "0",
+        "failures": "0"
+      },
+      "ConcurrentRequestScopeCreationTest": {
+        "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation": "https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd",
+        "version": "3.0.2",
+        "name": "com.example.concurrentrequestscope.ConcurrentRequestScopeCreationTest",
+        "time": "0.187",
+        "tests": "8",
+        "errors": "0",
+        "skipped": "0",
+        "failures": "0"
+      },
+      "HarnessLifecycleTest": {
+        "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation": "https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd",
+        "version": "3.0.2",
+        "name": "com.example.concurrentrequestscope.HarnessLifecycleTest",
+        "time": "1.141",
+        "tests": "2",
+        "errors": "0",
+        "skipped": "0",
+        "failures": "0"
+      }
+    }
+  },
+  "human_active_seconds": null,
+  "human_active_time_label": "unavailable",
+  "observed_human_rescue_actions_within_trial": 0,
+  "later_rework_window": "not observed",
+  "paid_resource_purchases": false,
+  "controller_recovery_count": 1,
+  "whole_trial_restarts": 0,
+  "native_server_restarts": 1,
+  "model_turn_continuations": 1,
+  "final_native_token_usage_by_thread": {
+    "01a16c4c-7553-7fa2-a343-82de75b28593": {
+      "total": {
+        "totalTokens": 2222043,
+        "inputTokens": 2201923,
+        "cachedInputTokens": 2098176,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 20120,
+        "reasoningOutputTokens": 9483
+      },
+      "last": {
+        "totalTokens": 119419,
+        "inputTokens": 118689,
+        "cachedInputTokens": 118016,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 730,
+        "reasoningOutputTokens": 428
+      },
+      "modelContextWindow": 475000
+    },
+    "01a16c4e-96d7-7823-8ff9-0b6e66129aa9": {
+      "total": {
+        "totalTokens": 604607,
+        "inputTokens": 601999,
+        "cachedInputTokens": 578432,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2608,
+        "reasoningOutputTokens": 1149
+      },
+      "last": {
+        "totalTokens": 107357,
+        "inputTokens": 106490,
+        "cachedInputTokens": 103296,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 867,
+        "reasoningOutputTokens": 268
+      },
+      "modelContextWindow": 475000
+    }
+  },
+  "elapsed_label": "Measured wall time includes original segment, interruption, controller repair and continuation"
+}

@@ -1,0 +1,113 @@
+import copy
+import hashlib
+import json
+import selectors
+import subprocess
+import time
+import tomllib
+from pathlib import Path
+
+root = Path('/Users/kengp3/Workspaces/mine/simple-skills')
+evidence = root / 'docs/research/codex-coding-harness-implementation-evidence'
+prepared = json.loads((evidence / 'smoke-preparation.json').read_text())
+groups = {name: Path(data['workspace']).resolve() for name, data in prepared['groups'].items()}
+config = Path('/Users/kengp3/.codex/config.toml')
+before_bytes = config.read_bytes()
+before = tomllib.loads(before_bytes.decode())
+for name, directory in groups.items():
+    if directory.is_symlink() or not directory.is_dir():
+        raise SystemExit(f'missing controlled workspace: {name}')
+    for relative, expected in prepared['groups'][name]['input_files_sha256'].items():
+        source = directory / relative
+        if source.is_symlink() or not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != expected:
+            raise SystemExit(f'workspace input changed: {name}/{relative}')
+    actual_files = set()
+    for path in directory.rglob('*'):
+        relative = path.relative_to(directory)
+        if relative.parts[0] == '.git':
+            continue
+        if path.is_symlink():
+            raise SystemExit(f'workspace symlink rejected: {name}/{relative}')
+        if path.is_file():
+            actual_files.add(relative.as_posix())
+    if actual_files != set(prepared['groups'][name]['input_files_sha256']):
+        raise SystemExit(f'unexpected workspace files: {name}')
+    prior = before.get('projects', {}).get(str(directory), {}).get('trust_level')
+    if prior not in (None, 'trusted'):
+        raise SystemExit(f'existing explicit trust decision preserved: {name}')
+destination = evidence / 'project-trust-preflight.json'
+if destination.exists():
+    raise SystemExit('existing preflight; reconcile before retry')
+argv = ['/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex', 'app-server', '--stdio']
+record = {'purpose': 'Scoped trust for the three self-owned prepared Desktop workspaces; engine-only discovery preflight, no model turn',
+          'argv': argv, 'cwd': str(groups['C']), 'before_sha256': hashlib.sha256(before_bytes).hexdigest(), 'events': []}
+expected_config = copy.deepcopy(before)
+with (evidence / 'project-trust-preflight.stderr').open('x') as err:
+    process = subprocess.Popen(argv, cwd=groups['C'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=err)
+    selector = selectors.DefaultSelector(); selector.register(process.stdout, selectors.EVENT_READ)
+    pending = b''
+
+    def call(identity, method, params):
+        global pending
+        request = {'id': identity, 'method': method, 'params': params}
+        record['events'].append({'request': request})
+        process.stdin.write((json.dumps(request) + '\n').encode()); process.stdin.flush()
+        deadline = time.monotonic() + 30
+        while time.monotonic() < deadline:
+            if b'\n' not in pending:
+                if not selector.select(timeout=0.3):
+                    if process.poll() is not None:
+                        raise RuntimeError('native server exited')
+                    continue
+                chunk = process.stdout.read1(65536)
+                if not chunk:
+                    raise RuntimeError('native stdout closed')
+                pending += chunk
+            while b'\n' in pending:
+                line, pending = pending.split(b'\n', 1); response = json.loads(line)
+                saved = response
+                if response.get('id') == identity and method == 'config/read' and 'result' in response:
+                    raw = response['result']
+                    saved = {'id': identity, 'result': {
+                        'layers': [{k: v for k, v in layer.items() if k != 'config'} for layer in raw.get('layers', [])],
+                        'candidate_plugins': {k: v for k, v in raw.get('config', {}).get('plugins', {}).items() if 'personal-harness' in k}}}
+                record['events'].append({'response': saved})
+                if response.get('id') == identity:
+                    if 'error' in response:
+                        raise RuntimeError(str(response['error']))
+                    return response['result']
+        raise TimeoutError(method)
+
+    try:
+        call(1, 'initialize', {'clientInfo': {'name': 'personal_harness_trust_preflight', 'version': '0.1.0'}, 'capabilities': {'experimentalApi': True}})
+        process.stdin.write(b'{"method":"initialized"}\n'); process.stdin.flush()
+        config_result = call(2, 'config/read', {'cwd': str(groups['C']), 'includeLayers': True})
+        version = next(layer['version'] for layer in config_result['layers'] if layer['name']['type'] == 'user')
+        for index, directory in enumerate(groups.values(), start=3):
+            if before.get('projects', {}).get(str(directory), {}).get('trust_level') == 'trusted':
+                continue
+            response = call(index, 'config/value/write', {'filePath': str(config), 'expectedVersion': version,
+                'keyPath': 'projects.' + json.dumps(str(directory)) + '.trust_level', 'value': 'trusted', 'mergeStrategy': 'replace'})
+            version = response['version']
+            expected_config.setdefault('projects', {}).setdefault(str(directory), {})['trust_level'] = 'trusted'
+        after = tomllib.loads(config.read_text())
+        record['only_scoped_trust_changed'] = after == expected_config
+        if not record['only_scoped_trust_changed']:
+            raise RuntimeError('unexpected semantic config change; stop and reconcile')
+        call(10, 'config/read', {'cwd': str(groups['C']), 'includeLayers': True})
+        discovery = call(11, 'skills/list', {'cwds': [str(p) for p in groups.values()], 'forceReload': True})
+        record['discovery_returned'] = True
+    except Exception as error:
+        record['error'] = str(error)
+    finally:
+        selector.close(); process.terminate()
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            process.kill(); process.wait()
+        process.stdin.close(); process.stdout.close()
+        record['server_terminal_returncode'] = process.returncode
+record['after_sha256'] = hashlib.sha256(config.read_bytes()).hexdigest()
+destination.write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps({'evidence': str(destination), 'only_scoped_trust_changed': record.get('only_scoped_trust_changed'),
+                  'error': record.get('error'), 'discovery_returned': record.get('discovery_returned', False)}))

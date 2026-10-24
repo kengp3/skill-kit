@@ -1,0 +1,93 @@
+import difflib
+import hashlib
+import json
+import sys
+from collections import Counter
+from pathlib import Path
+
+ROOT = Path('/Users/kengp3/Workspaces/mine/simple-skills')
+EVIDENCE = ROOT / 'docs/research/codex-coding-harness-implementation-evidence'
+PARENT = Path('/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/personal-harness-lifecycle-9q6i4mhs/parent')
+
+
+def digest(f):
+    return hashlib.sha256(f.read_bytes()).hexdigest() if f.is_file() else None
+
+
+def write_once(path, text):
+    if path.exists():
+        assert path.read_text() == text, 'existing artifact differs; reconcile instead of overwrite'
+    else:
+        with path.open('x') as stream:
+            stream.write(text)
+
+
+def main(group):
+    assert group in ('A', 'B', 'C')
+    frozen = json.loads((EVIDENCE / 'frozen-trial-config.json').read_text())['groups'][group]
+    work = Path(frozen['workspace']); before = frozen['inputs']
+    out = EVIDENCE / ('cli-smoke-' + group)
+    state_file = out / 'reconciled-state.json'
+    if not state_file.exists():
+        state_file = out / 'state.json'
+    state = json.loads(state_file.read_text())
+    assert state['status'] == 'finished'
+    assert state['turn_final']['id'] == state['turn_id']
+    files = {str(f.relative_to(work)): f for f in (work / 'concurrent-request-scope').rglob('*') if f.is_file() and 'target' not in f.parts}
+    changes = []; patch = []
+    for name in sorted(set(files) | {n for n in before if n.startswith('concurrent-request-scope/')}):
+        current = files.get(name); now = digest(current) if current else None
+        if before.get(name) == now:
+            continue
+        previous = []
+        if name in before:
+            old = PARENT / name; assert digest(old) == before[name]
+            previous = old.read_text().splitlines(True)
+        content = current.read_text().splitlines(True) if current else []
+        changes.append({'path': name, 'before_sha256': before.get(name), 'after_sha256': now})
+        patch.extend(difflib.unified_diff(previous, content, fromfile='a/' + name if previous else '/dev/null', tofile='b/' + name if current else '/dev/null'))
+    write_once(out / 'changed-source.json', json.dumps(changes, ensure_ascii=False, indent=2) + '\n')
+    write_once(out / 'product.patch', ''.join(patch))
+    immutable_changes = [n for n, h in before.items() if not n.startswith('concurrent-request-scope/src/') and digest(work / n) != h]
+    items = {}; token_usage = None; usage_by_thread = {}; model_messages = []
+    streams = [out / 'rpc.jsonl']
+    if group == 'C':
+        streams.append(EVIDENCE / 'cli-smoke-C-continuation-1/rpc.jsonl')
+    for stream in streams:
+        for line in stream.read_text().splitlines():
+            response = json.loads(line).get('response', {})
+            if response.get('method') == 'item/completed':
+                item = response['params']['item']; items[item['id']] = item
+                if item.get('type') == 'agentMessage' and response['params'].get('threadId') == state['thread_id']:
+                    model_messages.append(item)
+            elif response.get('method') == 'thread/tokenUsage/updated':
+                usage_by_thread[response['params']['threadId']] = response['params']['tokenUsage']
+                if response['params']['threadId'] == state['thread_id']:
+                    token_usage = response['params']['tokenUsage']
+    commands = [x for x in items.values() if x.get('type') == 'commandExecution']
+    messages = [x for x in items.values() if x.get('type') == 'agentMessage']
+    grade = json.loads((EVIDENCE / ('cli-grade-' + group + '-v2') / 'result.json').read_text())
+    assert grade['status'] == 'graded'
+    summary = {'group': group, 'mode': 'flow_smoke_only', 'configured_model': state['model'], 'configured_effort': state['effort'],
+               'elapsed_seconds_measured': state['elapsed_seconds'], 'turn_status': state['turn_final']['status'],
+               'within_900_second_limit': state['within_wall_limit'], 'attempts': 1, 'model_restarts': 0,
+               'writer_cleanup': state.get('writer_cleanup'), 'immutable_input_changes': immutable_changes,
+               'changed_source': changes, 'existing_tests_changed': [x['path'] for x in changes if x['before_sha256'] and '/src/test/' in x['path']],
+               'native_completed_item_types': dict(Counter(x.get('type') for x in items.values())),
+               'commands_completed': len(commands), 'commands_nonzero': sum(x.get('exitCode') not in (None, 0) for x in commands),
+               'final_native_token_usage': token_usage, 'final_model_message': messages[-1]['text'] if messages else None,
+               'external_grade': {'path': 'cli-grade-' + group + '-v2/result.json', 'product_passed': grade['product_passed'], 'test_counts': grade['test_counts']},
+               'human_active_seconds': None, 'human_active_time_label': 'unavailable', 'observed_human_rescue_actions_within_trial': 0,
+               'later_rework_window': 'not observed', 'paid_resource_purchases': False}
+    if group == 'C':
+        summary.update(controller_recovery_count=state['controller_recovery_count'], whole_trial_restarts=state['trial_restarts'],
+                       native_server_restarts=state['native_server_restarts'], model_turn_continuations=state['model_turn_continuations'],
+                       final_native_token_usage_by_thread=usage_by_thread, final_model_message=model_messages[-1]['text'],
+                       elapsed_label=state['elapsed_label'])
+    assert not immutable_changes, 'harness/config/task inputs changed during trial'
+    write_once(out / 'summary.json', json.dumps(summary, ensure_ascii=False, indent=2) + '\n')
+    print(json.dumps({k: summary[k] for k in ('group', 'elapsed_seconds_measured', 'commands_completed', 'commands_nonzero', 'existing_tests_changed', 'immutable_input_changes')}, ensure_ascii=False))
+
+
+if __name__ == '__main__':
+    main(sys.argv[1])

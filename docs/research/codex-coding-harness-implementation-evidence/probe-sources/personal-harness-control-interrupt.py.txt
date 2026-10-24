@@ -1,0 +1,39 @@
+import json,selectors,subprocess,sys,time
+from pathlib import Path
+root=Path('/Users/kengp3/Workspaces/mine/simple-skills')
+cwd='/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C'
+e=root/'docs/research/codex-coding-harness-implementation-evidence'
+out=e/'desktop-control-interrupt.json';argv=['/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex','app-server','--stdio']
+r={'argv':argv,'cwd':cwd,'target_thread_id':sys.argv[1],'target_turn_id':sys.argv[2],'events':[],'state':'started'}
+with out.open('x') as stream:json.dump(r,stream,indent=2)
+with (e/'desktop-control-interrupt.stderr').open('x') as err:
+ p=subprocess.Popen(argv,cwd=cwd,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err)
+ selector=selectors.DefaultSelector();selector.register(p.stdout,selectors.EVENT_READ);pending=b''
+ def call(identity,method,params):
+  global pending
+  request={'id':identity,'method':method,'params':params};r['events'].append({'request':request})
+  out.write_text(json.dumps(r,indent=2)+'\n');p.stdin.write((json.dumps(request)+'\n').encode());p.stdin.flush();deadline=time.monotonic()+20
+  while time.monotonic()<deadline:
+   if b'\n' not in pending:
+    if not selector.select(timeout=.2):continue
+    chunk=p.stdout.read1(65536)
+    if not chunk:raise RuntimeError('native stdout closed')
+    pending+=chunk
+   while b'\n' in pending:
+    line,pending=pending.split(b'\n',1);response=json.loads(line);r['events'].append({'response':response})
+    if response.get('id')==identity:return response
+  raise TimeoutError('interrupt result unknown; inspect actual Desktop turn before retry')
+ try:
+  init=call(1,'initialize',{'clientInfo':{'name':'personal_harness_interrupt_check','version':'0.1.0'},'capabilities':{'experimentalApi':True}})
+  if 'error' in init:raise RuntimeError(str(init['error']))
+  p.stdin.write(b'{"method":"initialized"}\n');p.stdin.flush()
+  response=call(2,'turn/interrupt',{'threadId':r['target_thread_id'],'turnId':r['target_turn_id']})
+  r['state']='confirmed_response';r['interrupt_response']=response
+ except Exception as error:r['state']='unknown';r['error']=str(error)
+ finally:
+  p.terminate()
+  try:p.wait(timeout=5)
+  except subprocess.TimeoutExpired:p.kill();p.wait()
+  r['native_process_terminal_returncode']=p.returncode;selector.close();p.stdin.close();p.stdout.close()
+out.write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'state':r['state'],'response':r.get('interrupt_response'),'error':r.get('error')},ensure_ascii=False))

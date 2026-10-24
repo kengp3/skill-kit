@@ -1,0 +1,50 @@
+import hashlib,json,selectors,subprocess,time
+from pathlib import Path
+root=Path('/Users/kengp3/Workspaces/mine/simple-skills')
+cwd=Path('/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C')
+e=root/'docs/research/codex-coding-harness-implementation-evidence';out=e/'permission-profile-query.json'
+assert not out.exists()
+config=Path('/Users/kengp3/.codex/config.toml')
+r={'argv':['/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex','app-server','--stdio'],'cwd':str(cwd),'events':[],
+   'config_before':hashlib.sha256(config.read_bytes()).hexdigest()}
+with (e/'permission-profile-query.stderr').open('x') as err:
+ p=subprocess.Popen(r['argv'],cwd=cwd,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err)
+ selector=selectors.DefaultSelector();selector.register(p.stdout,selectors.EVENT_READ);pending=b''
+ def call(identity,method,params):
+  global pending
+  request={'id':identity,'method':method,'params':params};r['events'].append({'request':request})
+  p.stdin.write((json.dumps(request)+'\n').encode());p.stdin.flush();deadline=time.monotonic()+30
+  while time.monotonic()<deadline:
+   if b'\n' not in pending:
+    if not selector.select(timeout=.2):continue
+    chunk=p.stdout.read1(65536)
+    if not chunk:raise RuntimeError('native stdout closed')
+    pending+=chunk
+   while b'\n' in pending:
+    line,pending=pending.split(b'\n',1);response=json.loads(line);saved=response
+    if response.get('id')==identity and method=='config/read' and 'result' in response:
+     data=response['result']['config']
+     saved={'id':identity,'result':{'features':{k:v for k,v in data.get('features',{}).items() if k in ('apps','plugins','hooks','permissions_beta')},
+       'permission_profile_names':list(data.get('permissions',{})),
+       'mcp_server_enablement':{name:{'enabled':values.get('enabled'),'required':values.get('required')} for name,values in data.get('mcp_servers',{}).items()},
+       'sandbox_mode':data.get('sandbox_mode'),'approval_policy':data.get('approval_policy')}}
+    r['events'].append({'response':saved})
+    if response.get('id')==identity:
+     if 'error' in response:raise RuntimeError(str(response['error']))
+     return response['result']
+  raise TimeoutError(method)
+ try:
+  call(1,'initialize',{'clientInfo':{'name':'personal_harness_permissions_read','version':'0.1.0'},'capabilities':{'experimentalApi':True}})
+  p.stdin.write(b'{"method":"initialized"}\n');p.stdin.flush()
+  call(2,'permissionProfile/list',{'cwd':str(cwd)})
+  call(3,'config/read',{'cwd':str(cwd),'includeLayers':False})
+ except Exception as error:r['error']=str(error)
+ finally:
+  p.terminate()
+  try:p.wait(timeout=5)
+  except subprocess.TimeoutExpired:p.kill();p.wait()
+  r['process_terminal_returncode']=p.returncode;selector.close();p.stdin.close();p.stdout.close()
+r['config_after']=hashlib.sha256(config.read_bytes()).hexdigest()
+out.write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'error':r.get('error'),'responses':[x['response'] for x in r['events'] if x.get('response',{}).get('id') in (2,3)],
+                  'config_unchanged':r['config_before']==r['config_after']},ensure_ascii=False))

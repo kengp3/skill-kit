@@ -1,0 +1,47 @@
+import hashlib,json,selectors,subprocess,time
+from pathlib import Path
+root=Path('/Users/kengp3/Workspaces/mine/simple-skills')
+evidence=root/'docs/research/codex-coding-harness-implementation-evidence'
+config=Path('/Users/kengp3/.codex/config.toml')
+before=hashlib.sha256(config.read_bytes()).hexdigest()
+command=['/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex',
+ '-c','marketplaces.personal-harness-local.source_type="local"',
+ '-c','marketplaces.personal-harness-local.source="'+str(root)+'"',
+ '-c','plugins."personal-harness@personal-harness-local".enabled=false',
+ 'app-server','--stdio']
+log=[]
+with (evidence/'disabled-cache-probe-4.stderr').open('w') as err:
+ process=subprocess.Popen(command,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err,text=True,bufsize=1)
+ selector=selectors.DefaultSelector();selector.register(process.stdout,selectors.EVENT_READ)
+ def call(id,method,params):
+  request={'id':id,'method':method,'params':params};log.append({'request':request})
+  process.stdin.write(json.dumps(request)+'\n');process.stdin.flush()
+  deadline=time.monotonic()+30
+  while time.monotonic()<deadline:
+   if not selector.select(timeout=1):
+    if process.poll() is not None: raise RuntimeError('app-server stopped')
+    continue
+   line=process.stdout.readline()
+   if not line: raise RuntimeError('app-server closed stdout')
+   response=json.loads(line);log.append({'response':response})
+   if response.get('id')==id:
+    if 'error' in response: raise RuntimeError(str(response['error']))
+    return response.get('result')
+  raise TimeoutError(method)
+ try:
+  call(1,'initialize',{'clientInfo':{'name':'personal_harness_probe','version':'0.1.0'},'capabilities':{'experimentalApi':True}})
+  process.stdin.write(json.dumps({'method':'initialized'})+'\n');process.stdin.flush()
+  call(2,'plugin/list',{'cwds':[str(root)],'marketplaceKinds':['local'],'forceRefetch':True})
+  call(3,'skills/list',{'cwds':[str(root)],'forceReload':True})
+  deadline=time.monotonic()+5
+  cache=Path('/Users/kengp3/.codex/plugins/cache/personal-harness-local/personal-harness/local')
+  while not cache.exists() and process.poll() is None and time.monotonic()<deadline:
+   time.sleep(0.1)
+  call(4,'plugin/list',{'cwds':[str(root)],'marketplaceKinds':['local'],'forceRefetch':True})
+ finally:
+  process.terminate()
+  try: process.wait(timeout=5)
+  except subprocess.TimeoutExpired: process.kill();process.wait()
+  after=hashlib.sha256(config.read_bytes()).hexdigest()
+  (evidence/'disabled-cache-probe-4.json').write_text(json.dumps({'argv':command,'user_config_before':before,'user_config_after':after,'events':log},indent=2)+'\n')
+print('events',len(log),'user config unchanged',before==after)

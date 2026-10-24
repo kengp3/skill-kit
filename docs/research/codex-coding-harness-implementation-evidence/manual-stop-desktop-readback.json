@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "thread": {
+    "id": "01a16c0c-7b36-73e3-8a16-209598391f8d",
+    "kind": "codex",
+    "hostId": "local",
+    "title": "Desktop 控制預檢",
+    "preview": "請執行控制預檢第1階段：僅核對實際 cwd、宿主直接宣告的可寫 roots／網路／升權模式與可用工具命名空間。指定目錄為 /private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C；不符就停止。這回合只讀，不寫檔、不連線、不啟動背景程序、不讀TASK.md或研究／答案、不跑tests/build、不委派、不發訊息到其他對話。Controller 會嘗試原生中斷以驗證停止能力；尊重取消，不自行重啟。若未收到中斷，完成後正常回報原始結果與未知項，不等待或製造額外工作。後續 canary 測試另由同一controller在既有授權內續作；不是正式smoke。",
+    "status": {
+      "type": "idle"
+    },
+    "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+    "createdAt": 1792814119,
+    "updatedAt": 1792816135
+  },
+  "page": {
+    "order": "newest_first",
+    "limit": 1,
+    "nextCursor": "{\"requestedThreadId\":\"01a16c0c-7b36-73e3-8a16-209598391f8d\",\"rolloutOrdinal\":116,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+    "hasMore": true
+  },
+  "turns": [
+    {
+      "id": "01a16c29-3650-7b10-ab8e-49bcd72c4152",
+      "status": "completed",
+      "error": null,
+      "startedAt": 1792816002,
+      "completedAt": 1792816135,
+      "durationMs": 132726,
+      "items": [
+        {
+          "type": "functionCallOutput",
+          "id": "fco_01a16c29-3650-7b10-ab8e-49c3249c5e50",
+          "name": "send_message_to_thread",
+          "namespace": "codex_app",
+          "output": {
+            "text": "<codex_delegation>\n  <source_thread_id>01a169a8-9130-7863-8b22-7daef3a04b37</source_thread_id>\n  <input>使用者已選擇在場手動 Stop，現在只執行這個已授權的原生停止預檢，不是 smoke。請直接用 exec_command 在 cwd=/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C 執行 /opt/homebrew/opt/python@3.15/bin/python3.15 -I -B .harness-control/manual-stop-1/worker.py，login=false，yield_time_ms=1000。腳本已由 controller 備妥，僅寫自身 canary 目錄，120 秒自限。不要改腳本，不先讀 TASK.md、不讀答案、不改其他檔案，不啟動其他工作或委派。看到 MANUAL_STOP_READY 後，用 commentary 明示『測試已開始，請現在按這個對話的 Stop』，然後只對相同原生 session 以 write_stdin 空字串持續觀察（每次 yield_time_ms=1000）；不要自行 Ctrl-C，不自行停止或重啟、不以睡眠假裝執行。使用者會按原生 Stop；尊重中斷，不再啟動任何工具。若程序自行到期或提前結束就如實結束回報，不能算手動取消成功。Controller 會從另一對話核對實際最終狀態和程序存活。</input>\n</codex_delegation>",
+            "truncated": false
+          }
+        },
+        {
+          "type": "agentMessage",
+          "id": "msg_06ba67386e55a815016adc3386e03081918f05a5511ef4e93c",
+          "text": "我會啟動指定的手動 Stop canary；出現 `MANUAL_STOP_READY` 後提示你按 Stop，接著只觀察同一 session，不自行送出 Ctrl-C。\n",
+          "phase": "commentary"
+        },
+        {
+          "type": "agentMessage",
+          "id": "msg_06ba67386e55a815016adc338df4648191bce5bdcfc08d93e2",
+          "text": "測試已開始，請現在按這個對話的 Stop\n",
+          "phase": "commentary"
+        },
+        {
+          "type": "reasoning",
+          "id": "rs_06ba67386e55a815016adc33b83adc81918c359b196d1ea6ce",
+          "summary": [],
+          "content": []
+        },
+        {
+          "type": "reasoning",
+          "id": "rs_06ba67386e55a815016adc33d5aa5481918ba4460643b2ada7",
+          "summary": [],
+          "content": []
+        },
+        {
+          "type": "agentMessage",
+          "id": "msg_06ba67386e55a815016adc33d6d9bc8191810b15084eab0294",
+          "text": "同一 session 尚未回傳結束結果，目前沒有新增輸出；仍只觀察該 session。\n",
+          "phase": "commentary"
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-ed2b05aa-8590-4f4d-a9fc-949416c5a2b3",
+          "command": "/bin/zsh -c '/opt/homebrew/opt/python@3.15/bin/python3.15 -I -B .harness-control/manual-stop-1/worker.py'",
+          "cwd": "/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-smoke-0vwf4lur/C",
+          "status": "completed",
+          "exitCode": 0,
+          "durationMs": 120085,
+          "output": {
+            "text": "MANUAL_STOP_READY {\"parent_pid\": 13812, \"child_pid\": 13813}\nMANUAL_STOP_FINAL {\"parent_stop_signal\": null, \"deadline_expired\": true, \"child_exit_code\": 0}\n",
+            "truncated": false
+          }
+        },
+        {
+          "type": "agentMessage",
+          "id": "msg_06ba67386e55a815016adc34052a7881919e92e894001ed144",
+          "text": "canary 已自行到期，**不能算手動 Stop 成功**。\n\n- Session：`24856`；父／子 PID：`13812`／`13813`\n- 啟動參照：`daddf3`（`MANUAL_STOP_READY`）\n- 最終參照：`f8a657`，exit `0`\n- 最終結果：`parent_stop_signal: null`、`deadline_expired: true`、`child_exit_code: 0`\n\n全程僅以空字串觀察同一 session，未送 Ctrl-C、未重啟。\n未獨立核對程序存活；原生 Stop 能力仍未驗證。",
+          "phase": "final_answer"
+        }
+      ]
+    }
+  ]
+}
