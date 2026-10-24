@@ -37,3 +37,5 @@ H01/H03 可各自實作，H02 等兩者整合後。依 skill 以獨立 worktree�
 - H01/H03 已整合至 d24e2a1；主責在整合來源重跑 hook CLI 24 項通過（2.384 秒，Python 3.15）。H02 開始封裝；H04 尚待最終候選與獨立複核。
 
 - H01–H04 已完成並整合至產品來源 81497d5：最終 101 通過、1 個 Windows 原生測試跳過；兩軸 review 的三個獨立問題修正後均已複核。候選 0.2.0 已建包驗證但未安裝。詳見[整合驗證](../research/task-harness-lifecycle-validation.research.md)。H05 維持 blocked，整體未完成。
+
+- 清理限制：原生 archive_worktree 拒絕移除 workflow（目前主要 checkout）及 runtime（仍有其他 active task 使用）。保留兩份已提交工作樹，不以 shell 強制刪除。已詢問是否開放最多一個 Desktop 接點測試對話／一個使用者回合；未收到授權前 H05 不執行。
