@@ -3,7 +3,7 @@ import hashlib
 from pathlib import Path
 
 
-def case_inputs(files, *, dependencies, environment, command=None):
+def case_inputs(files, *, dependencies, environment, command=None, reports=None):
     """Fingerprint relevant files/versions and a stable checker command prefix."""
     fingerprints = {}
     for name, value in sorted(files.items()):
@@ -19,22 +19,27 @@ def case_inputs(files, *, dependencies, environment, command=None):
     if not {'requirement', 'checker', 'fixture'} <= fingerprints.keys():
         raise ValueError('Requirement, checker and fixture inputs are required')
     return {'files': fingerprints, 'dependencies': dict(dependencies),
-            'environment': dict(environment), 'command': list(command) if command else None}
+            'environment': dict(environment), 'command': list(command) if command else None,
+            'reports': dict(reports) if reports is not None else None}
 
 
 def qualification_status(case, evidence):
-    if not evidence or evidence.get('status') != 'qualified':
+    if not isinstance(evidence, dict) or evidence.get('status') != 'qualified':
         return 'unverified'
     if any(evidence.get(key) != case.get(key) for key in ('case_id', 'kind', 'inputs')):
         return 'stale'
-    return 'qualified'
+    return qualify(case, evidence.get('observations', {}))['status']
 
 
 def _supported(receipt):
+    if not isinstance(receipt, dict):
+        return False
     counts = receipt.get('test_counts')
     if (receipt.get('status') != 'graded'
             or type(receipt.get('product_passed')) is not bool
             or receipt.get('execution', {}).get('status') != 'completed'
+            or type(receipt.get('execution', {}).get('returncode')) is not int
+            or receipt.get('execution', {}).get('remaining_pids')
             or not receipt.get('source_before')
             or receipt.get('source_before') != receipt.get('source_after')
             or receipt.get('source_before') != receipt.get('product_fingerprint')
@@ -49,7 +54,8 @@ def _supported(receipt):
                 or value['errors'] != 0 or value['skipped'] != 0):
             return False
     failed = any(value['failures'] for value in values)
-    return receipt['product_passed'] is (not failed)
+    return (receipt['product_passed'] is (not failed)
+            and (receipt['execution']['returncode'] == 0) is (not failed))
 
 
 def qualify(case, observations):
@@ -132,11 +138,13 @@ def regrade(case, *, product_id, product_root, input_files, workspace, argv,
         raise ValueError('At least one expected test report is required')
     for filename, count in reports.items():
         path = workspace / filename
-        if count <= 0 or path.resolve() == workspace or workspace not in path.resolve().parents:
+        if type(count) is not int or count <= 0 or path.resolve() == workspace or workspace not in path.resolve().parents:
             raise ValueError('Expected reports need a positive count and workspace path')
         if path.exists() or path.is_symlink():
             raise FileExistsError('Old test report must not be reused: ' + str(path))
         expected_reports[path] = count
+    if case['inputs'].get('reports') != reports:
+        raise ValueError('Expected reports are not bound to case inputs')
     before = product_fingerprint(product_root)
     prefix = case['inputs'].get('command')
     if not prefix or list(argv[:len(prefix)]) != prefix:
@@ -144,7 +152,7 @@ def regrade(case, *, product_id, product_root, input_files, workspace, argv,
     if any(case['inputs']['environment'].get(key) != value for key, value in (env or {}).items()):
         raise ValueError('Execution environment is not bound to case inputs')
     current_inputs = case_inputs(input_files, dependencies=case['inputs']['dependencies'],
-                                environment=case['inputs']['environment'], command=argv)
+                                environment=case['inputs']['environment'], command=prefix, reports=reports)
     if current_inputs != case['inputs']:
         raise ValueError('Grader inputs changed since case qualification')
     record = {'case_id': case['case_id'], 'kind': case['kind'],
@@ -159,8 +167,8 @@ def regrade(case, *, product_id, product_root, input_files, workspace, argv,
             result = run(argv, workspace=workspace, limits=limits, env=env)
             record['execution'] = {'status': result.status, 'returncode': result.returncode,
                 'stdout': result.stdout, 'stderr': result.stderr,
-                'remaining_pids': result.remaining_pids}
-            counts = {}
+                'remaining_pids': list(result.remaining_pids)}
+            counts = record['test_counts']
             for path, expected in expected_reports.items():
                 if path.is_symlink() or not path.is_file():
                     raise ValueError('Expected test report missing or linked: ' + str(path))
@@ -190,7 +198,7 @@ def regrade(case, *, product_id, product_root, input_files, workspace, argv,
         try:
             record['source_after'] = product_fingerprint(product_root)
             after_inputs = case_inputs(input_files, dependencies=case['inputs']['dependencies'],
-                                      environment=case['inputs']['environment'], command=argv)
+                                      environment=case['inputs']['environment'], command=prefix, reports=reports)
             if record['source_after'] != before or after_inputs != current_inputs:
                 raise ValueError('Immutable product or checker input changed during grading')
         except Exception as error:

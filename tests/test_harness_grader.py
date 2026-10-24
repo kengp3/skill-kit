@@ -25,7 +25,8 @@ class QualificationTest(unittest.TestCase):
 
     def result(self, passed, kind='bug'):
         return {'status': 'graded', 'case_id': 'lifecycle', 'kind': kind, 'product_passed': passed,
-                'inputs': copy.deepcopy(self.inputs), 'execution': {'status': 'completed'},
+                'inputs': copy.deepcopy(self.inputs), 'execution': {'status': 'completed',
+                'returncode': 0 if passed else 1, 'remaining_pids': []},
                 'product_fingerprint': 'fixed', 'source_before': 'fixed',
                 'source_after': 'fixed', 'test_counts': {'known': {'tests': 1,
                 'failures': 0 if passed else 1, 'errors': 0, 'skipped': 0}}}
@@ -48,6 +49,8 @@ class QualificationTest(unittest.TestCase):
         for changed in (changed_dependency, changed_environment):
             self.assertEqual(qualification_status(changed, evidence), 'stale')
         self.assertEqual(qualification_status(self.case, None), 'unverified')
+        self.assertEqual(qualification_status(self.case, dict(self.case, status='qualified')),
+                         'unverified')
 
     def test_feature_and_refactor_qualification_do_not_require_historical_bug(self):
         feature = dict(self.case, kind='feature')
@@ -115,8 +118,6 @@ class QualificationTest(unittest.TestCase):
                          [('lifecycle', 'A')])
 
 
-@unittest.skipUnless((Path(__file__).parent / 'harness/boundary.py').exists(),
-                     'boundary ticket not integrated yet')
 class FixedProductTest(unittest.TestCase):
     def test_fixed_products_are_immutable_and_grading_receipts_are_not_overwritten(self):
         from harness.boundary import Limits
@@ -143,7 +144,7 @@ Path('TEST-result.xml').write_text('<testsuite name="behavior" tests="1" failure
             files = {'requirement': requirement, 'checker': checker, 'fixture': source}
             case = {'case_id': 'immutable', 'kind': 'refactor',
                     'inputs': case_inputs(files, dependencies={}, environment={},
-                    command=[sys.executable, '-B', str(checker), str(source)])}
+                    command=[sys.executable, '-B', str(checker)], reports={'TEST-result.xml': 1})}
             workspace = root / 'execution'
             workspace.mkdir()
             receipt = root / 'receipt.json'
@@ -165,6 +166,53 @@ Path('TEST-result.xml').write_text('<testsuite name="behavior" tests="1" failure
                     limits=Limits(wall_seconds=5, cpu_seconds=3, memory_mb=256,
                                   max_processes=2))
             self.assertEqual(receipt.read_bytes(), saved)
+
+    def test_product_failure_is_distinct_from_missing_skipped_or_interrupted_checks(self):
+        from harness.boundary import Limits
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp).resolve()
+            product = root / 'product'
+            product.mkdir()
+            source = product / 'source.txt'
+            source.write_text('fixed')
+            requirement = root / 'requirement'
+            requirement.write_text('one complete behavioral check')
+            checker = root / 'checker.py'
+            checker.write_text("""from pathlib import Path
+import sys, time
+mode = sys.argv[1]
+if mode != 'missing':
+    tests = 0 if mode == 'zero' else 2 if mode == 'count' else 1
+    failures = 1 if mode == 'assertion' else 0
+    skipped = 1 if mode == 'skipped' else 0
+    Path('TEST-result.xml').write_text(f'<testsuite tests="{tests}" failures="{failures}" errors="0" skipped="{skipped}"/>')
+if mode == 'timeout':
+    time.sleep(2)
+raise SystemExit(1 if mode in ('assertion', 'wrong_exit') else 0)
+""")
+            files = {'requirement': requirement, 'checker': checker, 'fixture': source}
+            prefix = [sys.executable, '-B', str(checker)]
+            case = {'case_id': 'behavior', 'kind': 'bug',
+                    'inputs': case_inputs(files, dependencies={}, environment={}, command=prefix, reports={'TEST-result.xml': 1})}
+            outcomes = [('pass', 'graded', True), ('assertion', 'graded', False),
+                        ('missing', 'unverified', None), ('zero', 'unverified', None),
+                        ('count', 'unverified', None), ('skipped', 'unverified', None),
+                        ('wrong_exit', 'unverified', None), ('timeout', 'unverified', None)]
+            for mode, status, passed in outcomes:
+                with self.subTest(mode=mode):
+                    workspace = root / mode
+                    workspace.mkdir()
+                    result = regrade(case, product_id=mode, product_root=product,
+                        input_files=files, workspace=workspace, argv=prefix + [mode],
+                        reports={'TEST-result.xml': 1}, receipt=root / (mode + '.json'),
+                        limits=Limits(wall_seconds=.25 if mode == 'timeout' else 5,
+                                      cpu_seconds=3, memory_mb=256, max_processes=2))
+                    self.assertEqual(result['status'], status, result)
+                    self.assertIs(result['product_passed'], passed)
+                    self.assertIn('execution', result)
+                    if mode == 'timeout':
+                        self.assertEqual(result['execution']['status'], 'timeout')
+                    self.assertEqual(result['source_before'], result['source_after'])
 
 
 if __name__ == '__main__':
