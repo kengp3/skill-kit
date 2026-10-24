@@ -1,63 +1,44 @@
 # Personal Harness
 
-個人 AI coding harness 的來源與整合 repo。首版以 Codex 處理既有專案的 bug、功能與重構，目標是在維持交付品質下減少人工投入與返工。個別 skill 依其相依內容使用；完整配置另包含發佈內容、專案啟用與驗證機制。
+透過 skill、hook 與少量工具，讓 AI agent 在原授權內完成嚴謹的多步驟開發，避免把局部成果當成整體完成。主責 agent 維護唯一任務合約，遇到真正阻礙或停止時保留可恢復狀態，跨對話續作先核對現況。使用者不必手動維護 tracker、計時或觀察。
 
-## Codex Desktop 日常入口與離線候選
+Codex Desktop app 是主要日常入口；CLI 與評測工具留在開發端。本 repo 提供來源及離線候選，不會因開發自動改動全域設定、其他專案、既有啟用版本或快取。OS 隔離與 watchdog 不屬於本輪產品範圍。
 
-日常以 Codex Desktop app 使用；CLI 供開發評測。N04 共用規則已補強，N06 可離線回放舊資料。這些檢查不代表 Desktop 已以候選完成任務或通過外部取消驗收。
+## 本輪規格與使用方式
 
-來源目前準備 `0.1.2` 候選（`0.1.1` 曾用於歷史更新／回退查核）；既有 Desktop 啟用的 `0.1.0`、marketplace 指向與快取維持原樣。只建包，不安裝或刷新宿主：
+目前以[任務合約與必要 hooks 規格](docs/specs/task-harness-lifecycle.spec.md)、[整合計畫](docs/plans/task-harness-lifecycle.plan.md)及[用語](docs/specs/task-harness-glossary.spec.md)為準。舊版研究與試行結果保留作開發參考，不作本版 Desktop 合格證明。
 
-```sh
-python3 -B scripts/package_harness.py dist/candidates/personal-harness-0.1.2
-python3 -B scripts/package_harness.py --verify dist/candidates/personal-harness-0.1.2
-```
+完成專案接入後，使用者只需在任務開始時明確啟用一次：
 
-目的地須不存在；需要重建時另選新目的地，保留已驗證產物與可信指紋。評測程式、事件及 grader 留在開發 repo，不放入候選。離線回放：
+> 使用 `$task-harness` 完成這項任務：……
 
-```sh
-python3 -B -m unittest discover -s tests -p 'test_harness_evidence.py' -v
-```
+同一任務的後續回合與明確續作沿用合約。跨對話時可提供原合約路徑；agent 先核對原執行狀態、產物與授權，再保存接手資訊。討論、等待決定或 Stop 不會自動轉成實作授權；未完成的必要成果不能自行降為後續建議。
 
-N06 schema v2 分開原始參照、觀測與判讀；主 thread／turn／item 去重，缺事件或衝突明示，人工時間與無法可靠判定的求助／重試／修復保持未知。候選 Desktop 接入需另驗隔離、有效權限、資源與必要取消能力，不要求人工計時或觀察。完整結果見 [P1 離線交付](docs/research/codex-harness-p1-offline-20261024.research.md)。
+[接入與合約指南](skills/task-harness/references/task-contract.md)提供完整 Markdown／JSON 範本、專案設定、綁定與恢復規則。首版以單一 Markdown 文件實作，原生 tracker 須具備完整保存、恢復及等效 hook adapter 才能替代。單獨載入 skill 不代表完整 harness 已接入。
 
-## 既有本機接入方式（維護參考）
+## 必要接入與能力限制
 
-以下涉及來源註冊、啟停、更新及回退；不屬於離線建包，不應隨開發測試執行。
+- 必要 hooks 為 `SessionStart`（恢復）、`UserPromptSubmit`（最新要求核對）、`Stop`（最多一次有界收尾補救）。hook 不寫產品或合約，不取代授權與驗收，也不抵抗使用者 Stop。
+- 專案明確 opt-in，設定及任務資料只在採用專案內。保留宿主要求的信任程序；不建立全域任務索引、不自動啟用其他專案。
+- Python 3 標準函式庫為 script runtime；3.10+ 是相容目標，開發環境 3.15 不代表最低版本已實測。不硬編碼 Homebrew、不自動安裝 runtime。
+- 設定中的 session 身分、使用者回合身分與 Stop 延續資格預設 `false`。離線 payload 或單元測試不構成 Desktop 真實事件證據；能力不足明示為缺口，不宣稱 hook 可選或已完整驗收。
 
-唯一來源仍是 `skills/`。使用 Python 3 標準函式庫建立獨立套件，不需要 npm：
+本輪交付包含來源、離線驗證與候選封裝。Desktop 真實接點、模型遵循及省時效果另列待驗證；不要求人工監看或新增例行核准點。參見整合計畫的 H05。
 
-```sh
-python3 -B scripts/package_harness.py dist/personal-harness
-python3 -B scripts/package_harness.py --verify dist/personal-harness
-```
+## 開發端離線候選
 
-目的地必須不存在，腳本不覆寫舊版。套件含四個技能、其 references／assets／scripts 及內容指紋，排除 repo 文件、研究、grader 與答案。`--verify` 檢查缺檔、變更及額外檔案並輸出 manifest SHA-256；更新／回退應與先前保存的可信指紋比對，manifest 自身不是簽章。
-
-`.agents/plugins/marketplace.json` 提供 `personal-harness-local` 來源，指向上述生成物。先以原生命令註冊共用來源（不執行 `plugin add`）：
+候選目標版本為 `0.2.0`。在封裝實作與整合檢查完成後，以既有 Python 工具建立不存在的目的地；以下命令只建包及驗證，不安裝或刷新宿主：
 
 ```sh
-codex plugin marketplace add /Users/kengp3/Workspaces/mine/simple-skills
+python3 -B scripts/package_harness.py dist/candidates/personal-harness-0.2.0
+python3 -B scripts/package_harness.py --verify dist/candidates/personal-harness-0.2.0
 ```
 
-採用專案須受宿主信任，在 `.codex/config.toml` 明確設定：
+完整包保留相依 skills、references、scripts、必要 hooks 與內容指紋；評測程式、grader、固定答案及研究留在開發 repo。更新／回退先保留可信 release 和指紋，再依明確採用授權處理來源及宿主快取；不要手改快取，也不要把某個來源版本當作目前活躍對話的載入證據。
 
-```toml
-[plugins."personal-harness@personal-harness-local"]
-enabled = true
-```
+既有 [N04／N06 離線交付](docs/research/codex-harness-p1-offline-20261024.research.md)、[CLI 三組 smoke](docs/research/codex-coding-harness-smoke-20261024.research.md)與[歷史接入查核](docs/research/codex-coding-harness-implementation.research.md)只支持其當時版本及範圍。舊 CLI 成功不等於新 hooks 或 Desktop 已合格，也不證明普遍更省時。日常任務不承擔三組比較或 grader 回放。
 
-保留使用者層級無候選 plugin 啟用項目，只有採用專案明確啟用。先檢查既有設定，合併指定區塊，不覆寫整份 config。原生 app-server 也會為明確設定 `enabled = false` 的專案準備快取，可用於先準備而不載入。新 session 核對實際快取包、manifest 指紋與技能入口；停用改為 `false` 並驗證不再載入。其他已安裝的同名 skill 副本不會隨 repo 自動更新，應核對實際選用路徑。
-
-已用 Desktop 內附 `0.163.0-alpha.11.2` app-server 驗證快取準備、專案啟停、更新及回退；正式來源註冊後無命令列覆寫也可運作。原生技能清單顯示本 repo 啟用時載入 4 個候選技能，未採用的 demo-002 為 0；停用後本 repo 也為 0。目前本 repo 明確啟用 `0.1.0` 作開發使用。這些是原生引擎證據，尚未宣稱 Desktop 主視窗的活躍對話已使用新版完成任務。參見[實作查核紀錄](docs/research/codex-coding-harness-implementation.research.md)。
-
-更新先保留舊 release 與可信 manifest 指紋，再用新的不存在目錄建包、驗證，讓 marketplace source 指向新 release 並由宿主刷新。回退將 source 指回舊 release，再核對快取與技能路徑。這次實測快取目錄使用 `0.1.0`／`0.1.1`；不要假設固定叫 `local`，也不要只靠版本目錄名稱驗收。宿主可能移除已不用的舊快取，因此可信 release 要另外保留。不要直接刪除目前套件來更新，也不要手改快取。
-
-本版沒有新增強制 hook：repo `.codex/hooks.json` 仍只是文件規則提醒。必要權限與副作用控制重用宿主及專案關卡，必須依實際工具路徑驗證；控制不足時停止相依操作。本機首版已以內附 CLI 完成 A／B／C 各一次流程 smoke：凍結版外部驗收均通過，另有 B 交付後死鎖診斷與 C controller 故障續作，完整保留於[交付報告](docs/research/codex-coding-harness-smoke-20261024.research.md)。目前 0.164 亦已重驗啟停、更新及回退。Desktop 主視窗 Stop、人工效益、公平能力比較與其他宿主仍未合格；本輪結果不代表新版普遍更好或更省時。
-
-專案資料沿用其 AGENTS、建置設定與既有命令；[試行計畫](docs/plans/codex-coding-harness-pilot.plan.md)列出 demo-002 候選入口及限制，不把未執行命令寫成已通過。維護測試：`python3 -B -m unittest discover -s tests -p 'test_*.py'`。
-
-平台依據：[Codex plugin 封裝與接入](https://developers.openai.com/plugins/build/plugins)、[hooks 的信任及覆蓋限制](https://learn.chatgpt.com/docs/hooks)。
+維護測試：`python3 -B -m unittest discover -s tests -p 'test_*.py'`。此指令使用開發案例，不能替代 Desktop 或新模型 trial；執行 trial 需另有明確授權。
 
 ## 技能清單
 
@@ -65,14 +46,12 @@ enabled = true
 | --- | --- | --- |
 | [define-task](skills/define-task/SKILL.md) | 釐清模糊需求，整理目標、範圍與完成條件 | 請 AI 使用 `$define-task` 定義任務，無須初始化 |
 | [project-setting](skills/project-setting/SKILL.md) | 管理專案文件的分類、命名與存放位置 | 請 AI 使用 `$project-setting` 初始化專案規範與提醒 |
-| [ai-code-review](skills/ai-code-review/SKILL.md) | 審查功能、缺陷修正、重構與移轉，提供問題、修改方向及驗收證據 | 提供 repo、審查版本與需求；移轉時另提供兩側 repo/ref |
-| [task-harness](skills/task-harness/SKILL.md) | 以風險驗證與直接證據完成開發、協調及續作 | 小任務直接交付；依接續需要才建立清單與持久紀錄 |
+| [ai-code-review](skills/ai-code-review/SKILL.md) | 審查功能、缺陷修正、重構與移轉 | 提供需求、目前產物與原始驗證證據；依風險啟用獨立 review |
+| [task-harness](skills/task-harness/SKILL.md) | 唯一任務合約、持續推進、驗收與跨對話恢復 | 任務級明確啟用；完整接入包含三個必要 hooks |
 
-本機的 ai-code-review（由 migration-code-review 擴充並更名）尚未推送；可直接指定本機 SKILL.md 使用。下列遠端安裝指令只取得遠端已發布內容。
+`task-harness` 依需求使用同層 `define-task`，風險觸發時使用 `ai-code-review`；完整候選保留相依目錄。遠端已發布技能可能落後於本機來源，下列既有 Skills CLI 安裝方式不等於安裝本輪完整 harness，也不是 Python 候選的 runtime 需求。
 
-`task-harness` 本機新版可直接指定 `skills/task-harness/SKILL.md`，尚未發布至遠端。缺少需求時會按需使用同層 `define-task`，風險觸發獨立 review 時使用同層 `ai-code-review`；單獨攜帶此 skill 時須一併保留這兩個完整相依目錄。上述完整 plugin 已包含它們。
-
-## 如何安裝
+## 其他獨立 skills 的既有發布方式
 
 先安裝 Node.js（JavaScript 執行環境）與 npm（套件管理工具），以下指令以 Codex 為目標。
 
