@@ -35,22 +35,34 @@ def _supported(receipt):
     if not isinstance(receipt, dict):
         return False
     counts = receipt.get('test_counts')
+    execution = receipt.get('execution')
+    inputs = receipt.get('inputs')
+    if not isinstance(execution, dict) or not isinstance(inputs, dict):
+        return False
     if (receipt.get('status') != 'graded'
             or type(receipt.get('product_passed')) is not bool
-            or receipt.get('execution', {}).get('status') != 'completed'
-            or type(receipt.get('execution', {}).get('returncode')) is not int
-            or receipt.get('execution', {}).get('remaining_pids')
+            or execution.get('status') != 'completed'
+            or type(execution.get('returncode')) is not int
+            or not isinstance(execution.get('remaining_pids'), list)
+            or execution['remaining_pids']
             or not receipt.get('source_before')
             or receipt.get('source_before') != receipt.get('source_after')
             or receipt.get('source_before') != receipt.get('product_fingerprint')
             or not isinstance(counts, dict) or not counts):
         return False
+    expected_reports = inputs.get('reports')
+    if (not isinstance(expected_reports, dict) or not expected_reports
+            or set(counts) != set(expected_reports)
+            or any(type(count) is not int or count <= 0
+                   for count in expected_reports.values())):
+        return False
     values = list(counts.values())
-    for value in values:
+    for name, value in counts.items():
         if (not isinstance(value, dict)
                 or any(type(value.get(key)) is not int
                        for key in ('tests', 'failures', 'errors', 'skipped'))
-                or value['tests'] <= 0 or not 0 <= value['failures'] <= value['tests']
+                or value['tests'] != expected_reports[name]
+                or not 0 <= value['failures'] <= value['tests']
                 or value['errors'] != 0 or value['skipped'] != 0):
             return False
     failed = any(value['failures'] for value in values)
@@ -64,7 +76,7 @@ def qualify(case, observations):
              'refactor': {'before': True, 'after': True, 'structure': True}}
     if case.get('kind') not in roles:
         raise ValueError('Unknown case kind')
-    valid = all(
+    valid = isinstance(observations, dict) and all(
         _supported(observations.get(role, {}))
         and observations[role].get('case_id') == case['case_id']
         and observations[role].get('kind') == case['kind']

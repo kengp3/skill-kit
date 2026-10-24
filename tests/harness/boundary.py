@@ -39,7 +39,7 @@ _ACTIVE = threading.Lock()
 
 def _processes(group):
     result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
-                            capture_output=True, text=True, check=True)
+                            capture_output=True, text=True, check=True, timeout=.25)
     processes = []
     for line in result.stdout.splitlines():
         fields = line.split()
@@ -48,6 +48,40 @@ def _processes(group):
         minutes, seconds = fields[3].split(':')
         processes.append((int(fields[0]), int(fields[2]), int(minutes) * 60 + float(seconds)))
     return processes
+
+
+def _signal_group(process, sig):
+    try:
+        os.killpg(process.pid, sig)
+    except (ProcessLookupError, PermissionError):
+        pass  # A final scan decides whether any live owned member remains.
+
+
+def _cleanup(process):
+    try:
+        members = _processes(process.pid)
+        if members:
+            _signal_group(process, signal.SIGTERM)
+            until = time.monotonic() + .3
+            while members and time.monotonic() < until:
+                process.poll()
+                time.sleep(.02)
+                members = _processes(process.pid)
+            if members:
+                _signal_group(process, signal.SIGKILL)
+        process.wait(timeout=2)
+        remaining = tuple(p[0] for p in _processes(process.pid))
+    except (OSError, subprocess.SubprocessError, ValueError) as error:
+        # Ownership comes from Popen's new session, not from the failed monitor.
+        _signal_group(process, signal.SIGKILL)
+        try:
+            process.wait(timeout=2)
+        except (OSError, subprocess.SubprocessError) as wait_error:
+            raise BoundaryUnavailable('owned group cleanup could not be confirmed') from wait_error
+        raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+    if remaining:
+        raise BoundaryUnavailable('owned processes remain after cleanup')
+    return remaining
 
 
 def run(argv, *, workspace, limits=Limits(), cancel=None, env=None):
@@ -98,24 +132,27 @@ def run(argv, *, workspace, limits=Limits(), cancel=None, env=None):
                '(allow file-write* (subpath ' + json.dumps(str(root)) + ')) '
                '(deny process-exec (regex #".*/codex(-cli)?$"))')
 
-    def set_limits():
-        import resource
-        ceiling = max(1, math.ceil(limits.cpu_seconds))
-        resource.setrlimit(resource.RLIMIT_CPU, (ceiling, ceiling))
-        resource.setrlimit(resource.RLIMIT_FSIZE, (16 * 1024 * 1024, 16 * 1024 * 1024))
-        os.nice(10)
+    # Limit setup runs only after Python has exec'd, so threaded callers need no fork callback.
+    launcher = ('import os, resource, sys\n'
+                'ceiling = int(sys.argv[1])\n'
+                'resource.setrlimit(resource.RLIMIT_CPU, (ceiling, ceiling))\n'
+                'resource.setrlimit(resource.RLIMIT_FSIZE, (16777216, 16777216))\n'
+                'os.nice(10)\n'
+                'os.execv(sys.argv[2], sys.argv[2:])\n')
 
     if not _ACTIVE.acquire(blocking=False):
         raise BoundaryUnavailable('another owned development job is active')
     started = time.monotonic()
     process = None
     status = 'completed'
+    cleanup_attempted = False
     try:
         with (root / '.stdout').open('x+') as output, (root / '.stderr').open('x+') as errors:
-            process = subprocess.Popen(['/usr/bin/sandbox-exec', '-p', profile, *argv],
+            process = subprocess.Popen([sys.executable, '-B', '-c', launcher,
+                                        str(max(1, math.ceil(limits.cpu_seconds))),
+                                        '/usr/bin/sandbox-exec', '-p', profile, *argv],
                                        cwd=root, env=child_env, stdin=subprocess.DEVNULL,
-                                       stdout=output, stderr=errors, start_new_session=True,
-                                       preexec_fn=set_limits)
+                                       stdout=output, stderr=errors, start_new_session=True)
             while process.poll() is None:
                 members = _processes(process.pid)
                 if cancel is not None and cancel.is_set():
@@ -131,25 +168,8 @@ def run(argv, *, workspace, limits=Limits(), cancel=None, env=None):
                 if status != 'completed':
                     break
                 time.sleep(.02)
-            # Cleanup runs even if the parent exits while descendants retain outputs.
-            if _processes(process.pid):
-                try:
-                    os.killpg(process.pid, signal.SIGTERM)
-                except ProcessLookupError:
-                    pass
-                until = time.monotonic() + .3
-                while _processes(process.pid) and time.monotonic() < until:
-                    process.poll()
-                    time.sleep(.02)
-                if _processes(process.pid):
-                    try:
-                        os.killpg(process.pid, signal.SIGKILL)
-                    except ProcessLookupError:
-                        pass
-            process.wait(timeout=2)
-            remaining = tuple(p[0] for p in _processes(process.pid))
-            if remaining:
-                raise BoundaryUnavailable('owned processes remain after cleanup')
+            cleanup_attempted = True
+            remaining = _cleanup(process)
             output.seek(0); errors.seek(0)
             stdout, stderr = output.read(), errors.read()
             if 'sandbox_apply:' in stderr:
@@ -159,19 +179,8 @@ def run(argv, *, workspace, limits=Limits(), cancel=None, env=None):
             return RunResult(process.returncode, status, stdout, stderr,
                              time.monotonic() - started, remaining)
     finally:
-        if process is not None:
-            try:
-                if _processes(process.pid):
-                    try:
-                        os.killpg(process.pid, signal.SIGKILL)
-                    except ProcessLookupError:
-                        pass
-            except (ProcessLookupError, subprocess.SubprocessError):
-                pass
-            finally:
-                try:
-                    process.wait(timeout=2)
-                finally:
-                    _ACTIVE.release()
-        else:
+        try:
+            if process is not None and not cleanup_attempted:
+                _cleanup(process)
+        finally:
             _ACTIVE.release()

@@ -20,7 +20,7 @@ class QualificationTest(unittest.TestCase):
             path.write_text(name)
             self.files[name] = path
         self.inputs = case_inputs(self.files, dependencies={'spring': '7'},
-                                  environment={'jdk': '25'})
+                                  environment={'jdk': '25'}, reports={'known': 1})
         self.case = {'case_id': 'lifecycle', 'kind': 'bug', 'inputs': self.inputs}
 
     def result(self, passed, kind='bug'):
@@ -39,13 +39,13 @@ class QualificationTest(unittest.TestCase):
             with self.subTest(field=field):
                 self.files[field].write_text('new ' + field)
                 changed = dict(self.case, inputs=case_inputs(self.files,
-                    dependencies={'spring': '7'}, environment={'jdk': '25'}))
+                    dependencies={'spring': '7'}, environment={'jdk': '25'}, reports={'known': 1}))
                 self.assertEqual(qualification_status(changed, evidence), 'stale')
                 self.files[field].write_text(field)
         changed_dependency = dict(self.case, inputs=case_inputs(self.files,
-            dependencies={'spring': '8'}, environment={'jdk': '25'}))
+            dependencies={'spring': '8'}, environment={'jdk': '25'}, reports={'known': 1}))
         changed_environment = dict(self.case, inputs=case_inputs(self.files,
-            dependencies={'spring': '7'}, environment={'jdk': '26'}))
+            dependencies={'spring': '7'}, environment={'jdk': '26'}, reports={'known': 1}))
         for changed in (changed_dependency, changed_environment):
             self.assertEqual(qualification_status(changed, evidence), 'stale')
         self.assertEqual(qualification_status(self.case, None), 'unverified')
@@ -83,7 +83,7 @@ class QualificationTest(unittest.TestCase):
     def test_checker_revision_regrades_all_affected_products_including_failures(self):
         products = [{'product_id': name, 'case_ids': ['lifecycle'],
                      'fingerprint': 'fixed-' + name} for name in ('A', 'B', 'C')]
-        unrelated = {'case_id': 'unrelated', 'kind': 'refactor', 'inputs': {'v': 1}}
+        unrelated = {'case_id': 'unrelated', 'kind': 'refactor', 'inputs': {'v': 1, 'reports': {'known': 1}}}
         products.append({'product_id': 'D', 'case_ids': ['unrelated'],
                          'fingerprint': 'fixed-D'})
         receipts = [dict(self.result(name != 'B'), case_id='lifecycle',
@@ -92,7 +92,7 @@ class QualificationTest(unittest.TestCase):
                     for name in ('A', 'B', 'C')]
         receipts.append(dict(self.result(True), case_id='unrelated', kind='refactor',
             product_id='D', product_fingerprint='fixed-D', source_before='fixed-D',
-            source_after='fixed-D', inputs={'v': 1}))
+            source_after='fixed-D', inputs={'v': 1, 'reports': {'known': 1}}))
         self.assertEqual(select_regrades([self.case, unrelated], products, receipts), [])
         changed = copy.deepcopy(self.case)
         changed['inputs']['files']['checker'] = 'new-checker'
@@ -116,6 +116,46 @@ class QualificationTest(unittest.TestCase):
                                  [('lifecycle', 'A')])
         self.assertEqual(select_regrades([self.case], [product], []),
                          [('lifecycle', 'A')])
+
+
+    def test_malformed_execution_is_unverified_in_public_qualification_and_selection(self):
+        product = {'product_id': 'A', 'case_ids': ['lifecycle'], 'fingerprint': 'fixed'}
+        for execution in (None, [], 'completed',
+                          {'status': 'completed', 'returncode': 0},
+                          {'status': 'completed', 'returncode': 0, 'remaining_pids': None}):
+            with self.subTest(execution=execution):
+                malformed = dict(self.result(True), product_id='A', execution=execution)
+                self.assertEqual(select_regrades([self.case], [product], [malformed]),
+                                 [('lifecycle', 'A')])
+                self.assertEqual(qualify(self.case, {'defect': self.result(False),
+                    'correct': malformed})['status'], 'unverified')
+        unsupported = dict(self.case, status='qualified', observations=None)
+        self.assertEqual(qualification_status(self.case, unsupported), 'unverified')
+
+
+    def test_recorded_receipt_report_contract_is_checked_when_reusing_evidence(self):
+        evidence = Path(__file__).resolve().parents[1] / 'docs/research/codex-harness-p0-20261024-evidence/fixed-grading'
+        correct = json.loads((evidence / 'A-HarnessLifecycleTest.json').read_text())
+        defect = json.loads((evidence / 'parent-HarnessLifecycleTest.json').read_text())
+        case = {key: correct[key] for key in ('case_id', 'kind', 'inputs')}
+        product = {'product_id': 'A', 'case_ids': [case['case_id']],
+                   'fingerprint': correct['product_fingerprint']}
+        self.assertEqual(qualify(case, {'defect': defect, 'correct': correct})['status'], 'qualified')
+        report = next(iter(correct['test_counts']))
+        for mode in ('wrong_count', 'missing_report', 'extra_report'):
+            with self.subTest(mode=mode):
+                bad, bad_defect, changed = map(copy.deepcopy, (correct, defect, case))
+                if mode == 'wrong_count':
+                    bad['test_counts'][report]['tests'] = 1
+                elif mode == 'missing_report':
+                    for value in (bad, bad_defect, changed):
+                        value['inputs']['reports']['required-extra.xml'] = 1
+                else:
+                    bad['test_counts']['unexpected.xml'] = {'tests': 1, 'failures': 0, 'errors': 0, 'skipped': 0}
+                self.assertEqual(select_regrades([changed], [product], [bad]),
+                                 [(case['case_id'], 'A')])
+                self.assertEqual(qualify(changed, {'defect': bad_defect,
+                    'correct': bad})['status'], 'unverified')
 
 
 class FixedProductTest(unittest.TestCase):

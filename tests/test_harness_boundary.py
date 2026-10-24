@@ -183,5 +183,78 @@ class BoundaryTest(unittest.TestCase):
             self.assertEqual(results[0].returncode,0)
 
 
+    def test_monitor_failure_still_terminates_owned_group_and_preserves_unrelated_worker(self):
+        with tempfile.TemporaryDirectory(prefix='harness-boundary-') as temporary:
+            base = Path(temporary).resolve()
+            workspace = base / 'execution'; workspace.mkdir()
+            pid_file = workspace / 'pids'
+            outsider = subprocess.Popen(['/bin/sleep', '10'], start_new_session=True)
+            original_run = subprocess.run
+            parent = None
+            def unavailable(command, *args, **kwargs):
+                if command[0] != '/bin/ps':
+                    return original_run(command, *args, **kwargs)
+                deadline = time.monotonic() + 1
+                while not pid_file.exists() and time.monotonic() < deadline:
+                    time.sleep(.01)
+                raise subprocess.CalledProcessError(1, command, stderr='monitor unavailable')
+            try:
+                code = ('import os,subprocess,time;from pathlib import Path; '
+                        'child=subprocess.Popen(["/bin/sleep","10"]); '
+                        'Path("pids").write_text(str(os.getpid())+" "+str(child.pid));time.sleep(10)')
+                started = time.monotonic()
+                with patch('harness.boundary.subprocess.run', side_effect=unavailable):
+                    with self.assertRaises(BoundaryUnavailable):
+                        run([sys.executable, '-c', code], workspace=workspace,
+                            limits=Limits(wall_seconds=3))
+                self.assertLess(time.monotonic() - started, 3)
+                pids = [int(value) for value in pid_file.read_text().split()]
+                parent = pids[0]
+                deadline = time.monotonic() + 2
+                for pid in pids:
+                    while time.monotonic() < deadline:
+                        try:
+                            os.kill(pid, 0)
+                        except ProcessLookupError:
+                            break
+                        time.sleep(.01)
+                    with self.assertRaises(ProcessLookupError):
+                        os.kill(pid, 0)
+                self.assertIsNone(outsider.poll())
+            finally:
+                if pid_file.exists():
+                    parent = int(pid_file.read_text().split()[0])
+                if parent is not None:
+                    try:
+                        os.killpg(parent, 9)
+                    except ProcessLookupError:
+                        pass
+                outsider.terminate(); outsider.wait(timeout=2)
+
+
+    def test_threaded_launch_needs_no_preexec_callback_and_remains_bounded(self):
+        with tempfile.TemporaryDirectory(prefix='harness-boundary-') as temporary:
+            workspace = Path(temporary).resolve()
+            original_popen = subprocess.Popen
+            results, errors = [], []
+            def safe_popen(*args, **kwargs):
+                if kwargs.get('preexec_fn') is not None:
+                    raise RuntimeError('pre-exec callbacks unavailable in a threaded caller')
+                return original_popen(*args, **kwargs)
+            def execute():
+                try:
+                    results.append(run(['/bin/sleep', '10'], workspace=workspace,
+                                       limits=Limits(wall_seconds=.15)))
+                except Exception as error:
+                    errors.append(error)
+            with patch('harness.boundary.subprocess.Popen', side_effect=safe_popen):
+                worker = threading.Thread(target=execute)
+                worker.start(); worker.join(timeout=2)
+            self.assertFalse(worker.is_alive())
+            self.assertEqual(errors, [])
+            self.assertEqual(results[0].status, 'timeout')
+            self.assertEqual(results[0].remaining_pids, ())
+
+
 if __name__ == '__main__':
     unittest.main()
