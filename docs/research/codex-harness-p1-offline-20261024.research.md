@@ -1,6 +1,6 @@
 # P1 離線交付：N04、候選封裝與 N06
 
-日期：2026-10-24。狀態：實作及本機驗證完成，獨立 Standards／Spec 複核中。
+日期：2026-10-24。狀態：本輪離線實作與必要驗證完成，獨立 Standards／Spec 複核通過。
 
 本輪套用 ask-matt → implement → tdd → code-review，沿用核准規格與本地計畫，不新增訪談或日常控制機制。固定 review 基線為 `205ca091bee6bdaaea2819d44bc6b0feb9ac84f7`。完成範圍僅 N04、候選離線封裝與 N06 舊資料回放；Desktop 是日常入口，CLI 仍是開發評測路徑。
 
@@ -36,4 +36,15 @@ N04 的實際模型遵循、候選 Desktop 載入與低風險任務交付、外�
 
 ## 複核與回顧
 
-首輪 Standards 0 finding；Spec 找到兩項 P2：started／completed item 類型衝突被視為完整，以及固定結果缺失／malformed 會中止整批回放。已補反例，逐切片觀察 red → green；修正跨事件類型不變條件、逐組錯誤隔離及 grade 基本完整性，缺失驗收保持 unknown，繼續獨立組別。最終複核結果待補。本次確認舊提案中的 `test_harness_evaluation.py` 不存在，實作沿 P0 已拆分結構新增專責 evidence 測試；沒有為舊檔名補建整合入口。跨宿主能力檢查繼續留在適用範圍，避免把 CLI 通過或快取出現當成 Desktop 完整驗收。
+首輪 Standards 0 finding；Spec 找到兩項 P2：started／completed item 類型衝突被視為完整，以及固定結果缺失／malformed 會中止整批回放。已補反例，逐切片觀察 red → green；修正跨事件類型不變條件、逐組錯誤隔離及 grade 基本完整性，缺失驗收保持 unknown，繼續獨立組別。最終固定版本 `0a94c63fb25257e0dd5c5fd35db073edaea3dd6b` 的兩軸複核通過，兩項均已解除。本次確認舊提案中的 `test_harness_evaluation.py` 不存在，實作沿 P0 已拆分結構新增專責 evidence 測試；沒有為舊檔名補建整合入口。跨宿主能力檢查繼續留在適用範圍，避免把 CLI 通過或快取出現當成 Desktop 完整驗收。
+
+
+## Standards
+
+0 項未解除 finding，0 項新增 smell。修正維持既有標準函式庫／unittest 結構，未擴充日常 runtime。4 個來源指紋及回放各來源 hash 均相符；獨立重算三組回放與 final JSON 完全一致。未獨立重跑完整測試或操作 Desktop。
+
+## Spec
+
+SPEC-01、SPEC-02 均已解除，未發現修正引入的新具體問題。Reviewer 獨立驗證事件順序／型別衝突及缺 grade、malformed JSON、缺欄位、無效 grade 值與 malformed outcome；必要資料缺失保持 unknown，其他組可繼續。已核對 69 項原始測試輸出及最終來源，C 保留 partial、B 保留已知缺陷。
+
+兩軸結果：Standards 0 待處理；Spec 0 待處理，皆無未解除最高風險項。證據：[review 記錄](codex-harness-p1-offline-20261024-evidence/reviews.json)、[完成保護核對](codex-harness-p1-offline-20261024-evidence/completion-audit.json)。本輪只讀舊 grader receipts，未重新執行 Java checker；新摘要沿用各凍結驗收範圍，不作新版 grader 或 Desktop 的行為保證。

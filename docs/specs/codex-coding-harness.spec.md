@@ -1,7 +1,7 @@
 # 個人 Harness 首版設計規格（Codex Coding）
 
 日期：2026-10-24（Asia/Taipei）
-狀態：N01–N03 的 P0 實作及整合驗收已通過，結果見[P0 報告](../research/codex-harness-p0-20261024.research.md)。本輪授權實作 N04、候選離線封裝與 N06 舊資料回放，進度及證據見[P1 離線計畫](../plans/codex-harness-p1-offline.plan.md)；不包含 Desktop 接入或新模型 trial。Desktop 為主要日常入口，CLI 為開發評測路徑；Desktop 實際任務／Stop、N07、人工效益、公平比較及移植尚未完成。首輪三組 smoke 結果仍見[原交付報告](../research/codex-coding-harness-smoke-20261024.research.md)。
+狀態：N01–N03 的 P0 實作及整合驗收已通過，結果見[P0 報告](../research/codex-harness-p0-20261024.research.md)。本輪 N04、候選離線封裝與 N06 舊資料回放已完成必要本機驗證及兩軸複核，結果及證據見[P1 離線計畫](../plans/codex-harness-p1-offline.plan.md)；不包含 Desktop 接入或新模型 trial。Desktop 為主要日常入口，CLI 為開發評測路徑；Desktop 實際任務／Stop、N07、人工效益、公平比較及移植尚未完成。首輪三組 smoke 結果仍見[原交付報告](../research/codex-coding-harness-smoke-20261024.research.md)。
 配套：[試行計畫](../plans/codex-coding-harness-pilot.plan.md)
 
 執行授權沿革：P0 的 N01–N03 已依 ask-matt／to-tickets／implement-spec 完成。本輪新增授權限於 N04、候選離線封裝、N06 舊資料回放與必要驗證；不改 Desktop 日常設定、啟用版本或快取，不要求人工觀察，不執行新模型 trial。下文「本輪僅文件」是前輪歷史邊界；Desktop 接入與後續模型 trial 仍未授權。

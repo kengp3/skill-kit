@@ -521,7 +521,7 @@ C 的 controller 在 reviewer子回合完成時誤判主回合完成；確認實
 
 ### 20.1 已確認決策與事實邊界
 
-本節保留已確認的補強計畫與實作前提案；N01–N03 落地結果見第 21 節。本輪另授權 N04、候選離線封裝與 N06 舊資料回放，實作進度見[P1 離線計畫](codex-harness-p1-offline.plan.md)及第 22 節；N05 Desktop 接入與 N07 尚未執行。R01–R07 對應規格的同名決策；P0／P1／P2 是本輪優先序，與原 P0–P6 階段不同。
+本節保留已確認的補強計畫與實作前提案；N01–N03 落地結果見第 21 節。本輪 N04、候選離線封裝與 N06 舊資料回放已完成，實作結果見[P1 離線計畫](codex-harness-p1-offline.plan.md)及第 22 節；N05 Desktop 接入與 N07 尚未執行。R01–R07 對應規格的同名決策；P0／P1／P2 是本輪優先序，與原 P0–P6 階段不同。
 
 | 決策 | 落實方式 | 對應工作 |
 | --- | --- | --- |
@@ -610,3 +610,5 @@ P0未建立通用evaluate入口或案例框架，沒有新的模型trial、app-s
 N06 template 升為 schema v2，`human_takeover` 預設未知，移除人工 observation window；保存原始參照、觀測與判讀。A／B／C 舊資料回放使用主 thread 與明確 turn 清單，C 兩段 turn 仍是同一次 trial；原摘要 29 個命令含子回合，新主對話口徑為 26，兩者分開保留。C 首段原生 stream 缺主回合 terminal，仍標部分覆蓋，另外保留 readback 中斷證據。B 的凍結 V2 通過與後續 factory-close 失敗均保留，不能把流程完成當成無缺陷交付。
 
 本輪沒有新的模型 trial、app-server、Desktop 對話或安裝；不要求人工觀察。完整驗證與剩餘缺口見[P1 離線報告](../research/codex-harness-p1-offline-20261024.research.md)。N01–N03 在表 20.2 的早期檔案安排為歷史提案，現行落點以第 21 節為準，不必補建 `test_harness_evaluation.py` 或通用 evaluate 入口。
+
+本輪離線範圍最終完成：69項 unittest（68通過／1 Windows略過）；兩項 N06 Spec finding 已修正及獨立複核，Standards／Spec 皆0待處理finding。候選 manifest 與目前來源相符，日常設定／啟用套件快取、舊證據及無關工作保護核對通過。僅本機提交，未推送；Desktop 接入與新模型 trial 未執行。

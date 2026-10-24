@@ -5,7 +5,9 @@
     "findings": [],
     "limitations": [
       "No full test rerun or Desktop/model behavior verification by reviewer."
-    ]
+    ],
+    "final_status": "passed",
+    "remaining_findings": 0
   },
   "spec": {
     "findings": [
@@ -15,7 +17,8 @@
         "problem": "Started/completed item types can conflict without partial coverage.",
         "fix": "Track all observed types per identity; retain unknown outcomes and partial coverage.",
         "regression": "test_started_completed_type_conflict_remains_unknown_in_either_order",
-        "status": "fixed_pending_verification"
+        "status": "verified",
+        "verified_commit": "0a94c63fb25257e0dd5c5fd35db073edaea3dd6b"
       },
       {
         "id": "SPEC-02",
@@ -23,8 +26,20 @@
         "problem": "Missing/malformed non-RPC input aborts all group replay.",
         "fix": "Disclose input errors per group, preserve unknown acceptance and continue independent groups.",
         "regression": "test_missing_or_invalid_group_inputs_do_not_abort_other_groups",
-        "status": "fixed_pending_verification"
+        "status": "verified",
+        "verified_commit": "0a94c63fb25257e0dd5c5fd35db073edaea3dd6b"
       }
-    ]
+    ],
+    "final_status": "passed",
+    "remaining_findings": 0
+  },
+  "final_review_commit": "0a94c63fb25257e0dd5c5fd35db073edaea3dd6b",
+  "independent_recheck": {
+    "saved_replays_recomputed_equal": true,
+    "input_hashes_match": true,
+    "both_axes_checked_final_artifacts": true,
+    "full_unittest_independently_rerun": false,
+    "full_unittest_original_output_checked": true,
+    "Desktop_or_model_trials": false
   }
 }

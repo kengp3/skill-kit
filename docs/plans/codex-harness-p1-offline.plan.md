@@ -1,6 +1,6 @@
 # P1 離線實作：N04、候選封裝與 N06
 
-狀態：進行中。固定基線 `205ca091bee6bdaaea2819d44bc6b0feb9ac84f7`；依既有規格、試行計畫 §20 與本輪使用者授權，在目前分支實作，不推送。採 ask-matt → implement → tdd → code-review；沿用本地計畫作追蹤。
+狀態：已完成本輪離線範圍。固定基線 `205ca091bee6bdaaea2819d44bc6b0feb9ac84f7`；依既有規格、試行計畫 §20 與本輪使用者授權，在目前分支實作，不推送。採 ask-matt → implement → tdd → code-review；沿用本地計畫作追蹤。
 
 ## 範圍與驗收
 
@@ -20,7 +20,9 @@
 2. [x] N04 精簡修改及內容／引用核對。
 3. [x] N06 一個行為切片一次 red → green，舊資料產生新的衍生摘要。
 4. [x] 新版本候選離線封裝、既有 package 檢查及必要補強。
-5. [ ] 全部適用 unittest、來源／保護內容核對、Standards／Spec 獨立複核。
-6. [ ] 同步規格／計畫狀態與交付證據；檢查 staged diff 後提交本輪內容。
+5. [x] 全部適用 unittest、來源／保護內容核對、Standards／Spec 獨立複核。
+6. [x] 同步規格／計畫狀態與交付證據；檢查 staged diff 後提交本輪內容。
 
 完成證據寫入 `docs/research/codex-harness-p1-offline-20261024.research.md` 與同名 evidence 目錄；候選包使用 `dist/candidates/` 下新目的地，不納入日常來源。人工投入保持 unavailable。尚未執行的驗收均保留限制，不宣稱 N05 完成。
+
+最終驗證：69項 unittest、68通過／1 Windows略過；9項 N06 回歸及 A／B／C 保存資料回放通過。候選 0.1.2 離線驗包及獨立執行通過，582個保護檔與1322個無關未追蹤檔內容不變。初次 Spec 兩項已修正並獨立複核，Standards／Spec 皆0待處理finding。Desktop 接入、新模型遵循與 N06 新事件覆蓋不在本次完成聲明。
