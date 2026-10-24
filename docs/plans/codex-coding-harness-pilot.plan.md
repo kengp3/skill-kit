@@ -1,7 +1,7 @@
 # 個人 Harness 首版實作準備與試行計畫（Codex Coding）
 
 日期：2026-10-24（Asia/Taipei）
-狀態：N01–N03 P0 實作及整合驗收已通過，四項 review 修正已合併，兩軸複核待完成，見第 21 節與[P0 報告](../research/codex-harness-p0-20261024.research.md)。Desktop 為主要日常入口，CLI 為開發評測路徑；P1 及新的模型 trial 未執行，首輪既有結果與限制保留。
+狀態：N01–N03 P0 實作及整合驗收已通過，四項 review 修正已合併，兩軸複核通過（0待處理finding），見第 21 節與[P0 報告](../research/codex-harness-p0-20261024.research.md)。Desktop 為主要日常入口，CLI 為開發評測路徑；P1 及新的模型 trial 未執行，首輪既有結果與限制保留。
 設計依據：[首版設計規格](../specs/codex-coding-harness.spec.md)
 
 目前執行授權補充（P0）：使用者已核定依本修訂實作 N01–N03，套用 ask-matt／to-tickets／implement-spec，包含必要本機回歸與隔離 canary；不啟動新的模型 trial、不影響 Desktop 日常作業、不要求人工觀察。下文「本輪僅文件」保留為前一輪文件交付的歷史邊界，不限制此次 P0 授權；P1 及後續 trial 仍未授權。
@@ -599,4 +599,4 @@ R01–R07、N01–N07 及優先序可互相對照；規格描述行為契約，�
 
 P0未建立通用evaluate入口或案例框架，沒有新的模型trial、app-server回合、人工計時或Stop要求。記憶體／程序數限制為20ms抽樣，支援保留自有process group的後代，單工作互斥是一個Python interpreter；不宣稱任意惡意／detached程式的容器保證或Desktop原生控制已重新驗證。
 
-本次P0完成判準：三張票的直接測試／固定產物結果可追溯，整合來源指紋與日常保護核對成立，Standards／Spec兩軸review無待處理問題。前兩項已取得證據，四項review發現已修正，兩軸複核待完成；不將P1或Desktop完整驗收納入本次完成聲明。完整證據、命令及限制見[P0報告](../research/codex-harness-p0-20261024.research.md)。
+本次P0完成判準：三張票的直接測試／固定產物結果可追溯，整合來源指紋與日常保護核對成立，Standards／Spec兩軸review無待處理問題。三項均已有證據，四項review發現已修正，兩軸複核通過且無待處理finding；不將P1或Desktop完整驗收納入本次完成聲明。完整證據、命令及限制見[P0報告](../research/codex-harness-p0-20261024.research.md)。

@@ -1,7 +1,7 @@
 # Coding Harness P0 實作與驗證
 
 日期：2026-10-24（Asia/Taipei）
-狀態：P0 實作與整合驗收已通過，初次兩軸 review 的四項問題已修正，最終整合驗收通過，兩軸複核待完成；尚不宣告整體完成。
+狀態：N01–N03 P0 已完成；初次兩軸 review 的四項問題均修正，最終整合驗收與兩軸複核通過。結論限本輪開發測試機制，不代表 Desktop 完整驗收或人工效益已通過。
 
 ## Objective
 
@@ -26,7 +26,7 @@
 | N03 相關變更與資格 | `test_harness_grader.py`：9 項含輸入、指紋、command prefix、預期報告、缺值與三種資格 | 已驗證 API 與錯誤路徑；未擴為新功能／重構模型案例 |
 | N03 固定產物重評 | 受影響 A／B／C 選取回歸；[修正後五次原生隔離重評](codex-harness-p0-20261024-evidence/fixed-grading-final/summary.json)，每次來源前後一致 | 已驗證，原 trial 不改 |
 | 無模型 trial／無人工觀察 | 測試拒絕模型／app-server 命令、network deny、環境不繼承 API key；只回放事件與本機 canary／Maven | 0 新模型 trial，無人工觀察要求 |
-| 整合及品質 | 60 tests：59 通過、1 原生 Windows 略過；test/source before＝after | 整合通過，Standards／Spec review 待完成 |
+| 整合及品質 | 60 tests：59 通過、1 原生 Windows 略過；test/source before＝after | 整合與兩軸複核通過，0待處理finding |
 
 ## 實際落地與使用
 
@@ -57,10 +57,22 @@
 
 ## Standards（初次 review）
 
-2項：threaded caller使用preexec_fn的exec前死鎖風險；malformed execution欄位使收據選取崩潰。前者的限制亦已核對[Python官方文件](https://docs.python.org/3/library/subprocess.html#subprocess.Popen)。沒有要求額外抽象化的Fowler smell。兩項已修正：已exec launcher取代preexec_fn；malformed execution／observations／未知writer證據均不接受，待最終複核。
+2項：threaded caller使用preexec_fn的exec前死鎖風險；malformed execution欄位使收據選取崩潰。前者的限制亦已核對[Python官方文件](https://docs.python.org/3/library/subprocess.html#subprocess.Popen)。沒有要求額外抽象化的Fowler smell。兩項已修正：已exec launcher取代preexec_fn；malformed execution／observations／未知writer證據均不接受，最終複核已關閉。
 
 ## Spec（初次 review）
 
-2項：既有收據未重核完整報告集合／數量；程序監測失效時可能跳過終止自有程序。收據問題已由主agent用既有收據的純記憶體副本重現，見[修正前重現](codex-harness-p0-20261024-evidence/review-reproductions-before.json)。兩項已修正：既有收據重核完整報告集合／精確數量；ps掃描有0.25秒上限，失效仍對自有群組終止並回報無法確認，待最終複核。[修正後收據重現](codex-harness-p0-20261024-evidence/review-reproductions-after.json)已改為選入重評／unverified，初次綠測試不足以關閉目標。
+2項：既有收據未重核完整報告集合／數量；程序監測失效時可能跳過終止自有程序。收據問題已由主agent用既有收據的純記憶體副本重現，見[修正前重現](codex-harness-p0-20261024-evidence/review-reproductions-before.json)。兩項已修正：既有收據重核完整報告集合／精確數量；ps掃描有0.25秒上限，失效仍對自有群組終止並回報無法確認，最終複核已關閉。[修正後收據重現](codex-harness-p0-20261024-evidence/review-reproductions-after.json)已改為選入重評／unverified，初次綠測試不足以關閉目標。
 
 修正驗證：四項 finding 由單一修正分支 `54daaa1` 合入 `99941fb`；最終60項回歸59通過／1 Windows略過，受測來源前後一致。固定Java產物再驗五次，已知缺陷與正確產物結果不變；沒有新模型trial。原始56項結果及初次review保留，避免把早期結果回寫為最終證據。
+
+## Standards（最終複核）
+
+無剩餘可行動 finding。已檢視 `89e21da...21c8c7c` 完整差異及受影響錯誤路徑。原P1由exec後限制設定及threaded到時收尾回歸關閉；原P2由execution／inputs型別及完整報告契約核對關閉。監測失效有自有程序群收尾與未驗證結果，無關worker負向對照通過；未新增日常控制或不必要抽象。
+
+## Spec（最終複核）
+
+無新增可行動 finding；已審查HEAD `21c8c7c`，足以關閉本次N01–N03。原兩項P1均修正：完整報告集合／逐份數量核對，及監測失效仍終止自有程序群。最終來源SHA與目前檔案一致；60項回歸59通過／1 Windows略過，五次固定Java產物維持已知結果。精確回合歸屬、未知結果核對與原期限續作保留，沒有P1功能提前實作或新模型trial。
+
+兩軸各0個待處理finding；[完整結案資料](codex-harness-p0-20261024-evidence/final-reviews.json)。審查為唯讀，未另跑canary／模型；結論仍限macOS、自有process group與抽樣資源限制。三個實作者worktree及修正worktree於合併後清理，本機提交保留於 `codex/harness-p0`，未push／PR／部署。
+
+結案核對：[逐項完成審核](codex-harness-p0-20261024-evidence/completion-audit.json)、[最後殘留程序核對](codex-harness-p0-20261024-evidence/final-writer-check-final.json)。57個本地文件連結已先核對，加上這兩個結案連結共59個，均可解析。

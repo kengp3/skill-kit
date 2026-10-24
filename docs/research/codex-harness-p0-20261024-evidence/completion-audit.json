@@ -1,0 +1,66 @@
+{
+  "objective_scope": "P0 N01-N03 only; Codex Desktop daily entry preserved; no new model trial",
+  "status": "requirements-verified",
+  "reviewed_code_commit": "21c8c7c",
+  "requirements": {
+    "N01_boundary": "15 native tests incl outside/symlink/network/resource/ownership/failure cleanup",
+    "N02_control": "9 recorded-event tests plus1 real cancellation/readback/deadline integration",
+    "N03_grader": "9 tests plus5 fixed Java regrades, immutable inputs and old receipts preserved",
+    "workflow": "3 local tickets, independent worktrees, integration merges, TDD, two-axis review, one fix worker, worktrees cleaned",
+    "Desktop_preservation": {
+      "protected_file_count": 551,
+      "unchanged": true,
+      "original_demo_status_preserved": true,
+      "unrelated_untracked_preserved": 1322
+    },
+    "no_human_observation": "no timers/forms/Stop requested; test timers automatic",
+    "no_new_model_trial": 0
+  },
+  "final_tests": {
+    "total": 60,
+    "passed": 59,
+    "skipped": [
+      [
+        "test_windows_shipped_commands_without_python_or_git (test_project_setting.ReminderTest.test_windows_shipped_commands_without_python_or_git)",
+        "requires native Windows cmd.exe"
+      ]
+    ]
+  },
+  "source_fingerprints_current": true,
+  "reviews": {
+    "reviewed_commit": "21c8c7c",
+    "standards": {
+      "remaining_findings": 0,
+      "initial_findings": 2,
+      "closed": [
+        "threaded preexec_fn replaced with exec launcher",
+        "malformed receipt fields rejected"
+      ],
+      "conclusion": "無剩餘可行動 finding；既定macOS、自有程序群與抽樣資源限制適用。"
+    },
+    "spec": {
+      "remaining_findings": 0,
+      "initial_findings": 2,
+      "closed": [
+        "full report set and exact counts revalidated",
+        "monitor failure still terminates known owned process group"
+      ],
+      "conclusion": "N01–N03足以關閉；未擴為P1、Desktop完整驗收或新模型trial。"
+    },
+    "independent_reviewers": [
+      "p0_review_standards",
+      "p0_review_spec"
+    ],
+    "new_model_trials": 0
+  },
+  "documentation_local_links": 59,
+  "not_claimed": [
+    "P1 N04-N07",
+    "Desktop full-path/Stop validation",
+    "arbitrary detached/hostile code containment",
+    "Windows native boundary",
+    "human time savings"
+  ],
+  "remaining_required_work": [],
+  "final_writer_check": "final-writer-check-final.json"
+}

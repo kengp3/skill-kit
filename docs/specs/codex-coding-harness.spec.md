@@ -1,7 +1,7 @@
 # 個人 Harness 首版設計規格（Codex Coding）
 
 日期：2026-10-24（Asia/Taipei）
-狀態：N01–N03 的 P0 實作及整合驗收已通過，四項 review 修正已合併，兩軸複核待完成；結果見[本輪 P0 報告](../research/codex-harness-p0-20261024.research.md)。Desktop 為主要日常入口，CLI 為開發評測路徑；P1、Desktop 實際任務／Stop、人工效益、公平比較及移植尚未完成。首輪三組 smoke 結果仍見[原交付報告](../research/codex-coding-harness-smoke-20261024.research.md)。
+狀態：N01–N03 的 P0 實作及整合驗收已通過，四項 review 修正已合併，兩軸複核通過（0待處理finding）；結果見[本輪 P0 報告](../research/codex-harness-p0-20261024.research.md)。Desktop 為主要日常入口，CLI 為開發評測路徑；P1、Desktop 實際任務／Stop、人工效益、公平比較及移植尚未完成。首輪三組 smoke 結果仍見[原交付報告](../research/codex-coding-harness-smoke-20261024.research.md)。
 配套：[試行計畫](../plans/codex-coding-harness-pilot.plan.md)
 
 目前執行授權補充（P0）：使用者已核定依本修訂實作 N01–N03，套用 ask-matt／to-tickets／implement-spec，包含必要本機回歸與隔離 canary；不啟動新的模型 trial、不影響 Desktop 日常作業、不要求人工觀察。下文「本輪僅文件」保留為前一輪文件交付的歷史邊界，不限制此次 P0 授權；P1 及後續 trial 仍未授權。
