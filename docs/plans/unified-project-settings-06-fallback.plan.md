@@ -4,16 +4,16 @@
 
 **Blocked by:** T05
 
-**Status:** implemented-pending-verification
+**Status:** implemented; fallback and disabled-agent cases passed; unknown-launch variants pending
 
 依據：[實作規格](../specs/unified-project-settings.spec.md)。使用者已確認 T01–T08 拆分與依賴。
 
 ## 驗收條件
 
-- [ ] 依序替代、自動 default、同模型去重，不串接低優先序規則。
-- [ ] 強度不支援優先保留模型並用宿主預設；明確限制不得改變。
+- [x] 依序替代、自動 default、同模型去重，不串接低優先序規則。
+- [x] 強度不支援優先保留模型並用宿主預設；明確限制不得改變。
 - [ ] 未知啟動先查明；清單耗盡只暫停受影響工作。
-- [ ] 無子 agent 由主責循序接手，獨立審查保持未完成，其他工作繼續。
+- [x] 無子 agent 由主責循序接手，獨立審查保持未完成，其他工作繼續。
 
 ## 證據要求
 
@@ -21,6 +21,12 @@ F 異常與 G 的真實失敗、回退、執行者、無重派與未完成條件
 
 狀態更新只能依實際成果；調查、離線測試與真實行為驗收分別判定。
 
-## 實作與驗證狀態
+## 開發階段紀錄（後續結果見 T08）
 
 模型分工參照已補齊候選去重、預設回退循環、強度限制範圍、認證／未知啟動分流與無子 agent 接手。一次原生隔離抽樣中，停用舊 feature 旗標仍提供派工工具；模型先遇到歷史載入失敗，再以完整輸入與新上下文成功啟動審查，未冒充模型不可用。開發端觀測窗到期前已有一般成果與審查產物，但沒有回合終態，故保持未驗證，不作無子 agent 情境通過證據。F／G 完整驗收仍待整合執行。結構性讀回、本地連結與 diff 檢查通過，這些檢查不代替真實行為證據。
+
+## T08 最終對帳
+
+真實 model_not_found 終態後依序回退、原生 model/list 不支援強度的預檢及同模型 medium 派工、agents.enabled=false 下主責完成一般成果／獨立審查保留 blocked 均通過。default／去重／strict 另有模型判讀案例；真實全候選耗盡及網路斷線跨 session 查回尚未完整實測。
+
+詳見[實際 agent 與整合驗收](../research/unified-project-settings-acceptance.research.md)及其中來源、raw、產物與未驗證清單。

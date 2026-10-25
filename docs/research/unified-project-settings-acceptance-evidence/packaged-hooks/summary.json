@@ -1,0 +1,62 @@
+{
+  "case": "packaged-hooks",
+  "candidate": "/private/tmp/unified-t07-integrated-0.3.0",
+  "candidate_manifest_sha256": "2fbb0e1c421e19cbd3b7a1aad2211ec65d4493042d451f59ac10307f5cb57f0e",
+  "installed_manifest_sha256": "2fbb0e1c421e19cbd3b7a1aad2211ec65d4493042d451f59ac10307f5cb57f0e",
+  "plugin_installs": [
+    {
+      "exit_code": 0,
+      "args": [
+        "plugin",
+        "marketplace",
+        "add",
+        "/private/tmp/unified-t08-mxgiz2qd/catalog",
+        "--json"
+      ],
+      "owned_process_terminal": true
+    },
+    {
+      "exit_code": 0,
+      "args": [
+        "plugin",
+        "add",
+        "kengp3-harness@unified-t08-local",
+        "--json"
+      ],
+      "owned_process_terminal": true
+    }
+  ],
+  "result": {
+    "exit_code": 0,
+    "args": [
+      "exec",
+      "--skip-git-repo-check",
+      "--json",
+      "--approve-for-me",
+      "--dangerously-bypass-hook-trust",
+      "-m",
+      "gpt-6.1-sol",
+      "-c",
+      "model_reasoning_effort=\"low\"",
+      "使用已安裝的 task-harness 完成小任務：這是已確認的專案根目錄，允許透過 project-setting 初始化設定與唯一任務合約。產出 docs/research/packaged-result.research.md，精確一行 PACKAGED_OK，讀回驗收並保留 preserve.txt。不安裝 runtime、服務或執行 helper scripts。依你實際收到的 hook 提醒與技能規則核對開始及收尾，不要把提醒當作機械驗收或假造收據。回報實際成果與限制。"
+    ],
+    "owned_process_terminal": true
+  },
+  "initial_files": {
+    "preserve.txt": "f7d8eb2e57a5bc13d10424b20bc77e50cedb38dbedd9064d13299ec3ad012ebe"
+  },
+  "final_files": {
+    "preserve.txt": "f7d8eb2e57a5bc13d10424b20bc77e50cedb38dbedd9064d13299ec3ad012ebe",
+    "project-setting.md": "ef69e9cef069eccb698974910e9ffdc774ce326d97640c3af8d1727d2dae2740",
+    ".codex/hooks.json": "9d2ced2edbc757e0a8f86721b508d572c617740b65e8589c4b3f15668549873b",
+    ".codex/config.toml": "d37497c3278121598a663564ab38b53f658969717f78decb661ddd11c66551ea",
+    "docs/research/packaged-result.research.md": "340f3091e3147dcccb72fd0377613de22d1baca66055d7f21cc80e8682f2db65",
+    "docs/plans/packaged-result.task-contract.md": "3b45cec433cc9fa8706067a36250aba0ec4f280a1d26c1f0f39f9b43f9cd9da5"
+  },
+  "global_config_auth_unchanged": true,
+  "hook_trust_bypass": true,
+  "normal_persisted_trust_verified": false,
+  "temporary_credentials_deleted_on_exit": true,
+  "state_root": "/private/tmp/unified-t08-mxgiz2qd/state",
+  "project_root": "/private/tmp/unified-t08-mxgiz2qd/project"
+}

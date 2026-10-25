@@ -1,0 +1,81 @@
+{
+  "case": "effort-preflight",
+  "candidate": "/private/tmp/unified-review-final-0.3.0",
+  "candidate_manifest_sha256": "7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e",
+  "installed_manifest_sha256": "7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e",
+  "plugin_installs": [
+    {
+      "exit_code": 0,
+      "args": [
+        "plugin",
+        "marketplace",
+        "add",
+        "/private/tmp/unified-t08-zzx7qo4f/catalog",
+        "--json"
+      ],
+      "owned_process_terminal": true
+    },
+    {
+      "exit_code": 0,
+      "args": [
+        "plugin",
+        "add",
+        "kengp3-harness@unified-t08-local",
+        "--json"
+      ],
+      "owned_process_terminal": true
+    }
+  ],
+  "result": {
+    "exit_code": 0,
+    "args": [
+      "exec",
+      "--skip-git-repo-check",
+      "--json",
+      "--approve-for-me",
+      "--dangerously-bypass-hook-trust",
+      "-m",
+      "gpt-6.1-sol",
+      "-c",
+      "model_reasoning_effort=\"low\"",
+      "使用 task-harness 完成驗證階段的原生派工：依 project-setting.md 候選清單建立獨立 worker，唯讀核對 preserve.txt 精確為 KEEP_EXISTING_CONTENT 加換行。host-model-metadata.json 是測試控制器剛由本次宿主 model/list 取得的原始結果；可讀取它判斷模型與強度支援，不能編造 provider 錯誤。沒有禁止強度調整的限制。依技能處理，保存原始要求、選擇理由、真實 handle、宿主可觀測結果及產物檢查到唯一合約及 docs/research/effort.research.md；不要更改長期設定、原生主責模型或安裝工具服務。worker 用新上下文與自足輸入，不得改寫 preserve.txt。"
+    ],
+    "owned_process_terminal": true
+  },
+  "phases": [
+    {
+      "exit_code": 0,
+      "args": [
+        "exec",
+        "--skip-git-repo-check",
+        "--json",
+        "--approve-for-me",
+        "--dangerously-bypass-hook-trust",
+        "-m",
+        "gpt-6.1-sol",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "使用 task-harness 完成驗證階段的原生派工：依 project-setting.md 候選清單建立獨立 worker，唯讀核對 preserve.txt 精確為 KEEP_EXISTING_CONTENT 加換行。host-model-metadata.json 是測試控制器剛由本次宿主 model/list 取得的原始結果；可讀取它判斷模型與強度支援，不能編造 provider 錯誤。沒有禁止強度調整的限制。依技能處理，保存原始要求、選擇理由、真實 handle、宿主可觀測結果及產物檢查到唯一合約及 docs/research/effort.research.md；不要更改長期設定、原生主責模型或安裝工具服務。worker 用新上下文與自足輸入，不得改寫 preserve.txt。"
+      ],
+      "owned_process_terminal": true
+    }
+  ],
+  "initial_files": {
+    "preserve.txt": "f7d8eb2e57a5bc13d10424b20bc77e50cedb38dbedd9064d13299ec3ad012ebe",
+    "host-model-metadata.json": "b2a15e5f961bb6289dd27f65d9440b8265157bb8bc13f39b3cd03bce8ec66324",
+    "project-setting.md": "cdcbf89416d7e8de3c31eadb71da7536400005b0a625ce3ccdaef84beb290382"
+  },
+  "final_files": {
+    "preserve.txt": "f7d8eb2e57a5bc13d10424b20bc77e50cedb38dbedd9064d13299ec3ad012ebe",
+    "host-model-metadata.json": "b2a15e5f961bb6289dd27f65d9440b8265157bb8bc13f39b3cd03bce8ec66324",
+    "project-setting.md": "cdcbf89416d7e8de3c31eadb71da7536400005b0a625ce3ccdaef84beb290382",
+    "docs/research/effort.research.md": "560d6e68d05f962787595f21106ff6f46ab3031f6a2db8ddea77dfb59ef08ead",
+    "docs/plans/effort.task-contract.md": "8679dd52a4c73b3ddc065e57b3aca94a6e1e4a29454f295678acf8840c04590a"
+  },
+  "global_config_auth_unchanged": true,
+  "hook_trust_bypass": true,
+  "normal_persisted_trust_verified": false,
+  "temporary_credentials_deleted_on_exit": true,
+  "state_root": "/private/tmp/unified-t08-zzx7qo4f/state",
+  "project_root": "/private/tmp/unified-t08-zzx7qo4f/project"
+}
