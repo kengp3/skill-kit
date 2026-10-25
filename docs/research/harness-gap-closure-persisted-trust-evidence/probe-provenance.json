@@ -1,0 +1,21 @@
+{
+  "implementation": "existing G01 Native class, no new probe controller",
+  "source_path": "/private/tmp/simple-skills-gap-g01/docs/research/harness-gap-closure-demo-setup-evidence/native-demo.py",
+  "source_sha256": "bd1c62544fe274c8d174fa2b5cfa494e125ad3264a0b60e01197948e178badc0",
+  "overrides": {
+    "DEMO": "/private/tmp/g03-persisted-trust-case",
+    "state": "/private/tmp/g03-persisted-trust-state"
+  },
+  "rpc_methods": [
+    "initialize",
+    "initialized",
+    "hooks/list",
+    "skills/list",
+    "plugin/list"
+  ],
+  "model_turns_started": 0,
+  "tui_launch_rejected_attempt": "--sandbox cannot be combined with --approve-for-me; exit 2 before TUI started",
+  "tui_corrected_launch": "CODEX_HOME=/private/tmp/g03-persisted-trust-state codex --no-daemon --no-alt-screen -C /private/tmp/g03-persisted-trust-case -m gpt-6.1-sol -c model_reasoning_effort=low --approve-for-me",
+  "terminal_resize": "stty -f /dev/ttys000 rows 60 cols 180",
+  "ps_qualification": "sandbox rejected read-only ps; scoped escalation succeeded, owned TUI PID 98889"
+}

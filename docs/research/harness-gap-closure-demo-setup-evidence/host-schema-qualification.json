@@ -1,0 +1,132 @@
+{
+  "commands": [
+    {
+      "command": [
+        "/Users/kengp3/.local/share/nvm/v26.7.0/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "codex-cli 0.164.0\n",
+      "stderr": "WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)\n"
+    },
+    {
+      "command": [
+        "/Users/kengp3/.local/share/nvm/v26.7.0/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex",
+        "app-server",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": "[experimental] Run the app server or related tooling\n\nUsage: codex app-server [OPTIONS] [COMMAND]\n\nCommands:\n  daemon                Manage the local app-server daemon\n  proxy                 Proxy stdio bytes to the running app-server control socket\n  generate-ts           [experimental] Generate TypeScript bindings for the app server protocol\n  generate-json-schema  [experimental] Generate JSON Schema for the app server protocol\n  help                  Print this message or the help of the given subcommand(s)\n\nOptions:\n  -c, --config <key=value>\n          Override a configuration value that would otherwise be loaded from `~/.codex/config.toml`.\n          Use a dotted path (`foo.bar.baz`) to override nested values. The `value` portion is parsed\n          as TOML. If it fails to parse as TOML, the raw string is used as a literal.\n          \n          Examples: - `-c model=\"o3\"` - `-c 'sandbox_permissions=[\"disk-full-read-access\"]'` - `-c\n          shell_environment_policy.inherit=all`\n\n      --startup-sign-out\n          Sign out using the managed auth path before loading fresh startup requirements\n\n      --enable <FEATURE>\n          Enable a feature (repeatable). Equivalent to `-c features.<name>=true`\n\n      --print-startup-config\n          Validate configuration and print requirements as JSON without starting the app server\n\n      --disable <FEATURE>\n          Disable a feature (repeatable). Equivalent to `-c features.<name>=false`\n\n      --startup-client-info <STARTUP_CLIENT_INFO>\n          ClientInfo JSON used for configuration/auth request identity\n\n      --cloud-skills-snapshot <PATH>\n          Load frozen cloud skills from a JSON snapshot instead of a live skill service\n\n      --code-mode-host <URL>\n          Connect to a remote code-mode host instead of starting a local host\n\n      --strict-config\n          Error out when config.toml contains fields that are not recognized by this version of\n          Codex\n\n      --listen <URL>\n          Transport endpoint URL. Supported values: `stdio://` (default), `unix://`, `unix://PATH`,\n          `ws://IP:PORT`, `off`\n          \n          [default: stdio://]\n\n      --stdio\n          Use stdio as the transport (equivalent to `--listen stdio://`)\n\n      --analytics-default-enabled\n          Controls whether analytics are enabled by default.\n          \n          Analytics are disabled by default for app-server. Users have to explicitly opt in via the\n          `analytics` section in the config.toml file.\n          \n          However, for first-party use cases like the VSCode IDE extension, we default analytics to\n          be enabled by default by setting this flag. Users can still opt out by setting this in\n          their config.toml:\n          \n          ```toml [analytics] enabled = false ```\n          \n          See https://developers.openai.com/codex/config-advanced/#metrics for more details.\n\n      --ws-auth <MODE>\n          Authentication mode for incoming WebSocket connections\n          \n          [possible values: capability-token, signed-bearer-token]\n\n      --ws-token-file <PATH>\n          Absolute path to the capability-token file\n\n      --ws-token-sha256 <HEX>\n          Hex-encoded SHA-256 digest of the capability token\n\n      --ws-shared-secret-file <PATH>\n          Absolute path to the shared secret file for signed JWT bearer tokens\n\n      --ws-issuer <ISSUER>\n          Expected issuer for signed JWT bearer tokens\n\n      --ws-audience <AUDIENCE>\n          Expected audience for signed JWT bearer tokens\n\n      --ws-max-clock-skew-seconds <SECONDS>\n          Maximum clock skew when validating signed JWT bearer tokens\n\n  -h, --help\n          Print help (see a summary with '-h')\n",
+      "stderr": "WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)\n"
+    }
+  ],
+  "schema_generation_stdout": "",
+  "schema_generation_stderr": "WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)\n",
+  "schemas": {
+    "ThreadStartParams": {
+      "sha256": "80a40a7fac15b4bf70efb7f893fb353acc0a0d30c68f54aee4f01923deca85de",
+      "properties": {
+        "approvalPolicy": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AskForApproval"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "approvalsReviewer": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ApprovalsReviewer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Override where approval requests are routed for review on this thread and subsequent turns."
+        },
+        "ephemeral": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "runtimeWorkspaceRoots": {
+          "description": "Replace the thread's runtime workspace roots. Paths must be absolute.",
+          "items": {
+            "$ref": "#/definitions/AbsolutePathBuf"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "sandbox": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SandboxMode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "SkillsListParams": {
+      "sha256": "1d245374e64c5acc9739dfc68a4fe5114c6c9147af04c480886f1846d2ca6239",
+      "properties": {
+        "cwds": {
+          "description": "When empty, defaults to the current session working directory.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "forceReload": {
+          "description": "When true, bypass the skills cache and re-scan skills from disk.",
+          "type": "boolean"
+        }
+      }
+    },
+    "HooksListParams": {
+      "sha256": "07638c3a8a3690cf368fa92c7ff697fdd0132865e8c59d53f6e5789e5a260053",
+      "properties": {
+        "cwds": {
+          "description": "When empty, defaults to the current session working directory.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      }
+    },
+    "PluginListParams": {
+      "sha256": "bc6b499161306df7082c5a8cc51fd793cd6d28dda93555b12ae299445132270a",
+      "properties": {
+        "cwds": {
+          "description": "Optional working directories used to discover repo marketplaces. When omitted, only home-scoped marketplaces and the official curated marketplace are considered.",
+          "items": {
+            "$ref": "#/definitions/AbsolutePathBuf"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "marketplaceKinds": {
+          "description": "Optional marketplace kind filter. When omitted, only local marketplaces are queried, plus the default remote catalog when enabled by feature flag.",
+          "items": {
+            "$ref": "#/definitions/PluginListMarketplaceKind"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}
