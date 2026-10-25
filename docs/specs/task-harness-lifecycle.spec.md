@@ -8,7 +8,7 @@
 Objective：讓使用者在 Codex Desktop 明確啟用一次，即能在原授權內完成多步驟工作；防止局部完成被當成整體完成，並能跨對話與 session 恢復。
 Background：舊 task-harness 已具備任務生命週期；後續工作偏向評測基建。恢復其任務管理核心，保留風險驗證、自主修復與低使用負擔，評測工具留在開發端。
 Materials：本輪對話決策、舊版 8ae9cda、現行 runtime、既有功能與重新驗證證據。
-Boundaries：只修改本 repo 來源、文件、測試與新候選。不修改全域設定、已啟用配置、快取、其他專案，不擴展 OS 隔離/watchdog，不自動安裝 runtime，不執行新模型 trial。
+Boundaries：只修改本 repo 來源、文件、測試與新候選。不修改全域設定、已啟用配置、快取、其他專案，不擴展 OS 隔離/watchdog，不自動安裝 runtime。新模型 trial 僅限使用者另行明確核定的 H05 範圍；本次有界接點驗證已授權，但須先通過專案接入條件。
 
 ## Solution
 
@@ -93,7 +93,7 @@ Script 統一 Python 3、優先標準函式庫；首版來源使用 Python 3.10+
 
 ## Out of Scope
 
-全域設定、其他專案變更、新模型 trial、安裝/刷新日常候選、OS sandbox/watchdog、通用 scheduler、資料庫、全域任務索引、強制所有操作經 wrapper、Windows 原生資格與跨宿主擴展。
+全域設定、其他專案變更、超過 H05 已授權範圍的新模型 trial、安裝/刷新日常候選、OS sandbox/watchdog、通用 scheduler、資料庫、全域任務索引、強制所有操作經 wrapper、Windows 原生資格與跨宿主擴展。
 不回退整個 repo、不刪開發回放/controller/grader、不修改第三方或歷史腳本語言。自行維護的新 runtime 腳本統一 Python。
 
 ## Further Notes

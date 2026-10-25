@@ -10,7 +10,7 @@
 3. Runtime：Python 3.10+ 標準函式庫；無自動安裝與 Homebrew 路徑硬編碼。
 4. 補救額度：用原使用者回合技術收據 exclusive-create，原生 stop_hook_active 為另一拒絕重入依據；續作身份未驗證則接入未就緒。
 5. 失效：不猜授權、不發續作；明示必要能力缺口，不宣稱 skill-only 完成。
-6. 驗收：事件 CLI 與封裝 CLI 為本輪公共測試邊界；Desktop/模型驗收獨立保留，不啟動新 trial。
+6. 驗收：事件 CLI 與封裝 CLI 為本輪公共測試邊界；Desktop/模型驗收獨立保留，只能在 H05 明確授權及接入條件內啟動 trial。
 
 ## Tickets
 
@@ -20,7 +20,7 @@
 | H02 | 必要 hooks 完整候選封裝與套件外執行 | H01、H03 | done |
 | H03 | 任務生命週期 skill、合約範本與日常接入指南 | 無 | done |
 | H04 | 整合驗證、兩軸 review 與證據對帳 | H01–H03 | done |
-| H05 | Desktop 真實接點與模型遵循資格 | H04、後續試行授權 | blocked |
+| H05 | Desktop 真實接點與模型遵循資格 | H04、符合限制的 Desktop 接入（本次 trial 已授權） | blocked |
 
 ## 保護與驗證
 
@@ -39,3 +39,5 @@ H01/H03 可各自實作，H02 等兩者整合後。依 skill 以獨立 worktree�
 - H01–H04 已完成並整合至產品來源 81497d5：最終 101 通過、1 個 Windows 原生測試跳過；兩軸 review 的三個獨立問題修正後均已複核。候選 0.2.0 已建包驗證但未安裝。詳見[整合驗證](../research/task-harness-lifecycle-validation.research.md)。H05 維持 blocked，整體未完成。
 
 - 清理限制：原生 archive_worktree 拒絕移除 workflow（目前主要 checkout）及 runtime（仍有其他 active task 使用）。保留兩份已提交工作樹，不以 shell 強制刪除。已詢問是否開放最多一個 Desktop 接點測試對話／一個使用者回合；未收到授權前 H05 不執行。
+
+- 2026-10-25：使用者已授權一次有界 Desktop 接點驗證。接入預檢因未能建立符合限制的信任路徑而停止，未建立對話或啟動模型；目前阻礙是接入能力，不是重複等待授權。見[預檢結果](../research/task-harness-desktop-admission.research.md)。

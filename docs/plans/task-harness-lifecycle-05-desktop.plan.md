@@ -1,7 +1,7 @@
 # H05：Desktop 與模型行為資格
 
 Status: blocked
-Blocked by: 試行授權與可用宿主接入（H04 已完成）
+Blocked by: 符合限制的 Desktop 專案接入／信任方式（H04 已完成；本次有界 trial 已授權）
 Spec: [任務合約與必要 hooks](../specs/task-harness-lifecycle.spec.md)
 
 What to build：在明確授權且不影響日常作業的專案接入中，驗證三個必要 hook 與任務生命週期的真實行為。禁止以合成host資格、CLI或單元測試宣稱Desktop已通過。
@@ -12,14 +12,14 @@ What to build：在明確授權且不影響日常作業的專案接入中，驗�
 - [ ] 正常多步驟、缺驗收、跨對話接手、未知結果核對及簡單任務低負擔的直接證據。
 - [ ] 不更改其他專案、全域設定、啟用版本與快取；不要求人工監看。
 
-目前只保留驗證契約，不執行新模型trial。若宿主沒有可靠接入條件，記錄確切缺口與最小下一步，不擴展OS隔離或watchdog。
+本次有界接點 trial 已授權，但接入預檢未能建立符合限制的信任方式，因此尚未啟動模型。見[接入預檢結果](../research/task-harness-desktop-admission.research.md)；不擴展 OS 隔離或 watchdog。
 
 
-## 首次有界接點驗證（待授權，尚未執行）
+## 首次有界接點驗證（已授權，接入預檢受阻）
 
 候選固定為 0.2.0，manifest SHA-256 `3d7924929d77a659a7b67237e147f6d8150b5f10146da0e5086e8b08e348b9d5`；[既有候選證據](../research/task-harness-lifecycle-evidence/candidate-final.json)只證明離線行為。本次重新驗包指紋一致，沒有安裝。
 
-已提出的授權範圍：一個可丟棄測試專案、最多一個 Desktop 新對話、一個使用者發起的工作回合及最多一次 hook 續作；不整次補跑、不購買資源、不要求人工監看。授權尚未收到，不能把持續目標的自動喚醒當成答覆。
+已收到的授權範圍：一個可丟棄測試專案、最多一個 Desktop 新對話、一個使用者發起的工作回合及最多一次 hook 續作；不整次補跑、不購買資源、不要求人工監看。使用者已明確答覆「授權這次有界 Desktop 接點驗證」；目前對話、回合與補救用量皆為 0。
 
 ### 執行順序
 
