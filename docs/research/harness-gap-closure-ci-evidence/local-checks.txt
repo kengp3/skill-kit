@@ -1,0 +1,1034 @@
+Captured command output; trailing line-end whitespace normalized only.
+P01 local targeted checks; not a GitHub-hosted workflow run
+Platform: macOS-27.0.1-arm64-arm-64bit-Mach-O
+Python: 3.15.1 (main, Oct 21 2026, 05:55:12) [Clang 21.0.0 (clang-2100.3.34.2)]
+
+Command: ['git', '--version']
+git version 2.56.0
+Exit: 0
+
+Command: ['git', 'ls-remote', 'https://github.com/actions/checkout.git', 'refs/tags/v7.0.1']
+3d3c42e5aac5ba805825da76410c181273ba90b1	refs/tags/v7.0.1
+Exit: 0
+
+Command: ['ruby', '-ryaml', '-e', 'data = YAML.load_file(ARGV.fetch(0)); abort "not a mapping" unless data.is_a?(Hash); puts "YAML parsed: #{data.keys.map(&:to_s).join(", ")}"', '.github/workflows/tests.yml']
+YAML parsed: name, true, permissions, jobs
+Exit: 0
+
+Command: ['/opt/homebrew/opt/python@3.15/bin/python3.15', '-B', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_harness_boundary.py', '-v']
+test_can_write_only_in_disposable_workspace (test_harness_boundary.BoundaryTest.test_can_write_only_in_disposable_workspace) ... ERROR
+test_child_receives_only_isolated_state_and_explicit_toolchain (test_harness_boundary.BoundaryTest.test_child_receives_only_isolated_state_and_explicit_toolchain) ... ERROR
+test_existing_attempt_is_not_overwritten (test_harness_boundary.BoundaryTest.test_existing_attempt_is_not_overwritten) ... ERROR
+test_existing_output_alias_cannot_overwrite_daily_file (test_harness_boundary.BoundaryTest.test_existing_output_alias_cannot_overwrite_daily_file) ... ok
+test_file_size_guard_bounds_writable_output (test_harness_boundary.BoundaryTest.test_file_size_guard_bounds_writable_output) ... ERROR
+test_memory_cpu_and_process_count_guards_stop_owned_job (test_harness_boundary.BoundaryTest.test_memory_cpu_and_process_count_guards_stop_owned_job) ...
+  test_memory_cpu_and_process_count_guards_stop_owned_job (test_harness_boundary.BoundaryTest.test_memory_cpu_and_process_count_guards_stop_owned_job) (expected='memory_limit') ... ERROR
+  test_memory_cpu_and_process_count_guards_stop_owned_job (test_harness_boundary.BoundaryTest.test_memory_cpu_and_process_count_guards_stop_owned_job) (expected='cpu_limit') ... ERROR
+  test_memory_cpu_and_process_count_guards_stop_owned_job (test_harness_boundary.BoundaryTest.test_memory_cpu_and_process_count_guards_stop_owned_job) (expected='process_limit') ... ERROR
+test_monitor_failure_still_terminates_owned_group_and_preserves_unrelated_worker (test_harness_boundary.BoundaryTest.test_monitor_failure_still_terminates_owned_group_and_preserves_unrelated_worker) ... ERROR
+test_only_one_owned_job_runs_at_a_time (test_harness_boundary.BoundaryTest.test_only_one_owned_job_runs_at_a_time) ... Exception in thread Thread-1 (<lambda>):
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/threading.py", line 1218, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/threading.py", line 1160, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 172, in <lambda>
+    worker=threading.Thread(target=lambda: results.append(run(['/bin/sleep','.5'],workspace=first)))
+                                                          ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+ERROR
+test_parent_exit_and_failure_also_reap_remaining_child (test_harness_boundary.BoundaryTest.test_parent_exit_and_failure_also_reap_remaining_child) ...
+  test_parent_exit_and_failure_also_reap_remaining_child (test_harness_boundary.BoundaryTest.test_parent_exit_and_failure_also_reap_remaining_child) (exit_code=0) ... ERROR
+  test_parent_exit_and_failure_also_reap_remaining_child (test_harness_boundary.BoundaryTest.test_parent_exit_and_failure_also_reap_remaining_child) (exit_code=3) ... ERROR
+test_real_loopback_listener_is_unreachable (test_harness_boundary.BoundaryTest.test_real_loopback_listener_is_unreachable) ... ERROR
+test_runtime_symlink_cannot_escape_write_scope (test_harness_boundary.BoundaryTest.test_runtime_symlink_cannot_escape_write_scope) ... ERROR
+test_threaded_launch_needs_no_preexec_callback_and_remains_bounded (test_harness_boundary.BoundaryTest.test_threaded_launch_needs_no_preexec_callback_and_remains_bounded) ... FAIL
+test_timeout_and_cancel_reap_children_without_touching_unrelated_worker (test_harness_boundary.BoundaryTest.test_timeout_and_cancel_reap_children_without_touching_unrelated_worker) ...
+  test_timeout_and_cancel_reap_children_without_touching_unrelated_worker (test_harness_boundary.BoundaryTest.test_timeout_and_cancel_reap_children_without_touching_unrelated_worker) (cancel=False) ... ERROR
+  test_timeout_and_cancel_reap_children_without_touching_unrelated_worker (test_harness_boundary.BoundaryTest.test_timeout_and_cancel_reap_children_without_touching_unrelated_worker) (cancel=True) ... ERROR
+test_unavailable_sandbox_fails_closed_before_child_execution (test_harness_boundary.BoundaryTest.test_unavailable_sandbox_fails_closed_before_child_execution) ... ok
+test_unknown_daily_root_and_model_command_are_rejected (test_harness_boundary.BoundaryTest.test_unknown_daily_root_and_model_command_are_rejected) ... ok
+
+======================================================================
+ERROR: test_can_write_only_in_disposable_workspace (test_harness_boundary.BoundaryTest.test_can_write_only_in_disposable_workspace)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 29, in test_can_write_only_in_disposable_workspace
+    result = run(command, workspace=workspace, limits=Limits())
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+
+======================================================================
+ERROR: test_child_receives_only_isolated_state_and_explicit_toolchain (test_harness_boundary.BoundaryTest.test_child_receives_only_isolated_state_and_explicit_toolchain)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 76, in test_child_receives_only_isolated_state_and_explicit_toolchain
+    result = self.execute('import os;print(os.environ.get("OPENAI_API_KEY")); '
+                          'print(os.environ.get("PYTHONPATH")); '
+                          'print(os.environ["HOME"]);print(os.environ["TMPDIR"])')
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 49, in execute
+    return run([sys.executable, '-c', code, *arguments],
+               workspace=Path(temporary).resolve(), limits=limits, cancel=cancel)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+
+======================================================================
+ERROR: test_existing_attempt_is_not_overwritten (test_harness_boundary.BoundaryTest.test_existing_attempt_is_not_overwritten)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 153, in test_existing_attempt_is_not_overwritten
+    self.assertEqual(run(['/usr/bin/true'],workspace=workspace).returncode,0)
+                     ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+
+======================================================================
+ERROR: test_file_size_guard_bounds_writable_output (test_harness_boundary.BoundaryTest.test_file_size_guard_bounds_writable_output)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 162, in test_file_size_guard_bounds_writable_output
+    result=run([sys.executable,'-c','open("blob","wb").write(b"x"*(17*1024*1024))'],workspace=workspace)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+
+======================================================================
+ERROR: test_memory_cpu_and_process_count_guards_stop_owned_job (test_harness_boundary.BoundaryTest.test_memory_cpu_and_process_count_guards_stop_owned_job) (expected='memory_limit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 93, in test_memory_cpu_and_process_count_guards_stop_owned_job
+    result = self.execute(code, limits=limits)
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 49, in execute
+    return run([sys.executable, '-c', code, *arguments],
+               workspace=Path(temporary).resolve(), limits=limits, cancel=cancel)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+
+======================================================================
+ERROR: test_memory_cpu_and_process_count_guards_stop_owned_job (test_harness_boundary.BoundaryTest.test_memory_cpu_and_process_count_guards_stop_owned_job) (expected='cpu_limit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 93, in test_memory_cpu_and_process_count_guards_stop_owned_job
+    result = self.execute(code, limits=limits)
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 49, in execute
+    return run([sys.executable, '-c', code, *arguments],
+               workspace=Path(temporary).resolve(), limits=limits, cancel=cancel)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+
+======================================================================
+ERROR: test_memory_cpu_and_process_count_guards_stop_owned_job (test_harness_boundary.BoundaryTest.test_memory_cpu_and_process_count_guards_stop_owned_job) (expected='process_limit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 93, in test_memory_cpu_and_process_count_guards_stop_owned_job
+    result = self.execute(code, limits=limits)
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 49, in execute
+    return run([sys.executable, '-c', code, *arguments],
+               workspace=Path(temporary).resolve(), limits=limits, cancel=cancel)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+
+======================================================================
+ERROR: test_monitor_failure_still_terminates_owned_group_and_preserves_unrelated_worker (test_harness_boundary.BoundaryTest.test_monitor_failure_still_terminates_owned_group_and_preserves_unrelated_worker)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 211, in test_monitor_failure_still_terminates_owned_group_and_preserves_unrelated_worker
+    pids = [int(value) for value in pid_file.read_text().split()]
+                                    ~~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/pathlib/__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/pathlib/__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/harness-boundary-tf9p4nyb/execution/pids'
+
+======================================================================
+ERROR: test_only_one_owned_job_runs_at_a_time (test_harness_boundary.BoundaryTest.test_only_one_owned_job_runs_at_a_time)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 183, in test_only_one_owned_job_runs_at_a_time
+    self.assertEqual(results[0].returncode,0)
+                     ~~~~~~~^^^
+IndexError: list index out of range
+
+======================================================================
+ERROR: test_parent_exit_and_failure_also_reap_remaining_child (test_harness_boundary.BoundaryTest.test_parent_exit_and_failure_also_reap_remaining_child) (exit_code=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 128, in test_parent_exit_and_failure_also_reap_remaining_child
+    result=run([sys.executable,'-c',code,str(exit_code)],workspace=workspace)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+
+======================================================================
+ERROR: test_parent_exit_and_failure_also_reap_remaining_child (test_harness_boundary.BoundaryTest.test_parent_exit_and_failure_also_reap_remaining_child) (exit_code=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 128, in test_parent_exit_and_failure_also_reap_remaining_child
+    result=run([sys.executable,'-c',code,str(exit_code)],workspace=workspace)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+
+======================================================================
+ERROR: test_real_loopback_listener_is_unreachable (test_harness_boundary.BoundaryTest.test_real_loopback_listener_is_unreachable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 57, in test_real_loopback_listener_is_unreachable
+    result = self.execute('import socket,sys; socket.create_connection(("127.0.0.1",int(sys.argv[1])))', str(port))
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 49, in execute
+    return run([sys.executable, '-c', code, *arguments],
+               workspace=Path(temporary).resolve(), limits=limits, cancel=cancel)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+
+======================================================================
+ERROR: test_runtime_symlink_cannot_escape_write_scope (test_harness_boundary.BoundaryTest.test_runtime_symlink_cannot_escape_write_scope)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 67, in test_runtime_symlink_cannot_escape_write_scope
+    result = run([sys.executable, '-c',
+        'from pathlib import Path;import sys; '
+        'Path("escape").symlink_to(sys.argv[1]); '
+        'Path("escape").write_text("bad")', str(daily)], workspace=workspace)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+
+======================================================================
+ERROR: test_timeout_and_cancel_reap_children_without_touching_unrelated_worker (test_harness_boundary.BoundaryTest.test_timeout_and_cancel_reap_children_without_touching_unrelated_worker) (cancel=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 110, in test_timeout_and_cancel_reap_children_without_touching_unrelated_worker
+    result=run([sys.executable,'-c',code],workspace=workspace,
+               limits=Limits(wall_seconds=.4),cancel=cancel)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+
+======================================================================
+ERROR: test_timeout_and_cancel_reap_children_without_touching_unrelated_worker (test_harness_boundary.BoundaryTest.test_timeout_and_cancel_reap_children_without_touching_unrelated_worker) (cancel=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 157, in run
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 62, in _cleanup
+    members = _processes(process.pid)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 41, in _processes
+    result = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,rss=,time=,stat='],
+                            capture_output=True, text=True, check=True, timeout=.25)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 110, in test_timeout_and_cancel_reap_children_without_touching_unrelated_worker
+    result=run([sys.executable,'-c',code],workspace=workspace,
+               limits=Limits(wall_seconds=.4),cancel=cancel)
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 184, in run
+    _cleanup(process)
+    ~~~~~~~~^^^^^^^^^
+  File "/private/tmp/simple-skills-gap-ci/tests/harness/boundary.py", line 81, in _cleanup
+    raise BoundaryUnavailable('process monitor failed; owned group termination attempted') from error
+harness.boundary.BoundaryUnavailable: process monitor failed; owned group termination attempted
+
+======================================================================
+FAIL: test_threaded_launch_needs_no_preexec_callback_and_remains_bounded (test_harness_boundary.BoundaryTest.test_threaded_launch_needs_no_preexec_callback_and_remains_bounded)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-ci/tests/test_harness_boundary.py", line 254, in test_threaded_launch_needs_no_preexec_callback_and_remains_bounded
+    self.assertEqual(errors, [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: Lists differ: [BoundaryUnavailable('process monitor fail[35 chars]ed')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+BoundaryUnavailable('process monitor failed; owned group termination attempted')
+
+- [BoundaryUnavailable('process monitor failed; owned group termination attempted')]
++ []
+
+----------------------------------------------------------------------
+Ran 15 tests in 2.156s
+
+FAILED (failures=1, errors=15)
+Exit: 1
+
+Command: ['/opt/homebrew/opt/python@3.15/bin/python3.15', '-B', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_migration_review.py', '-v']
+test_all_evidence_read_paths_reject_fifo_without_blocking (test_migration_review.ReviewTest.test_all_evidence_read_paths_reject_fifo_without_blocking) ... ok
+test_freezes_independent_refs_without_dirty_or_archive_filters (test_migration_review.ReviewTest.test_freezes_independent_refs_without_dirty_or_archive_filters) ... ok
+test_installed_copy_cli_is_self_contained_and_invalid_inputs_fail_closed (test_migration_review.ReviewTest.test_installed_copy_cli_is_self_contained_and_invalid_inputs_fail_closed) ... ok
+test_observations_detect_difference_missing_evidence_and_staleness (test_migration_review.ReviewTest.test_observations_detect_difference_missing_evidence_and_staleness) ... ok
+test_poc_cannot_write_inside_source_repo_even_on_failure (test_migration_review.ReviewTest.test_poc_cannot_write_inside_source_repo_even_on_failure) ... ok
+test_prepare_checks_case_collisions_in_every_path_component (test_migration_review.ReviewTest.test_prepare_checks_case_collisions_in_every_path_component) ... ok
+test_refuses_existing_output_and_unsupported_links (test_migration_review.ReviewTest.test_refuses_existing_output_and_unsupported_links) ... ok
+test_snapshot_rejects_added_special_files (test_migration_review.ReviewTest.test_snapshot_rejects_added_special_files) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.410s
+
+OK
+Exit: 0
+
+Command: ['/opt/homebrew/opt/python@3.15/bin/python3.15', '-B', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_project_setting.py', '-v']
+test_isolated_reminders_without_external_commands_are_read_only (test_project_setting.ReminderTest.test_isolated_reminders_without_external_commands_are_read_only) ... ok
+test_reminder_does_not_depend_on_instruction_files_or_load_rules (test_project_setting.ReminderTest.test_reminder_does_not_depend_on_instruction_files_or_load_rules) ... ok
+test_windows_shipped_commands_without_python_or_git (test_project_setting.ReminderTest.test_windows_shipped_commands_without_python_or_git) ... skipped 'requires native Windows cmd.exe'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.100s
+
+OK (skipped=1)
+Exit: 0
+
+Command: ['/opt/homebrew/opt/python@3.15/bin/python3.15', '-B', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_run_check.py', '-v']
+test_changed_source_invalidates_success (test_run_check.CheckEvidenceTest.test_changed_source_invalidates_success) ... ok
+test_existing_receipt_prevents_replay (test_run_check.CheckEvidenceTest.test_existing_receipt_prevents_replay) ... ok
+test_inner_failure_is_not_a_pass (test_run_check.CheckEvidenceTest.test_inner_failure_is_not_a_pass) ... ok
+test_interrupted_process_keeps_unknown_outcome (test_run_check.CheckEvidenceTest.test_interrupted_process_keeps_unknown_outcome) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.197s
+
+OK
+Exit: 0
