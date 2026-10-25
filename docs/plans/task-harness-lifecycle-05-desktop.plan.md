@@ -92,4 +92,6 @@ C0、C1 可用固定測試合約辨識機械邊界；V1、V3、V5 的 agent 必�
 
 ## 歷史與現況
 
-0.2.0 候選 manifest：`3d7924929d77a659a7b67237e147f6d8150b5f10146da0e5086e8b08e348b9d5`；來源 `81497d5`。既有 [H01–H04 驗證](../research/task-harness-lifecycle-validation.research.md)與[接入預檢](../research/task-harness-desktop-admission.research.md)保留原判定。本輪只修訂文件，沒有建立測試專案、探針、模型對話或新候選；H05 所有實際行為案例仍待驗證。
+歷史：0.2.0 候選 manifest 為 `3d7924929d77a659a7b67237e147f6d8150b5f10146da0e5086e8b08e348b9d5`，來源 `81497d5`；既有 [H01–H04 驗證](../research/task-harness-lifecycle-validation.research.md)與[接入預檢](../research/task-harness-desktop-admission.research.md)保留原判定。其後的 H05 設計／工作單整理階段僅修訂文件，當時未建立測試專案、探針、模型對話或新候選；這是該階段的歷史範圍，不代表目前實作狀態。
+
+現況（2026-10-25）：[H05A](task-harness-lifecycle-05a-admission.plan.md) 的 0.2.1 候選封裝與開發端 C0 探針已完成離線驗證，主責重跑封裝、產品 hook 與探針共 43 項通過；0.2.0 保持原樣。切片證據見[封裝驗證](../research/h05-package-validation.research.md)與[探針驗證](../research/h05-hook-probe-validation.research.md)。原生接入／正常信任仍在進行，結果以 H05A 的直接證據更新為準；C0、C1、V1–V5 實際模型行為案例仍未驗證，離線通過不構成 H05 完成。
