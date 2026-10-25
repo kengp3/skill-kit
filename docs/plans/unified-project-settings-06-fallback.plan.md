@@ -4,7 +4,7 @@
 
 **Blocked by:** T05
 
-**Status:** ready-for-agent
+**Status:** implemented-pending-verification
 
 依據：[實作規格](../specs/unified-project-settings.spec.md)。使用者已確認 T01–T08 拆分與依賴。
 
@@ -20,3 +20,7 @@
 F 異常與 G 的真實失敗、回退、執行者、無重派與未完成條件。
 
 狀態更新只能依實際成果；調查、離線測試與真實行為驗收分別判定。
+
+## 實作與驗證狀態
+
+模型分工參照已補齊候選去重、預設回退循環、強度限制範圍、認證／未知啟動分流與無子 agent 接手。原生 G 案例正在隔離環境執行；尚未宣稱 F／G 完整驗收通過。結構性讀回、本地連結與 diff 檢查通過，這些檢查不代替真實行為證據。
