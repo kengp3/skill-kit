@@ -1,4 +1,7 @@
-"""Codex task-contract hooks. Python 3.10+, standard library only.
+"""Legacy 0.2.1 development fixture; not registered or packaged in 0.3.0.
+
+This is not the current project-setting.md reader or a daily-use prerequisite.
+Codex task-contract hooks. Python 3.10+, standard library only.
 
 Contracts remain agent-owned. Receipts only reserve one continuation request;
 they never record authoritative progress, authorization or execution results.
