@@ -64,6 +64,8 @@
 
 使用者已直接回覆「已審閱，同意正常信任這五項精確定義」。增量 base 為 `4014a65f2c298bf22c247f282a637532ec85955e`，受查 target 為 `0f29d11ed457adb258f9ea7e1b4936fa06bd1e9e`，整合為 `5249774943130c342da3b9c6fe39e1e5bece807b`；53 檔只屬 G03 ticket／報告／證據，沒有產品修改。原兩名 reviewer 分別審查此固定差異，未啟動新模型或操作信任。完整驗收與原始來源見 [G03 報告](harness-gap-closure-persisted-trust.research.md)及[正常操作配對](harness-gap-closure-persisted-trust-evidence/normal-trust-operation.json)。
 
+隨後兩名原 reviewer 再核對對帳 target `f69856038dffb98cfb5a15c0fcf13b1c2b760c2d` 的五檔文件差異，兩軸均無 required findings；確認回報轉述、G03 限定通過、歷史待核准文字及其餘未完成範圍一致。此對帳整合為 `f401ff7cb7592111eacf5754afd4286d1c425781`，沒有重跑模型或測試。
+
 ### Standards：G03 增量
 
 **0 actionable findings；無 hard violations 或需處理的 heuristic。** 新控制器僅供維護取證；正常信任操作有授權、輸入／結果來源配對。公開 excerpts 保留省略索引與原件 hash，cleanup 限定 owned auth，沒有擴稱刪除 state。原人工審閱包及 exact hooks 未改。
