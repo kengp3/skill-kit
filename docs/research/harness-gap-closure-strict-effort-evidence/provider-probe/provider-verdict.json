@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "target": "upstream unsupported reasoning.effort rejection",
+  "request_count": 1,
+  "upstream": {
+    "type": "error",
+    "error": {
+      "message": "Unsupported value: 'minimal' is not supported with the 'gpt-6.1-sol' model. Supported values are: 'low', 'medium', 'high', 'xhigh', and 'max'.",
+      "type": "invalid_request_error",
+      "param": "reasoning.effort",
+      "code": "unsupported_value"
+    },
+    "status": 400
+  },
+  "terminal_status": "failed",
+  "host_effort_context": "minimal",
+  "qualification": "initial shared HTTP429 retry is separate; same controller request reached direct upstream HTTP400 unsupported_value"
+}
