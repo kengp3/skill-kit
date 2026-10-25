@@ -8,7 +8,7 @@
 
 **截至 2026-10-26（Asia/Taipei）：整體補驗未完成；G09 證據對帳、獨立審查與入口更新 done。** [補驗規格](../specs/harness-validation-gap-closure.spec.md)與[工作圖](../plans/harness-validation-gap-closure.plan.md)已核准；G00 基準、G01 接入、G02 指定中斷恢復、G03 專用 state 的正常 CLI 持久信任、G04 三分支、G05 部分查回與 G06 部分生命週期已有判定。G03 已取得人工精確核准並完成限定 V01；G05／G06 仍有必要缺口，G07 UI 資格受阻，不能因文件或操作包就緒而關閉。Windows 依使用者最新指示「不考慮 windows 情境」明確排除，G08 為 **cancelled，不是 passed**。本表為唯一持續更新的缺口表；[G00 基準報告](harness-gap-closure-baseline.research.md)只保存初態，沒有回寫歷史證據。
 
-本輪[獨立 Standards／Spec 審查](harness-gap-closure-review.research.md)以 `f15338e` 為 base、`0ec9812` 為受查 head，兩軸各 **0 actionable findings**；[審查身分與結果](harness-gap-closure-review-evidence/review-results.json)已交付。G03 續作依下列新證據對帳，不回寫該次受查 head；其增量兩軸審查正在進行。G09 完成僅指本輪對帳、審查與入口收尾；G05／G06／G07 必要分支仍受阻，整體補驗未完成。
+本輪[獨立 Standards／Spec 審查](harness-gap-closure-review.research.md)以 `f15338e` 為 base、`0ec9812` 為受查 head，兩軸各 **0 actionable findings**；[審查身分與結果](harness-gap-closure-review-evidence/review-results.json)已交付。G03 續作依下列新證據對帳，不回寫該次受查 head；受查 target `0f29d11` 的[G03 增量兩軸審查](harness-gap-closure-review.research.md#g03-核准後增量審查)亦已完成，各 0 actionable findings，支持 V01 限案通過。G09 完成僅指本輪對帳、審查與入口收尾；G05／G06／G07 必要分支仍受阻，整體補驗未完成。
 
 表內「已實作」僅指既有 0.3.0 Markdown 規則／封裝來源，未宣稱宿主具有所有故障控制能力。所有列共用候選 **C030**：manifest `7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e`；[G00 原始核對](harness-gap-closure-baseline-evidence/candidate-verification.json)與[G01 實際載入及清潔讀回](harness-gap-closure-demo-setup.research.md)分開保存。demo-002 已接入 0.3.0 copied skills，未安裝 plugin；五個 project hooks 已寫入且宿主列出，仍 untrusted。日常 marketplace 仍指向 0.2.1，未自動切換。歷史 pass 只支持原受測情境，不計本輪新增通過。
 
