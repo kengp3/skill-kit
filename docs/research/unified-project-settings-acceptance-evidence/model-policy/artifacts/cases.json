@@ -1,0 +1,85 @@
+[
+  {
+    "id": "user",
+    "current": "[gpt-6-sol;low]",
+    "task": "[gpt-6.1-sol;medium]",
+    "role": "analyst",
+    "stage": "研究"
+  },
+  {
+    "id": "task",
+    "current": null,
+    "task": "[gpt-6-sol;low]",
+    "role": "analyst",
+    "stage": "研究"
+  },
+  {
+    "id": "role",
+    "current": null,
+    "task": null,
+    "role": "analyst",
+    "stage": "研究"
+  },
+  {
+    "id": "stage",
+    "current": null,
+    "task": null,
+    "role": null,
+    "stage": "研究"
+  },
+  {
+    "id": "project",
+    "current": null,
+    "task": null,
+    "role": null,
+    "stage": "未設定"
+  },
+  {
+    "id": "fallback",
+    "candidates": "[not-an-available-model;high, gpt-6-sol;none]",
+    "observed_unavailable": [
+      "not-an-available-model"
+    ],
+    "observed_effort_unsupported": [
+      "gpt-6-sol;none"
+    ],
+    "host_default_effort": {
+      "gpt-6-sol": "medium"
+    }
+  },
+  {
+    "id": "default",
+    "candidates": "[not-an-available-model]",
+    "observed_unavailable": [
+      "not-an-available-model"
+    ]
+  },
+  {
+    "id": "dedup",
+    "candidates": "[gpt-6-sol;low, gpt-6-sol;high, default]",
+    "observed_unavailable": [
+      "gpt-6-sol"
+    ]
+  },
+  {
+    "id": "strict",
+    "candidates": "[gpt-6-sol;none]",
+    "observed_effort_unsupported": [
+      "gpt-6-sol;none"
+    ],
+    "user_restriction": "這個模型的強度不可變更"
+  },
+  {
+    "id": "inherit",
+    "project_defaults_present": false,
+    "current": null,
+    "task": null,
+    "role": null,
+    "stage": null
+  },
+  {
+    "id": "new-task",
+    "previous_task_override": "[gpt-6-sol;high]",
+    "new_task": true
+  }
+]

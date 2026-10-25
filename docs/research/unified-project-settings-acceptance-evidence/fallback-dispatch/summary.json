@@ -1,0 +1,63 @@
+{
+  "case": "fallback-dispatch",
+  "candidate": "/private/tmp/unified-review-fixed-0.3.0",
+  "candidate_manifest_sha256": "7e88066c6808d77ab90a3984288829e1ce7f186efd4aa887cd0acfbcdfdfa1f8",
+  "installed_manifest_sha256": "7e88066c6808d77ab90a3984288829e1ce7f186efd4aa887cd0acfbcdfdfa1f8",
+  "plugin_installs": [
+    {
+      "exit_code": 0,
+      "args": [
+        "plugin",
+        "marketplace",
+        "add",
+        "/private/tmp/unified-t08-g994b31u/catalog",
+        "--json"
+      ],
+      "owned_process_terminal": true
+    },
+    {
+      "exit_code": 0,
+      "args": [
+        "plugin",
+        "add",
+        "kengp3-harness@unified-t08-local",
+        "--json"
+      ],
+      "owned_process_terminal": true
+    }
+  ],
+  "result": {
+    "exit_code": 0,
+    "args": [
+      "exec",
+      "--skip-git-repo-check",
+      "--json",
+      "--approve-for-me",
+      "--dangerously-bypass-hook-trust",
+      "-m",
+      "gpt-6.1-sol",
+      "-c",
+      "model_reasoning_effort=\"low\"",
+      "使用 task-harness 完成實際模型回退驗收：這是已確認的專案根目錄，允許保存唯一任務合約與結果。依 unavailable_worker 角色候選清單，實際用原生角色建立新上下文 worker，工作是唯讀檢查 preserve.txt 精確為 KEEP_EXISTING_CONTENT 加換行。首選模型故意為不可用名稱；請保留宿主真實拒絕或失敗，確認沒有工作執行後才依規則改派下一候選 gpt-6.1-sol/low。固定 unavailable_worker 角色不可直接覆寫其模型；可用宿主支援的通用原生 agent，保留相同工作範圍與指示，fork_turns=none、自足上下文。不要修改長期設定、安裝服務或假造失敗。若取得 handle 必須先查明狀態，不盲目重派。把真實失敗、回退原因、成功 handle、宿主可觀測模型與檢查結果寫入 docs/research/fallback.research.md，完成驗收並讀回合約。此案例不要求改變主責模型。"
+    ],
+    "owned_process_terminal": true
+  },
+  "initial_files": {
+    "preserve.txt": "f7d8eb2e57a5bc13d10424b20bc77e50cedb38dbedd9064d13299ec3ad012ebe",
+    "project-setting.md": "2ed696b2b649f7fabc6a4149b66ad152febec06754439926133f60bd266807f6",
+    ".codex/agents/unavailable_worker.toml": "aa6d9900565743daa1f0125d25aaac0ecaa8c7423bf3de16a57acc3c02b263ff"
+  },
+  "final_files": {
+    "preserve.txt": "f7d8eb2e57a5bc13d10424b20bc77e50cedb38dbedd9064d13299ec3ad012ebe",
+    "project-setting.md": "2ed696b2b649f7fabc6a4149b66ad152febec06754439926133f60bd266807f6",
+    ".codex/agents/unavailable_worker.toml": "aa6d9900565743daa1f0125d25aaac0ecaa8c7423bf3de16a57acc3c02b263ff",
+    "docs/research/fallback.research.md": "58778dea869e466a12e7372081d971adeecfc4ba61dc6fef4ed1c8429b182086",
+    "docs/plans/fallback.task-contract.md": "65b6a2eef952bc6c3d962854a86c1a069fe960a60d2c2817e32b81aed6480195"
+  },
+  "global_config_auth_unchanged": true,
+  "hook_trust_bypass": true,
+  "normal_persisted_trust_verified": false,
+  "temporary_credentials_deleted_on_exit": true,
+  "state_root": "/private/tmp/unified-t08-g994b31u/state",
+  "project_root": "/private/tmp/unified-t08-g994b31u/project"
+}

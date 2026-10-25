@@ -1,0 +1,63 @@
+{
+  "case": "model-policy",
+  "candidate": "/private/tmp/unified-t07-integrated-0.3.0",
+  "candidate_manifest_sha256": "2fbb0e1c421e19cbd3b7a1aad2211ec65d4493042d451f59ac10307f5cb57f0e",
+  "installed_manifest_sha256": "2fbb0e1c421e19cbd3b7a1aad2211ec65d4493042d451f59ac10307f5cb57f0e",
+  "plugin_installs": [
+    {
+      "exit_code": 0,
+      "args": [
+        "plugin",
+        "marketplace",
+        "add",
+        "/private/tmp/unified-t08-4vnc77do/catalog",
+        "--json"
+      ],
+      "owned_process_terminal": true
+    },
+    {
+      "exit_code": 0,
+      "args": [
+        "plugin",
+        "add",
+        "kengp3-harness@unified-t08-local",
+        "--json"
+      ],
+      "owned_process_terminal": true
+    }
+  ],
+  "result": {
+    "exit_code": 0,
+    "args": [
+      "exec",
+      "--skip-git-repo-check",
+      "--json",
+      "--approve-for-me",
+      "--dangerously-bypass-hook-trust",
+      "-m",
+      "gpt-6.1-sol",
+      "-c",
+      "model_reasoning_effort=\"low\"",
+      "使用已安裝 task-harness 的模型規則，完成一個設定判讀任務：讀取 cases.json 與 project-setting.md，把每個 case 的首選來源、模型、強度、依序回退結果和理由寫入 docs/research/model-policy.research.md，並保存唯一任務合約。cases 的 observed_* 是明列的測試輸入，不是你實際查到的 provider 事件；請明確標示這點。這個任務只驗證模型實際判讀規則，不做派工或推定 provider 可用性。不要修改專案長期設定；不需要執行解析／判斷 helper。沒有指定主責資訊時使用原生繼承並標不可觀測值。"
+    ],
+    "owned_process_terminal": true
+  },
+  "initial_files": {
+    "preserve.txt": "f7d8eb2e57a5bc13d10424b20bc77e50cedb38dbedd9064d13299ec3ad012ebe",
+    "cases.json": "e9d81dc9b359ff47e189e6caa2c8de021dab5ff0b81b8b97434346ec91d0f86b",
+    "project-setting.md": "bced1c5962bf0d67a2b65badfaf953dcb8d62dc2dfb7f9ab19ea7125f0fa3b1f"
+  },
+  "final_files": {
+    "preserve.txt": "f7d8eb2e57a5bc13d10424b20bc77e50cedb38dbedd9064d13299ec3ad012ebe",
+    "cases.json": "e9d81dc9b359ff47e189e6caa2c8de021dab5ff0b81b8b97434346ec91d0f86b",
+    "project-setting.md": "bced1c5962bf0d67a2b65badfaf953dcb8d62dc2dfb7f9ab19ea7125f0fa3b1f",
+    "docs/research/model-policy.research.md": "1c3c9c938200d707a7b18135d33bd6f0c3ea0c600ade9f93a0d9f84107b421e9",
+    "docs/plans/model-policy.task-contract.md": "da1ea130ee2c30975ad973fab4d91f1811954e4faed0c5ad795cfee2bbd8876a"
+  },
+  "global_config_auth_unchanged": true,
+  "hook_trust_bypass": true,
+  "normal_persisted_trust_verified": false,
+  "temporary_credentials_deleted_on_exit": true,
+  "state_root": "/private/tmp/unified-t08-4vnc77do/state",
+  "project_root": "/private/tmp/unified-t08-4vnc77do/project"
+}

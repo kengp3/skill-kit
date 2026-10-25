@@ -1,0 +1,30 @@
+{
+  "candidate_manifest_sha256": "7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e",
+  "installed_manifest_matches": true,
+  "skills": [
+    "kengp3-harness:ai-code-review",
+    "kengp3-harness:define-task",
+    "kengp3-harness:project-setting",
+    "kengp3-harness:task-harness"
+  ],
+  "hooks": [
+    {
+      "event": "sessionStart",
+      "command": "echo task-harness: For an explicitly enabled task read project-setting.md at the confirmed project root and the task-harness references. Restore the same task contract and verify authorization artifacts workers and unknown operations before action. If hooks are unavailable use model-led checks. This reminder does not activate a task or prove completion.",
+      "trust": "untrusted"
+    },
+    {
+      "event": "userPromptSubmit",
+      "command": "echo task-harness: Only for an explicitly enabled task re-read changed project-setting.md and reconcile the latest user instructions in the same task contract. Before dispatch or stage changes check prerequisites and model policy. After agent reports verify artifacts and evidence. Before closure check every necessary outcome and continue authorized executable work. Respect user Stop. This reminder grants no authorization and does not validate completion.",
+      "trust": "untrusted"
+    },
+    {
+      "event": "stop",
+      "command": "echo {}",
+      "trust": "untrusted"
+    }
+  ],
+  "canonical_asset_matches_plugin_hooks": true,
+  "global_config_auth_unchanged": true,
+  "model_trial": false
+}
