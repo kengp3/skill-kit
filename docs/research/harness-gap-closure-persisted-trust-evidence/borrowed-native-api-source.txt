@@ -1,0 +1,52 @@
+class Native:
+    def __init__(self, state, out=OUT):
+        self.out = out
+        self.counter = 0; self.buffer = b''; self.records = []
+        self.raw = (self.out/'rpc.jsonl').open('w'); self.err = (self.out/'server.stderr.log').open('w')
+        env = os.environ.copy(); env['CODEX_HOME'] = str(state)
+        for key in ('OPENAI_API_KEY', 'CODEX_API_KEY', 'OPENAI_ACCESS_TOKEN', 'CHATGPT_AUTH_TOKEN', 'CODEX_REMOTE_TOKEN'):
+            env.pop(key, None)
+        self.proc = subprocess.Popen([str(CODEX), 'app-server', '--stdio'], cwd=DEMO, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=self.err)
+        self.selector = selectors.DefaultSelector(); self.selector.register(self.proc.stdout, selectors.EVENT_READ)
+        self.rpc('initialize', {'clientInfo': {'name': 'g01_native_demo', 'version': '1.0'}, 'capabilities': {'experimentalApi': True}})
+        self.send({'method': 'initialized', 'params': {}})
+
+    def send(self, message):
+        self.log('client', message)
+        self.proc.stdin.write((json.dumps(message) + '\n').encode()); self.proc.stdin.flush()
+
+    def log(self, direction, message):
+        self.records.append({'direction': direction, 'message': message})
+        self.raw.write(json.dumps({'at': time.time(), 'direction': direction, 'message': message}, ensure_ascii=False) + '\n'); self.raw.flush()
+
+    def read(self, seconds=30):
+        deadline = time.monotonic() + seconds
+        while time.monotonic() < deadline:
+            if b'\n' in self.buffer:
+                line, self.buffer = self.buffer.split(b'\n', 1)
+                if not line: continue
+                msg = json.loads(line); self.log('server', msg)
+                if 'id' in msg and 'method' in msg:
+                    self.send({'id': msg['id'], 'error': {'code': -32601, 'message': 'No external interactive authorization supplied by G01 controller'}})
+                return msg
+            for key, _ in self.selector.select(.2):
+                data = os.read(key.fd, 65536)
+                if not data: raise RuntimeError('owned native server EOF')
+                self.buffer += data
+        raise TimeoutError('observation window only; original native handle remains live')
+
+    def rpc(self, method, params):
+        self.counter += 1; rid = self.counter
+        self.send({'id': rid, 'method': method, 'params': params})
+        while True:
+            msg = self.read(60)
+            if msg.get('id') == rid:
+                if 'error' in msg: raise RuntimeError(json.dumps(msg))
+                return msg['result']
+
+    def close(self):
+        self.proc.stdin.close()
+        try: self.proc.wait(15)
+        except subprocess.TimeoutExpired: self.proc.terminate(); self.proc.wait(10)
+        self.selector.close(); self.raw.close(); self.err.close()
+        return self.proc.returncode
