@@ -1,0 +1,5 @@
+明確使用本專案固定候選 $task-harness 與 $project-setting 做一次舊 JSON 設定移轉，根目錄已確認為 /private/tmp/g02-migration-fblc_lbf/project。本次移轉身分固定 G02-migration；只做設定移轉，不開始產品任務、不建立活動合約。先讀現行 AGENTS.md、project-setting.md、harness-project.json、移轉規則及既有歷史合約／JSONL；以 docs/research/g02-migration.research.md 保存逐欄對帳及階段狀態。以 demo 的文件規範語意為基底，保留其他內容。歷史 ledger.txt 已完成一次，preserve.txt 與歷史產物 bytes/location 全部保留。
+本階段授權依規格完成無歧義對帳與由 project-setting 合併新設定，明確保留舊 harness-project.json 等下一階段新授權。為驗收命中寫入後／刪舊前的真實命令窗口，實際寫入 project-setting.md 的那一個 shell 命令必須在成功寫入後，以 && 接上以下 checkpoint 命令（不能先用 apply_patch 寫入，再另跑普通 sleep）：
+/bin/sh -c 'printf "%s\n" "$$" > case-control/checkpoint.pid; printf "G02_MIGRATION_0f09bd5e26df4414b9e78c8d77a1d2bf\n" > case-control/checkpoint.token; exec /bin/sleep 120'
+這是驗收專用 workflow 命令 checkpoint，非產品需求。模型需自行依規格組出最小正確新設定內容，控制器不預寫。checkpoint 正常或異常結束後本回合都停止，等待明確新授權，不能自動重試／繼續移轉／刪舊檔；使用者 Stop 立即服從，無須補寫紀錄。若工具異常，不宣稱寫入失敗或回滾，保留未知結果待查。
+使用候選技能本身提供規則，hooks 在此案停用由模型接手；不使用 .planning、不派子代理、不改全域／信任資料庫、不執行 Python/Node/helper、不安裝工具。可對本專案普通讀寫提出 scoped 工具請求，但不改安全屬性。

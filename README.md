@@ -4,6 +4,12 @@
 
 本版來源為 `0.3.0`。以[統一設定與模型流程規格](docs/specs/unified-project-settings.spec.md)、[設定整合 ADR](docs/adr/0001-unified-project-settings.adr.md)及[用語](docs/specs/task-harness-glossary.spec.md)為準。[安裝與操作手冊](docs/specs/codex-coding-harness-guide.html)可離線閱讀。舊版候選與研究保留原狀，不能當成本版已完成實際行為驗收的證據。
 
+## 當前驗收證據
+
+截至 2026-10-26（Asia/Taipei），[中央細分狀態與原始證據](docs/research/unified-project-settings-acceptance.research.md#g00g09-補驗唯一細分狀態表)是本輪 G00–G09 的唯一狀態入口；既有來源的[Standards／Spec 審查](docs/research/unified-project-settings-review.research.md)另列其受查版本，本輪收尾審查尚未完成。G01 demo 接入、G02 workflow 中斷恢復及 G04 指定強度分支已通過各案範圍；正常持久 hook 信任、真正未知 spawn 結果與 Desktop UI 等必要分支仍未通過，整體補驗未完成。Windows 依本輪指示排除，不計通過。
+
+本地 `dist/candidates/kengp3-harness-0.3.0` 是已核對的候選，[demo-002 已以 copied skills 接入並完成清潔讀回](docs/research/harness-gap-closure-demo-setup.research.md)；日常 marketplace 入口仍是 `dist/kengp3-harness` 的 0.2.1，未自動切換或更新全域安裝。各案候選指紋、載入／信任／執行資格與限制均以中央表連到的個案報告為準。
+
 ## 在專案本地使用
 
 不需要先執行建包腳本或 Skills CLI。取得本版來源或完整候選後，可用檔案管理員把所需 skill 目錄複製到專案的 `.agents/skills/`：
@@ -68,6 +74,14 @@ python3 -B scripts/package_harness.py dist/candidates/kengp3-harness-0.3.0
 python3 -B scripts/package_harness.py --verify dist/candidates/kengp3-harness-0.3.0
 python3 -B -m unittest discover -s tests -p 'test_*.py'
 ```
+
+來源審查至少核對：
+
+- metadata 與指南描述的能力、限制及 runtime 依賴，是否符合當前來源與已觀測行為；沒有直接證據的能力仍標未驗證。
+- copied-skill、plugin 與 canonical assets 的命令及來源是否一致，必需資源有無遺漏；可機械比對部分沿用既有 [package tests](tests/test_harness_package.py) 與上述封裝驗證，不另建檢查框架。
+- README、中央驗收、審查及個案 raw evidence 是否指向相同版本與判定；歷史 pass、測試略過與人工待核准項目不可擴稱本輪通過。
+
+[本地 maintenance CI](docs/research/harness-gap-closure-ci.research.md)已提供最小 `macos-15` workflow，只有本地配置、靜態查核及 targeted tests 證據；尚未執行 hosted workflow，不代表遠端 CI 綠燈，也不是核心 runtime 的前提。
 
 新包包含四個 skills、其 references／assets、選配 helpers、標準 hooks 與內容指紋。舊 Python hook handler 不再是封裝輸入或日常入口；其來源與舊測試僅留作歷史開發對照。單元測試與建包通過不取代 A–G 的真實 agent 行為驗收。
 

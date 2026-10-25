@@ -1,0 +1,4 @@
+候選 prompt，尚未執行。只有使用者已在同 chat 實際 UI 選 B，且原 old_worker 尚在執行時自行送出。先替換 CASE_ROOT、CASE_ID、UI_PROOF；不把本段敘述當作選單／宿主證據。
+
+我現在明確授權續作 {CASE_ROOT} 內同一份 docs/plans/{CASE_ID}.task-contract.md。UI 選擇佐證在 {UI_PROOF}；不以 API 改主責模型。先核對原合約、old_worker 原 handle／原生身分與實際 running 狀態。原 worker 已完成、逾時、查不到或結果不明就保持未完成，不重啟或重派、不把新 worker 當舊 worker。
+確認原 worker 仍在執行後，保存並讀回本次授權；只在本案建立一次 gate-old.txt 釋放它，保留其原 handle／設定。再派一次名稱帶 {CASE_ID} 的 new_worker，省略 model／effort，使用 fork_turns=none 與自足輸入，沒有任何任務／角色／階段／專案覆寫，沿用目前主責。new_worker 唯讀核對 preserve.txt，不能寫檔；兩個 worker 真正完成後主責保存原合約，將可觀測核對與限制記在 docs/research/{CASE_ID}.research.md。無法觀測的 model／effort／ID 留 null，不要求人類補填或改寫合約。保留 preserve bytes，不改業務程式、全域／hooks／trust，不啟動其他 worker 或 Java／Maven；若收到 Stop，立即停止後續工作並等待明確新授權。
