@@ -1,0 +1,76 @@
+{
+  "command_result": {
+    "id": 2,
+    "result": {
+      "exitCode": 71,
+      "stdout": "",
+      "stderr": "sandbox-exec: sandbox_apply: Operation not permitted\n"
+    }
+  },
+  "error": "control command did not start",
+  "server_exit": 0,
+  "events": [
+    {
+      "request": {
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "clientInfo": {
+            "name": "h05_c0_control",
+            "version": "0.1.0"
+          },
+          "capabilities": {
+            "experimentalApi": true
+          }
+        }
+      }
+    },
+    {
+      "response": {
+        "id": 1,
+        "result": {
+          "userAgent": "Codex Desktop/0.164.0 (Mac OS 27.0.1; arm64) dumb (h05_c0_control; 0.1.0)",
+          "codexHome": "/private/tmp/h05-admission-5tpyvaik/state",
+          "platformFamily": "unix",
+          "platformOs": "macos"
+        }
+      }
+    },
+    {
+      "request": {
+        "id": 2,
+        "method": "command/exec",
+        "params": {
+          "command": [
+            "python3",
+            "-u",
+            "-c",
+            "from pathlib import Path; import time; Path('control-started.txt').write_text('STARTED'); print('STARTED',flush=True); time.sleep(20)"
+          ],
+          "cwd": "/private/tmp/h05-admission-5tpyvaik/project",
+          "processId": "h05-c0-control",
+          "timeoutMs": 25000,
+          "sandboxPolicy": {
+            "type": "workspaceWrite",
+            "writableRoots": [
+              "/private/tmp/h05-admission-5tpyvaik/project"
+            ],
+            "excludeSlashTmp": true,
+            "excludeTmpdirEnvVar": true,
+            "networkAccess": false
+          }
+        }
+      }
+    },
+    {
+      "response": {
+        "id": 2,
+        "result": {
+          "exitCode": 71,
+          "stdout": "",
+          "stderr": "sandbox-exec: sandbox_apply: Operation not permitted\n"
+        }
+      }
+    }
+  ]
+}

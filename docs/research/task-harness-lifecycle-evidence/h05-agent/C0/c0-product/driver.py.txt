@@ -1,0 +1,85 @@
+"""Product half of the same fixed C0 attempt using the existing native stdio protocol."""
+import hashlib,json,os,selectors,signal,subprocess,time
+from pathlib import Path
+ROOT=Path('/private/tmp/h05-admission-5tpyvaik');PROJECT=ROOT/'project';OUT=ROOT/'evidence/c0-product'
+OUT.mkdir()  # An existing attempt must be reconciled, never restarted.
+state={'status':'preparing','user_inputs':0,'scope':'C0 product contract and two markers only','started_at':time.time()}
+(OUT/'driver.py.txt').write_bytes(Path(__file__).read_bytes())
+log=(OUT/'rpc.jsonl').open('x');replies={};buffer=b'';serial=0;tid=None;turn=None;completed={};last_event=time.monotonic()
+state['deadline_unix']=json.loads((ROOT/'evidence/c0-probe/state.json').read_text())['deadline_unix']
+deadline=time.monotonic()+max(0,state['deadline_unix']-time.time())
+assert deadline>time.monotonic(), 'original C0 deadline expired'
+
+def save(): (OUT/'state.json').write_text(json.dumps(state,indent=2)+'\n')
+def emit(kind,value):log.write(json.dumps({'at':time.time(),kind:value})+'\n');log.flush()
+env=os.environ.copy();env['CODEX_HOME']=str(ROOT/'state')
+for k in ('OPENAI_API_KEY','CODEX_API_KEY','OPENAI_ACCESS_TOKEN'):env.pop(k,None)
+p=subprocess.Popen(['/Users/kengp3/.local/share/nvm/v26.7.0/bin/codex','app-server','--stdio'],cwd=PROJECT,env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,start_new_session=True)
+sel=selectors.DefaultSelector();sel.register(p.stdout,selectors.EVENT_READ);state['server_pid']=p.pid;save()
+def send(method,params):
+ global serial
+ serial+=1;m={'id':serial,'method':method,'params':params};emit('request',m);p.stdin.write((json.dumps(m)+'\n').encode());p.stdin.flush();return serial
+
+def pump(wait=.2):
+ global buffer,last_event
+ if b'\n' not in buffer:
+  if not sel.select(wait):return
+  chunk=os.read(p.stdout.fileno(),65536)
+  if not chunk:raise RuntimeError('native server disconnected; do not replay')
+  buffer+=chunk
+ while b'\n' in buffer:
+  line,buffer=buffer.split(b'\n',1)
+  if not line:continue
+  m=json.loads(line);params=m.get('params',{})
+  if 'id' in m and ('result' in m or 'error' in m):replies[m['id']]=m;emit('response',m)
+  elif 'id' in m:
+   emit('server_request',m);p.stdin.write((json.dumps({'id':m['id'],'error':{'code':-32601,'message':'No interactive client tools in fixed canary'}})+'\n').encode());p.stdin.flush()
+  elif params.get('threadId')==tid or 'hook' in m.get('method','').lower():
+   emit('event',m);last_event=time.monotonic()
+   if m.get('method')=='turn/completed':completed[params['turn']['id']]=params['turn']['status']
+
+def call(method,params,seconds=25,cleanup=False):
+ identity=send(method,params);until=time.monotonic()+seconds
+ if not cleanup:until=min(until,deadline)
+ while identity not in replies and time.monotonic()<until:pump(.2)
+ if identity not in replies:raise TimeoutError(method+' unknown; no retry')
+ m=replies.pop(identity)
+ if 'error' in m:raise RuntimeError(method+': '+json.dumps(m['error']))
+ return m['result']
+try:
+ call('initialize',{'clientInfo':{'name':'h05_c0_product','version':'0.1.0'},'capabilities':{'experimentalApi':True}})
+ p.stdin.write(b'{"method":"initialized"}\n');p.stdin.flush()
+ hooks=call('hooks/list',{'cwds':[str(PROJECT)]})['data'][0]
+ assert len(hooks['hooks'])==3 and not hooks['errors'] and not hooks['warnings'],hooks
+ assert all(h['enabled'] and h['trustStatus']=='trusted' and h['source']=='plugin' and 'task_harness.py' in h['command'] for h in hooks['hooks'])
+ info=call('thread/start',{'cwd':str(PROJECT),'runtimeWorkspaceRoots':[str(PROJECT)],'sandbox':'workspace-write','approvalPolicy':'never','ephemeral':False,'config':{'web_search':'disabled','sandbox_workspace_write.exclude_slash_tmp':True,'sandbox_workspace_write.exclude_tmpdir_env_var':True,'sandbox_workspace_write.network_access':False}})
+ tid=info['thread']['id'];state['thread_id']=tid;state['model']=info.get('model');state['policy']=info.get('sandbox');save()
+ assert Path(info['cwd']).resolve()==PROJECT and info['sandbox']['type']=='workspaceWrite' and info['sandbox']['excludeSlashTmp'] and info['sandbox']['excludeTmpdirEnvVar'] and not info['sandbox']['networkAccess'],info
+ prompt=(ROOT/'evidence/c0-product-input.txt').read_text();(OUT/'input.txt').write_text(prompt)
+ state['status']='running';state['user_inputs']=1;save()
+ result=call('turn/start',{'threadId':tid,'input':[{'type':'text','text':prompt},{'type':'skill','name':'personal-harness:task-harness','path':str(ROOT/'state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/skills/task-harness/SKILL.md')}]})
+ turn=result['turn']['id'];state['turn_id']=turn;save()
+ while time.monotonic()<deadline:
+  pump(.2)
+  if completed and time.monotonic()-last_event>=2:
+   readback=call('thread/read',{'threadId':tid,'includeTurns':True})
+   turns=readback['thread'].get('turns',[])
+   if turns and all(t['status'] in ('completed','failed','interrupted') for t in turns):
+    state['readback']=readback;state['status']='terminal';break
+ else:raise TimeoutError('original C0 deadline reached')
+except Exception as e:
+ state['status']='incomplete';state['error']=str(e)
+ if tid and turn:
+  try:
+   state['interrupt']=call('turn/interrupt',{'threadId':tid,'turnId':turn},seconds=5,cleanup=True)
+   state['readback']=call('thread/read',{'threadId':tid,'includeTurns':True},seconds=5,cleanup=True)
+  except Exception as stop_error:state['stop_error']=str(stop_error)
+finally:
+ sel.close();p.stdin.close()
+ if p.poll() is None:
+  p.terminate()
+  try:p.wait(timeout=5)
+  except subprocess.TimeoutExpired:
+   os.killpg(p.pid,signal.SIGKILL);p.wait(timeout=5)
+ state['server_exit']=p.returncode;state['finished_at']=time.time();save();log.close()
+ print(json.dumps({k:state.get(k) for k in ('status','error','thread_id','turn_id','model','server_exit','user_inputs')}),flush=True)

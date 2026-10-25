@@ -1,0 +1,123 @@
+{
+  "status": "terminal",
+  "user_inputs": 1,
+  "scope": "C0 probe only; no product tools",
+  "started_at": 1792900520.010738,
+  "deadline_unix": 1792901420.010999,
+  "server_pid": 61248,
+  "thread_id": "01a17132-d886-7e30-85fb-c0573479a2f4",
+  "model": "gpt-6.1-sol",
+  "policy": {
+    "type": "readOnly",
+    "networkAccess": false
+  },
+  "turn_id": "01a17132-d899-7df2-a564-7bb80701ef4f",
+  "readback": {
+    "thread": {
+      "id": "01a17132-d886-7e30-85fb-c0573479a2f4",
+      "environments": [
+        {
+          "environmentId": "local",
+          "cwd": "/private/tmp/h05-admission-5tpyvaik/project",
+          "runtimeWorkspaceRoots": [
+            "/private/tmp/h05-admission-5tpyvaik/project"
+          ]
+        }
+      ],
+      "extra": null,
+      "sessionId": "01a17132-d886-7e30-85fb-c0573479a2f4",
+      "forkedFromId": null,
+      "parentThreadId": null,
+      "preview": "This is an authorized, bounded hook integration check, not product work. Do not use tools, access files, delegate, or call services. Reply exactly C0_PROBE_INITIAL and finish normally. If a native Stop hook supplies the single pre-authorized canary continuation, follow that instruction once and finish; do not request or create additional work.",
+      "ephemeral": false,
+      "section": null,
+      "sectionEnteredAt": null,
+      "projectId": null,
+      "historyMode": "paginated",
+      "modelProvider": "openai",
+      "model": "gpt-6.1-sol",
+      "reasoningEffort": null,
+      "createdAt": 1792900520,
+      "updatedAt": 1792900525,
+      "recencyAt": 1792900520,
+      "status": {
+        "type": "idle"
+      },
+      "path": "/private/tmp/h05-admission-5tpyvaik/state/sessions/2026/10/25/rollout-2026-10-25T11-55-20-01a17132-d886-7e30-85fb-c0573479a2f4.jsonl",
+      "cwd": "/private/tmp/h05-admission-5tpyvaik/project",
+      "cliVersion": "0.164.0",
+      "originator": "Codex Desktop",
+      "source": "vscode",
+      "canAcceptDirectInput": true,
+      "threadSource": null,
+      "agentNickname": null,
+      "agentRole": null,
+      "gitInfo": null,
+      "name": null,
+      "daybreakEnabled": null,
+      "turns": [
+        {
+          "id": "01a17132-d899-7df2-a564-7bb80701ef4f",
+          "rootTurnId": "01a17132-d899-7df2-a564-7bb80701ef4f",
+          "items": [
+            {
+              "type": "userMessage",
+              "id": "01a17132-de74-72b0-be45-b97337d92749",
+              "clientId": null,
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This is an authorized, bounded hook integration check, not product work. Do not use tools, access files, delegate, or call services. Reply exactly C0_PROBE_INITIAL and finish normally. If a native Stop hook supplies the single pre-authorized canary continuation, follow that instruction once and finish; do not request or create additional work.\n",
+                  "text_elements": []
+                }
+              ]
+            },
+            {
+              "type": "agentMessage",
+              "id": "msg_047d7688f8845667016add7dab23ec81919796d02e96822a85",
+              "text": "C0_PROBE_INITIAL",
+              "phase": "final_answer",
+              "memoryCitation": null,
+              "delivery": null,
+              "questions": null
+            },
+            {
+              "type": "hookPrompt",
+              "id": "msg_01a17132-e4b2-7af2-9482-ab868edbe7af",
+              "fragments": [
+                {
+                  "text": "C0 probe only: reply exactly C0_PROBE_CONTINUATION_CONFIRMED, then finish. Do not run tools, modify files or perform product work.",
+                  "hookRunId": "stop:2:/private/tmp/h05-admission-5tpyvaik/project/.codex/hooks.json"
+                }
+              ]
+            },
+            {
+              "type": "agentMessage",
+              "id": "msg_047d7688f8845667016add7dad158c8191add971020313b00a",
+              "text": "C0_PROBE_CONTINUATION_CONFIRMED",
+              "phase": "final_answer",
+              "memoryCitation": null,
+              "delivery": null,
+              "questions": null
+            }
+          ],
+          "itemsView": "full",
+          "status": "completed",
+          "error": null,
+          "startedAt": 1792900520,
+          "completedAt": 1792900525,
+          "durationMs": 5023
+        }
+      ]
+    },
+    "readState": {
+      "firstUnread": {
+        "type": "turn",
+        "turnId": "01a17132-d899-7df2-a564-7bb80701ef4f"
+      },
+      "revision": "c0eed240-e781-4af2-a6a3-8b3cc8c175a2"
+    }
+  },
+  "server_exit": 0,
+  "finished_at": 1792900527.14416
+}

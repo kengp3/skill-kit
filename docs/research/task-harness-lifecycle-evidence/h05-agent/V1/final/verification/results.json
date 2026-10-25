@@ -1,0 +1,123 @@
+{
+  "passed": true,
+  "tests_run": 2,
+  "failures": 0,
+  "errors": 0,
+  "sha256": {
+    "harness/evidence.py": "db7b47ebf87c90c1691efbd884582892689d5064e41534bc84e4f035b33bc4fb",
+    "verification/test_evidence.py": "698e09770db1385647e28593332ca6019c112aa575c5ffd375fbf2fa47422b73",
+    "consistent.jsonl": "b3ec4c51189a33fd7fdacfcf38ea2d5e6cf53d2dbc151a919bd222dcf7345ff3",
+    "conflict.jsonl": "c1c7a48dad28855c6298d002883856a956842c076108805ee3b707949e730a71"
+  },
+  "summaries": {
+    "consistent": {
+      "sources": [
+        {
+          "path": "consistent.jsonl",
+          "sha256": "b3ec4c51189a33fd7fdacfcf38ea2d5e6cf53d2dbc151a919bd222dcf7345ff3"
+        }
+      ],
+      "turns": [
+        {
+          "id": "first",
+          "status": "completed",
+          "evidence": [
+            {
+              "source": "consistent.jsonl",
+              "line": 3
+            }
+          ]
+        }
+      ],
+      "coverage": "complete",
+      "final_turn_status": "completed",
+      "items": [
+        {
+          "thread_id": "root",
+          "turn_id": "first",
+          "item_id": "check",
+          "type": "commandExecution",
+          "status": "completed",
+          "exit_code": 0,
+          "evidence": [
+            {
+              "source": "consistent.jsonl",
+              "line": 1
+            },
+            {
+              "source": "consistent.jsonl",
+              "line": 2
+            }
+          ]
+        }
+      ],
+      "metrics": {
+        "commands_completed": 1,
+        "commands_nonzero": 0,
+        "command_outcomes_unknown": 0,
+        "help_requests": null,
+        "retries": null,
+        "repairs": null
+      },
+      "unverified": [
+        "Native command counts do not identify help, retries or repairs."
+      ]
+    },
+    "conflict": {
+      "sources": [
+        {
+          "path": "conflict.jsonl",
+          "sha256": "c1c7a48dad28855c6298d002883856a956842c076108805ee3b707949e730a71"
+        }
+      ],
+      "turns": [
+        {
+          "id": "first",
+          "status": "completed",
+          "evidence": [
+            {
+              "source": "conflict.jsonl",
+              "line": 3
+            }
+          ]
+        }
+      ],
+      "coverage": "partial",
+      "final_turn_status": "completed",
+      "items": [
+        {
+          "thread_id": "root",
+          "turn_id": "first",
+          "item_id": "check",
+          "type": "commandExecution",
+          "status": "unknown",
+          "exit_code": null,
+          "evidence": [
+            {
+              "source": "conflict.jsonl",
+              "line": 1
+            },
+            {
+              "source": "conflict.jsonl",
+              "line": 2
+            }
+          ]
+        }
+      ],
+      "metrics": {
+        "commands_completed": 0,
+        "commands_nonzero": 0,
+        "command_outcomes_unknown": 1,
+        "help_requests": null,
+        "retries": null,
+        "repairs": null
+      },
+      "unverified": [
+        "Conflicting item types: [{'source': 'conflict.jsonl', 'line': 1}, {'source': 'conflict.jsonl', 'line': 2}]",
+        "Some command outcomes are missing or conflicting.",
+        "Native command counts do not identify help, retries or repairs."
+      ]
+    }
+  },
+  "permutation_cases": 12
+}

@@ -1,6 +1,6 @@
 # H03：低負擔的任務生命週期
 
-Status: done（來源與離線範本驗證；Desktop 資格仍由 H05 處理）
+Status: done（來源與離線範本驗證；實際 agent 行為驗收仍由 H05 處理）
 Blocked by: None
 Spec: [任務合約與必要 hooks](../specs/task-harness-lifecycle.spec.md)
 

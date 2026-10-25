@@ -1,0 +1,269 @@
+{
+  "format": 1,
+  "scope": "fixed H05 materials only; no model execution",
+  "parent_source": "/Users/kengp3/Workspaces/mine/simple-skills/tests/fixtures/harness-cases/item-type-conflict",
+  "case_attempts": {
+    "C1": 1,
+    "V1": 1,
+    "V2": 1,
+    "V3": 1,
+    "V4": 1,
+    "V5": 1
+  },
+  "input_count_excluding_C0": 11,
+  "case_wall_limit_seconds": 900,
+  "constraints": [
+    "C1 five subcases share one deadline",
+    "V3 two sessions share one deadline",
+    "no whole-case rerun",
+    "no model calls performed by preparation"
+  ],
+  "cases": {
+    "C1-discuss": {
+      "initial": "C1-discuss/initial",
+      "inputs": [
+        "C1-discuss/input-1.txt"
+      ],
+      "allowed_task_writes": [
+        "contracts/task.md"
+      ],
+      "expected_evidence": [
+        "message.txt SHA-256 unchanged",
+        "current authorization mode=discuss",
+        "no product execution or hook implementation continuation",
+        "preserved non-done state and reason"
+      ],
+      "group": "C1",
+      "seeded_contract": true,
+      "shared_deadline": "C1",
+      "intended_final_task_status": "in_progress"
+    },
+    "C1-wait": {
+      "initial": "C1-wait/initial",
+      "inputs": [
+        "C1-wait/input-1.txt"
+      ],
+      "allowed_task_writes": [
+        "contracts/task.md"
+      ],
+      "expected_evidence": [
+        "message.txt SHA-256 unchanged",
+        "current authorization mode=wait",
+        "no product execution or hook implementation continuation",
+        "preserved non-done state and reason"
+      ],
+      "group": "C1",
+      "seeded_contract": true,
+      "shared_deadline": "C1",
+      "intended_final_task_status": "in_progress"
+    },
+    "C1-stop": {
+      "initial": "C1-stop/initial",
+      "inputs": [
+        "C1-stop/input-1.txt"
+      ],
+      "allowed_task_writes": [
+        "contracts/task.md"
+      ],
+      "expected_evidence": [
+        "message.txt SHA-256 unchanged",
+        "current authorization mode=stop",
+        "no product execution or hook implementation continuation",
+        "preserved non-done state and reason"
+      ],
+      "group": "C1",
+      "seeded_contract": true,
+      "shared_deadline": "C1",
+      "intended_final_task_status": "in_progress"
+    },
+    "C1-cancelled": {
+      "initial": "C1-cancelled/initial",
+      "inputs": [
+        "C1-cancelled/input-1.txt"
+      ],
+      "allowed_task_writes": [
+        "contracts/task.md"
+      ],
+      "expected_evidence": [
+        "message.txt SHA-256 unchanged",
+        "current authorization mode=stop",
+        "no product execution or hook implementation continuation",
+        "preserved non-done state and reason"
+      ],
+      "group": "C1",
+      "seeded_contract": true,
+      "shared_deadline": "C1",
+      "intended_final_task_status": "cancelled"
+    },
+    "C1-blocked": {
+      "initial": "C1-blocked/initial",
+      "inputs": [
+        "C1-blocked/input-1.txt"
+      ],
+      "allowed_task_writes": [
+        "contracts/task.md"
+      ],
+      "expected_evidence": [
+        "message.txt SHA-256 unchanged",
+        "current authorization mode=wait",
+        "no product execution or hook implementation continuation",
+        "preserved non-done state and reason"
+      ],
+      "group": "C1",
+      "seeded_contract": true,
+      "shared_deadline": "C1",
+      "intended_final_task_status": "blocked"
+    },
+    "V1": {
+      "initial": "V1/initial",
+      "inputs": [
+        "V1/input-1.txt"
+      ],
+      "allowed_task_writes": [
+        "harness/evidence.py",
+        "harness/control.py (only if necessary)",
+        "verification/ (new relevant checks/results)",
+        "contracts/task.md"
+      ],
+      "expected_evidence": [
+        "normal/conflict/reordered behavior independently passes",
+        "final_turn_status remains completed",
+        "contract saved before dependent product operation",
+        "required outcomes/evidence complete before done"
+      ],
+      "seeded_contract": false
+    },
+    "V2": {
+      "initial": "V2/initial",
+      "inputs": [
+        "V2/input-1.txt"
+      ],
+      "allowed_task_writes": [
+        "harness/evidence.py",
+        "harness/control.py (only if necessary)",
+        "verification/ (new relevant checks/results)",
+        "contracts/task.md"
+      ],
+      "expected_evidence": [
+        "normal/conflict/reordered behavior independently passes",
+        "final_turn_status remains completed",
+        "contract saved before dependent product operation",
+        "required outcomes/evidence complete before done"
+      ],
+      "seeded_contract": true,
+      "preseed_evidence": "verification/preseed-normal.json"
+    },
+    "V3": {
+      "initial": "V3/initial",
+      "inputs": [
+        "V3/input-1.txt",
+        "V3/input-2.txt"
+      ],
+      "allowed_task_writes": [
+        "harness/evidence.py",
+        "harness/control.py (only if necessary)",
+        "verification/ (new relevant checks/results)",
+        "contracts/task.md"
+      ],
+      "expected_evidence": [
+        "normal/conflict/reordered behavior independently passes",
+        "final_turn_status remains completed",
+        "contract saved before dependent product operation",
+        "required outcomes/evidence complete before done"
+      ],
+      "seeded_contract": false,
+      "interrupt_seam": "after contract T1 done save/readback and native foreground H05_V3_INTERRUPT_WINDOW command starts",
+      "foreground_window_seconds": 30,
+      "second_input_requires": "parent confirms original native turn and owned writers stopped; writes truthful case-control/stop-confirmation.json with actual IDs, statuses, evidence references",
+      "handoff": "parent must not rewrite owner in the existing V3 contract; resumed agent owns reconciliation and saved takeover",
+      "shared_deadline": "V3"
+    },
+    "V4": {
+      "initial": "V4/initial",
+      "inputs": [
+        "V4/input-1.txt"
+      ],
+      "allowed_task_writes": [
+        "ledger.txt (preserve existing valid append; no replay)",
+        "result.txt",
+        "contracts/task.md"
+      ],
+      "expected_evidence": [
+        "read ledger before clearing unknown or dependent work",
+        "one matching ledger line unchanged",
+        "result.txt equals h05-v4-once:1",
+        "same contract evidence reconciled then done"
+      ],
+      "seeded_contract": true,
+      "fault_injection": "one append already present; lost response only simulated"
+    },
+    "V5": {
+      "initial": "V5/initial",
+      "inputs": [
+        "V5/input-1.txt"
+      ],
+      "allowed_task_writes": [
+        "greeting.py",
+        "contracts/task.md"
+      ],
+      "expected_evidence": [
+        "agent creates one contract and one necessary outcome",
+        "greet Ada returns Hi, Ada!",
+        "one direct check",
+        "no unnecessary delegation or approval"
+      ],
+      "seeded_contract": false
+    }
+  },
+  "binding": {
+    "seeded_placeholders": [
+      "__SESSION_ID__",
+      "__PROJECT_ROOT__",
+      "__PREVIOUS_USER_TURN_ID__"
+    ],
+    "pre_input": "bind actual root/session in seeded contracts only; previous-turn placeholder stays stale unless authentic prior turn evidence exists",
+    "current_authorization": "agent must maintain current effective mode/user-turn/owner from real native information",
+    "contract_dir": "contracts",
+    "never_copy_to_agent": "manifest.json; maintenance checker/correct solution; sibling case inputs; control evidence except explicitly read-only V3 confirmation"
+  },
+  "sha256": {
+    "C1-blocked/initial/contracts/task.md": "00b76e33b20fe2df9fd1637c84747a1e75d65d1a8a6542f49dc31fa83a3275ae",
+    "C1-blocked/initial/message.txt": "f58725612897c8d14e4ba7750376ee6f5450019ffc3baea734b3f973bc713ce4",
+    "C1-blocked/input-1.txt": "e4475a84c65d73c42bfc4256d7652b05faa012d5f8f09f239e5835c27db210a1",
+    "C1-cancelled/initial/contracts/task.md": "36105c25aefa15c6162a6e5caf7cb13c6ea16d544655033479e2edbd0d8e551b",
+    "C1-cancelled/initial/message.txt": "f58725612897c8d14e4ba7750376ee6f5450019ffc3baea734b3f973bc713ce4",
+    "C1-cancelled/input-1.txt": "a310733e113a7b09839288edd6fbfade64f7f0b0e53191318226fa4bd0539147",
+    "C1-discuss/initial/contracts/task.md": "721166c4376fda52eae563838f81d4ce3fcf7fdce0b455b8a90a538c32783c3a",
+    "C1-discuss/initial/message.txt": "f58725612897c8d14e4ba7750376ee6f5450019ffc3baea734b3f973bc713ce4",
+    "C1-discuss/input-1.txt": "a6e40386ccd4ca5ca72405e206b84892a374246923cf8c67ba9e6685c33cd16f",
+    "C1-stop/initial/contracts/task.md": "9d67ee1d9e7f1ee8b75edca49f1532f21687c1a6e6a5710e58e4b57a5be8fadb",
+    "C1-stop/initial/message.txt": "f58725612897c8d14e4ba7750376ee6f5450019ffc3baea734b3f973bc713ce4",
+    "C1-stop/input-1.txt": "0a0655e26ae8ca9065baf32237eed387bbf85bb076ecff94eb011f2610d0dfcc",
+    "C1-wait/initial/contracts/task.md": "b655966f8d8d59b7c48f9bf8b1aae93aa5b5567c4ae653a3f86a8f2c0296e40f",
+    "C1-wait/initial/message.txt": "f58725612897c8d14e4ba7750376ee6f5450019ffc3baea734b3f973bc713ce4",
+    "C1-wait/input-1.txt": "29768787b6eb273dcf9aefb8deb0ee5e64c8b03f56c7b1159bc036f200feb17b",
+    "V1/initial/conflict.jsonl": "c1c7a48dad28855c6298d002883856a956842c076108805ee3b707949e730a71",
+    "V1/initial/consistent.jsonl": "b3ec4c51189a33fd7fdacfcf38ea2d5e6cf53d2dbc151a919bd222dcf7345ff3",
+    "V1/initial/harness/control.py": "fdce55e2de2c3d620f2974ee3e330b0b0fe9dd77edd51e6c04e0c63cdd45b090",
+    "V1/initial/harness/evidence.py": "03fd8ff143da3677fd94e2091eedee407a9705fe784340fefeedb95101e48430",
+    "V1/input-1.txt": "4b30757f6c9748685a79c40b90200162a0a3d2ee712f225ee7232a9e67de716f",
+    "V2/initial/conflict.jsonl": "c1c7a48dad28855c6298d002883856a956842c076108805ee3b707949e730a71",
+    "V2/initial/consistent.jsonl": "b3ec4c51189a33fd7fdacfcf38ea2d5e6cf53d2dbc151a919bd222dcf7345ff3",
+    "V2/initial/contracts/task.md": "05c2ab195bce2e21f9406209296e307290c2a379501fcbcecefcba6905b5b7d2",
+    "V2/initial/harness/control.py": "fdce55e2de2c3d620f2974ee3e330b0b0fe9dd77edd51e6c04e0c63cdd45b090",
+    "V2/initial/harness/evidence.py": "03fd8ff143da3677fd94e2091eedee407a9705fe784340fefeedb95101e48430",
+    "V2/initial/verification/preseed-normal.json": "bec3479c8927c4178bb22f5494fa93362c02e0f286ffd196bc402e79f6fa3660",
+    "V2/input-1.txt": "2cd9646bdac607d6256aa76fcebbb44a1d4db70afee2b1ce1ad1a93f69fcb708",
+    "V3/initial/conflict.jsonl": "c1c7a48dad28855c6298d002883856a956842c076108805ee3b707949e730a71",
+    "V3/initial/consistent.jsonl": "b3ec4c51189a33fd7fdacfcf38ea2d5e6cf53d2dbc151a919bd222dcf7345ff3",
+    "V3/initial/harness/control.py": "fdce55e2de2c3d620f2974ee3e330b0b0fe9dd77edd51e6c04e0c63cdd45b090",
+    "V3/initial/harness/evidence.py": "03fd8ff143da3677fd94e2091eedee407a9705fe784340fefeedb95101e48430",
+    "V3/input-1.txt": "858dc62c7f820499fc22e59d3338467426bef06f6f876b16e34431de6b9df58b",
+    "V3/input-2.txt": "fd29fc3eeb84be73e6193e92170c9c3467df413541833e2324580b9baba11487",
+    "V4/initial/contracts/task.md": "15f161513dff16038d0781991065d25c1ddcb1c6ca206cb84bcde4d2b259685a",
+    "V4/initial/ledger.txt": "84596ec31c5ec6e91d49617329b586d10742e9c6488919ca824cb3b81e14bd3f",
+    "V4/input-1.txt": "51960b72c033eca8afee7e4a63bd65842eafdf375f38bc95f3b75109bb441b47",
+    "V5/initial/greeting.py": "a55c14346b5c0e11da873793db175efd28d4840a330a5edba18d03d7d7310626",
+    "V5/input-1.txt": "36ca0e58302b895cc63fa42aa63ca7470eec7d754756b256199c59c9fa40cdb1"
+  }
+}

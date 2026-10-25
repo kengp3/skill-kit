@@ -1,6 +1,6 @@
 # H02：完整 hook 候選封裝
 
-Status: done (source and offline package checks; Desktop qualification remains H05)
+Status: done (source and offline package checks; actual agent behavior acceptance remains H05)
 Blocked by: H01、H03
 Spec: [任務合約與必要 hooks](../specs/task-harness-lifecycle.spec.md)
 

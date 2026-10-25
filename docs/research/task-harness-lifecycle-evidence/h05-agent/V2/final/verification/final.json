@@ -1,0 +1,174 @@
+{
+  "criteria_source": "Latest user behavior contract, no maintainer checker",
+  "source_sha256": "15fe482e3fa32b5b73eec34ebe8d28df9268e950a7376be5e25091563f9cbd2b",
+  "check_sha256": "4f3553c63e72cd8a1b7dcb84ff2a74f36bb69c1375a82e8d3adf241654274d32",
+  "input_sha256": {
+    "consistent.jsonl": "b3ec4c51189a33fd7fdacfcf38ea2d5e6cf53d2dbc151a919bd222dcf7345ff3",
+    "conflict.jsonl": "c1c7a48dad28855c6298d002883856a956842c076108805ee3b707949e730a71",
+    "verification/preseed-normal.json": "bec3479c8927c4178bb22f5494fa93362c02e0f286ffd196bc402e79f6fa3660"
+  },
+  "reversed_derivation": "Swap first two conflict item records; retain independent terminal record",
+  "passed": true,
+  "failures": [],
+  "results": {
+    "normal": {
+      "sources": [
+        {
+          "path": "/private/tmp/h05-admission-5tpyvaik/project/cases/V2/consistent.jsonl",
+          "sha256": "b3ec4c51189a33fd7fdacfcf38ea2d5e6cf53d2dbc151a919bd222dcf7345ff3"
+        }
+      ],
+      "turns": [
+        {
+          "id": "first",
+          "status": "completed",
+          "evidence": [
+            {
+              "source": "/private/tmp/h05-admission-5tpyvaik/project/cases/V2/consistent.jsonl",
+              "line": 3
+            }
+          ]
+        }
+      ],
+      "coverage": "complete",
+      "final_turn_status": "completed",
+      "items": [
+        {
+          "thread_id": "root",
+          "turn_id": "first",
+          "item_id": "check",
+          "type": "commandExecution",
+          "status": "completed",
+          "exit_code": 0,
+          "evidence": [
+            {
+              "source": "/private/tmp/h05-admission-5tpyvaik/project/cases/V2/consistent.jsonl",
+              "line": 2
+            }
+          ]
+        }
+      ],
+      "metrics": {
+        "commands_completed": 1,
+        "commands_nonzero": 0,
+        "command_outcomes_unknown": 0,
+        "help_requests": null,
+        "retries": null,
+        "repairs": null
+      },
+      "unverified": [
+        "Native command counts do not identify help, retries or repairs."
+      ]
+    },
+    "conflict": {
+      "sources": [
+        {
+          "path": "/private/tmp/h05-admission-5tpyvaik/project/cases/V2/conflict.jsonl",
+          "sha256": "c1c7a48dad28855c6298d002883856a956842c076108805ee3b707949e730a71"
+        }
+      ],
+      "turns": [
+        {
+          "id": "first",
+          "status": "completed",
+          "evidence": [
+            {
+              "source": "/private/tmp/h05-admission-5tpyvaik/project/cases/V2/conflict.jsonl",
+              "line": 3
+            }
+          ]
+        }
+      ],
+      "coverage": "partial",
+      "final_turn_status": "completed",
+      "items": [
+        {
+          "thread_id": "root",
+          "turn_id": "first",
+          "item_id": "check",
+          "type": "commandExecution",
+          "status": "unknown",
+          "exit_code": null,
+          "evidence": [
+            {
+              "source": "/private/tmp/h05-admission-5tpyvaik/project/cases/V2/conflict.jsonl",
+              "line": 1
+            },
+            {
+              "source": "/private/tmp/h05-admission-5tpyvaik/project/cases/V2/conflict.jsonl",
+              "line": 2
+            }
+          ]
+        }
+      ],
+      "metrics": {
+        "commands_completed": 0,
+        "commands_nonzero": 0,
+        "command_outcomes_unknown": 1,
+        "help_requests": null,
+        "retries": null,
+        "repairs": null
+      },
+      "unverified": [
+        "Conflicting item types: [{'source': '/private/tmp/h05-admission-5tpyvaik/project/cases/V2/conflict.jsonl', 'line': 1}, {'source': '/private/tmp/h05-admission-5tpyvaik/project/cases/V2/conflict.jsonl', 'line': 2}]",
+        "Some command outcomes are missing or conflicting.",
+        "Native command counts do not identify help, retries or repairs."
+      ]
+    },
+    "reversed": {
+      "sources": [
+        {
+          "path": "/private/tmp/h05-admission-5tpyvaik/project/cases/V2/verification/tmpj9t1qj4s/reversed.jsonl",
+          "sha256": "b154a767dd710157331c53a4eaf16bac2fe5aad08e849b3ea621c792784add55"
+        }
+      ],
+      "turns": [
+        {
+          "id": "first",
+          "status": "completed",
+          "evidence": [
+            {
+              "source": "/private/tmp/h05-admission-5tpyvaik/project/cases/V2/verification/tmpj9t1qj4s/reversed.jsonl",
+              "line": 3
+            }
+          ]
+        }
+      ],
+      "coverage": "partial",
+      "final_turn_status": "completed",
+      "items": [
+        {
+          "thread_id": "root",
+          "turn_id": "first",
+          "item_id": "check",
+          "type": "commandExecution",
+          "status": "unknown",
+          "exit_code": null,
+          "evidence": [
+            {
+              "source": "/private/tmp/h05-admission-5tpyvaik/project/cases/V2/verification/tmpj9t1qj4s/reversed.jsonl",
+              "line": 1
+            },
+            {
+              "source": "/private/tmp/h05-admission-5tpyvaik/project/cases/V2/verification/tmpj9t1qj4s/reversed.jsonl",
+              "line": 2
+            }
+          ]
+        }
+      ],
+      "metrics": {
+        "commands_completed": 0,
+        "commands_nonzero": 0,
+        "command_outcomes_unknown": 1,
+        "help_requests": null,
+        "retries": null,
+        "repairs": null
+      },
+      "unverified": [
+        "Conflicting item types: [{'source': '/private/tmp/h05-admission-5tpyvaik/project/cases/V2/verification/tmpj9t1qj4s/reversed.jsonl', 'line': 1}, {'source': '/private/tmp/h05-admission-5tpyvaik/project/cases/V2/verification/tmpj9t1qj4s/reversed.jsonl', 'line': 2}]",
+        "Some command outcomes are missing or conflicting.",
+        "Native command counts do not identify help, retries or repairs."
+      ]
+    }
+  }
+}

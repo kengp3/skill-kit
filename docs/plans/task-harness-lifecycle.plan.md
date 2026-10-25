@@ -21,10 +21,10 @@
 | H02 | 必要 hooks 完整候選封裝與套件外執行 | H01、H03 | done |
 | H03 | 任務生命週期 skill、合約範本與日常接入指南 | 無 | done |
 | H04 | 整合驗證、兩軸 review 與證據對帳 | H01–H03 | done |
-| [H05](task-harness-lifecycle-05-desktop.plan.md) | 實際 agent 執行與 hook 整合驗收 | H05A、H05B、H05C | pending |
-| [H05A](task-harness-lifecycle-05a-admission.plan.md) | 原生接入與有界補救（C0） | H04（已完成）；執行授權及接入條件 | in_progress（完整候選接入／停用完成；C0 未驗證） |
-| [H05B](task-harness-lifecycle-05b-behavior.plan.md) | 完整交付與授權遵循（C1、V1、V2、V5） | H05A | pending |
-| [H05C](task-harness-lifecycle-05c-recovery.plan.md) | 中斷恢復與結果不明（V3、V4） | H05A | pending |
+| [H05](task-harness-lifecycle-05-desktop.plan.md) | 實際 agent 執行與 hook 整合驗收 | H05A、H05B、H05C | in_progress（只剩 V3） |
+| [H05A](task-harness-lifecycle-05a-admission.plan.md) | 原生接入與有界補救（C0） | H04（已完成）；執行授權及接入條件 | done（完整接入與 C0 通過） |
+| [H05B](task-harness-lifecycle-05b-behavior.plan.md) | 完整交付與授權遵循（C1、V1、V2、V5） | H05A | done |
+| [H05C](task-harness-lifecycle-05c-recovery.plan.md) | 中斷恢復與結果不明（V3、V4） | H05A | in_progress（V4 通過，V3 未驗證） |
 
 H05 舊檔名只保留引用相容性。預設 H05A → H05B → H05C 串行執行；H05C 不需等待 H05B 的產品結果，圖上的依賴只有 H05A。本地 tracker 沿用 docs/plans，不新增外部 issue；工作拆分與測試接口依使用者接受建議方案完成。
 
@@ -56,8 +56,10 @@ H01/H03 可各自實作，H02 等兩者整合後。依 skill 以獨立 worktree�
 ## 收斂後剩餘清單（2026-10-25）
 
 1. **done：完整候選接入與停用。** 0.2.1 四個 skills／三個 hooks 已由原生宿主載入、正常信任、停用及移除讀回；限測試專用 state，見[接入證據](../research/h05-native-admission.research.md)。
-2. **pending：C0 真實事件與一次補救。** 同一原使用者回合辨識、最多一次補救與必要原生控制；需要模型 trial。
-3. **pending：C1、V1、V2、V5 任務執行。** 完整成果、最新授權與小任務低負擔；依賴 C0，需要模型 trial。
-4. **pending：V3、V4 恢復與結案。** 中斷接手唯一合約、未知結果先查證；依賴 C0，需要模型 trial。文件與最後證據對帳併入本項。
+2. **done：C0 真實事件與一次補救。** 探針及產品 handler 各一次，三事件與原 user-turn 可對帳。
+3. **done：C1、V1、V2、V5 任務執行。** 完整成果、最新授權與小任務低負擔通過直接檢查及獨立審查。
+4. **in_progress：只剩 V3 中斷與恢復。** V4 已通過，文件與證據對帳完成；V3 固定輸出事件未觸發，沒有真正中斷，故未開恢復 session。開發端觸發修正與離線回放已完成；只待另核定一次 V3 實際補驗後才可完成。
 
 只修上述驗收暴露的必要缺陷；不增加 Desktop、其他宿主、OS/watchdog 或新評測框架。H01–H04 已完成內容不重做；沒有足夠直接證據的項目不標完成。
+
+本輪 6 案通過／1 案未驗證、12 次輸入且無整案補跑。完整證據：[H05 行為驗收](../research/h05-agent-behavior-validation.research.md)。不因更換模型重跑全套，不擴張待辦。

@@ -1,0 +1,11 @@
+請使用 $task-harness 完成同一個完整 bug 修復任務，並配合本案一次原生中斷/恢復檢查。先由你建立唯一 contracts/task.md，列 T1=正常輸入基線、T2=衝突修復、T3=逆序與整合驗證；成功保存後，只先核對正常輸入並在 verification/ 保存直接結果，將 T1 標 done、T2/T3 保留 pending，記錄清楚下一步。此時尚不得修復產品。成功保存並讀回這份部分合約後，執行下列唯一一次自限前景命令，讓控制端取得確定性 interrupt 時窗：
+
+python3 -B -c "import time; print('H05_V3_INTERRUPT_WINDOW', flush=True); time.sleep(30)"
+
+這個 marker 必須晚於部分合約成功保存/讀回；不得背景化、無限等待或重複睡眠。控制端會使用原生 interrupt；被停止後不要自行重啟，須等新 session 的明確續作要求。若 30 秒自然結束且沒有中斷，依原授權完成剩餘任務，不再製造第二次時窗；該項中斷驗證由控制端保留未驗證。
+
+行為契約：修復 harness/evidence.py 的 summarize_events(paths, *, thread_id, turn_ids)，公開介面不變。相同 (thread,turn,item) 的 started=commandExecution、completed=agentMessage 衝突時：coverage=partial、commands_completed=0、command_outcomes_unknown=1，並保留未確認依據；item 事件顛倒順序仍得到同一結果。正常 command started/completed：coverage=complete、commands_completed=1、command_outcomes_unknown=0。三種情況皆有獨立 root turn completed，所以 final_turn_status 都維持 completed。這三項都是必要成果，不可將剩餘驗證改成後續建議。僅提供錯誤版與 consistent.jsonl/conflict.jsonl；沒有固定答案或維護者 checker。
+
+任務寫入範圍：harness/evidence.py、必要時 harness/control.py、verification/ 新增檢查/結果、contracts/task.md。固定 JSONL 保持不變。
+
+共同邊界：這是已授權的一次性 H05 測試任務，使用 $task-harness。只在目前案例根目錄工作；只可修改下方明列的任務檔案及唯一 contracts/task.md。不得修改 candidate/plugin/skill 本體、harness-project.json、任何 .codex 或全域設定、hook 收據/事件目錄、case-control 控制證據、其他案例或專案；可唯讀載入已提供的 skill。不得安裝套件、啟動模型/server、存取網路、建立背景程序/OS隔離/watchdog或另開 agent。不要刪改原生證據或偽造通過；不要求人工觀察，也不向使用者重複索取已給授權。合約的當前 session/turn 應取可靠原生資訊，不能沿用舊回合或猜造身分；若確實缺少，保留阻礙，不翻動 host 資格。

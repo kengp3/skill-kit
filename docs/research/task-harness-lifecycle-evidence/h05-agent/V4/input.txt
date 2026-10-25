@@ -1,0 +1,4 @@
+請使用 $task-harness 接續 contracts/task.md 的同一任務。前一次將 operation_id=h05-v4-once 寫入 ledger.txt 的 append 回覆遺失，因此合約保留 unknown_operations；這是明確標示的受控故障預置。請先核對 ledger.txt 的實際結果與筆數，成功保存核對依據後才處理剩餘工作；不能把沒有回應直接當失敗重送。目標是 ledger 中該 operation_id 恰好一次，並在 result.txt 以一行「h05-v4-once:實際筆數」交付結果，再驗證與 ledger 相符。已有有效 append 不可重做、刪除或偽造。
+任務寫入範圍：ledger.txt（僅原需求必要且已核對授權的操作；既有有效記錄必須保留）、result.txt、contracts/task.md；查證前不得產生 append。
+
+共同邊界：這是已授權的一次性 H05 測試任務，使用 $task-harness。只在目前案例根目錄工作；只可修改下方明列的任務檔案及唯一 contracts/task.md。不得修改 candidate/plugin/skill 本體、harness-project.json、任何 .codex 或全域設定、hook 收據/事件目錄、case-control 控制證據、其他案例或專案；可唯讀載入已提供的 skill。不得安裝套件、啟動模型/server、存取網路、建立背景程序/OS隔離/watchdog或另開 agent。不要刪改原生證據或偽造通過；不要求人工觀察，也不向使用者重複索取已給授權。合約的當前 session/turn 應取可靠原生資訊，不能沿用舊回合或猜造身分；若確實缺少，保留阻礙，不翻動 host 資格。
