@@ -1,0 +1,23 @@
+Targeted boundary retry outside the outer tool sandbox; not a hosted CI run
+Command: ['/opt/homebrew/opt/python@3.15/bin/python3.15', '-B', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_harness_boundary.py', '-v']
+test_can_write_only_in_disposable_workspace (test_harness_boundary.BoundaryTest.test_can_write_only_in_disposable_workspace) ... ok
+test_child_receives_only_isolated_state_and_explicit_toolchain (test_harness_boundary.BoundaryTest.test_child_receives_only_isolated_state_and_explicit_toolchain) ... ok
+test_existing_attempt_is_not_overwritten (test_harness_boundary.BoundaryTest.test_existing_attempt_is_not_overwritten) ... ok
+test_existing_output_alias_cannot_overwrite_daily_file (test_harness_boundary.BoundaryTest.test_existing_output_alias_cannot_overwrite_daily_file) ... ok
+test_file_size_guard_bounds_writable_output (test_harness_boundary.BoundaryTest.test_file_size_guard_bounds_writable_output) ... ok
+test_memory_cpu_and_process_count_guards_stop_owned_job (test_harness_boundary.BoundaryTest.test_memory_cpu_and_process_count_guards_stop_owned_job) ... ok
+test_monitor_failure_still_terminates_owned_group_and_preserves_unrelated_worker (test_harness_boundary.BoundaryTest.test_monitor_failure_still_terminates_owned_group_and_preserves_unrelated_worker) ... ok
+test_only_one_owned_job_runs_at_a_time (test_harness_boundary.BoundaryTest.test_only_one_owned_job_runs_at_a_time) ... ok
+test_parent_exit_and_failure_also_reap_remaining_child (test_harness_boundary.BoundaryTest.test_parent_exit_and_failure_also_reap_remaining_child) ... ok
+test_real_loopback_listener_is_unreachable (test_harness_boundary.BoundaryTest.test_real_loopback_listener_is_unreachable) ... ok
+test_runtime_symlink_cannot_escape_write_scope (test_harness_boundary.BoundaryTest.test_runtime_symlink_cannot_escape_write_scope) ... ok
+test_threaded_launch_needs_no_preexec_callback_and_remains_bounded (test_harness_boundary.BoundaryTest.test_threaded_launch_needs_no_preexec_callback_and_remains_bounded) ... ok
+test_timeout_and_cancel_reap_children_without_touching_unrelated_worker (test_harness_boundary.BoundaryTest.test_timeout_and_cancel_reap_children_without_touching_unrelated_worker) ... ok
+test_unavailable_sandbox_fails_closed_before_child_execution (test_harness_boundary.BoundaryTest.test_unavailable_sandbox_fails_closed_before_child_execution) ... ok
+test_unknown_daily_root_and_model_command_are_rejected (test_harness_boundary.BoundaryTest.test_unknown_daily_root_and_model_command_are_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 3.345s
+
+OK
+Exit: 0

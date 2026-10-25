@@ -1,0 +1,28 @@
+Local static readback; not GitHub schema validation or remote execution
+Command: ['ruby', '-ryaml', '-e', 'data = YAML.load_file(ARGV.fetch(0)); abort "not a mapping" unless data.is_a?(Hash); puts "YAML parsed: #{data.keys.join(", ")}"', '.github/workflows/tests.yml']
+YAML parsed: name, on, permissions, jobs
+Exit: 0
+Command: ['git', 'diff', '--check']
+Exit: 0
+Shell syntax checked without running suite: python3 -B -m unittest discover -s tests -p 'test_*.py'
+Exit: 0
+Local link OK: ../specs/harness-validation-gap-closure.spec.md
+Local link OK: ../plans/harness-validation-gap-closure.plan.md
+Local link OK: ../../.github/workflows/tests.yml
+Local link OK: ../../README.md
+Local link OK: ../../tests/harness/boundary.py
+Local link OK: ../../tests/test_migration_review.py
+Local link OK: ../../tests/test_project_setting.py
+Local link OK: ../../tests/test_harness_package.py
+Local link OK: ../../tests/test_task_harness_hooks.py
+Local link OK: ../../tests/test_run_check.py
+Local link OK: ../../tests/test_project_setting.py
+Local link OK: harness-gap-closure-ci-evidence/local-checks.txt
+Local link OK: harness-gap-closure-ci-evidence/static-checks.txt
+Local link OK: harness-gap-closure-ci-evidence/local-checks.txt
+Local link OK: harness-gap-closure-ci-evidence/local-boundary-unsandboxed.txt
+Local link OK: harness-gap-closure-ci-evidence/local-checks.txt
+Local link OK: harness-gap-closure-ci-evidence/local-checks.txt
+Local link OK: harness-gap-closure-ci-evidence/local-checks.txt
+Local link OK: ../specs/harness-validation-gap-closure.spec.md
+Manual readback: one macos-15 job, push/pull_request, contents read only, pinned official checkout, credentials not persisted, timeout 10 minutes, README unittest command.
