@@ -4,7 +4,7 @@
 
 **Blocked by:** T02
 
-**Status:** ready-for-agent
+**Status:** implemented-pending-acceptance
 
 依據：[實作規格](../specs/unified-project-settings.spec.md)。使用者已確認 T01–T08 拆分與依賴。
 
@@ -19,3 +19,9 @@
 B、C 的逐項對帳、三門檻證據、負例與檔案／位置對照。
 
 狀態更新只能依實際成果；調查、離線測試與真實行為驗收分別判定。
+
+## 實作與驗證紀錄
+
+已實作 harness 自帶的移轉／修復操作規格及觸發指向，涵蓋逐項對帳、保留完整檔名、三項刪檔門檻、未知資料與衝突保留、路徑邊界及中斷恢復。沒有新增日常依賴的 parser 或移轉腳本。
+
+參照連結、文件讀回及 diff 檢查通過；B／C 的真實行為與整合驗收結果須另以實際 agent 及產物證據核對，尚不能由操作文件宣稱完成。
