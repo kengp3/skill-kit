@@ -53,7 +53,7 @@
 [Codex hooks 範本](../assets/codex-hooks.json)隨 task-harness 交付，是唯一來源；純複製 skill 安裝可直接取得，plugin 的 hooks 定義也由同一資源建包。只在明確包含 task-harness 的本次接入／修復授權內，將本節及範本提供給 project-setting 操作；不修改全域設定。
 
 1. 先核對目前宿主為 Codex，讀取專案 `.codex/hooks.json` 與 `.codex/config.toml`，並查核本專案已載入的 plugin hooks。若已有內嵌 `[hooks]`，沿用 TOML；同層 JSON 與內嵌定義並存且有效來源不明時先回報，不覆寫或另加一份。其他宿主沒有已確認的接線規格時，回報能力缺口並由模型接手，不直接套用 Codex 格式。
-2. 依範本的事件與完整 handler 定義比對已載入來源。相同事件及 handler 已由 plugin 或專案提供時沿用，不再加入；plugin 的相同定義即使未信任，也不能藉建立專案副本繞過信任。不同的既有 handler 保留，無法確定歸屬的自訂內容先回報。
+2. 比對已載入來源的事件、完整 handler 定義及 matcher／事件來源的有效覆蓋範圍。三者等效且涵蓋範本的無 matcher 範圍時才沿用、不再加入；plugin 的等效定義即使未信任，也不能藉建立專案副本繞過信任。相同命令若只涵蓋 startup 等受限來源，或覆蓋範圍不明，保留原群組並回報為部分／自訂接入，不能視為已涵蓋 resume、compact 等其他來源。依本次明確授權釐清與修復範圍，不自行擴大既有 matcher，也不盲目新增重疊副本。不同的既有 handler 與無法確定歸屬的內容仍保留。
 3. 需要新增時，僅將範本的 `SessionStart`、`UserPromptSubmit`、`Stop` handler 合併到上述唯一專案來源，保留 matcher 群組與其他設定；新 handler 使用無 matcher 群組，不擴大既有 matcher。若宿主使用 JSON，範本的 `hooks` 是合併內容，不整份覆寫檔案。無論是否新增 handler，都按本次啟用意圖核對 `[features]` 的 `hooks = true`；原值為 false 時回報變更，明確要求維持停用時保留原值。
 4. 讀回確認新增定義、來源唯一、沒有重複、無關內容保留。按宿主 `/hooks` 正常流程審查／信任精確定義，重新載入後查核事件；需人工信任時回報具體位置，其他工作依模型接手規則繼續。不要自行寫入虛假已信任／已執行旗標，也不要求使用者安裝 runtime。
 
