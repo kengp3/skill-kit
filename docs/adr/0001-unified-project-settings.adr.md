@@ -1,6 +1,6 @@
 # 由 project-setting 統一管理專案設定
 
-日期：2026-10-25。狀態：本輪設定整合、模型主導流程、模型分工、最低驗收及交付範圍的決策已記錄，待整體定稿確認；具體實作與宿主能力仍待驗證，尚未實作。
+日期：2026-10-25。狀態：決策已採用，使用者已確認 T01–T08 並授權實作；0.3.0 來源與隔離驗收依[實作規格](../specs/unified-project-settings.spec.md)進行，實際證據與能力限制見[行為驗收報告](../research/unified-project-settings-acceptance.research.md)。
 
 本輪範圍包含三項必要調整：整合 project-setting 與 task-harness 的設定方式；去除 task-harness 對 runtime script 的必要依賴，腳本改為選配，以 hooks 觸發流程要求並內建不可用時的接手流程；允許依任務階段、任務及 agent 分別設定使用模型。三項調整須一併交付。
 
@@ -10,7 +10,7 @@ task-harness 核心不得依賴任何 runtime script；所有此類腳本皆為�
 
 task-harness 主要使用模型能力完成設定判讀、任務拆解、模型分工決策、進度核對與驗收判斷；任何外部工具、CLI、MCP 服務或 runtime script 均不得成為核心使用前提。選配工具可以提供輔助證據或自動化，但缺少時不能阻擋 task-harness 使用，也不能以外部 dispatcher 或 validator 取代原本的必要腳本依賴。這是 harness 本身的依賴限制；個別任務所需的實際操作或測試，仍須如實記錄執行證據，不能以模型判斷宣稱未執行的測試已通過。
 
-使用者指定以 hooks 的強制力作為不依賴 runtime script 的方向；hooks 仍屬標準接入流程，負責在關鍵生命週期觸發流程要求，內容判讀與後續行動主要由模型完成。宿主事件觸發、指令注入、條件式阻擋及續作是不同能力，須依實際支援與證據界定；不能把固定提醒宣稱為已機械檢查合約，也不能將原 Python handler 的條件判斷或原子收據保證直接視為仍然存在。無外部工具依賴的具體 hook 接線與控制能力仍待驗證，不預設先前提出的系統命令接線已獲同意。
+使用者指定以 hooks 的強制力作為不依賴 runtime script 的方向；hooks 仍屬標準接入流程，負責在關鍵生命週期觸發流程要求，內容判讀與後續行動主要由模型完成。宿主事件觸發、指令注入、條件式阻擋及續作是不同能力，須依實際支援與證據界定；不能把固定提醒宣稱為已機械檢查合約，也不能將原 Python handler 的條件判斷或原子收據保證直接視為仍然存在。0.3.0 透過宿主系統 shell 內建 echo 傳送固定上下文，不依賴自訂 runtime script；接線的實測條件、正常信任與尚未驗證的宿主能力分別見驗收報告。
 
 hooks 缺失、失效或宿主不支援時，task-harness 先在原授權內診斷並嘗試修復，設定操作交由 project-setting；修復後仍無法使用時，由 task-harness 內建流程自動接手，讓模型主動完成流程檢查並繼續整個任務。不因 hooks 不可用就退出 task-harness、暫停整個流程或要求使用者另行同意一般協作模式。此決策取代先前將 hooks 可用性視為使用前提的設計；任務合約、授權與驗收要求持續有效，接手不能繞過使用者停止指示或實際任務阻礙。須如實記錄 hooks 狀態與接手方式，不將模型主動檢查宣稱為宿主強制攔截，也不虛構 hook 事件或技術收據。
 
@@ -80,8 +80,8 @@ task-harness 依自身定義的固定 Markdown 表格讀取設定：文件位置
 | 模型分工與回退 | 優先序、清單、推理強度及任務設定有效範圍符合約定 |
 | 無法建立子 agent | 主責接手；獨立審查條件如實保留未完成 |
 
-目前 runtime 仍讀取 harness-project.json，必要 hooks 仍直接執行 Python handler；本決策記錄不代表整合或解除 Python 依賴已完成。具體欄位、讀取細節及 hooks 實作調整仍待具體化與驗證。宿主載入與信任、執行環境資格，以及個別任務授權，不能由設定檔存在推定；設定初始化或修復也不能自行宣告環境資格已通過。
+決策時的 0.2.1 runtime 仍讀取 harness-project.json，必要 hooks 直接執行 Python handler；本輪 0.3.0 改由模型讀取 Markdown 設定，標準 hooks 使用隨技能交付的靜態範本，被動 Stop 不再宣稱條件補救。舊 Python handler 僅留為開發端歷史 fixture，不納入新封裝接線。宿主載入與信任、執行環境資格，以及個別任務授權，仍不能由設定檔存在推定；設定初始化或修復也不能自行宣告環境資格已通過。
 
-2026-10-25 查證：[OpenAI Hooks 官方文件](https://learn.chatgpt.com/docs/hooks) 記載 command 與 mcp_tool handler 可用，prompt 與 agent handler 目前解析後略過。SessionStart／UserPromptSubmit 可注入 developer context；Stop 需傳回支援的控制回應才會要求續作。以上為宿主文件能力，尚未完成本輪無腳本方案的實測。
+規格討論時於 2026-10-25 查證：[OpenAI Hooks 官方文件](https://learn.chatgpt.com/docs/hooks) 記載 command 與 mcp_tool handler 可用，prompt 與 agent handler 目前解析後略過。SessionStart／UserPromptSubmit 可注入 developer context；Stop 需傳回支援的控制回應才會要求續作。以上為當時的宿主文件調查；本輪後續實測及未驗證範圍以驗收報告為準。
 
 同日查證：[OpenAI Subagents 官方文件](https://learn.chatgpt.com/docs/agent-configuration/subagents) 支援子 agent 的 model 與 model_reasoning_effort 設定，並有原生設定優先序。這不證明目前主責對話能自行切換模型，也不證明所指定模型在目標帳號可用；實際分工須以宿主支援及派工結果核對，不把設定值當成已實際使用的模型。
