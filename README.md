@@ -1,103 +1,91 @@
 # Kengp3 Harness
 
-透過 skill、hook 與少量工具，讓 AI agent 在原授權內完成嚴謹的多步驟開發，避免把局部成果當成整體完成。主責 agent 維護唯一任務合約，遇到真正阻礙或停止時保留可恢復狀態，跨對話續作先核對現況。使用者不必手動維護 tracker、計時或觀察。
+以模型能力推進已明確啟用的任務：主責 agent 維護唯一合約，拆解、派工、核對證據並完成原授權內的必要成果。設定集中於專案根目錄的 `project-setting.md`；核心不依賴 Python、Node.js、外部 CLI、MCP 服務或 runtime script。
 
-首版以 Codex 的實際 agent 執行行為為驗收目標，不限定使用介面；重用既有 CLI／原生執行機制，評測工具留在開發端。本 repo 提供來源及離線候選，不會因開發自動改動全域設定、其他專案、既有啟用版本或快取。OS 隔離與 watchdog 不屬於本輪產品範圍。
+本版來源為 `0.3.0`。以[統一設定與模型流程規格](docs/specs/unified-project-settings.spec.md)、[設定整合 ADR](docs/adr/0001-unified-project-settings.adr.md)及[用語](docs/specs/task-harness-glossary.spec.md)為準。[安裝與操作手冊](docs/specs/codex-coding-harness-guide.html)可離線閱讀。舊版候選與研究保留原狀，不能當成本版已完成實際行為驗收的證據。
 
-## 本輪規格與使用方式
+## 在專案本地使用
 
-目前以[任務合約與必要 hooks 規格](docs/specs/task-harness-lifecycle.spec.md)、[整合計畫](docs/plans/task-harness-lifecycle.plan.md)及[用語](docs/specs/task-harness-glossary.spec.md)為準。舊版研究與試行結果保留作開發參考，不作本版實際行為合格證明。
+不需要先執行建包腳本或 Skills CLI。取得本版來源或完整候選後，可用檔案管理員把所需 skill 目錄複製到專案的 `.agents/skills/`：
 
-完成專案接入後，使用者只需在任務開始時明確啟用一次：
+- 只使用文件規範：複製 `project-setting`。
+- 使用完整 harness：一起複製 `task-harness`、`project-setting`、`define-task`、`ai-code-review`，保留各自 references 與 assets。scripts 是選配輔助；缺少時仍能使用核心流程。
+
+已有同名技能先核對來源與版本，保留既有版本後再依授權升級，不把整個範本覆蓋到既有設定。重開專案工作階段並核對技能實際載入；只複製檔案不等於已驗證載入或行為。
+
+單獨設定文件規範：
+
+> 使用 `$project-setting` 初始化這個專案的文件規範。
+
+指定包含 task-harness：
+
+> 使用 `$project-setting`，包含 `$task-harness`，依 task-harness 提供的 Markdown 設定規格初始化這個專案；保留其他設定。
+
+啟動任務：
 
 > 使用 `$task-harness` 完成這項任務：……
 
-同一任務的後續回合與明確續作沿用合約。跨對話時可提供原合約路徑；agent 先核對原執行狀態、產物與授權，再保存接手資訊。討論、等待決定或 Stop 不會自動轉成實作授權；未完成的必要成果不能自行降為後續建議。
+安裝或初始化不會啟用所有任務。同一任務後續回合與明確續作沿用原合約；跨對話可提供原合約路徑。新任務不繼承舊授權或本次模型覆寫。
 
-[接入與合約指南](skills/task-harness/references/task-contract.md)提供完整 Markdown／JSON 範本、專案設定、綁定與恢復規則。首版以單一 Markdown 文件實作，原生 tracker 須具備完整保存、恢復及等效 hook adapter 才能替代。單獨載入 skill 不代表完整 harness 已接入。
+## 設定分工與升級
 
-## 必要接入與能力限制
+- project-setting 可獨立使用，只依指定規格執行設定。task-harness 隨技能提供[設定規格](skills/task-harness/references/project-settings.md)，自行定義欄位、預設值、有效性、移轉與修復。
+- 專案長期設定只有 `project-setting.md`。文件分類表的 `task-contract` 與 `hook-receipt` 兩列是唯一路徑來源，移轉沿用既有位置。
+- 發現舊 `harness-project.json` 時，先提示並依[移轉流程](skills/task-harness/references/settings-migration.md)操作。新值對帳、格式／內容驗證及目標版本正常讀回三項全過後，刪除舊檔、不留備份；失敗或衝突保留原檔並回報。
+- 舊環境資格只留歷史資料；新流程依實際診斷判定。設定移轉與宿主信任／環境資格分別回報，不增加刪除舊設定的門檻。
+- 原授權內主動診斷與修復；需要人工操作、內容決策或超出授權才回報相依缺口。唯讀、討論限定與使用者 Stop 仍有效。
 
-- 必要 hooks 為 `SessionStart`（恢復）、`UserPromptSubmit`（最新要求核對）、`Stop`（最多一次有界收尾補救）。hook 不寫產品或合約，不取代授權與驗收，也不抵抗使用者 Stop。
-- 專案明確 opt-in，設定及任務資料只在採用專案內。保留宿主要求的信任程序；不建立全域任務索引、不自動啟用其他專案。
-- Python 3 標準函式庫為 script runtime；3.10+ 是相容目標，開發環境 3.15 不代表最低版本已實測。不硬編碼 Homebrew、不自動安裝 runtime。
-- 設定中的 session 身分、使用者回合身分與 Stop 延續資格預設 `false`。離線 payload 或單元測試不構成真實事件證據；能力不足明示為缺口，不宣稱 hook 可選或已完整驗收。
+## Hooks 與模型接手
 
-舊名 `personal-harness` 的 `0.2.1` 已完成 H01–H05 首版驗收，C0、C1、V1–V5 七案的直接證據見[實際行為驗收報告](docs/research/h05-agent-behavior-validation.research.md)。這些是舊 plugin 身分在指定環境的結果，不自動當作改名後的信任或實際執行證明。不要求人工監看或新增例行核准點；普遍省時效果不能由少量案例推定。
+[標準 hooks](packaging/codex/hooks/hooks.json)只用系統 shell 內建 `echo` 輸出固定內容，不解析事件、不讀寫設定或合約，也不執行外部 helper：
 
-合約指南與來源候選版本為 `0.2.1`；凍結的舊名候選及歷史證據保持原狀。[來源／封裝離線驗證](docs/research/h05-package-validation.research.md)、原生接入與實際行為驗收各自保留其版本及判定，不互相代替。
+| 事件 | 本版行為 |
+| --- | --- |
+| SessionStart | 提醒已明確啟用的任務讀取專案設定、恢復同一合約並核對現況 |
+| UserPromptSubmit | 提醒核對最新要求，以及派工／階段前、agent 回報後、收尾前的共同檢查 |
+| Stop | 回傳合法的空 JSON 物件 `{}`；為被動回應，不提供條件式阻擋或一次性補救 |
 
-現行產品名稱為 Kengp3 Harness，plugin ID 為 `kengp3-harness`，本機 marketplace 為 `kengp3-harness-local`；個別 skill 名稱維持不變。舊名 `personal-harness` 的候選、歷史證據與既有安裝設定保留，改名不會自動遷移已安裝版本。新名稱已通過[隔離原生安裝與載入驗證](docs/research/kengp3-harness-native-validation-20261025.research.md)：安裝及重新啟用後讀回四個 skills 與三個 hooks，停用及移除後均無啟用項目。hooks 仍為 `untrusted`，未驗證信任及實際執行；本次沒有新的模型 trial。
+提醒只傳遞要求，不能宣稱已機械驗證合約或保證完成。主責模型一直負責[四個檢查時點](skills/task-harness/SKILL.md#check-the-same-contract-at-workflow-boundaries)。hooks 無法使用時先診斷並嘗試修復，仍不可用則自動以同一合約主動檢查並繼續；恢復後銜接目前進度，不重做操作或重複派工。未知結果先查明，條件改變才重驗。
 
-## 開發端離線候選
+本地 skill 安裝可請 project-setting 依提供的接入規格把對應 hooks 合併到專案設定，保留其他 handlers 並避免重複來源。Codex 的啟用與信任依宿主正常流程處理；「已寫入、已載入、已信任、已執行」分別回報。測試 automation 的單次信任略過不等於正常信任驗收。
 
-目前來源候選版本為 `0.2.1`。以既有 Python 工具建立不存在的目的地；保留原候選，以下命令只建包及驗證，不安裝或刷新宿主：
+## 模型分工
+
+[模型選擇與回退規則](skills/task-harness/references/model-selection.md)支援規劃、執行、驗證、審查與自訂階段；不要求任務走完全部階段，也不預綁模型。設定值例如 `[模型A;high, 模型B;medium]`，由左至右嘗試；省略強度時使用宿主對該模型的預設。
+
+優先序為本次明確指定、任務、agent 角色、階段、專案預設；皆未設定才沿用主責。候選耗盡自動回退專案預設，沒有專案預設才沿用主責，無需填 default；同模型不重複嘗試。強度不支援時優先保留模型並用宿主預設，明確禁止變更時遵守限制。
+
+主責維持對話選定模型，不因階段自行切換。手動切換對話模型只影響後續真正繼承主責的派工，已啟動 agent 維持原設定。單次指定只記錄於該任務合約；只有明確要求設為專案預設才更新長期設定。
+
+無法建立子 agent 時先診斷，仍不可用由主責循序接手並記錄實際執行者與模型。明確要求獨立審查的條件不能用自我檢查完成，須保留未完成並回報，其他工作繼續。請求模型、宿主解析值與實際可觀測結果分開記錄，未知值不編造。
+
+## 開發端封裝與驗證
+
+下列 Python 命令僅供維護者建包及查核，不是使用者安裝或日常使用前提。使用不存在的目的地，不覆寫既有候選：
 
 ```sh
-python3 -B scripts/package_harness.py dist/candidates/kengp3-harness-0.2.1
-python3 -B scripts/package_harness.py --verify dist/candidates/kengp3-harness-0.2.1
+python3 -B scripts/package_harness.py dist/candidates/kengp3-harness-0.3.0
+python3 -B scripts/package_harness.py --verify dist/candidates/kengp3-harness-0.3.0
+python3 -B -m unittest discover -s tests -p 'test_*.py'
 ```
 
-完整包保留相依 skills、references、scripts、必要 hooks 與內容指紋；評測程式、grader、固定答案及研究留在開發 repo。更新／回退先保留可信 release 和指紋，再依明確採用授權處理來源及宿主快取；不要手改快取，也不要把某個來源版本當作目前活躍對話的載入證據。
+新包包含四個 skills、其 references／assets、選配 helpers、標準 hooks 與內容指紋。舊 Python hook handler 不再是封裝輸入或日常入口；其來源與舊測試僅留作歷史開發對照。單元測試與建包通過不取代 A–G 的真實 agent 行為驗收。
 
-Repo 的本機 marketplace 指向 `dist/kengp3-harness`。需準備此來源時，使用同一工具另建該不存在的目錄；建包不會註冊 marketplace 或安裝 plugin。
+既有本機 marketplace 指向 `dist/kengp3-harness`，可能仍是舊候選；建包不會更新它、註冊 marketplace、修改宿主快取或全域安裝。需要 native plugin 安裝時，先明確選擇候選與安裝範圍，再依宿主支援的 marketplace 流程操作並核對實際載入版本；不要手改快取。隔離驗收使用獨立 state、catalog 與 project。
 
-既有 [N04／N06 離線交付](docs/research/codex-harness-p1-offline-20261024.research.md)、[CLI 三組 smoke](docs/research/codex-coding-harness-smoke-20261024.research.md)與[歷史接入查核](docs/research/codex-coding-harness-implementation.research.md)只支持其當時版本及範圍。舊 CLI 成功不等於新 hooks 或完整任務生命週期已合格，也不證明普遍更省時。日常任務不承擔三組比較或 grader 回放。
+## 停止、停用與移除
 
-維護測試：`python3 -B -m unittest discover -s tests -p 'test_*.py'`。此指令使用開發案例，不能替代實際 agent 行為驗收；執行 trial 需有明確授權。
+使用者 Stop 結束執行，明確續作後才恢復；不能為補寫合約而抵抗停止。取消保留依據與既有成果，不等於驗收成功。
+
+停用／升級只處理指定專案與可辨識來源。請 agent 保留任務合約、設定、證據與其他 handlers；移除本地 skill 目錄和停用專案 hooks 是不同動作。其他安裝方式與完整檢查見[手冊](docs/specs/codex-coding-harness-guide.html)。
 
 ## 技能清單
 
-| Skill | 用途 | 使用說明 |
-| --- | --- | --- |
-| [define-task](skills/define-task/SKILL.md) | 釐清模糊需求，整理目標、範圍與完成條件 | 請 AI 使用 `$define-task` 定義任務，無須初始化 |
-| [project-setting](skills/project-setting/SKILL.md) | 管理專案文件的分類、命名與存放位置 | 請 AI 使用 `$project-setting` 初始化專案規範與提醒 |
-| [ai-code-review](skills/ai-code-review/SKILL.md) | 審查功能、缺陷修正、重構與移轉 | 提供需求、目前產物與原始驗證證據；依風險啟用獨立 review |
-| [task-harness](skills/task-harness/SKILL.md) | 唯一任務合約、持續推進、驗收與跨對話恢復 | 任務級明確啟用；完整接入包含三個必要 hooks |
+| Skill | 用途 |
+| --- | --- |
+| [define-task](skills/define-task/SKILL.md) | 定義目標、範圍與完成條件 |
+| [project-setting](skills/project-setting/SKILL.md) | 文件規範與依提供規格執行設定 |
+| [task-harness](skills/task-harness/SKILL.md) | 唯一任務合約、持續推進、模型分工與恢復 |
+| [ai-code-review](skills/ai-code-review/SKILL.md) | 依需求、產物與直接證據審查品質與風險 |
 
-`task-harness` 依需求使用同層 `define-task`，風險觸發時使用 `ai-code-review`；完整候選保留相依目錄。遠端已發布技能可能落後於本機來源，下列既有 Skills CLI 安裝方式不等於安裝本輪完整 harness，也不是 Python 候選的 runtime 需求。
-
-## 其他獨立 skills 的既有發布方式
-
-先安裝 Node.js（JavaScript 執行環境）與 npm（套件管理工具），以下指令以 Codex 為目標。
-
-在要使用技能的專案目錄執行，依需求選擇其中一種：
-
-```bash
-# 安裝指定技能；可將 project-setting 換成 define-task
-npx skills add kengp3/skill-kit --skill project-setting --agent codex
-
-# 安裝全部技能到目前專案
-npx skills add kengp3/skill-kit --skill '*' --agent codex
-
-# 全域安裝全部技能，供不同專案使用
-npx skills add kengp3/skill-kit --skill '*' --agent codex --global
-```
-
-預設為專案層級；加上 `--global` 則安裝至使用者層級。完成後可查詢安裝清單：
-
-```bash
-# 查看 Codex 已安裝的技能
-npx skills list --agent codex
-
-# 僅查看全域安裝
-npx skills list --agent codex --global
-```
-
-## 如何移除
-
-移除時使用技能名稱，範圍須與安裝時一致。專案層級請在原專案目錄執行；全域安裝加上 `--global`。
-
-```bash
-# 移除目前專案的指定技能
-npx skills remove project-setting --agent codex
-
-# 移除全域安裝的指定技能
-npx skills remove project-setting --agent codex --global
-```
-
-可將 `project-setting` 換成 `define-task`。若兩個層級都有安裝，需分別移除；完成後可用上方清單指令確認。
-
-**project-setting 需另行初始化專案，並完成 Hook（事件掛鉤）的信任設定；解除安裝技能不會自動移除專案提醒。** 停用方式見 [設定說明](skills/project-setting/references/configuration.md#停用)。
-
-更多指令與參數見 [Skills CLI（命令列工具）官方文件](https://github.com/vercel-labs/skills)。
+遠端已發布版本可能落後於本地來源。既有 `npx skills add`／`list`／`remove` 是選用的第三方安裝方式，需要其自身 Node.js 環境；它不是本版核心的必要依賴，也不證明已安裝本輪完整候選。
