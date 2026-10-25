@@ -11,6 +11,30 @@ SKILLS = ('define-task', 'project-setting', 'task-harness', 'ai-code-review')
 MANIFEST = '7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e'
 
 
+def context_metadata(event):
+    """Export only acceptance metadata; never copy unknown session/account fields."""
+    fields = {
+        'session_meta': ('id', 'session_id', 'timestamp', 'cwd', 'cli_version', 'originator', 'model_provider', 'thread_source', 'parent_thread_id', 'agent_path', 'agent_nickname', 'agent_role'),
+        'turn_context': ('turn_id', 'root_turn_id', 'cwd', 'model', 'effort'),
+    }
+    kind = event.get('type')
+    if kind not in fields: return None
+    data = event.get('payload', {})
+    payload = {key: data[key] for key in fields[kind] if key in data and isinstance(data[key], (str, int, bool, type(None)))}
+    roots = data.get('runtime_workspace_roots')
+    if isinstance(roots, list) and all(isinstance(p, str) for p in roots): payload['runtime_workspace_roots'] = roots
+    source = data.get('source')
+    if isinstance(source, str): payload['source'] = source
+    elif isinstance(source, dict) and isinstance(source.get('subagent'), dict):
+        subagent = source['subagent']; selected = {}
+        if isinstance(subagent.get('other'), str): selected['other'] = subagent['other']
+        spawn = subagent.get('thread_spawn')
+        if isinstance(spawn, dict):
+            selected['thread_spawn'] = {key: spawn[key] for key in ('parent_thread_id', 'depth', 'agent_path', 'agent_nickname', 'agent_role') if key in spawn and isinstance(spawn[key], (str, int, type(None)))}
+        payload['source'] = {'subagent': selected}
+    return {'timestamp': event.get('timestamp'), 'type': kind, 'payload': payload}
+
+
 def save(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
 
@@ -171,7 +195,7 @@ def run():
         for fp in (state/'sessions').rglob('*.jsonl'):
             for line in fp.read_text().splitlines():
                 event = json.loads(line)
-                if event.get('type') in ('session_meta', 'turn_context'): contexts.append(event)
+                if event.get('type') in ('session_meta', 'turn_context'): contexts.append(context_metadata(event))
         save(OUT/'session-contexts.json', contexts)
         names = subprocess.check_output(['git', 'ls-files', '--cached', '--others', '--exclude-standard', '-z'], cwd=DEMO).decode().split('\0')
         baseline = json.loads((OUT.parent/'harness-gap-closure-baseline-evidence/demo-files.json').read_text())['files']
@@ -226,7 +250,7 @@ def verify_readback():
         for fp in (state/'sessions').rglob('*.jsonl'):
             for line in fp.read_text().splitlines():
                 event = json.loads(line)
-                if event.get('type') in ('session_meta', 'turn_context'): contexts.append(event)
+                if event.get('type') in ('session_meta', 'turn_context'): contexts.append(context_metadata(event))
         save(out/'session-contexts.json', contexts)
         summary['global_after'] = {n: fingerprint(BASE/n) for n in before}; summary['global_unchanged'] = before == summary['global_after']
         shutil.rmtree(state); summary['isolated_state_and_credentials_removed'] = not state.exists()
@@ -235,7 +259,10 @@ def verify_readback():
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(); parser.add_argument('--check-products', action='store_true'); parser.add_argument('--verify-readback', action='store_true'); args = parser.parse_args()
-    if args.check_products: print(json.dumps(check_products(), ensure_ascii=False))
+    parser = argparse.ArgumentParser(); parser.add_argument('--check-products', action='store_true'); parser.add_argument('--verify-readback', action='store_true'); parser.add_argument('--export-contexts', nargs=2, metavar=('INPUT', 'OUTPUT')); args = parser.parse_args()
+    if args.export_contexts:
+        source, target = map(Path, args.export_contexts)
+        save(target, [context_metadata(e) for e in json.loads(source.read_text()) if e.get('type') in ('session_meta', 'turn_context')])
+    elif args.check_products: print(json.dumps(check_products(), ensure_ascii=False))
     elif args.verify_readback: verify_readback()
     else: run()
