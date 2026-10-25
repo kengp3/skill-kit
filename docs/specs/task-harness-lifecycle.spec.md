@@ -1,20 +1,20 @@
 # 非侵入式任務合約與必要 hooks
 
-日期：2026-10-25。狀態：來源與離線候選已完成；目前整套 Desktop harness 尚未驗收（H05）。
+日期：2026-10-25。狀態：H01–H04 來源與離線候選已完成；H05 實際 agent 執行與 hook 整合尚未驗收。設計修訂已完成；依最新目標進入實作與離線驗證，模型 trial 另按明確授權處理。
 本規格承接本輪已確認決策，取代舊 coding-harness 文件對本輪產品優先順序的描述；歷史試行與結論不改寫。
 
 ## Problem Statement
 
-Objective：讓使用者在 Codex Desktop 明確啟用一次，即能在原授權內完成多步驟工作；防止局部完成被當成整體完成，並能跨對話與 session 恢復。
+Objective：讓使用者明確啟用一次 harness，agent 即能在原授權內完成多步驟工作；防止局部完成被當成整體完成，並能跨對話與 session 恢復。首版驗收以 Codex 的實際 agent 執行行為為目標，不指定圖形介面。
 Background：舊 task-harness 已具備任務生命週期；後續工作偏向評測基建。恢復其任務管理核心，保留風險驗證、自主修復與低使用負擔，評測工具留在開發端。
 Materials：本輪對話決策、舊版 8ae9cda、現行 runtime、既有功能與重新驗證證據。
-Boundaries：只修改本 repo 來源、文件、測試與新候選。不修改全域設定、已啟用配置、快取、其他專案，不擴展 OS 隔離/watchdog，不自動安裝 runtime。新模型 trial 僅限使用者另行明確核定的 H05 範圍；本次有界接點驗證已授權，但須先通過專案接入條件。
+Boundaries：產品範圍限本 repo 來源、文件、測試與新候選；當前已允許依收斂規格持續實作與離線驗證；新模型 trial 仍須符合明確核定範圍。不修改全域設定、已啟用配置、快取、其他專案，不擴展 OS 隔離/watchdog，不自動安裝 runtime。使用者更新目標並要求接續開發，解除先前的文件階段限制；歷史單次接點授權不能自動擴張為完整 H05 模型驗收。
 
 ## Solution
 
 單一主責 agent 維護一份可恢復任務合約。優先重用足以承載完整合約的原生能力；目前可交付的確定性 adapter 使用單一 Markdown 合約及固定 JSON 區塊。不同原生 tracker 需有明確相等能力才可替換，不能假定已支持。
 Hook 是必要組件，職責為上下文恢復、最新要求核對與一次有界收尾補救。Hook 不代替產品驗收，不自行授權或管理第二份任務狀態。
-Script 統一 Python 3、優先標準函式庫；首版來源使用 Python 3.10+ 相容語法。實際最低版本與 Desktop runtime 另驗，不以開發機版本聲稱全部支援。
+Script 統一 Python 3、優先標準函式庫；首版來源使用 Python 3.10+ 相容語法。實際執行版本列入驗收證據；最低版本未實測即保留限制，不以開發機版本聲稱全部支援。
 
 ## User Stories
 
@@ -37,6 +37,8 @@ Script 統一 Python 3、優先標準函式庫；首版來源使用 Python 3.10+
 17. 使用者不需要手動填表、計時、監看或安裝新語言環境。
 18. 必要 hooks 的載入、信任或執行失敗不能偽裝成完成或可選功能。
 19. 開發者能在可丟棄資料夾重現負例，不影響日常專案或既有歷史證據。
+20. 開發者能透過既有原生執行入口取得真實 agent、hook 與產物證據，不必先操作某個應用程式視窗。
+21. 相同核心版本、候選與相關協定／設定的證據可以重用；差異只重驗受影響行為，不把未測過的環境列為實測通過。
 
 ## Implementation Decisions
 
@@ -70,7 +72,7 @@ Script 統一 Python 3、優先標準函式庫；首版來源使用 Python 3.10+
 - SessionStart：有關聯時輸出合約位置、識別及核對指示；無關聯時只提供目前 session 識別與條件式啟用/接手指示，不自動綁定或執行。source=compact/fork/resume 不代表新授權。只有一份未完成候選也不自動接手；使用者已明確要求續作且任務可唯一確認時，由主責核對後保存接手，不重複要求同一授權。
 - UserPromptSubmit：輸出本次 turn/session 識別與最新要求核對提醒；不以關鍵字分類授權、不寫合約、不重置任何補救收據。
 - Stop：先驗證 event 結構，stop_hook_active=true 時絕不再次要求續作；false 時，必須有唯一綁定、三項 host 資格皆已驗證、當前 turn_id 等於合約 authorization.user_turn_id、mode=execute，才可能補救。
-- host 資格為安裝/驗證環節的聲明，不是 handler 能自證的事實。預設未驗證；不能靠手改 verified 或合成輸入聲稱 Desktop 通過。任一資格不足回傳 systemMessage 缺口、不發 block，不宣稱 harness 已就緒。SessionStart 可在 session_identity 合格時保留恢復上下文；UserPromptSubmit 另需 user_turn_identity。部分功能可用仍須同時明示整體未就緒。
+- host 資格為安裝/驗證環節的聲明，不是 handler 能自證的事實。預設未驗證；只能依指定執行版本的真實事件與續作證據核定，不能靠手改 verified 或合成輸入聲稱通過。任一資格不足回傳 systemMessage 缺口、不發 block，不宣稱 harness 已就緒。SessionStart 可在 session_identity 合格時保留恢復上下文；UserPromptSubmit 另需 user_turn_identity。部分功能可用仍須同時明示整體未就緒。
 - blocked/cancelled 或 discuss/wait/stop 不要求實作；unknown_operations 非空時只能要求查證與保存，不得重播副作用。
 - in_progress/pending 仍有必要缺口時要求核對並繼續授權工作。done 但成果/evidence 不一致時要求核對，不能假定成功；一致 done 放行但不代替實際驗收。
 - 任何補救以同一 user_turn_id 為界。介入前原子 exclusive-create 技術收據（session、user_turn、task、contract 指紋），存在即不再補救；收據只表示曾要求補救，不是任務完成或執行證據。輸出遺失也不補發，以維持最多一次。receipt 失敗不得輸出 block。
@@ -84,19 +86,32 @@ Script 統一 Python 3、優先標準函式庫；首版來源使用 Python 3.10+
 - 提供未驗證的專案設定範本，實際 root 與目錄由主責依專案規範在啟用授權內建立。此輪不向本 repo 的日常配置安裝範本或註冊 plugin。
 - 原有 project-setting 提醒保留，不重複安裝同一 handler。信任/載入/功能驗收分開，不繞過宿主信任審查。
 
+### D13：實際 agent 驗收與證據重用
+
+- H05 驗收任務推進、合約維護、恢復、授權遵循及必要 hook 的實際行為；Desktop 不再是獨立工作項目、接入前置或完成門檻。不研究其 UI、自動點擊、獨立實例或專屬停止控制。
+- 優先重用既有 Codex CLI／app-server 的原生 thread、turn、interrupt 與事件讀回；首版只承諾已驗證的 Codex 接入。Skill 共通格式不是所有 hook 協定相同的保證；目前 handler 的 turn_id 為 Codex 接口依賴，不預建多宿主框架。
+- 以三層證據分開判定：離線確定性行為、實際執行環境的 hook 協定、真實 agent 對任務合約與成果的遵循。三者不能互相冒充。原生 turn completed 也不等於整體任務 done。
+- 保留版本、候選指紋、模型與推理設定、實際載入來源及影響行為的設定。只有核心版本／協定／相關設定等效有依據時才重用證據；差異按影響補驗，不為每個 UI 重做全套，也不宣稱跨產品已通過。
+- 開發驗證只寫入可丟棄測試目錄及本 repo 證據目錄。若選用測試專用設定根目錄，須核對其支持範圍、正常信任流程與寫入位置；不能默認登入、快取或信任已隔離，也不複製憑證或繞過信任。接入尚有缺口時列出確切缺口，不擴建 OS 控制系統。
+- 既有回合歸屬、事件摘要、grader 與控制證據按其實際能力重用。純事件回放不是模型執行器；離線子程序邊界不拿來啟動模型。必要調整限開發端的最小接線，不把評測控制帶入日常路徑。
+
 ## Testing Decisions
 
 接受使用者「問題先採建議方案」授權，測試邊界採兩個既有公共接口：事件 stdin → stdout/exit/技術收據，以及 package CLI → 可獨立執行套件。使用 unittest、tempfile、subprocess；不 mock 私有函式。
 逐行為 red→green。覆蓋正常恢復、無綁定、新要求不延用舊回合、單次補救與重複/並行事件、討論/停止/取消/blocked、unknown 先查證、合約語法/依賴/歸屬錯誤、保存/收據失敗、越界與 symlink/特殊檔案、封裝外執行。
 新判準允許合併交接、不強制一般計數與固定派工順序；保留歷史 verdict，不重評成歷史全部通過。
-離線測試不能證明模型遵循、Desktop 載入/trust/Stop、跨回合 user identity 或人工時間改善。這些保留獨立未完成項目，禁止把合成 host verified 設定當實測。
+離線測試不能證明真實載入／信任、hook 續作鏈、跨回合 user identity、模型遵循或人工時間改善。這些不能用合成 host verified 設定代替；實際行為由 H05 取得證據，不再限定 Desktop。
+
+最小行為案例保留五項：V1 正常多步驟完整交付、V2 局部完成／缺驗收時補齊、V3 中斷後跨對話／session 恢復、V4 操作結果不明先查證、V5 小任務低負擔。另以 C0 真實事件／一次補救鏈及 C1 討論／等待／取消／阻礙等授權負例支撐它們；原生 interrupt 的停止與明確續作在 V3 驗證。
+每案先固定輸入、預期行為、禁止行為、獨立判準與證據位置；模型回覆本身不當完成證據。重用已有 bug fixture、checker 與合約負例，不另建大型案例庫。測試預置與故障注入需標記，不能冒稱自然發生或一般成功率。
+低負擔判準是無人工監看／填表、無非必要核准、只重驗受影響部分、小任務無多餘拆分或委派；首版不要求三組比較或統計省時證明。若報告成本，實測、估計與未量測分開。
 
 ## Out of Scope
 
-全域設定、其他專案變更、超過 H05 已授權範圍的新模型 trial、安裝/刷新日常候選、OS sandbox/watchdog、通用 scheduler、資料庫、全域任務索引、強制所有操作經 wrapper、Windows 原生資格與跨宿主擴展。
+全域設定、其他專案變更、未核定範圍的新模型 trial、安裝/刷新日常候選、OS sandbox/watchdog、通用 scheduler、資料庫、全域任務索引、強制所有操作經 wrapper、Windows 原生資格、跨產品擴展，以及 Desktop 專屬驗收／接入工程。
 不回退整個 repo、不刪開發回放/controller/grader、不修改第三方或歷史腳本語言。自行維護的新 runtime 腳本統一 Python。
 
 ## Further Notes
 
-Definition of Done：來源與封裝能執行上述行為、必要離線負例通過、獨立 Standards/Spec review 無未處理重大缺口，且文檔/狀態一致；整套可用性另外需要 Desktop 必要接點與模型行為實測。後者未取得證據前不能宣稱整體完成。
-官方依據（2026-10-25 查閱）：https://learn.chatgpt.com/docs/hooks 、https://developers.openai.com/plugins/build/plugins 。事件 schema 文件不保證目前安裝版本的 Desktop 行為。
+Definition of Done：來源與封裝能執行上述行為、必要離線負例通過、獨立 Standards/Spec review 無未處理重大缺口，且文檔／狀態一致；H05 的 C0、C1 與 V1–V5 均取得指定執行環境的直接證據，未處理的必要缺口保留未完成。文件修訂或單次接點成功不代表 H05 完成；不再要求 Desktop 專屬驗收。
+官方依據（2026-10-25 查閱）：[Agent Skills](https://agentskills.io/specification)、[Codex 共用 harness](https://openai.com/index/unlocking-the-codex-harness/)、[Codex hooks](https://learn.chatgpt.com/docs/hooks)、[plugin 封裝](https://developers.openai.com/plugins/build/plugins)。格式、架構或 schema 文件不替代所選版本的實際行為證據。

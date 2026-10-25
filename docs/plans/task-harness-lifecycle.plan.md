@@ -10,7 +10,8 @@
 3. Runtime：Python 3.10+ 標準函式庫；無自動安裝與 Homebrew 路徑硬編碼。
 4. 補救額度：用原使用者回合技術收據 exclusive-create，原生 stop_hook_active 為另一拒絕重入依據；續作身份未驗證則接入未就緒。
 5. 失效：不猜授權、不發續作；明示必要能力缺口，不宣稱 skill-only 完成。
-6. 驗收：事件 CLI 與封裝 CLI 為本輪公共測試邊界；Desktop/模型驗收獨立保留，只能在 H05 明確授權及接入條件內啟動 trial。
+6. 驗收：事件 CLI 與封裝 CLI 為離線公共測試邊界；H05 改驗實際 agent 與必要 hooks，不再要求 Desktop。相同核心／相關設定的證據可重用，實質差異才補驗。
+7. 文件與工作單已完成；使用者更新目標後進入實作與離線驗證。新模型 trial 不自行擴張歷史額度，需符合明確核定範圍。
 
 ## Tickets
 
@@ -20,15 +21,22 @@
 | H02 | 必要 hooks 完整候選封裝與套件外執行 | H01、H03 | done |
 | H03 | 任務生命週期 skill、合約範本與日常接入指南 | 無 | done |
 | H04 | 整合驗證、兩軸 review 與證據對帳 | H01–H03 | done |
-| H05 | Desktop 真實接點與模型遵循資格 | H04、符合限制的 Desktop 接入（本次 trial 已授權） | blocked |
+| [H05](task-harness-lifecycle-05-desktop.plan.md) | 實際 agent 執行與 hook 整合驗收 | H05A、H05B、H05C | pending |
+| [H05A](task-harness-lifecycle-05a-admission.plan.md) | 原生接入與有界補救（C0） | H04（已完成）；執行授權及接入條件 | ready-for-agent（文件就緒，不代表允許 trial） |
+| [H05B](task-harness-lifecycle-05b-behavior.plan.md) | 完整交付與授權遵循（C1、V1、V2、V5） | H05A | pending |
+| [H05C](task-harness-lifecycle-05c-recovery.plan.md) | 中斷恢復與結果不明（V3、V4） | H05A | pending |
+
+H05 舊檔名只保留引用相容性。預設 H05A → H05B → H05C 串行執行；H05C 不需等待 H05B 的產品結果，圖上的依賴只有 H05A。本地 tracker 沿用 docs/plans，不新增外部 issue；工作拆分與測試接口依使用者接受建議方案完成。
 
 ## 保護與驗證
 
 保留既有 .codex/config.toml 未提交還原、所有無關未追蹤內容、dist 舊候選與歷史證據。新實作 worktree 只基於整合分支；不複製未提交資料。測試用 tempfile，不操作既有 Desktop 聊天。
 H01/H03 可各自實作，H02 等兩者整合後。依 skill 以獨立 worktree、TDD、固定基線 Standards/Spec 複核；只提交本輪明確檔案，無 push/PR。
-完成後保存實際命令與結果到 research；測試結果不回填成 Desktop 資格。H05 未完成時整體 goal 不標 complete。
+完成後保存實際命令與結果到 research；離線結果不回填成實際 agent 資格。H05 未完成時整體產品不標 complete。Desktop 不再是獨立待辦；歷史原始證據不改寫。
 
 ## 執行紀錄
+
+以下為時間序紀錄；其中舊 Desktop 門檻與當時授權狀態已由本次修訂取代，不作現行執行指示。
 
 - 2026-10-25：規格與 tickets 已保存；H01/H03 在獨立 worktree 實作，兩者僅修改明確責任檔案。
 - 相關既有基線：22 項通過；外層 sandbox 的首次 3 項 grader 未驗證與原樣重跑結果均保留於 [baseline](../research/task-harness-lifecycle-evidence/baseline.json)。
@@ -41,3 +49,5 @@ H01/H03 可各自實作，H02 等兩者整合後。依 skill 以獨立 worktree�
 - 清理限制：原生 archive_worktree 拒絕移除 workflow（目前主要 checkout）及 runtime（仍有其他 active task 使用）。保留兩份已提交工作樹，不以 shell 強制刪除。已詢問是否開放最多一個 Desktop 接點測試對話／一個使用者回合；未收到授權前 H05 不執行。
 
 - 2026-10-25：使用者已授權一次有界 Desktop 接點驗證。接入預檢因未能建立符合限制的信任路徑而停止，未建立對話或啟動模型；目前阻礙是接入能力，不是重複等待授權。見[預檢結果](../research/task-harness-desktop-admission.research.md)。
+
+- 2026-10-25：依最新決策，移除 Desktop 專屬完成門檻；設計改以實際 agent 行為、原生 hook 協定與固定產物驗收。H05 收斂為五個產品情境及兩個控制案例，拆為三個相依工作單。H01–H04 及歷史 101 通過／1 跳過結果保留，不把文件修訂算成新驗收。程式、候選與新 trial 本輪未動。
