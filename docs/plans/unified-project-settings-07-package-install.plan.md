@@ -24,6 +24,6 @@
 
 ## T08 最終對帳
 
-最終 7e37d7… 候選已另做原生全新安裝及 0.2.1→0.3.0 升級，四 skills／三 hooks 與 installed manifest 一致；canonical asset 與 plugin hooks 相同。112 維護測試通過、原生 Windows 1 項略過，正常信任不冒稱通過。
+最終 7e37d7… 候選另做原生全新安裝及 0.2.1→0.3.0 升級，四 skills／三 hooks 與 installed manifest 一致；canonical asset 與 plugin hooks 相同。後續三組補充亦核對同一最終 manifest，未改產品來源。112 維護測試通過、原生 Windows 1 項略過，正常持久信任不冒稱通過。
 
 詳見[實際 agent 與整合驗收](../research/unified-project-settings-acceptance.research.md)及其中來源、raw、產物與未驗證清單。
