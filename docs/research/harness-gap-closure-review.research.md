@@ -9,6 +9,8 @@
 - 規格：[補驗規格](../specs/harness-validation-gap-closure.spec.md)、[核准工作圖](../plans/harness-validation-gap-closure.plan.md)與 G00–G09 本地 tickets。Windows 經使用者明確排除，G08 cancelled，沒有計為通過。
 - 兩個唯讀 agent 分別執行 Standards 與 Spec，不互相代審；結果身分與父層核對記於[審查證據](harness-gap-closure-review-evidence/review-results.json)。以下為其回報，僅整理格式。
 
+初次審查後，父層最後讀回另發現總計畫仍留一條 Windows 執行步驟；同一修正 agent 已於 `097e04caa25c415b39ebfb7468820b86750aa605` 改成明確排除，不執行資格探查、接入、commandWindows、最小任務或 VM。兩名原 reviewer 再檢查 `0ec9812...097e04c` 的六檔文件差異，均無 required findings；確認本報告轉述準確、G09 done 僅指收尾，必要缺口及整體未完成仍保留。integration `eb74624888e4be2fbb4b9000f4d64f0077431c5e` 的 tree 與該 target 相同。這是增量文件審查，不是重新執行驗收。
+
 ## Standards
 
 **無 actionable findings。** 受查 head 為上述 `0ec9812`。
@@ -52,6 +54,6 @@
 
 本輪沒有尚待修正的 review findings；G09 可完成證據對帳與審查收尾，但不得把其他票的受阻條件改為 done。最小解鎖條件沿用各案：G03 先取得[五項精確定義的人工核准](harness-gap-closure-persisted-trust-evidence/human-review.md)，再於正常介面重新核對定義、信任並執行兩次 invocation；G05 需主責可用的跨 root 查詢與真結果交付／sampling 故障控制；G06 需可觀測的原始來源及同邏輯事件 redelivery；G07 需允許的 Desktop 操作環境及實際畫面／宿主證據。
 
-未修改全域或日常 marketplace；demo 接入 0.3.0 不表示日常 0.2.1 入口已升級。未 push、建立 PR、執行 hosted CI 或 Windows。來源工作區原有 `.codex/config.toml` 修改、其他 untracked 及 demo 原有 dirty 內容保留。已合併且不再需要的七個 implementer worktrees 已清除；人工待核准或後續收尾所需的 state／工作樹暫留。
+未修改全域或日常 marketplace；demo 接入 0.3.0 不表示日常 0.2.1 入口已升級。未 push、建立 PR、執行 hosted CI 或 Windows。來源工作區原有 `.codex/config.toml` 修改、其他 untracked 及 demo 原有 dirty 內容保留。已合併且不再需要的十個 implementer worktrees 已清除，branch refs 保留；G03 人工待核准所需的工作樹及各案需留存的 state／private raw 保留。
 
 兩軸各 0 actionable findings；兩軸均未見需攔截的新增問題。必要驗收受阻仍使整體目標未完成。
