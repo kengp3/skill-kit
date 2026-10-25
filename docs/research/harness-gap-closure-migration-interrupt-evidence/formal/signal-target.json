@@ -1,0 +1,67 @@
+{
+  "at": 1792944654.011772,
+  "token": "G02_MIGRATION_0f09bd5e26df4414b9e78c8d77a1d2bf",
+  "target": {
+    "pid": 11111,
+    "ppid": 5541,
+    "command": "/bin/sleep 120"
+  },
+  "ancestors": [
+    {
+      "pid": 5541,
+      "ppid": 5531,
+      "command": "/Users/kengp3/.local/share/nvm/v26.7.0/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex app-server --stdio"
+    },
+    {
+      "pid": 5628,
+      "ppid": 5541,
+      "command": "/Users/kengp3/.local/share/nvm/v26.7.0/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex-code-mode-host"
+    },
+    {
+      "pid": 11111,
+      "ppid": 5541,
+      "command": "/bin/sleep 120"
+    }
+  ],
+  "started_event": {
+    "method": "item/started",
+    "params": {
+      "item": {
+        "type": "commandExecution",
+        "id": "exec-44286f10-920c-4b42-b84c-a5e6af085278",
+        "pluginId": null,
+        "scriptPath": null,
+        "command": "/bin/zsh -lc \"awk '{ print } /\"'^'\"\\\\| research \\\\|/ { print \\\"| task-contract | 任務合約與可恢復狀態 | docs/plans/harness/{filename} |\\\"; print \\\"| hook-receipt | 實際 hook 事件的技術收據 | docs/research/receipts/{filename} |\\\" } END { print \\\"\\\\n## Task Harness\\\\n\\\\n| 設定項目 | 值 |\\\\n| --- | --- |\\\\n| schema_version | 1 |\\\" }' project-setting.md > case-control/g02-settings.new && mv case-control/g02-settings.new project-setting.md && /bin/sh -c 'printf \\\"%s\\\\n\\\" \\\"\"'$$\" > case-control/checkpoint.pid; printf \"G02_MIGRATION_0f09bd5e26df4414b9e78c8d77a1d2bf'\"\\\\n\\\" > case-control/checkpoint.token; exec /bin/sleep 120'\"",
+        "cwd": "/private/tmp/g02-migration-fblc_lbf/project",
+        "processId": "47097",
+        "source": "unifiedExecStartup",
+        "status": "inProgress",
+        "commandActions": [
+          {
+            "type": "unknown",
+            "command": "awk '{ print } /^\\| research \\|/ { print \"| task-contract | 任務合約與可恢復狀態 | docs/plans/harness/{filename} |\"; print \"| hook-receipt | 實際 hook 事件的技術收據 | docs/research/receipts/{filename} |\" } END { print \"\\n## Task Harness\\n\\n| 設定項目 | 值 |\\n| --- | --- |\\n| schema_version | 1 |\" }' project-setting.md > case-control/g02-settings.new && mv case-control/g02-settings.new project-setting.md && /bin/sh -c 'printf \"%s\\n\" \"$$\" > case-control/checkpoint.pid; printf \"G02_MIGRATION_0f09bd5e26df4414b9e78c8d77a1d2bf\\n\" > case-control/checkpoint.token; exec /bin/sleep 120'"
+          }
+        ],
+        "aggregatedOutput": null,
+        "exitCode": null,
+        "durationMs": null
+      },
+      "threadId": "01a173cc-cb0c-7103-9a31-ababf559c573",
+      "turnId": "01a173cc-ebf4-7721-a93b-20ad553362ff",
+      "startedAtMs": 1792944653953
+    },
+    "emittedAtMs": 1792944653953
+  },
+  "files": {
+    "harness-project.json": "58faf90291f0ecf455016b320370201a9772fc0bc60b3ae33e1630ef77e8957c",
+    "preserve.txt": "a10ca872d9a823415d55ec01f31975afe6289f9112c61d4ec9672bc0c907b204",
+    "ledger.txt": "b30c62ccc8d4f98904945223b9565aa78d3821a8ebb2d86283eea678515dc12a",
+    "AGENTS.md": "ad76c4104fd4aaa44dd3392b315cd4eb479aa980b38da20076680e1e4acbc3dd",
+    "project-setting.md": "b1a459ddc99aa0ab83fd60b79d636588006046e458238048a5926f8a4adb9669",
+    "case-control/checkpoint.token": "b15271070232820bcd738d8182629f0b1ae7b03b1a8d054a63e057930c24a704",
+    "case-control/checkpoint.pid": "32c66107f0f4f2053128e519681fc8e88806d0d2b17607ce9f2362aff66ad6c7",
+    "docs/research/g02-migration.research.md": "bf6e8949c99d65dd21c180abb1a11f347ee5aaf4c072cfa47a043af195a1c550",
+    "docs/plans/harness/legacy.md": "494cced3297c06b450808c790281f1ce62133d0f6f9dbb57beab64f04df32b17",
+    "docs/research/receipts/old.jsonl": "48d5a6341b81b484ca58a4a26054ac2b719fcecb536a01ad24e731d0b604d851"
+  }
+}

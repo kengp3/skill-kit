@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-g02/docs/research/harness-gap-closure-migration-interrupt-evidence/native-migration.py", line 221, in <module>
+    elif args.action == 'preflight': print(json.dumps(preflight()))
+                                                      ~~~~~~~~~^^
+  File "/private/tmp/simple-skills-gap-g02/docs/research/harness-gap-closure-migration-interrupt-evidence/native-migration.py", line 35, in preflight
+    assert os.getpid() in processes(), 'controller must observe its own OS process before any native trial'
+                          ~~~~~~~~~^^
+  File "/private/tmp/simple-skills-gap-g02/docs/research/harness-gap-closure-migration-interrupt-evidence/native-migration.py", line 20, in processes
+    rows = subprocess.check_output(['/bin/ps', '-axo', 'pid=,ppid=,args='], text=True)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 587, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               **kwargs).stdout
+               ^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 669, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.1/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2156, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/ps'
