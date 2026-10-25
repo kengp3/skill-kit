@@ -25,15 +25,15 @@
 
 本輪已有來源、離線驗證與候選封裝；完成項目與直接證據見[整合驗證報告](docs/research/task-harness-lifecycle-validation.research.md)。實際 agent 與 hook 整合仍待 [H05](docs/plans/task-harness-lifecycle-05-desktop.plan.md) 驗收，不再要求 Desktop 專屬驗證。不要求人工監看或新增例行核准點；低負擔需觀察，普遍省時效果不能由少量案例推定。
 
-設計／計畫已更新，正由 H05A 同步來源與封裝，尚未執行新 trial。凍結候選及合約指南仍保留前版對 Desktop 的限制用語；它們不再構成現行規格的 Desktop 門檻，也不代表已取得實際行為資格。
+合約指南與來源候選已同步為 `0.2.1`，保留凍結候選 `0.2.0` 與其歷史證據。此次來源／封裝同步的[離線驗證](docs/research/h05-package-validation.research.md)不代表 H05A 的真實接入與補救已完成；尚未執行新 trial。
 
 ## 開發端離線候選
 
-候選目標版本為 `0.2.0`。在封裝實作與整合檢查完成後，以既有 Python 工具建立不存在的目的地；以下命令只建包及驗證，不安裝或刷新宿主：
+目前來源候選版本為 `0.2.1`。以既有 Python 工具建立不存在的目的地；保留原候選，以下命令只建包及驗證，不安裝或刷新宿主：
 
 ```sh
-python3 -B scripts/package_harness.py dist/candidates/personal-harness-0.2.0
-python3 -B scripts/package_harness.py --verify dist/candidates/personal-harness-0.2.0
+python3 -B scripts/package_harness.py dist/candidates/personal-harness-0.2.1
+python3 -B scripts/package_harness.py --verify dist/candidates/personal-harness-0.2.1
 ```
 
 完整包保留相依 skills、references、scripts、必要 hooks 與內容指紋；評測程式、grader、固定答案及研究留在開發 repo。更新／回退先保留可信 release 和指紋，再依明確採用授權處理來源及宿主快取；不要手改快取，也不要把某個來源版本當作目前活躍對話的載入證據。
