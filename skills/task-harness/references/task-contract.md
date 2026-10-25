@@ -1,6 +1,6 @@
-# 任務合約與必要 hooks 使用說明
+# 任務合約與標準 hooks 使用說明
 
-本版以單一 Markdown 任務合約保存約定與恢復資訊，由主責 agent 維護。原生 tracker 只有在能保存完整合約、跨對話恢復，且具有等效 hook adapter 時才能取代它；目前實作路徑是 Markdown，不假定宿主原生清單已符合條件。
+本版以單一 Markdown 任務合約保存約定與恢復資訊，由主責 agent 維護。原生 tracker 只有在能保存完整合約、跨對話恢復及支援相同流程檢查時才能取代它；目前實作路徑是 Markdown，不假定宿主原生清單已符合條件。
 
 ## 使用方式
 
@@ -13,31 +13,11 @@
 
 ## 專案接入
 
-需要 Python 3 標準函式庫與三個 hooks：`SessionStart`、`UserPromptSubmit`、`Stop`。Python 3.10+ 是相容目標；本輪開發環境為 Python 3.15，不能據此宣稱已測過所有最低版本。缺少 runtime、hook 載入、宿主信任或能力資格均是完整 harness 的缺口；不自動安裝、修改全域環境或其他專案。
+專案設定依 [Task Harness 設定規格](project-settings.md) 由模型讀取，實際長期設定只存於已確認根目錄的 project-setting.md。缺失、舊格式或無效設定時，task-harness 提供該規格，交由 project-setting 初始化、移轉或修復，再讀回檢查。任務合約與技術收據位置只取自共用文件分類表。
 
-完整候選套件應保留 skill、相依 skills、references、Python hooks 與 plugin 接線；單獨讀取此 skill 不代表完整 harness 已接入。專案明確 opt-in 與宿主要求的信任設定是一次接入條件，不是每次任務的人工審查或監看。接入驗證須確認實際載入路徑／版本、事件及資格，不能只看設定檔存在。
+核心流程不依賴 Python、runtime script 或外部輔助工具。標準 hooks 接入與宿主信任須另行診斷；修復後仍不可用時，由主責模型使用同一合約主動執行檢查，不因此阻擋整個任務。不把設定寫入、格式讀回或離線 payload 當成真實 hook 執行證據。
 
-首版驗收以 Codex 的實際 agent 與 hook 行為為準，可使用既有 CLI／app-server 原生入口，不以 Desktop 視窗或專屬接入作為前置條件。這不代表所有入口已合格，也不把共通 skill 格式當成跨宿主 hook 相容保證。
-
-在明確採用的專案根目錄建立 `harness-project.json`。以下是可複製的設定結構；由 agent 代入已確認的絕對根目錄及符合專案文件規範的路徑。資格預設全部未驗證：
-
-```json
-{
-  "schema_version": 1,
-  "project_root": "/absolute/project",
-  "contract_dir": "docs/plans/harness",
-  "receipt_dir": "docs/research/harness-hook-receipts",
-  "host": {
-    "session_identity": false,
-    "user_turn_identity": false,
-    "stop_continuation": false
-  }
-}
-```
-
-設定根目錄須等於設定檔所在目錄，事件工作目錄須位於該專案內。合約及技術收據目錄須在專案內且互不包含，不使用符號連結或特殊檔案。工具從事件 `cwd` 向上找到最近設定，遇 Git 邊界或根目錄停止；也可明確傳入 `--project-config <路徑>`。未採用的專案不介入；不建立全域索引或掃描其他專案。
-
-只有指定執行版本的真實事件與續作證據可將 `host` 資格改為 `true`：可靠 session 身分、可區分使用者回合與 hook 延續的 user-turn 身分、正常 Stop 的有界延續語意。CLI 合成 payload、設定成功或離線測試通過都不能代替真實資格；不可為了消除警告自行翻轉旗標。宿主資格不足保留缺口，不降為 hook 可選。
+使用者明確啟用任務後才能操作；安裝技能與設定成功不等於任務授權。完整候選保留技能及參照文件，必要 hooks 不再是使用核心流程的前提；具體宿主限制與模型接手狀態須如實回報。不要為接入自動安裝 runtime 或修改全域設定、其他專案。
 
 ## 唯一合約範本
 
