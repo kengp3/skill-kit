@@ -4,7 +4,7 @@
 
 **Blocked by:** T02
 
-**Status:** ready-for-agent
+**Status:** implemented-pending-verification
 
 依據：[實作規格](../specs/unified-project-settings.spec.md)。使用者已確認 T01–T08 拆分與依賴。
 
@@ -20,3 +20,7 @@
 D、E 的停用證據、真實軌跡、合約、操作次數與成果。
 
 狀態更新只能依實際成果；調查、離線測試與真實行為驗收分別判定。
+
+## 實作與驗證紀錄
+
+已更新主技能的四個共用檢查時點、失效接手與恢復規則、合約身分與證據界線，以及 review 的選配 hash checker。文件連結、範本 JSON 與 diff 檢查通過；真實 D／E 驗收由整合回合取證，尚不勾選已通過。
