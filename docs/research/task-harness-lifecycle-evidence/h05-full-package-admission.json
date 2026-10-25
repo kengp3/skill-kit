@@ -1,0 +1,964 @@
+{
+  "date": "2026-10-25",
+  "cli_version": "0.164.0",
+  "candidate_version": "0.2.1",
+  "candidate_manifest_sha256": "210664eb7b5a478997dbc8c67b323131a5f9ed62bd51e23cdbaba8bdb7a8ae5a",
+  "installation_scope": "user scope within disposable CODEX_HOME; not a project-only plugin installation guarantee",
+  "test_root": "/private/tmp/h05-admission-5tpyvaik",
+  "stages": {
+    "install": [
+      {
+        "method": "plugin/install",
+        "response": {
+          "id": 2,
+          "result": {
+            "authPolicy": "ON_INSTALL",
+            "appsNeedingAuth": []
+          }
+        }
+      },
+      {
+        "method": "plugin/read",
+        "response": {
+          "id": 3,
+          "result": {
+            "plugin": {
+              "marketplaceName": "h05-candidate-local",
+              "marketplacePath": "/private/tmp/h05-admission-5tpyvaik/project/.agents/plugins/marketplace.json",
+              "summary": {
+                "id": "personal-harness@h05-candidate-local",
+                "remotePluginId": null,
+                "version": null,
+                "localVersion": "0.2.1",
+                "name": "personal-harness",
+                "shareContext": null,
+                "source": {
+                  "type": "local",
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness"
+                },
+                "installed": true,
+                "installedAt": null,
+                "enabled": true,
+                "installPolicy": "AVAILABLE",
+                "installPolicySource": null,
+                "mustShowInstallationInterstitial": null,
+                "authPolicy": "ON_INSTALL",
+                "availability": "AVAILABLE",
+                "disabledReason": null,
+                "eligiblePlanTypes": null,
+                "interface": {
+                  "displayName": null,
+                  "shortDescription": null,
+                  "longDescription": null,
+                  "developerName": null,
+                  "category": "Productivity",
+                  "capabilities": [],
+                  "websiteUrl": null,
+                  "privacyPolicyUrl": null,
+                  "termsOfServiceUrl": null,
+                  "defaultPrompt": null,
+                  "brandColor": null,
+                  "composerIcon": null,
+                  "composerIconUrl": null,
+                  "logo": null,
+                  "logoDark": null,
+                  "logoUrl": null,
+                  "logoUrlDark": null,
+                  "screenshots": [],
+                  "screenshotUrls": []
+                },
+                "keywords": []
+              },
+              "shareUrl": null,
+              "description": "以風險驗證、直接證據與低人工投入推進程式開發",
+              "skills": [
+                {
+                  "name": "personal-harness:ai-code-review",
+                  "description": "Review pull requests, branches, working-tree changes, bug fixes, refactors, and cross-repository migrations. Produce actionable findings, evidence gaps, concrete next steps, and justified acceptance recommendations; migration equivalence is an optional mode.",
+                  "shortDescription": null,
+                  "interface": {
+                    "displayName": "AI 程式碼審查",
+                    "shortDescription": "審查功能、修復、重構與移轉，列出可定位問題、修改方向及驗收證據",
+                    "iconSmall": null,
+                    "iconLarge": null,
+                    "iconSmallUrl": null,
+                    "iconLargeUrl": null,
+                    "brandColor": null,
+                    "defaultPrompt": null
+                  },
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/ai-code-review/SKILL.md",
+                  "enabled": true
+                },
+                {
+                  "name": "personal-harness:define-task",
+                  "description": "Turn vague or high-cost work into a clear task brief before execution. Use when the user wants to define a task, write a brief, clarify handoff instructions for AI or teammates, avoid rework on complex work, decide what information is missing before starting, or convert a fuzzy request into Objective, Background, Materials, Boundaries, optional Assumptions, and Definition of Done. Do not use as the primary skill for simple prompt wording, rewriting, polishing, or style optimization unless the user explicitly wants to redefine the underlying task.",
+                  "shortDescription": null,
+                  "interface": {
+                    "displayName": "Define Task",
+                    "shortDescription": "Turn fuzzy work into a clear brief",
+                    "iconSmall": null,
+                    "iconLarge": null,
+                    "iconSmallUrl": null,
+                    "iconLargeUrl": null,
+                    "brandColor": null,
+                    "defaultPrompt": "Use $define-task to clarify this task before execution."
+                  },
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/define-task/SKILL.md",
+                  "enabled": true
+                },
+                {
+                  "name": "personal-harness:project-setting",
+                  "description": "Create or update a project's document placement rules and reminder hooks. Use for project document conventions or unclear document categories; manages placement, not document subject matter.",
+                  "shortDescription": null,
+                  "interface": null,
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/project-setting/SKILL.md",
+                  "enabled": true
+                },
+                {
+                  "name": "personal-harness:task-harness",
+                  "description": "Own an explicitly enabled multi-step task through verified completion using one recoverable task contract. Use for execution, coordination, or resuming unfinished coding work across conversations. Planning alone does not authorize implementation.",
+                  "shortDescription": null,
+                  "interface": {
+                    "displayName": "Task Harness",
+                    "shortDescription": "以唯一任務合約持續推進、驗收與跨對話續作，必要 hooks 提供有界補救",
+                    "iconSmall": null,
+                    "iconLarge": null,
+                    "iconSmallUrl": null,
+                    "iconLargeUrl": null,
+                    "brandColor": null,
+                    "defaultPrompt": "使用 $task-harness 完成這項任務。先核對授權、必要 hooks 與任務合約，持續推進所有必要成果並驗證；若需接手，先讀取原合約並核對現況。"
+                  },
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/task-harness/SKILL.md",
+                  "enabled": true
+                }
+              ],
+              "onboardingSkill": null,
+              "hooks": [
+                {
+                  "key": "personal-harness@h05-candidate-local:hooks/hooks.json:session_start:0:0",
+                  "eventName": "sessionStart"
+                },
+                {
+                  "key": "personal-harness@h05-candidate-local:hooks/hooks.json:user_prompt_submit:0:0",
+                  "eventName": "userPromptSubmit"
+                },
+                {
+                  "key": "personal-harness@h05-candidate-local:hooks/hooks.json:stop:0:0",
+                  "eventName": "stop"
+                }
+              ],
+              "apps": [],
+              "appTemplates": [],
+              "mcpServers": [],
+              "scheduledTasks": null
+            }
+          }
+        }
+      },
+      {
+        "method": "skills/list",
+        "response": {
+          "id": 4,
+          "result": {
+            "data": [
+              {
+                "cwd": "/private/tmp/h05-admission-5tpyvaik/project",
+                "skills": [
+                  {
+                    "name": "personal-harness:ai-code-review",
+                    "description": "Review pull requests, branches, working-tree changes, bug fixes, refactors, and cross-repository migrations. Produce actionable findings, evidence gaps, concrete next steps, and justified acceptance recommendations; migration equivalence is an optional mode.",
+                    "interface": {
+                      "displayName": "AI 程式碼審查",
+                      "shortDescription": "審查功能、修復、重構與移轉，列出可定位問題、修改方向及驗收證據",
+                      "iconSmall": null,
+                      "iconLarge": null,
+                      "iconSmallUrl": null,
+                      "iconLargeUrl": null,
+                      "brandColor": null,
+                      "defaultPrompt": null
+                    },
+                    "path": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/skills/ai-code-review/SKILL.md",
+                    "scope": "user",
+                    "enabled": true,
+                    "pluginId": "personal-harness@h05-candidate-local"
+                  },
+                  {
+                    "name": "personal-harness:define-task",
+                    "description": "Turn vague or high-cost work into a clear task brief before execution. Use when the user wants to define a task, write a brief, clarify handoff instructions for AI or teammates, avoid rework on complex work, decide what information is missing before starting, or convert a fuzzy request into Objective, Background, Materials, Boundaries, optional Assumptions, and Definition of Done. Do not use as the primary skill for simple prompt wording, rewriting, polishing, or style optimization unless the user explicitly wants to redefine the underlying task.",
+                    "interface": {
+                      "displayName": "Define Task",
+                      "shortDescription": "Turn fuzzy work into a clear brief",
+                      "iconSmall": null,
+                      "iconLarge": null,
+                      "iconSmallUrl": null,
+                      "iconLargeUrl": null,
+                      "brandColor": null,
+                      "defaultPrompt": "Use $define-task to clarify this task before execution."
+                    },
+                    "path": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/skills/define-task/SKILL.md",
+                    "scope": "user",
+                    "enabled": true,
+                    "pluginId": "personal-harness@h05-candidate-local"
+                  },
+                  {
+                    "name": "personal-harness:project-setting",
+                    "description": "Create or update a project's document placement rules and reminder hooks. Use for project document conventions or unclear document categories; manages placement, not document subject matter.",
+                    "path": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/skills/project-setting/SKILL.md",
+                    "scope": "user",
+                    "enabled": true,
+                    "pluginId": "personal-harness@h05-candidate-local"
+                  },
+                  {
+                    "name": "personal-harness:task-harness",
+                    "description": "Own an explicitly enabled multi-step task through verified completion using one recoverable task contract. Use for execution, coordination, or resuming unfinished coding work across conversations. Planning alone does not authorize implementation.",
+                    "interface": {
+                      "displayName": "Task Harness",
+                      "shortDescription": "以唯一任務合約持續推進、驗收與跨對話續作，必要 hooks 提供有界補救",
+                      "iconSmall": null,
+                      "iconLarge": null,
+                      "iconSmallUrl": null,
+                      "iconLargeUrl": null,
+                      "brandColor": null,
+                      "defaultPrompt": "使用 $task-harness 完成這項任務。先核對授權、必要 hooks 與任務合約，持續推進所有必要成果並驗證；若需接手，先讀取原合約並核對現況。"
+                    },
+                    "path": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/skills/task-harness/SKILL.md",
+                    "scope": "user",
+                    "enabled": true,
+                    "pluginId": "personal-harness@h05-candidate-local"
+                  }
+                ],
+                "errors": []
+              }
+            ]
+          }
+        }
+      },
+      {
+        "method": "hooks/list",
+        "response": {
+          "id": 5,
+          "result": {
+            "data": [
+              {
+                "cwd": "/private/tmp/h05-admission-5tpyvaik/project",
+                "hooks": [
+                  {
+                    "key": "personal-harness@h05-candidate-local:hooks/hooks.json:session_start:0:0",
+                    "eventName": "sessionStart",
+                    "handlerType": "command",
+                    "command": "python3 \"/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/hooks/task_harness.py\"",
+                    "async": false,
+                    "matcher": null,
+                    "timeoutSec": 10,
+                    "statusMessage": null,
+                    "additionalContextLimit": null,
+                    "sourcePath": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/hooks/hooks.json",
+                    "source": "plugin",
+                    "pluginId": "personal-harness@h05-candidate-local",
+                    "displayOrder": 0,
+                    "enabled": true,
+                    "isManaged": false,
+                    "currentHash": "sha256:d2d99242ec28c4586048ac780264c0347368c3da82ee32c1745a8043720a2c67/sha256:3017757f92ec1221c1da9acf3a1e4b39fd5fd308fe95ef31c44744eeac55e199",
+                    "trustStatus": "untrusted"
+                  },
+                  {
+                    "key": "personal-harness@h05-candidate-local:hooks/hooks.json:user_prompt_submit:0:0",
+                    "eventName": "userPromptSubmit",
+                    "handlerType": "command",
+                    "command": "python3 \"/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/hooks/task_harness.py\"",
+                    "async": false,
+                    "matcher": null,
+                    "timeoutSec": 10,
+                    "statusMessage": null,
+                    "additionalContextLimit": null,
+                    "sourcePath": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/hooks/hooks.json",
+                    "source": "plugin",
+                    "pluginId": "personal-harness@h05-candidate-local",
+                    "displayOrder": 1,
+                    "enabled": true,
+                    "isManaged": false,
+                    "currentHash": "sha256:934cadb39c14fc03c82fbbfb94bb9c9eaa1164a9bc5ae3670afbff6755e9d1e3/sha256:3017757f92ec1221c1da9acf3a1e4b39fd5fd308fe95ef31c44744eeac55e199",
+                    "trustStatus": "untrusted"
+                  },
+                  {
+                    "key": "personal-harness@h05-candidate-local:hooks/hooks.json:stop:0:0",
+                    "eventName": "stop",
+                    "handlerType": "command",
+                    "command": "python3 \"/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/hooks/task_harness.py\"",
+                    "async": false,
+                    "matcher": null,
+                    "timeoutSec": 10,
+                    "statusMessage": null,
+                    "additionalContextLimit": null,
+                    "sourcePath": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/hooks/hooks.json",
+                    "source": "plugin",
+                    "pluginId": "personal-harness@h05-candidate-local",
+                    "displayOrder": 2,
+                    "enabled": true,
+                    "isManaged": false,
+                    "currentHash": "sha256:6dfeb054fed3978e4650cb1c117c5e2eb81962682f40d5dcb7d07bb362715519/sha256:3017757f92ec1221c1da9acf3a1e4b39fd5fd308fe95ef31c44744eeac55e199",
+                    "trustStatus": "untrusted"
+                  }
+                ],
+                "warnings": [],
+                "errors": []
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "trusted": [
+      {
+        "method": "plugin/read",
+        "response": {
+          "id": 2,
+          "result": {
+            "plugin": {
+              "marketplaceName": "h05-candidate-local",
+              "marketplacePath": "/private/tmp/h05-admission-5tpyvaik/project/.agents/plugins/marketplace.json",
+              "summary": {
+                "id": "personal-harness@h05-candidate-local",
+                "remotePluginId": null,
+                "version": null,
+                "localVersion": "0.2.1",
+                "name": "personal-harness",
+                "shareContext": null,
+                "source": {
+                  "type": "local",
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness"
+                },
+                "installed": true,
+                "installedAt": null,
+                "enabled": true,
+                "installPolicy": "AVAILABLE",
+                "installPolicySource": null,
+                "mustShowInstallationInterstitial": null,
+                "authPolicy": "ON_INSTALL",
+                "availability": "AVAILABLE",
+                "disabledReason": null,
+                "eligiblePlanTypes": null,
+                "interface": {
+                  "displayName": null,
+                  "shortDescription": null,
+                  "longDescription": null,
+                  "developerName": null,
+                  "category": "Productivity",
+                  "capabilities": [],
+                  "websiteUrl": null,
+                  "privacyPolicyUrl": null,
+                  "termsOfServiceUrl": null,
+                  "defaultPrompt": null,
+                  "brandColor": null,
+                  "composerIcon": null,
+                  "composerIconUrl": null,
+                  "logo": null,
+                  "logoDark": null,
+                  "logoUrl": null,
+                  "logoUrlDark": null,
+                  "screenshots": [],
+                  "screenshotUrls": []
+                },
+                "keywords": []
+              },
+              "shareUrl": null,
+              "description": "以風險驗證、直接證據與低人工投入推進程式開發",
+              "skills": [
+                {
+                  "name": "personal-harness:ai-code-review",
+                  "description": "Review pull requests, branches, working-tree changes, bug fixes, refactors, and cross-repository migrations. Produce actionable findings, evidence gaps, concrete next steps, and justified acceptance recommendations; migration equivalence is an optional mode.",
+                  "shortDescription": null,
+                  "interface": {
+                    "displayName": "AI 程式碼審查",
+                    "shortDescription": "審查功能、修復、重構與移轉，列出可定位問題、修改方向及驗收證據",
+                    "iconSmall": null,
+                    "iconLarge": null,
+                    "iconSmallUrl": null,
+                    "iconLargeUrl": null,
+                    "brandColor": null,
+                    "defaultPrompt": null
+                  },
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/ai-code-review/SKILL.md",
+                  "enabled": true
+                },
+                {
+                  "name": "personal-harness:define-task",
+                  "description": "Turn vague or high-cost work into a clear task brief before execution. Use when the user wants to define a task, write a brief, clarify handoff instructions for AI or teammates, avoid rework on complex work, decide what information is missing before starting, or convert a fuzzy request into Objective, Background, Materials, Boundaries, optional Assumptions, and Definition of Done. Do not use as the primary skill for simple prompt wording, rewriting, polishing, or style optimization unless the user explicitly wants to redefine the underlying task.",
+                  "shortDescription": null,
+                  "interface": {
+                    "displayName": "Define Task",
+                    "shortDescription": "Turn fuzzy work into a clear brief",
+                    "iconSmall": null,
+                    "iconLarge": null,
+                    "iconSmallUrl": null,
+                    "iconLargeUrl": null,
+                    "brandColor": null,
+                    "defaultPrompt": "Use $define-task to clarify this task before execution."
+                  },
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/define-task/SKILL.md",
+                  "enabled": true
+                },
+                {
+                  "name": "personal-harness:project-setting",
+                  "description": "Create or update a project's document placement rules and reminder hooks. Use for project document conventions or unclear document categories; manages placement, not document subject matter.",
+                  "shortDescription": null,
+                  "interface": null,
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/project-setting/SKILL.md",
+                  "enabled": true
+                },
+                {
+                  "name": "personal-harness:task-harness",
+                  "description": "Own an explicitly enabled multi-step task through verified completion using one recoverable task contract. Use for execution, coordination, or resuming unfinished coding work across conversations. Planning alone does not authorize implementation.",
+                  "shortDescription": null,
+                  "interface": {
+                    "displayName": "Task Harness",
+                    "shortDescription": "以唯一任務合約持續推進、驗收與跨對話續作，必要 hooks 提供有界補救",
+                    "iconSmall": null,
+                    "iconLarge": null,
+                    "iconSmallUrl": null,
+                    "iconLargeUrl": null,
+                    "brandColor": null,
+                    "defaultPrompt": "使用 $task-harness 完成這項任務。先核對授權、必要 hooks 與任務合約，持續推進所有必要成果並驗證；若需接手，先讀取原合約並核對現況。"
+                  },
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/task-harness/SKILL.md",
+                  "enabled": true
+                }
+              ],
+              "onboardingSkill": null,
+              "hooks": [
+                {
+                  "key": "personal-harness@h05-candidate-local:hooks/hooks.json:session_start:0:0",
+                  "eventName": "sessionStart"
+                },
+                {
+                  "key": "personal-harness@h05-candidate-local:hooks/hooks.json:user_prompt_submit:0:0",
+                  "eventName": "userPromptSubmit"
+                },
+                {
+                  "key": "personal-harness@h05-candidate-local:hooks/hooks.json:stop:0:0",
+                  "eventName": "stop"
+                }
+              ],
+              "apps": [],
+              "appTemplates": [],
+              "mcpServers": [],
+              "scheduledTasks": null
+            }
+          }
+        }
+      },
+      {
+        "method": "skills/list",
+        "response": {
+          "id": 3,
+          "result": {
+            "data": [
+              {
+                "cwd": "/private/tmp/h05-admission-5tpyvaik/project",
+                "skills": [
+                  {
+                    "name": "personal-harness:ai-code-review",
+                    "description": "Review pull requests, branches, working-tree changes, bug fixes, refactors, and cross-repository migrations. Produce actionable findings, evidence gaps, concrete next steps, and justified acceptance recommendations; migration equivalence is an optional mode.",
+                    "interface": {
+                      "displayName": "AI 程式碼審查",
+                      "shortDescription": "審查功能、修復、重構與移轉，列出可定位問題、修改方向及驗收證據",
+                      "iconSmall": null,
+                      "iconLarge": null,
+                      "iconSmallUrl": null,
+                      "iconLargeUrl": null,
+                      "brandColor": null,
+                      "defaultPrompt": null
+                    },
+                    "path": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/skills/ai-code-review/SKILL.md",
+                    "scope": "user",
+                    "enabled": true,
+                    "pluginId": "personal-harness@h05-candidate-local"
+                  },
+                  {
+                    "name": "personal-harness:define-task",
+                    "description": "Turn vague or high-cost work into a clear task brief before execution. Use when the user wants to define a task, write a brief, clarify handoff instructions for AI or teammates, avoid rework on complex work, decide what information is missing before starting, or convert a fuzzy request into Objective, Background, Materials, Boundaries, optional Assumptions, and Definition of Done. Do not use as the primary skill for simple prompt wording, rewriting, polishing, or style optimization unless the user explicitly wants to redefine the underlying task.",
+                    "interface": {
+                      "displayName": "Define Task",
+                      "shortDescription": "Turn fuzzy work into a clear brief",
+                      "iconSmall": null,
+                      "iconLarge": null,
+                      "iconSmallUrl": null,
+                      "iconLargeUrl": null,
+                      "brandColor": null,
+                      "defaultPrompt": "Use $define-task to clarify this task before execution."
+                    },
+                    "path": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/skills/define-task/SKILL.md",
+                    "scope": "user",
+                    "enabled": true,
+                    "pluginId": "personal-harness@h05-candidate-local"
+                  },
+                  {
+                    "name": "personal-harness:project-setting",
+                    "description": "Create or update a project's document placement rules and reminder hooks. Use for project document conventions or unclear document categories; manages placement, not document subject matter.",
+                    "path": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/skills/project-setting/SKILL.md",
+                    "scope": "user",
+                    "enabled": true,
+                    "pluginId": "personal-harness@h05-candidate-local"
+                  },
+                  {
+                    "name": "personal-harness:task-harness",
+                    "description": "Own an explicitly enabled multi-step task through verified completion using one recoverable task contract. Use for execution, coordination, or resuming unfinished coding work across conversations. Planning alone does not authorize implementation.",
+                    "interface": {
+                      "displayName": "Task Harness",
+                      "shortDescription": "以唯一任務合約持續推進、驗收與跨對話續作，必要 hooks 提供有界補救",
+                      "iconSmall": null,
+                      "iconLarge": null,
+                      "iconSmallUrl": null,
+                      "iconLargeUrl": null,
+                      "brandColor": null,
+                      "defaultPrompt": "使用 $task-harness 完成這項任務。先核對授權、必要 hooks 與任務合約，持續推進所有必要成果並驗證；若需接手，先讀取原合約並核對現況。"
+                    },
+                    "path": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/skills/task-harness/SKILL.md",
+                    "scope": "user",
+                    "enabled": true,
+                    "pluginId": "personal-harness@h05-candidate-local"
+                  }
+                ],
+                "errors": []
+              }
+            ]
+          }
+        }
+      },
+      {
+        "method": "hooks/list",
+        "response": {
+          "id": 4,
+          "result": {
+            "data": [
+              {
+                "cwd": "/private/tmp/h05-admission-5tpyvaik/project",
+                "hooks": [
+                  {
+                    "key": "personal-harness@h05-candidate-local:hooks/hooks.json:session_start:0:0",
+                    "eventName": "sessionStart",
+                    "handlerType": "command",
+                    "command": "python3 \"/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/hooks/task_harness.py\"",
+                    "async": false,
+                    "matcher": null,
+                    "timeoutSec": 10,
+                    "statusMessage": null,
+                    "additionalContextLimit": null,
+                    "sourcePath": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/hooks/hooks.json",
+                    "source": "plugin",
+                    "pluginId": "personal-harness@h05-candidate-local",
+                    "displayOrder": 0,
+                    "enabled": true,
+                    "isManaged": false,
+                    "currentHash": "sha256:d2d99242ec28c4586048ac780264c0347368c3da82ee32c1745a8043720a2c67/sha256:3017757f92ec1221c1da9acf3a1e4b39fd5fd308fe95ef31c44744eeac55e199",
+                    "trustStatus": "trusted"
+                  },
+                  {
+                    "key": "personal-harness@h05-candidate-local:hooks/hooks.json:user_prompt_submit:0:0",
+                    "eventName": "userPromptSubmit",
+                    "handlerType": "command",
+                    "command": "python3 \"/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/hooks/task_harness.py\"",
+                    "async": false,
+                    "matcher": null,
+                    "timeoutSec": 10,
+                    "statusMessage": null,
+                    "additionalContextLimit": null,
+                    "sourcePath": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/hooks/hooks.json",
+                    "source": "plugin",
+                    "pluginId": "personal-harness@h05-candidate-local",
+                    "displayOrder": 1,
+                    "enabled": true,
+                    "isManaged": false,
+                    "currentHash": "sha256:934cadb39c14fc03c82fbbfb94bb9c9eaa1164a9bc5ae3670afbff6755e9d1e3/sha256:3017757f92ec1221c1da9acf3a1e4b39fd5fd308fe95ef31c44744eeac55e199",
+                    "trustStatus": "trusted"
+                  },
+                  {
+                    "key": "personal-harness@h05-candidate-local:hooks/hooks.json:stop:0:0",
+                    "eventName": "stop",
+                    "handlerType": "command",
+                    "command": "python3 \"/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/hooks/task_harness.py\"",
+                    "async": false,
+                    "matcher": null,
+                    "timeoutSec": 10,
+                    "statusMessage": null,
+                    "additionalContextLimit": null,
+                    "sourcePath": "/private/tmp/h05-admission-5tpyvaik/state/plugins/cache/h05-candidate-local/personal-harness/0.2.1/hooks/hooks.json",
+                    "source": "plugin",
+                    "pluginId": "personal-harness@h05-candidate-local",
+                    "displayOrder": 2,
+                    "enabled": true,
+                    "isManaged": false,
+                    "currentHash": "sha256:6dfeb054fed3978e4650cb1c117c5e2eb81962682f40d5dcb7d07bb362715519/sha256:3017757f92ec1221c1da9acf3a1e4b39fd5fd308fe95ef31c44744eeac55e199",
+                    "trustStatus": "trusted"
+                  }
+                ],
+                "warnings": [],
+                "errors": []
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "disabled": [
+      {
+        "method": "plugin/read",
+        "response": {
+          "id": 2,
+          "result": {
+            "plugin": {
+              "marketplaceName": "h05-candidate-local",
+              "marketplacePath": "/private/tmp/h05-admission-5tpyvaik/project/.agents/plugins/marketplace.json",
+              "summary": {
+                "id": "personal-harness@h05-candidate-local",
+                "remotePluginId": null,
+                "version": null,
+                "localVersion": "0.2.1",
+                "name": "personal-harness",
+                "shareContext": null,
+                "source": {
+                  "type": "local",
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness"
+                },
+                "installed": true,
+                "installedAt": null,
+                "enabled": false,
+                "installPolicy": "AVAILABLE",
+                "installPolicySource": null,
+                "mustShowInstallationInterstitial": null,
+                "authPolicy": "ON_INSTALL",
+                "availability": "AVAILABLE",
+                "disabledReason": null,
+                "eligiblePlanTypes": null,
+                "interface": {
+                  "displayName": null,
+                  "shortDescription": null,
+                  "longDescription": null,
+                  "developerName": null,
+                  "category": "Productivity",
+                  "capabilities": [],
+                  "websiteUrl": null,
+                  "privacyPolicyUrl": null,
+                  "termsOfServiceUrl": null,
+                  "defaultPrompt": null,
+                  "brandColor": null,
+                  "composerIcon": null,
+                  "composerIconUrl": null,
+                  "logo": null,
+                  "logoDark": null,
+                  "logoUrl": null,
+                  "logoUrlDark": null,
+                  "screenshots": [],
+                  "screenshotUrls": []
+                },
+                "keywords": []
+              },
+              "shareUrl": null,
+              "description": "以風險驗證、直接證據與低人工投入推進程式開發",
+              "skills": [
+                {
+                  "name": "personal-harness:ai-code-review",
+                  "description": "Review pull requests, branches, working-tree changes, bug fixes, refactors, and cross-repository migrations. Produce actionable findings, evidence gaps, concrete next steps, and justified acceptance recommendations; migration equivalence is an optional mode.",
+                  "shortDescription": null,
+                  "interface": {
+                    "displayName": "AI 程式碼審查",
+                    "shortDescription": "審查功能、修復、重構與移轉，列出可定位問題、修改方向及驗收證據",
+                    "iconSmall": null,
+                    "iconLarge": null,
+                    "iconSmallUrl": null,
+                    "iconLargeUrl": null,
+                    "brandColor": null,
+                    "defaultPrompt": null
+                  },
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/ai-code-review/SKILL.md",
+                  "enabled": true
+                },
+                {
+                  "name": "personal-harness:define-task",
+                  "description": "Turn vague or high-cost work into a clear task brief before execution. Use when the user wants to define a task, write a brief, clarify handoff instructions for AI or teammates, avoid rework on complex work, decide what information is missing before starting, or convert a fuzzy request into Objective, Background, Materials, Boundaries, optional Assumptions, and Definition of Done. Do not use as the primary skill for simple prompt wording, rewriting, polishing, or style optimization unless the user explicitly wants to redefine the underlying task.",
+                  "shortDescription": null,
+                  "interface": {
+                    "displayName": "Define Task",
+                    "shortDescription": "Turn fuzzy work into a clear brief",
+                    "iconSmall": null,
+                    "iconLarge": null,
+                    "iconSmallUrl": null,
+                    "iconLargeUrl": null,
+                    "brandColor": null,
+                    "defaultPrompt": "Use $define-task to clarify this task before execution."
+                  },
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/define-task/SKILL.md",
+                  "enabled": true
+                },
+                {
+                  "name": "personal-harness:project-setting",
+                  "description": "Create or update a project's document placement rules and reminder hooks. Use for project document conventions or unclear document categories; manages placement, not document subject matter.",
+                  "shortDescription": null,
+                  "interface": null,
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/project-setting/SKILL.md",
+                  "enabled": true
+                },
+                {
+                  "name": "personal-harness:task-harness",
+                  "description": "Own an explicitly enabled multi-step task through verified completion using one recoverable task contract. Use for execution, coordination, or resuming unfinished coding work across conversations. Planning alone does not authorize implementation.",
+                  "shortDescription": null,
+                  "interface": {
+                    "displayName": "Task Harness",
+                    "shortDescription": "以唯一任務合約持續推進、驗收與跨對話續作，必要 hooks 提供有界補救",
+                    "iconSmall": null,
+                    "iconLarge": null,
+                    "iconSmallUrl": null,
+                    "iconLargeUrl": null,
+                    "brandColor": null,
+                    "defaultPrompt": "使用 $task-harness 完成這項任務。先核對授權、必要 hooks 與任務合約，持續推進所有必要成果並驗證；若需接手，先讀取原合約並核對現況。"
+                  },
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/task-harness/SKILL.md",
+                  "enabled": true
+                }
+              ],
+              "onboardingSkill": null,
+              "hooks": [
+                {
+                  "key": "personal-harness@h05-candidate-local:hooks/hooks.json:session_start:0:0",
+                  "eventName": "sessionStart"
+                },
+                {
+                  "key": "personal-harness@h05-candidate-local:hooks/hooks.json:user_prompt_submit:0:0",
+                  "eventName": "userPromptSubmit"
+                },
+                {
+                  "key": "personal-harness@h05-candidate-local:hooks/hooks.json:stop:0:0",
+                  "eventName": "stop"
+                }
+              ],
+              "apps": [],
+              "appTemplates": [],
+              "mcpServers": [],
+              "scheduledTasks": null
+            }
+          }
+        }
+      },
+      {
+        "method": "skills/list",
+        "response": {
+          "id": 3,
+          "result": {
+            "data": [
+              {
+                "cwd": "/private/tmp/h05-admission-5tpyvaik/project",
+                "skills": [],
+                "errors": []
+              }
+            ]
+          }
+        }
+      },
+      {
+        "method": "hooks/list",
+        "response": {
+          "id": 4,
+          "result": {
+            "data": [
+              {
+                "cwd": "/private/tmp/h05-admission-5tpyvaik/project",
+                "hooks": [],
+                "warnings": [],
+                "errors": []
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "uninstall": [
+      {
+        "method": "plugin/uninstall",
+        "response": {
+          "id": 2,
+          "result": {}
+        }
+      },
+      {
+        "method": "plugin/read",
+        "response": {
+          "id": 3,
+          "result": {
+            "plugin": {
+              "marketplaceName": "h05-candidate-local",
+              "marketplacePath": "/private/tmp/h05-admission-5tpyvaik/project/.agents/plugins/marketplace.json",
+              "summary": {
+                "id": "personal-harness@h05-candidate-local",
+                "remotePluginId": null,
+                "version": null,
+                "localVersion": "0.2.1",
+                "name": "personal-harness",
+                "shareContext": null,
+                "source": {
+                  "type": "local",
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness"
+                },
+                "installed": false,
+                "installedAt": null,
+                "enabled": false,
+                "installPolicy": "AVAILABLE",
+                "installPolicySource": null,
+                "mustShowInstallationInterstitial": null,
+                "authPolicy": "ON_INSTALL",
+                "availability": "AVAILABLE",
+                "disabledReason": null,
+                "eligiblePlanTypes": null,
+                "interface": {
+                  "displayName": null,
+                  "shortDescription": null,
+                  "longDescription": null,
+                  "developerName": null,
+                  "category": "Productivity",
+                  "capabilities": [],
+                  "websiteUrl": null,
+                  "privacyPolicyUrl": null,
+                  "termsOfServiceUrl": null,
+                  "defaultPrompt": null,
+                  "brandColor": null,
+                  "composerIcon": null,
+                  "composerIconUrl": null,
+                  "logo": null,
+                  "logoDark": null,
+                  "logoUrl": null,
+                  "logoUrlDark": null,
+                  "screenshots": [],
+                  "screenshotUrls": []
+                },
+                "keywords": []
+              },
+              "shareUrl": null,
+              "description": "以風險驗證、直接證據與低人工投入推進程式開發",
+              "skills": [
+                {
+                  "name": "personal-harness:ai-code-review",
+                  "description": "Review pull requests, branches, working-tree changes, bug fixes, refactors, and cross-repository migrations. Produce actionable findings, evidence gaps, concrete next steps, and justified acceptance recommendations; migration equivalence is an optional mode.",
+                  "shortDescription": null,
+                  "interface": {
+                    "displayName": "AI 程式碼審查",
+                    "shortDescription": "審查功能、修復、重構與移轉，列出可定位問題、修改方向及驗收證據",
+                    "iconSmall": null,
+                    "iconLarge": null,
+                    "iconSmallUrl": null,
+                    "iconLargeUrl": null,
+                    "brandColor": null,
+                    "defaultPrompt": null
+                  },
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/ai-code-review/SKILL.md",
+                  "enabled": true
+                },
+                {
+                  "name": "personal-harness:define-task",
+                  "description": "Turn vague or high-cost work into a clear task brief before execution. Use when the user wants to define a task, write a brief, clarify handoff instructions for AI or teammates, avoid rework on complex work, decide what information is missing before starting, or convert a fuzzy request into Objective, Background, Materials, Boundaries, optional Assumptions, and Definition of Done. Do not use as the primary skill for simple prompt wording, rewriting, polishing, or style optimization unless the user explicitly wants to redefine the underlying task.",
+                  "shortDescription": null,
+                  "interface": {
+                    "displayName": "Define Task",
+                    "shortDescription": "Turn fuzzy work into a clear brief",
+                    "iconSmall": null,
+                    "iconLarge": null,
+                    "iconSmallUrl": null,
+                    "iconLargeUrl": null,
+                    "brandColor": null,
+                    "defaultPrompt": "Use $define-task to clarify this task before execution."
+                  },
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/define-task/SKILL.md",
+                  "enabled": true
+                },
+                {
+                  "name": "personal-harness:project-setting",
+                  "description": "Create or update a project's document placement rules and reminder hooks. Use for project document conventions or unclear document categories; manages placement, not document subject matter.",
+                  "shortDescription": null,
+                  "interface": null,
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/project-setting/SKILL.md",
+                  "enabled": true
+                },
+                {
+                  "name": "personal-harness:task-harness",
+                  "description": "Own an explicitly enabled multi-step task through verified completion using one recoverable task contract. Use for execution, coordination, or resuming unfinished coding work across conversations. Planning alone does not authorize implementation.",
+                  "shortDescription": null,
+                  "interface": {
+                    "displayName": "Task Harness",
+                    "shortDescription": "以唯一任務合約持續推進、驗收與跨對話續作，必要 hooks 提供有界補救",
+                    "iconSmall": null,
+                    "iconLarge": null,
+                    "iconSmallUrl": null,
+                    "iconLargeUrl": null,
+                    "brandColor": null,
+                    "defaultPrompt": "使用 $task-harness 完成這項任務。先核對授權、必要 hooks 與任務合約，持續推進所有必要成果並驗證；若需接手，先讀取原合約並核對現況。"
+                  },
+                  "path": "/private/tmp/h05-admission-5tpyvaik/project/candidates/personal-harness/skills/task-harness/SKILL.md",
+                  "enabled": true
+                }
+              ],
+              "onboardingSkill": null,
+              "hooks": [
+                {
+                  "key": "personal-harness@h05-candidate-local:hooks/hooks.json:session_start:0:0",
+                  "eventName": "sessionStart"
+                },
+                {
+                  "key": "personal-harness@h05-candidate-local:hooks/hooks.json:user_prompt_submit:0:0",
+                  "eventName": "userPromptSubmit"
+                },
+                {
+                  "key": "personal-harness@h05-candidate-local:hooks/hooks.json:stop:0:0",
+                  "eventName": "stop"
+                }
+              ],
+              "apps": [],
+              "appTemplates": [],
+              "mcpServers": [],
+              "scheduledTasks": null
+            }
+          }
+        }
+      },
+      {
+        "method": "skills/list",
+        "response": {
+          "id": 4,
+          "result": {
+            "data": [
+              {
+                "cwd": "/private/tmp/h05-admission-5tpyvaik/project",
+                "skills": [],
+                "errors": []
+              }
+            ]
+          }
+        }
+      },
+      {
+        "method": "hooks/list",
+        "response": {
+          "id": 5,
+          "result": {
+            "data": [
+              {
+                "cwd": "/private/tmp/h05-admission-5tpyvaik/project",
+                "hooks": [],
+                "warnings": [],
+                "errors": []
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "daily_config_sha256_before": "f3422e64211f8c16368348ce97ed0e8994b763bc27f2a1c6dff6bf1149366d63",
+  "daily_config_sha256_after": "f3422e64211f8c16368348ce97ed0e8994b763bc27f2a1c6dff6bf1149366d63",
+  "final_plugin_cache_exists": false,
+  "native_ui": "Reviewed exact 3 definitions and verified installed bytes; native Trust all and continue; /quit exit 0",
+  "model_trial": false,
+  "unrelated_warning": "Native TUI reported xcodebuildmcp handshake failure; no related configuration changed",
+  "limitations": [
+    "Load/trust/disable proof only; C0 and model behavior not verified",
+    "Daily config hash compared; no exhaustive global filesystem monitoring",
+    "No project harness configuration or real task contract created"
+  ]
+}

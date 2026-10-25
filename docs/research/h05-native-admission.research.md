@@ -26,3 +26,22 @@
 登入與正常信任的接入阻礙已解除。下一階段仍須完成實際候選／probe 的精確接線與正常信任、固定輸入及控制準備；取得新模型執行授權後才可執行 C0。H05A 維持 in_progress，H05B／H05C 未開始。
 
 使用者已決定先停在本次無模型成果。獨立 Spec 複核另讀取暫存原始 hooks/list 並比對 handler bytes，確認本報告與直接證據一致；沒有新增 findings。
+
+
+## 完整 0.2.1 候選接入與停用（2026-10-25）
+
+使用者解除第 1 項的唯讀限制後，在同一可丟棄測試範圍完成完整套件接入；沒有模型 trial。前述 handler 複本預檢是歷史階段，以下才是完整候選載入證據。
+
+1. 將凍結 0.2.1 複製至測試專案，重用 repo 的 marketplace 格式，僅在測試副本指定候選路徑。先停用早期 project hook 定義以避免重複載入。
+2. 原生 `plugin/read` 可辨識四個 skills 及三個 hooks；安裝前 `skills/list`、`hooks/list` 均沒有這個候選。
+3. 使用原生 `plugin/install` 接入測試專用 CODEX_HOME，未要求其他 Apps 認證。`skills/list` 回傳四個啟用 skills，路徑全部位於 0.2.1 測試快取；三個 hooks 的命令也指向同一版本。
+4. 安裝後快取經既有 package verifier 通過，manifest SHA-256 仍為 `210664eb7b5a478997dbc8c67b323131a5f9ed62bd51e23cdbaba8bdb7a8ae5a`。檢視三個精確定義後，透過原生 TUI 信任；重啟 app-server 讀回三者均 enabled／trusted，沒有 hook 載入警告／錯誤。
+5. 只在測試 config 將該 plugin 的 enabled 設為 false；新 app-server 讀回 installed=true、enabled=false，啟用 skills 與 hooks 均為零。再透過原生 `plugin/uninstall` 收尾，確認 installed=false、enabled=false、兩份載入清單皆無候選，且該版本測試快取已移除。
+
+原生 TUI 正常退出，所有本次自有 RPC 程序結束。使用者日常 config 前後雜湊一致；來源候選、日常啟用版本與其他專案未由本次操作修改。這不是所有全域檔案寫入的完整監測聲明。原生 TUI 另回報既有 xcodebuildmcp handshake 失敗；它不屬本候選，沒有擴展去修理該服務。
+
+**接入範圍務必區分：** 原生 plugin install 的回傳 scope 是 user，位於本次測試專用 CODEX_HOME；不是原生「僅一個專案可見」的證明。產品任務啟用仍靠明確啟用及專案設定。此次測試不修改日常使用者 state，不把該安裝方式描述成可直接對日常全域無影響地安裝。
+
+機械證據：[完整候選接入、停用與移除](task-harness-lifecycle-evidence/h05-full-package-admission.json)。原生結構依據重用 [Codex marketplace](https://github.com/openai/codex/blob/main/codex-rs/core-plugins/src/marketplace.rs)；實際判定以本次 0.164.0 RPC、原生信任及套件內容驗證為準。
+
+結論：收斂清單第 1 項「完整候選接入／停用」完成。未建立產品任務合約、未將 host 資格設為 true，C0 及後續實際 agent 行為仍未驗收；H05A／H05 不因此標 done。
