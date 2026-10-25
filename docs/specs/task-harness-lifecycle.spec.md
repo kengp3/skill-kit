@@ -81,7 +81,7 @@ Script 統一 Python 3、優先標準函式庫；首版來源使用 Python 3.10+
 
 ### D12：封裝與啟用
 
-- 同一候選包含三個 hooks、Python handler、skill、合約/專案設定範本與接入說明。沿用既有封裝/內容 manifest；來源版本升為 0.2.0，不改舊 release。
+- 同一候選包含三個 hooks、Python handler、skill、合約/專案設定範本與接入說明。沿用既有封裝/內容 manifest；已凍結 0.2.0 保留不變，此次接入指南同步建立 0.2.1 候選，不覆寫舊 release。
 - 啟動使用 python3（Windows 使用適用的 Python 3 啟動命令），不硬編碼開發者 Homebrew 路徑。宿主 PATH 必須另驗；缺 Python 是必要接入缺口，不安裝、不暗降級。
 - 提供未驗證的專案設定範本，實際 root 與目錄由主責依專案規範在啟用授權內建立。此輪不向本 repo 的日常配置安裝範本或註冊 plugin。
 - 原有 project-setting 提醒保留，不重複安裝同一 handler。信任/載入/功能驗收分開，不繞過宿主信任審查。
