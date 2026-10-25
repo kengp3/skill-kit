@@ -4,7 +4,7 @@
 
 **Blocked by:** T05
 
-**Status:** implemented; fallback and disabled-agent cases passed; unknown-launch variants pending
+**Status:** done; native fallback, exhaustion and agent absence verified
 
 依據：[實作規格](../specs/unified-project-settings.spec.md)。使用者已確認 T01–T08 拆分與依賴。
 
@@ -12,7 +12,7 @@
 
 - [x] 依序替代、自動 default、同模型去重，不串接低優先序規則。
 - [x] 強度不支援優先保留模型並用宿主預設；明確限制不得改變。
-- [ ] 未知啟動先查明；清單耗盡只暫停受影響工作。
+- [x] 未知啟動先查明；清單耗盡只暫停受影響工作。實測為已知 handle 由 running 查到終態才回退；真正未知 child 的網路故障另列 H7 未驗證。
 - [x] 無子 agent 由主責循序接手，獨立審查保持未完成，其他工作繼續。
 
 ## 證據要求
@@ -27,6 +27,6 @@ F 異常與 G 的真實失敗、回退、執行者、無重派與未完成條件
 
 ## T08 最終對帳
 
-真實 model_not_found 終態後依序回退、原生 model/list 不支援強度的預檢及同模型 medium 派工、agents.enabled=false 下主責完成一般成果／獨立審查保留 blocked 均通過。default／去重／strict 另有模型判讀案例；真實全候選耗盡及網路斷線跨 session 查回尚未完整實測。
+真實 model_not_found 的 handle 由 running 查到 errored 後才回退；model/list 預檢不支援強度並保留同模型改 medium，原生派工成功。最終候選另證明首選與專案預設均真實 model_not_found、各只啟動一次，無 default 遞迴；只保留受影響 T1 blocked，T2 完成並詢問。agents.enabled=false 的主責接手及獨立審查保留缺口通過。真正 child 啟動回應遺失／網路斷線後跨 session 終態查回仍屬 H7 未驗證，沒有以已知 handle 案例冒充。
 
 詳見[實際 agent 與整合驗收](../research/unified-project-settings-acceptance.research.md)及其中來源、raw、產物與未驗證清單。

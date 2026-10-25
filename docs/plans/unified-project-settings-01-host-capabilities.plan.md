@@ -4,14 +4,14 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** investigation-complete; host limits documented
+**Status:** done; capability investigation and native evidence reconciled
 
 依據：[實作規格](../specs/unified-project-settings.spec.md)。使用者已確認 T01–T08 拆分與依賴。
 
 ## 驗收條件
 
-- [ ] 在隔離環境查核載入、信任、真實觸發、續作與使用者停止。載入與信任狀態已取得；T08 補得靜態提醒真實注入，正常持久信任、條件續作與 UI 停止仍未驗證。
-- [ ] 查核模型／強度、角色優先序、可觀測結果與未知啟動查核能力。已取得原生模型及子 agent 的回合、上下文、角色／強度及真實回退證據；手動切換與未知啟動的完整生命週期仍未驗證。
+- [x] 在隔離環境查核載入、信任、真實觸發、續作與使用者停止。已分別記錄載入／信任狀態、真實提醒、被動 Stop 限制及 native API 停止／明確續作；正常持久信任與 Desktop UI 未測，調查結果不冒充能力通過。
+- [x] 查核模型／強度、角色優先序、可觀測結果與未知啟動查核能力。已取得原生回合、角色／強度、真實回退／耗盡及 API 模型切換生命週期；已知 handle 先查終態，真正未知 child 網路故障保留 H7 未驗證。
 - [x] 可用、不可用、未驗證分列；調查完成不等於未驗證能力通過。
 
 ## 證據要求
@@ -24,6 +24,6 @@
 
 ## T08 最終對帳
 
-後續整合已取得固定提醒的真實注入、原生模型角色與強度、候選拒絕及回退證據；正常信任、UI interrupt／手動模型切換仍未驗證。T01 是能力調查完成，不把未測的宿主能力改成通過。
+原生載入／信任狀態、固定提醒真實注入、模型／強度／角色、候選拒絕／耗盡與回退已核對。補充驗收另證明 native API 使用者 Stop、同合約續作及主責模型切換後舊新 worker 的行為。正常持久信任、Desktop UI、native hook 重入與真正未知 child 跨網路斷線仍分列未驗證；調查完成不代表這些能力通過。
 
 詳見[實際 agent 與整合驗收](../research/unified-project-settings-acceptance.research.md)及其中來源、raw、產物與未驗證清單。

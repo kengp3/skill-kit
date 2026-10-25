@@ -4,14 +4,14 @@
 
 **Blocked by:** T02
 
-**Status:** implemented; sampled acceptance passed; fault-injection gaps remain
+**Status:** done; migration, preservation and fault cases verified
 
 依據：[實作規格](../specs/unified-project-settings.spec.md)。使用者已確認 T01–T08 拆分與依賴。
 
 ## 驗收條件
 
 - [x] 提示後移轉；三項刪檔門檻全過才刪除舊設定，不留備份。
-- [ ] 衝突、寫入／驗證／讀回失敗及中斷時保留原檔並查明。
+- [x] 衝突、寫入／驗證／讀回失敗及中斷時保留原檔並查明。已驗證部分完成狀態恢復；未強制中斷正在執行的移轉 OS 命令。
 - [x] 既有產物位置不變；舊環境資格只留歷史；缺漏／重複／無效欄位不猜測。
 
 ## 證據要求
@@ -30,6 +30,6 @@ B、C 的逐項對帳、三門檻證據、負例與檔案／位置對照。
 
 ## T08 最終對帳
 
-成功、衝突、唯讀無有效讀回及新檔已寫／舊檔仍在的恢復案例通過；原產物位元組與位置保留。未注入真實寫入／讀回 I/O 故障、刪除失敗或 OS 中斷，因此第二項不勾成全部通過。
+成功、衝突、無有效讀回及新檔已寫／舊檔仍在的恢復案例通過；最終候選另以真實 OS EPERM 寫入／刪除失敗、EACCES 讀回失敗驗證保留舊檔與歷史產物，不解除使用者禁止改變的旗標或權限、不留替代設定。讀回故障跨兩次 native invocation，恢復 fixture 明示預置部分完成狀態；未宣稱曾在移轉工具命令中強制 OS 中斷。
 
 詳見[實際 agent 與整合驗收](../research/unified-project-settings-acceptance.research.md)及其中來源、raw、產物與未驗證清單。

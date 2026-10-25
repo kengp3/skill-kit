@@ -22,6 +22,6 @@ A、B 實際 agent 紀錄、規格來源、設定前後對照、合約與成果�
 
 ## T08 最終對帳
 
-A standalone、B 基本任務及 repaired copied-skill 接線都有真實 agent／產物。generic project-setting 無專屬 harness 邏輯；單一設定、兩列路徑、唯一合約及既有內容保留已核對。
+A standalone、B 基本任務及 repaired copied-skill 接線都有真實 agent／產物。最終候選補驗缺 schema_version 自動修復，保留分類列空白／順序、自訂區塊與模型預設；受限 matcher 唯讀診斷不擴大範圍。generic project-setting 無專屬 harness 邏輯；單一設定、兩列路徑、唯一合約及無關內容保留已核對。
 
 詳見[實際 agent 與整合驗收](../research/unified-project-settings-acceptance.research.md)及其中來源、raw、產物與未驗證清單。
