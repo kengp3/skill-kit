@@ -45,3 +45,7 @@
 - [資格與敏感值檢查](harness-gap-closure-strict-effort-evidence/final-check.json) 核對四技能、停用 HOME skills、空 plugin catalog、隔離來源、auth/config 前後及無 token 值進入 evidence。此機讀檢查是原始證據的補充，沒有替代原生試驗。
 
 未重跑整個產品 suite、未測 Desktop／Windows、未驗證 provider 內部權重。這些未計入本案三項通過。
+
+## 衍生證據輸出修正（2026-10-26）
+
+三個 `session-contexts.json` 已改為最小 metadata 白名單衍生輸出，保留真實 parent／child、時間、模型與強度；移除本地歷史衍生版非必要 `creator_account_id`／`creator_user_id` 及其他不屬驗收欄位。帳號識別不是 bearer token；原生 RPC、工具紀錄、合約 observed 與試驗結果均未修改，也沒有新模型 trial。詳見[輸出審查](harness-gap-closure-evidence-review.research.md)；原「credential_tokens_absent」只代表當次已檢查 token 未命中，不能推論當時未保存帳號 metadata。「全域未改」亦只描述原試驗時段。
