@@ -1,0 +1,124 @@
+{
+  "state_root": "/private/tmp/g01-readback-state-fvzlb3xi",
+  "phase": {
+    "id": "01a173c3-90f4-7fa2-a55c-8af5d2494cac",
+    "rootTurnId": "01a173c3-90f4-7fa2-a55c-8af5d2494cac",
+    "items": [
+      {
+        "type": "agentMessage",
+        "id": "msg_0b129f86ab7a2a74016ade25e9186c8191af03876cc2e2cbc1",
+        "text": "唯讀驗收通過，使用的是本專案 `.agents/skills/task-harness`。\n\n- 已讀現行 `AGENTS.md`、`project-setting.md` 與 provider 規格；設定有效：唯一 Task Harness 區段、`schema_version=1`、必要分類齊全，無模型預設。\n- 唯一合約標記及 JSON 區塊正確，required fields 齊全、無重複 keys；`task_id=harness-g01-smoke`，整體及唯一必要成果 T1 均為 `done`，依賴有效。\n- 成果 `cmp_exit=0`；`od`、`wc` 確認精確為 `G01_NATIVE_DEMO_OK` 加一個 LF，共 19 bytes；SHA-256 與合約一致。\n\nHooks 定義符合範本，`features.hooks=true`。隔離設定中的專案信任為 `trusted`，但這不代表 hooks 已信任；本次未取得 hooks 信任、載入或觸發的直接證據，因此不宣稱 hooks 驗收通過。\n\n全程未寫檔、接手合約、重做副作用、建立 tracker、派子代理或修改／繞過信任資料庫。",
+        "phase": "final_answer",
+        "memoryCitation": null,
+        "delivery": null,
+        "questions": null
+      }
+    ],
+    "itemsView": "summary",
+    "status": "completed",
+    "error": null,
+    "startedAt": 1792943558,
+    "completedAt": 1792943599,
+    "durationMs": 40605
+  },
+  "acceptance": {
+    "product": {
+      "exists": true,
+      "type": "regular",
+      "size": 19,
+      "mode": "0o644",
+      "sha256": "ca833e26cc7c39f3c69a5f7ecf3a2a09d44ea2a73194ce26c4e6386dd2503a4f"
+    },
+    "contract": "/Users/kengp3/Workspaces/mine/demo-002/docs/plans/harness-g01-smoke.task-contract.md",
+    "contract_state": {
+      "schema_version": 1,
+      "task_id": "harness-g01-smoke",
+      "project_root": "/Users/kengp3/Workspaces/mine/demo-002",
+      "owner_session_id": null,
+      "status": "done",
+      "objective": "以原生主責及單一合約完成無破壞性 smoke task，產出並驗證精確的一行檔案。",
+      "scope": [
+        "只新增 docs/plans/harness-g01-smoke.task-contract.md 與 docs/research/harness-g01-smoke.research.md，保留其他既有檔案與設定",
+        "不讀取或執行 .planning；不跑 Java/Maven、Python/Node/helper；不安裝服務或套件；不派子代理",
+        "不修改信任 db、不 bypass、不建立第二 tracker 或假 hook 收據"
+      ],
+      "requirements": [
+        {
+          "id": "T1",
+          "outcome": "成功保存且完整讀回本合約後，建立 research 檔案，精確內容為 G01_NATIVE_DEMO_OK 加一個 LF（19 bytes）；實際讀回驗收，再保存 done 合約並完整重讀。",
+          "status": "done",
+          "depends_on": [],
+          "evidence": [
+            "初始完整合約保存並 cat 讀回成功（exec chunk b1606d，exit 0）；主責確認唯一 JSON、核心欄位、無重複 keys、T1 無依賴及授權後才建立產物。",
+            "docs/research/harness-g01-smoke.research.md 實際讀回（exec chunk 9bf1b4，exit 0）：cmp 與 printf 預期內容逐 byte 相等；wc 為 1 行、19 bytes；od 為 47 30 31 5f 4e 41 54 49 56 45 5f 44 45 4d 4f 5f 4f 4b 0a；cat 為 G01_NATIVE_DEMO_OK。",
+            "目前產物 SHA-256：ca833e26cc7c39f3c69a5f7ecf3a2a09d44ea2a73194ce26c4e6386dd2503a4f。",
+            "收尾前主責審查通過：只新增兩個指定檔案、無第二 tracker、無收據、無子代理；AGENTS.md、project-setting.md、兩份 .codex 設定及 SKILL 的前後 SHA-256 相同；git 既有變更保留。"
+          ]
+        }
+      ],
+      "authorization": {
+        "user_turn_id": null,
+        "mode": "execute",
+        "basis": "本次使用者明確啟用 $task-harness，指定唯一 root/task_id/合約、兩個新增檔案及 T1 驗收；後附技能內容未撤銷授權。宿主未提供可觀測 user-turn ID，故為 null。"
+      },
+      "model_overrides": [
+        {
+          "applies_to": "harness-g01-smoke 的 T1，由原生主責執行",
+          "candidates": [
+            "gpt-6.1-sol;low"
+          ],
+          "basis": "使用者本次明確指定；不切換對話模型、不派子代理。"
+        }
+      ],
+      "model_runs": [
+        {
+          "requirement_id": "T1",
+          "executor": "主責",
+          "handle": null,
+          "selection_source": "本次使用者明確指定",
+          "requested": {
+            "model": "gpt-6.1-sol",
+            "reasoning_effort": "low"
+          },
+          "observed": {
+            "model": null,
+            "reasoning_effort": null,
+            "basis": "可觀測宿主為 Codex 原生工具介面；沒有主責實際模型、強度或 provider weights 的可查證回報，不把 requested 當 observed。"
+          }
+        }
+      ],
+      "recovery": {
+        "next_action": "正常收尾：完整讀回本次 done 合約，核對唯一 T1 的當前驗收與宿主證據缺口後交付；若保存或讀回異常，修復同一合約，不重做產物。",
+        "blockers": [],
+        "unknown_operations": [],
+        "cancellation_reason": "",
+        "host_identity_gap": "owner_session_id 與 user_turn_id 均不可觀測；目前對話主責依本次明確要求執行，沒有可觀測的其他 writer，無跨程序原子鎖保證。",
+        "hook_connection": "已讀 .codex/config.toml：features.hooks=true；.codex/hooks.json 的三個 harness 事件無 matcher，完整 handler 與技能 assets/codex-hooks.json 相符，另有既有 project-setting 提醒。未取得實際載入來源清單、信任、事件注入或條件續作證據；不宣稱已信任或觸發。依使用者禁止改設定，主責在同一合約主動接手開始、階段轉換與收尾檢查；沒有 worker 回報時點，也不建立收據。",
+        "limits": "時間、token 預算與人工作業節省量未量測；不宣稱原生 hook 環境資格通過。"
+      }
+    },
+    "preservation": {
+      "count": 705,
+      "differences": {}
+    }
+  },
+  "owned_server_exit": 0,
+  "global_after": {
+    "auth.json": {
+      "exists": true,
+      "type": "regular",
+      "size": 4131,
+      "mode": "0o600",
+      "sha256": "873e685f4e8061b8aca4d664da59e301f0b5593d6bbf6e3dab74d513db17a2cd"
+    },
+    "config.toml": {
+      "exists": true,
+      "type": "regular",
+      "size": 29851,
+      "mode": "0o600",
+      "sha256": "5f1bc71b4d4adf7453f7c44659a348fb630f85f8638c8ea355267d204b9fd323"
+    }
+  },
+  "global_unchanged": true,
+  "isolated_state_and_credentials_removed": true
+}
