@@ -1,8 +1,38 @@
 # 統一設定改版：實際 agent 與整合驗收
 
-日期：2026-10-25。受測產品為 Kengp3 Harness 0.3.0，產品來源整合至 `4b8ff38`，補充驗收整合至 `6974467`（產品內容未變）。本輪 A–G 七組及後述具名負向／生命週期分支均取得真實 agent 與產物證據；下面逐項說明實際覆蓋範圍，未執行的細分路徑與宿主能力仍保留為未驗證，不宣稱任意任務或所有宿主皆已通過。
+日期：2026-10-25。受測產品為 Kengp3 Harness 0.3.0，產品來源整合至 `4b8ff38`，補充驗收整合至 `6974467`（產品內容未變）。既有 A–G 七組及後述具名負向／生命週期分支均取得真實 agent 與產物證據；下面逐項說明實際覆蓋範圍，未執行的細分路徑與宿主能力仍保留為未驗證，不宣稱任意任務或所有宿主皆已通過。
 
 依據：[實作規格](../specs/unified-project-settings.spec.md)、[ADR](../adr/0001-unified-project-settings.adr.md)、[用語](../specs/task-harness-glossary.spec.md)。來源問題與修正的獨立 Standards／Spec 審查見[審查報告](unified-project-settings-review.research.md)。
+
+## G00–G09 補驗：唯一細分狀態表
+
+**G00 初態（2026-10-25）：整體補驗未完成。** [補驗規格](../specs/harness-validation-gap-closure.spec.md)與[工作圖](../plans/harness-validation-gap-closure.plan.md)已核准；G00 完成文件及唯讀現況盤點，不代表 G01–G07 或 G09 已驗收。Windows 依使用者最新指示「不考慮 windows 情境」明確排除，G08 為 **cancelled，不是 passed**。以下為唯一持續更新的缺口表；[G00 基準報告](harness-gap-closure-baseline.research.md)只保存本輪初態資格。
+
+表內「已實作」僅指既有 0.3.0 Markdown 規則／封裝來源，未宣稱宿主具有所有故障控制能力。所有列共用候選 **C030**：manifest `7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e`；G00 在 Darwin arm64／CLI 0.164.0 重新逐檔核對通過，[原始資格與候選核對](harness-gap-closure-baseline-evidence/candidate-verification.json)。demo-002 尚未安裝、載入或試跑 0.3.0；日常 marketplace 仍指向 0.2.1。歷史 pass 只支持原受測情境，不計本輪新增通過。
+
+| 細分情境／工作包 | 來源實作狀態 | 本輪驗證狀態 | 安裝／候選與資格 | 目前證據、阻礙及下一步 |
+| --- | --- | --- | --- | --- |
+| 正常 demo 接入與唯一合約／G01 | 已實作 | 未執行 | C030 已核對；demo 未安裝 | [demo 初態](harness-gap-closure-baseline-evidence/baseline.json)無 project-setting／harness JSON／.codex；先初始化自身文件規範，再由原生模型完成最小成果及讀回。 |
+| V01 正常人工審閱及同 state 跨 invocation 持久信任／G03 | 已實作；信任由宿主提供 | 未執行 | C030；demo 未安裝；正常人工 review 尚未完成 | [歷史 packaged hooks](unified-project-settings-acceptance-evidence/packaged-hooks/hook-session-records.json)使用 bypass，不支持此案；須分開 project trust／hook trust、精確 hash 與兩次真正提醒。 |
+| V02 client／observer transport 遺失，同 server 查回原 child／G05 | 已實作未知狀態先查明規則 | 未執行 | C030；demo 未安裝；持久 child 與自有 transport 待核對 | [歷史 handle 查核](unified-project-settings-acceptance-evidence/fallback-dispatch/model.stdout.jsonl)不含本故障；先取得唯一 child、原 turn 終態與成果，再核對無重派。client 看不到不等於主責沒有 spawn handle。 |
+| V02 同 state 新 server／新主責 thread 查回／G05 | 已實作查明規則；跨 server 能力未證實 | 未執行 | C030；demo 未安裝；新 client、新 server、新主責分開取證 | [可行性分段界線](unified-project-settings-gap-fixtures-feasibility.research.md)；notLoaded／idle、預設來源過濾或未取完分頁均不證明 child 完成／不存在。 |
+| V02 真正主責 spawn 回應遺失／G05 | 已實作不明啟動不得重派規則 | 受阻（尚無已確認故障邊界） | C030；demo 未安裝；主責結果交付邊界未具資格證據 | [可行性研究](unified-project-settings-gap-fixtures-feasibility.research.md)未建立該注入能力；需交付主責前遺失結果及原 child 旁證，不能用外層 RPC／通知遺失代測。 |
+| V02 app-server↔provider 網路故障／G05 | 已實作查明規則 | 受阻（尚無已確認 scoped 控制） | C030；demo 未安裝；自有連線故障控制待證實 | [可行性研究](unified-project-settings-gap-fixtures-feasibility.research.md)；須原始 network error／時序，不以 client↔server 斷線替代，不修改全機網路。 |
+| V03 真實 startup／resume／compact 來源與重複提醒／G06 | 已實作恢復及一次成果規則 | 未執行 | C030；demo 未安裝；各 native source 與提醒待核對 | [歷史恢復](unified-project-settings-acceptance-evidence/hook-recovery/summary.json)不覆蓋全部來源；用同合約／一次寫入成果保存每次真實來源，不由 caller trigger 推定人類授權。 |
+| V03 shell replay 補充／G06 | 既有封裝測試已實作 | 未執行（歷史 replay 有證據） | C030；不涉及本輪安裝完成 | [歷史封裝測試](../../tests/test_harness_package.py)直接回放 Stop；僅為補充，不關閉 native re-entry。 |
+| V03 同一邏輯事件 native redelivery／G06 | 已實作防重播規則；宿主重送未證實 | 受阻（尚無已確認重入介面） | C030；demo 未安裝；同事件關聯證據缺失 | [可行性研究](unified-project-settings-gap-fixtures-feasibility.research.md)；須宿主關聯原邏輯事件的 redelivery 證據，相同 payload／兩 handlers／新 prompt 均不足。 |
+| V04 真實移轉 workflow 命令 kill 及明確續作／G02 | 已實作三門檻與現況對帳 | 未執行 | C030；demo 未安裝；僅在自有 disposable 副本注入 | [歷史恢復 fixture](unified-project-settings-acceptance-evidence/migration-resume/summary.json)不是命令中斷；須 started／PID／signal／退出與 bytes，再同任務續作。checkpoint 僅證 workflow 中斷，不含 syscall crash／斷電／原子回滾。 |
+| V05 Desktop 停止按鈕／G07 | 已實作 Stop 後查明及授權邊界 | 受阻（Desktop UI app allowlist） | C030；demo 未安裝；UI 控制遭工具拒絕 | [主責當次直接資格原始證據](harness-gap-closure-baseline-evidence/desktop-qualification-note.json)；既有 [native API Stop](unified-project-settings-native-stop.research.md)不代測 UI。需獲允許的專用 Desktop 控制及程序證據。 |
+| V05 Desktop 模型選單／G07 | 已實作舊新 worker 繼承規則 | 受阻（Desktop UI app allowlist） | C030；demo 未安裝；專用 state／模型資格仍待核對 | [同一資格拒絕](harness-gap-closure-baseline-evidence/desktop-qualification-note.json)；既有 [native API 切換](unified-project-settings-model-lifecycle.research.md)不代測 UI。需實際選單操作、舊 worker 保留與新 context。 |
+| V06 原生 Windows／G08 | 已有 commandWindows 資產；本輪不改 | 排除；G08 cancelled | 不執行、不計 passed | 使用者明確排除；既有 native Windows skip 與下文歷史限制保留，不再調查或佈建。 |
+| V07 strict 僅限制首選、有合格後續候選／G04 | 已實作限制範圍規則 | 未執行 | C030；demo 未安裝；當下模型／強度 metadata 待取 | [歷史政策輸入判讀](unified-project-settings-acceptance-evidence/model-policy/artifacts/docs/research/model-policy.research.md)不代替真派工；須 host child/context 證明後續候選符合範圍。 |
+| V07 strict 限制全部派工、無合格候選／G04 | 已實作 blocked 與無相依工作規則 | 未執行 | C030；demo 未安裝；當下 metadata 待取 | 同上歷史政策材料；須完整派工紀錄支持無違規呼叫、受影響成果 blocked、無相依成果完成。 |
+| V07 provider 非法強度 upstream 拒絕／G04 | 已實作 preflight；probe 為維護選配 | 未執行（upstream 到達資格未知） | C030；demo 未安裝；protocol 可表達／metadata 不支援組合待查 | [歷史 effort metadata](unified-project-settings-acceptance-evidence/effort-preflight/metadata-rpc.json)不含故意非法請求；依實際 host 修正、schema、認證、模型不可用或真 provider 拒絕層判定，不能互相代測。 |
+| D02 狀態分流／G00 | 本輪文件已完成 | 通過（限文件及唯讀基準） | C030 指紋確認；不代表安裝／行為驗收 | [G00 報告與保存核對](harness-gap-closure-baseline.research.md)；G09 後續以本表對帳，整體補驗仍未完成。 |
+| D01 日常安裝入口 | 舊入口保留 | 未執行（本輪不自動切換） | marketplace 仍指向 dist/kengp3-harness 0.2.1 | [入口基準](harness-gap-closure-baseline-evidence/candidate-verification.json)；專用候選存在不代表日常已升級。 |
+| P01 維護 CI；P02 每案資格；P03 審查能力；P04 證據入口／G09 | 既有 tests／指引；本輪收尾待作 | 未執行（G00 僅初態資格） | 真模型、人工信任及 UI 不計一般 CI 通過 | [工作圖](../plans/harness-validation-gap-closure.plan.md)依範圍逐項對帳、獨立審查及更新入口；不以 G00 代替各案前置檢查。 |
+
+以下各節保留 G00 以前的驗收與原始失敗／未知記錄；其中「本輪」指當時既有驗收，不代表這次 G00–G09 新跑。歷史 Windows「未驗證」敘述保留為歷史，本輪範圍以本表的明確排除為準。
 
 ## 候選與來源追溯
 
