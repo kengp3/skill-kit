@@ -1,0 +1,46 @@
+# 任務合約：g03-invocation-1
+
+<!-- task-harness-contract:v1 -->
+```json
+{
+  "schema_version": 1,
+  "task_id": "g03-invocation-1",
+  "project_root": "/private/tmp/g03-persisted-trust-case",
+  "owner_session_id": null,
+  "status": "done",
+  "objective": "以本專案候選 task-harness 完成指定精確 bytes 的無破壞性小任務",
+  "scope": ["只新增本合約及 docs/research/g03-invocation-1.research.md，必要父目錄隨之建立", "唯一成果 T1，驗證併入；保留全部既有檔案", "不讀 .planning、不派子代理、不跑 Python/Node/helper/Java/Maven、不安裝、不改全域、信任資料庫或安全設定、不重做信任、不造 hook 收據或第二 tracker"],
+  "requirements": [
+    {
+      "id": "T1",
+      "outcome": "docs/research/g03-invocation-1.research.md 精確為 ASCII G03_INVOCATION_1_OK 加一個 LF，共 20 bytes；先保存並完整讀回本合約，再建立成果、精確讀回驗證，最後保存並完整讀回 done 合約",
+      "status": "done",
+      "depends_on": [],
+      "evidence": ["exec_command b5c8cc exit 0：printf 與 cmp 逐 byte 相等；wc -c=20；od 完整讀回結尾唯一 0a。SHA-256 299b59dd70e9bdee97da8bf7a9b95e50030d408817fc7598e282edf84800e0fa；成果路徑 docs/research/g03-invocation-1.research.md。初始合約完整讀回見 60313e。僅新增兩個指定檔案，無 worker 或未知操作。"]
+    }
+  ],
+  "authorization": {
+    "user_turn_id": null,
+    "mode": "execute",
+    "basis": "使用者明確啟用本專案候選 task-harness，指定唯一根目錄、task_id、合約、成果及操作順序；後續提供同一技能全文，未改變授權。宿主未提供可觀察 user-turn ID，故 null。"
+  },
+  "model_overrides": [{"applies_to": "g03-invocation-1 主責與 T1", "candidates": ["gpt-6.1-sol;low"], "basis": "使用者指定宿主模型 gpt-6.1-sol/low；不派子代理"}],
+  "model_runs": [{"requirement_id": "T1", "executor": "主責", "handle": null, "selection_source": "本次使用者明確指定", "requested": {"model": "gpt-6.1-sol", "reasoning_effort": "low"}, "observed": {"model": null, "reasoning_effort": null, "basis": "沒有可獨立核實主責實際模型與強度的宿主回應；使用者指定及模型自述不當成實測證據。"}}],
+  "recovery": {
+    "next_action": "成果已精確讀回並通過，完整讀回本次 done 合約後交付；無剩餘必要成果",
+    "blockers": [],
+    "unknown_operations": [],
+    "cancellation_reason": "",
+    "identity_limit": "session/turn ID 未由宿主暴露，均 null；本次真實對話的主責循序執行，無 worker，無跨對話接手或原子鎖主張。預算未知。",
+    "environment_error": "首次 exec_command chunk c478f3 exit 71，命令開始前失敗：sandbox-exec: sandbox_apply: Operation not permitted。依使用者明確授權 scoped require_escalated 重試必要原生命令成功；未更改安全設定。",
+    "hook_observation": "五個已設定 handlers：project-setting SessionStart 與 task-harness SessionStart、UserPromptSubmit 的三則固定提醒實際出現在 developer 訊息。project-setting SubagentStart 未觸發（禁止子代理）；task-harness Stop 僅設定 echo {}，正常結束前尚無實際結果可見。設定 hooks=true 及定義已讀取不證明信任資料庫或所有事件成功；未讀寫信任資料庫、重播命令或信任操作。無條件續作資格證據。主責主動完成相同流程檢查，不冒稱原生攔截。"
+  }
+}
+```
+<!-- /task-harness-contract -->
+
+## 約定與驗收依據
+
+來源為本回合使用者明確要求、根目錄 AGENTS.md、project-setting.md，以及 .agents/skills/task-harness/SKILL.md 與 references/project-settings.md、task-contract.md、model-selection.md。設定 schema_version=1，有唯一合約與 research 分類，未設定專案模型列。已讀取候選 project-setting 技能與現行 .codex/hooks.json、config.toml、harness hooks 範本；不修改設定。
+
+目標原先不存在，docs 原先不存在，父目錄由本任務建立並核對不是符號連結。基線 git status --short 僅有未追蹤 .agents/、.codex/、AGENTS.md、project-setting.md，全部保留。驗證使用 shell 原生命令，不執行應用測試，因僅有指定文字成果。主責檢查 JSON 唯一區塊、欄位、狀態、唯一 T1、無依賴循環、授權及路徑；品質、安全與效能審查按本次純文字範圍進行。

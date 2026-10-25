@@ -1,0 +1,71 @@
+{
+  "product": "/private/tmp/g03-persisted-trust-case/docs/research/g03-invocation-2.research.md",
+  "sha256": "5790f2a1560c61acef5d73dc10d8c1982ab4e20415570489b7b43fb1c72bb773",
+  "contract": "/private/tmp/g03-persisted-trust-case/docs/plans/g03-invocation-2.task-contract.md",
+  "contract_sha256": "aa8c675cea430727f83ac5ad3fddb91c5639434d789bc30b28b5dbb0c957e5d9",
+  "contract_state": {
+    "schema_version": 1,
+    "task_id": "g03-invocation-2",
+    "project_root": "/private/tmp/g03-persisted-trust-case",
+    "owner_session_id": null,
+    "status": "done",
+    "objective": "新增唯一 T1，內容精確為 G03_INVOCATION_2_OK 加一個 LF，驗證後保存 done 合約並完整讀回",
+    "scope": [
+      "僅新增本合約及 docs/research/g03-invocation-2.research.md",
+      "保留所有既有檔案；不讀取或復活 .planning",
+      "不派子代理；不執行 Python、Node、helper、Java、Maven；不安裝或改全域",
+      "不變更 hooks、安全設定或信任資料庫，不重跑信任操作，不建立收據或第二 tracker"
+    ],
+    "requirements": [
+      {
+        "id": "T1",
+        "outcome": "docs/research/g03-invocation-2.research.md 精確 20 bytes：ASCII G03_INVOCATION_2_OK 後一個 LF；原生 cmp、od、wc 完整讀回驗證，並審查變更範圍",
+        "status": "done",
+        "depends_on": [],
+        "evidence": [
+          "原生 printf 管線至 cmp exit 0；wc 20 bytes；od 完整讀回 47 30 33 5f 49 4e 56 4f 43 41 54 49 4f 4e 5f 32 5f 4f 4b 0a",
+          "T1 SHA-256 5790f2a1560c61acef5d73dc10d8c1982ab4e20415570489b7b43fb1c72bb773；git diff exit 0；設定與技能指紋不變",
+          "主責已核對 correctness、readability、architecture、security、performance，無 required findings；僅新增指定兩檔，既有 invocation-1 檔案未操作"
+        ]
+      }
+    ],
+    "authorization": {
+      "user_turn_id": null,
+      "mode": "execute",
+      "basis": "本回合使用者明確啟用專案候選 task-harness，指定唯一 task_id、兩個新增檔案及先合約後成果的順序；宿主未提供可觀察 session/turn ID，保持 null"
+    },
+    "model_overrides": [
+      {
+        "applies_to": "g03-invocation-2 主責及 T1",
+        "candidates": "[gpt-6.1-sol;low]",
+        "basis": "使用者本次指定；不切換主對話或派工"
+      }
+    ],
+    "model_runs": [
+      {
+        "requirement_id": "T1",
+        "executor": "主責",
+        "handle": null,
+        "selection_source": "本次使用者明確指定",
+        "requested": {
+          "model": "gpt-6.1-sol",
+          "reasoning_effort": "low"
+        },
+        "observed": {
+          "model": null,
+          "reasoning_effort": null,
+          "basis": "宿主訊息僅泛稱 GPT-6，未提供可驗證的精確主對話模型或強度；使用者指定不等於觀測證據"
+        }
+      }
+    ],
+    "recovery": {
+      "next_action": "T1 已驗證；本次保存 done 後完整讀回同一合約，核對後正常交付，無未完成成果",
+      "blockers": [],
+      "unknown_operations": [],
+      "cancellation_reason": "",
+      "ownership_basis": "本次對話主責獨立執行，未啟動任何 worker；宿主 session/turn ID 不可觀察；不宣稱跨程序鎖",
+      "shell_failure": "首次 exec_command exit_code=71，命令開始前 sandbox-exec: sandbox_apply: Operation not permitted；無產品副作用。依使用者授權 scoped require_escalated 重試必要原生命令成功，未更改安全設定",
+      "hooks": "五個定義中：project-setting SessionStart、task-harness SessionStart、task-harness UserPromptSubmit 的原文實際出現在 developer 訊息；project-setting SubagentStart 未觀察（禁止派工）；task-harness Stop 僅見 echo {} 定義，尚無事件結果。設定 features.hooks=true、定義可讀不等於證明全部載入或信任；未查改信任資料庫。條件續作無證據，由模型主動執行必要邊界檢查"
+    }
+  }
+}

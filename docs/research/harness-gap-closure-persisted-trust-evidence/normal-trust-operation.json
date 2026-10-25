@@ -1,0 +1,39 @@
+{
+  "authority": "human-approval.json; root relayed direct human exact-definition approval",
+  "precondition_result": "pre-approved-trust/hooks-list.json",
+  "before_screen": {
+    "file": "tui-before-approved-trust.raw.txt",
+    "sha256": "592743bf64a734356b860f7d7097f62ddd3318a454d2d112d1f4d00939007448",
+    "actual_tool_result_chunk_id": "52e5b2",
+    "input": {
+      "tool": "write_stdin",
+      "session_id": 49562,
+      "chars": ""
+    }
+  },
+  "normal_trust_operation": {
+    "tool": "write_stdin",
+    "session_id": 49562,
+    "chars": "t",
+    "yield_time_ms": 1000,
+    "max_output_tokens": 5500,
+    "actual_tool_result_chunk_id": "c8e59c",
+    "result_file": "tui-approved-trust.raw.txt",
+    "result_sha256": "0b3efba40613ca484ace806ebadbd25e91e9f934fafd914ce328bc9c87ebd69e",
+    "observation": "Review column and warning disappear; SessionStart Active=2, UserPromptSubmit Active=1; no additional confirmation"
+  },
+  "normal_exit": {
+    "tool": "write_stdin",
+    "session_id": 49562,
+    "chars": "\u0004",
+    "actual_tool_result_chunk_id": "5e5c42",
+    "exit_code": 0,
+    "result_file": "tui-trust-exit.raw.txt",
+    "original_tui_pid": 98889,
+    "preceding_chars": "\u001b",
+    "preceding_actual_tool_result_chunk_id": "aef277"
+  },
+  "after_persisted_native_status": "invocation-1/hooks-before.json",
+  "provenance": "Exact source inputs and result chunk IDs from G03 actual tool exchanges, paired with referenced terminal output files and explicit normalization note; no private agent conversation or session_meta archived",
+  "artifact_normalization": "Before/after terminal output content preserved with one appended final LF; exit artifact concatenates Esc then Ctrl-D outputs and preserves the original CRLF terminator."
+}
