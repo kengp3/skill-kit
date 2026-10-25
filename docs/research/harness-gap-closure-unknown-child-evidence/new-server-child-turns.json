@@ -1,0 +1,77 @@
+{
+  "data": [
+    {
+      "id": "01a173d6-231a-7321-911f-83a6a9975cbd",
+      "rootTurnId": "01a173d5-3a23-7b23-9099-bdeeee8cbb88",
+      "items": [
+        {
+          "type": "commandExecution",
+          "id": "exec-6d3263a1-cec0-4157-a9a8-b8c3b565f76c",
+          "pluginId": null,
+          "scriptPath": null,
+          "command": "/bin/zsh -lc 'cat preserve.txt'",
+          "cwd": "/private/tmp/g05-3e62e27f-7caf-4067-9749-eafaf5e6a5f1/case",
+          "processId": "45085",
+          "source": "unifiedExecStartup",
+          "status": "completed",
+          "commandActions": [
+            {
+              "type": "read",
+              "command": "cat preserve.txt",
+              "name": "preserve.txt",
+              "path": "/private/tmp/g05-3e62e27f-7caf-4067-9749-eafaf5e6a5f1/case/preserve.txt"
+            }
+          ],
+          "aggregatedOutput": "KEEP_EXISTING_CONTENT\n",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "subAgentActivity",
+          "model": null,
+          "reasoningEffort": null,
+          "id": "call_ddc1a32946864c4693e1e55bb841c796",
+          "kind": "interacted",
+          "agentThreadId": "01a173d5-39ad-7302-a738-6ad1ea098ec1",
+          "agentPath": "/root"
+        },
+        {
+          "type": "commandExecution",
+          "id": "exec-6a1fd420-f706-4cca-ad3f-cb296ea90719",
+          "pluginId": null,
+          "scriptPath": null,
+          "command": "/bin/zsh -lc 'for ((i=0; i<900; i++)); do if test -e gate.txt; then cat preserve.txt; exit; fi; sleep 1; done; exit 124'",
+          "cwd": "/private/tmp/g05-3e62e27f-7caf-4067-9749-eafaf5e6a5f1/case",
+          "processId": "34427",
+          "source": "unifiedExecStartup",
+          "status": "completed",
+          "commandActions": [
+            {
+              "type": "unknown",
+              "command": "for ((i=0; i<900; i++)); do if test -e gate.txt; then cat preserve.txt; exit; fi; sleep 1; done; exit 124"
+            }
+          ],
+          "aggregatedOutput": "KEEP_EXISTING_CONTENT\n",
+          "exitCode": 0,
+          "durationMs": 0
+        },
+        {
+          "type": "agentMessage",
+          "id": "msg_02fb02458fd742b2016ade2a9605e081919b3852b0698c05a2",
+          "text": "G05_CHILD_RESULT g05-3e62e27f-7caf-4067-9749-eafaf5e6a5f1 KEEP_EXISTING_CONTENT",
+          "phase": "final_answer",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        }
+      ],
+      "itemsView": "full",
+      "status": "completed",
+      "error": null,
+      "startedAt": 1792944775,
+      "completedAt": 1792944790,
+      "durationMs": 14253
+    }
+  ],
+  "nextCursor": null
+}

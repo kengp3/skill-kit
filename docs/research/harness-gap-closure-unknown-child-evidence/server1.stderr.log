@@ -1,0 +1,14 @@
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:61195
+  readyz: http://127.0.0.1:61195/readyz
+  healthz: http://127.0.0.1:61195/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+{"timestamp":"2026-10-25T16:02:41.590635Z","level":"WARN","fields":{"message":"dropping message for disconnected connection: ConnectionId(0)"},"target":"codex_app_server::transport"}
+{"timestamp":"2026-10-25T16:11:56.542229Z","level":"WARN","fields":{"message":"MCP server startup failed","server_name":"xcodebuildmcp","error":"handshaking with MCP server failed: connection closed: initialize response: connection closed: initialize response"},"target":"codex_mcp::rmcp_client"}
+{"timestamp":"2026-10-25T16:12:01.903683Z","level":"WARN","fields":{"message":"recorded sandbox violation: resource=filesystem backend=seatbelt reason=operation_not_permitted path=unknown"},"target":"codex_sandboxing::violation"}
+{"timestamp":"2026-10-25T16:12:41.910824Z","level":"WARN","fields":{"message":"recorded sandbox violation: resource=filesystem backend=seatbelt reason=failed_to_write_file path=unknown"},"target":"codex_sandboxing::violation"}
+{"timestamp":"2026-10-25T16:12:56.195946Z","level":"WARN","fields":{"message":"MCP server startup failed","server_name":"xcodebuildmcp","error":"handshaking with MCP server failed: connection closed: initialize response: connection closed: initialize response"},"target":"codex_mcp::rmcp_client"}
+{"timestamp":"2026-10-25T16:12:59.352236Z","level":"WARN","fields":{"message":"recorded sandbox violation: resource=filesystem backend=seatbelt reason=operation_not_permitted path=unknown"},"target":"codex_sandboxing::violation"}
+{"timestamp":"2026-10-25T16:13:06.569689Z","level":"WARN","fields":{"message":"recorded sandbox violation: resource=filesystem backend=seatbelt reason=failed_to_write_file path=unknown"},"target":"codex_sandboxing::violation"}
+{"timestamp":"2026-10-25T16:14:43.850788Z","level":"WARN","fields":{"message":"failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: connection closed: initialize response: connection closed: initialize response"},"target":"codex_mcp::rmcp_client"}
+{"timestamp":"2026-10-25T16:14:43.850832Z","level":"WARN","fields":{"message":"failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: connection closed: initialize response: connection closed: initialize response"},"target":"codex_mcp::rmcp_client"}
