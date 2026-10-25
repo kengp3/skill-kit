@@ -1,0 +1,132 @@
+{
+  "verdict": "pass",
+  "invocations": [
+    {
+      "invocation": 1,
+      "identity": {
+        "server_pid": 32723,
+        "thread_id": "01a17442-8ea7-7173-8d1d-3a21b7321c70",
+        "turn_id": "01a17442-8ec5-7e30-ba57-2be524c80925",
+        "state": "/private/tmp/g03-persisted-trust-state",
+        "phase": "terminal",
+        "owned_server_exit": 0
+      },
+      "hook_completed": [
+        {
+          "rpc_line": 27,
+          "event": "sessionStart",
+          "display_order": 0,
+          "entries": [
+            {
+              "kind": "context",
+              "text": "project-setting: Before document operations, read project-setting.md at the project root confirmed by the user or session. Do not infer the root from tool cwd or use another project. If the root or rules are missing, unreadable, empty or conflicting, report and pause related document writes. Re-read changed rules and verify actual paths. This hook only reminds."
+            }
+          ]
+        },
+        {
+          "rpc_line": 28,
+          "event": "sessionStart",
+          "display_order": 1,
+          "entries": [
+            {
+              "kind": "context",
+              "text": "task-harness: For an explicitly enabled task read project-setting.md at the confirmed project root and the task-harness references. Restore the same task contract and verify authorization artifacts workers and unknown operations before action. If hooks are unavailable use model-led checks. This reminder does not activate a task or prove completion."
+            }
+          ]
+        },
+        {
+          "rpc_line": 30,
+          "event": "userPromptSubmit",
+          "display_order": 2,
+          "entries": [
+            {
+              "kind": "context",
+              "text": "task-harness: Only for an explicitly enabled task re-read changed project-setting.md and reconcile the latest user instructions in the same task contract. Before dispatch or stage changes check prerequisites and model policy. After agent reports verify artifacts and evidence. Before closure check every necessary outcome and continue authorized executable work. Respect user Stop. This reminder grants no authorization and does not validate completion."
+            }
+          ]
+        },
+        {
+          "rpc_line": 513,
+          "event": "stop",
+          "display_order": 4,
+          "entries": []
+        }
+      ],
+      "actual_developer_source_lines": [
+        12,
+        13,
+        16
+      ],
+      "actual_model": "gpt-6.1-sol",
+      "actual_effort": "low",
+      "custom_tool_calls": 7,
+      "stderr_retry_429_lines": [],
+      "stderr_bytes": 827,
+      "excerpt_matches_private_full_source": true
+    },
+    {
+      "invocation": 2,
+      "identity": {
+        "server_pid": 33015,
+        "thread_id": "01a17443-8f87-72b1-b14c-fb92c15907bc",
+        "turn_id": "01a17443-8fa3-7af2-b8be-465ebd5b4cd4",
+        "state": "/private/tmp/g03-persisted-trust-state",
+        "phase": "terminal",
+        "owned_server_exit": 0
+      },
+      "hook_completed": [
+        {
+          "rpc_line": 27,
+          "event": "sessionStart",
+          "display_order": 0,
+          "entries": [
+            {
+              "kind": "context",
+              "text": "project-setting: Before document operations, read project-setting.md at the project root confirmed by the user or session. Do not infer the root from tool cwd or use another project. If the root or rules are missing, unreadable, empty or conflicting, report and pause related document writes. Re-read changed rules and verify actual paths. This hook only reminds."
+            }
+          ]
+        },
+        {
+          "rpc_line": 28,
+          "event": "sessionStart",
+          "display_order": 1,
+          "entries": [
+            {
+              "kind": "context",
+              "text": "task-harness: For an explicitly enabled task read project-setting.md at the confirmed project root and the task-harness references. Restore the same task contract and verify authorization artifacts workers and unknown operations before action. If hooks are unavailable use model-led checks. This reminder does not activate a task or prove completion."
+            }
+          ]
+        },
+        {
+          "rpc_line": 30,
+          "event": "userPromptSubmit",
+          "display_order": 2,
+          "entries": [
+            {
+              "kind": "context",
+              "text": "task-harness: Only for an explicitly enabled task re-read changed project-setting.md and reconcile the latest user instructions in the same task contract. Before dispatch or stage changes check prerequisites and model policy. After agent reports verify artifacts and evidence. Before closure check every necessary outcome and continue authorized executable work. Respect user Stop. This reminder grants no authorization and does not validate completion."
+            }
+          ]
+        },
+        {
+          "rpc_line": 452,
+          "event": "stop",
+          "display_order": 4,
+          "entries": []
+        }
+      ],
+      "actual_developer_source_lines": [
+        12,
+        13,
+        16
+      ],
+      "actual_model": "gpt-6.1-sol",
+      "actual_effort": "low",
+      "custom_tool_calls": 7,
+      "stderr_retry_429_lines": [],
+      "stderr_bytes": 827,
+      "excerpt_matches_private_full_source": true
+    }
+  ],
+  "self_check_missing_developer_and_failed_hook_rejected": true
+}
