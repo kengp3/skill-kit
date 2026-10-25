@@ -1,6 +1,6 @@
 # 任務合約與必要 hooks：整合計畫
 
-狀態：in_progress。整合分支 codex/task-contract-hooks；固定基線 6829db57f73d0a773fa01314aca6f1b81dd7f854。
+狀態：done（指定 Codex 執行環境的首版規格驗收完成，未安裝至日常環境）。整合分支 codex/task-contract-hooks；固定基線 6829db57f73d0a773fa01314aca6f1b81dd7f854。
 規格：[非侵入式任務合約與必要 hooks](../specs/task-harness-lifecycle.spec.md)。本地 tracker 延續既有 docs/plans 慣例；每個 ticket 一個 plan，不發布外部 issue。to-spec/to-tickets 的確認由使用者「均採建議方案並持續開發」授權涵蓋。
 
 ## 已收斂的剩餘問題
@@ -21,10 +21,10 @@
 | H02 | 必要 hooks 完整候選封裝與套件外執行 | H01、H03 | done |
 | H03 | 任務生命週期 skill、合約範本與日常接入指南 | 無 | done |
 | H04 | 整合驗證、兩軸 review 與證據對帳 | H01–H03 | done |
-| [H05](task-harness-lifecycle-05-desktop.plan.md) | 實際 agent 執行與 hook 整合驗收 | H05A、H05B、H05C | in_progress（只剩 V3） |
+| [H05](task-harness-lifecycle-05-desktop.plan.md) | 實際 agent 執行與 hook 整合驗收 | H05A、H05B、H05C | done |
 | [H05A](task-harness-lifecycle-05a-admission.plan.md) | 原生接入與有界補救（C0） | H04（已完成）；執行授權及接入條件 | done（完整接入與 C0 通過） |
 | [H05B](task-harness-lifecycle-05b-behavior.plan.md) | 完整交付與授權遵循（C1、V1、V2、V5） | H05A | done |
-| [H05C](task-harness-lifecycle-05c-recovery.plan.md) | 中斷恢復與結果不明（V3、V4） | H05A | in_progress（V4 通過，V3 未驗證） |
+| [H05C](task-harness-lifecycle-05c-recovery.plan.md) | 中斷恢復與結果不明（V3、V4） | H05A | done（V3 補驗與 V4 通過） |
 
 H05 舊檔名只保留引用相容性。預設 H05A → H05B → H05C 串行執行；H05C 不需等待 H05B 的產品結果，圖上的依賴只有 H05A。本地 tracker 沿用 docs/plans，不新增外部 issue；工作拆分與測試接口依使用者接受建議方案完成。
 
@@ -53,13 +53,15 @@ H01/H03 可各自實作，H02 等兩者整合後。依 skill 以獨立 worktree�
 - 2026-10-25：依最新決策，移除 Desktop 專屬完成門檻；設計改以實際 agent 行為、原生 hook 協定與固定產物驗收。H05 收斂為五個產品情境及兩個控制案例，拆為三個相依工作單。H01–H04 及歷史 101 通過／1 跳過結果保留，不把文件修訂算成新驗收。程式、候選與新 trial 本輪未動。
 
 
-## 收斂後剩餘清單（2026-10-25）
+## 收斂清單完成對帳（2026-10-25）
 
 1. **done：完整候選接入與停用。** 0.2.1 四個 skills／三個 hooks 已由原生宿主載入、正常信任、停用及移除讀回；限測試專用 state，見[接入證據](../research/h05-native-admission.research.md)。
 2. **done：C0 真實事件與一次補救。** 探針及產品 handler 各一次，三事件與原 user-turn 可對帳。
 3. **done：C1、V1、V2、V5 任務執行。** 完整成果、最新授權與小任務低負擔通過直接檢查及獨立審查。
-4. **in_progress：只剩 V3 中斷與恢復。** V4 已通過，文件與證據對帳完成；V3 固定輸出事件未觸發，沒有真正中斷，故未開恢復 session。開發端觸發修正與離線回放已完成；只待另核定一次 V3 實際補驗後才可完成。
+4. **done：V3／V4 恢復與結案。** 首輪 V3 未驗證保留；經使用者追加一次補驗後，原生中斷與跨 session 接手通過。V4、文件與證據對帳亦完成。
 
 只修上述驗收暴露的必要缺陷；不增加 Desktop、其他宿主、OS/watchdog 或新評測框架。H01–H04 已完成內容不重做；沒有足夠直接證據的項目不標完成。
 
-本輪 6 案通過／1 案未驗證、12 次輸入且無整案補跑。完整證據：[H05 行為驗收](../research/h05-agent-behavior-validation.research.md)。不因更換模型重跑全套，不擴張待辦。
+首輪 6 案通過／1 案未驗證、12 次輸入；追加獨立核定的 V3 補驗後，七案均通過，合計 14 次輸入，沒有其他補跑。完整證據：[H05 行為驗收](../research/h05-agent-behavior-validation.research.md)。不因更換模型重跑全套，不擴張待辦。
+
+最後核對：H01–H05 必要成果皆有對應證據；兩軸 review 無未處理重大缺口，候選及測試快取指紋一致，日常設定與既有未提交內容保留。未測平台與普遍成功率不是首版完成聲明；未安裝日常版本，不自動擴張後續範圍。

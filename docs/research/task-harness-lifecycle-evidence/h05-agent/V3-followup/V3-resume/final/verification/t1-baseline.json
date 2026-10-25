@@ -1,0 +1,59 @@
+{
+  "check": "T1 normal input baseline",
+  "passed": true,
+  "source_sha256": {
+    "harness/evidence.py": "03fd8ff143da3677fd94e2091eedee407a9705fe784340fefeedb95101e48430",
+    "harness/control.py": "fdce55e2de2c3d620f2974ee3e330b0b0fe9dd77edd51e6c04e0c63cdd45b090",
+    "consistent.jsonl": "b3ec4c51189a33fd7fdacfcf38ea2d5e6cf53d2dbc151a919bd222dcf7345ff3",
+    "conflict.jsonl": "c1c7a48dad28855c6298d002883856a956842c076108805ee3b707949e730a71"
+  },
+  "summary": {
+    "sources": [
+      {
+        "path": "consistent.jsonl",
+        "sha256": "b3ec4c51189a33fd7fdacfcf38ea2d5e6cf53d2dbc151a919bd222dcf7345ff3"
+      }
+    ],
+    "turns": [
+      {
+        "id": "first",
+        "status": "completed",
+        "evidence": [
+          {
+            "source": "consistent.jsonl",
+            "line": 3
+          }
+        ]
+      }
+    ],
+    "coverage": "complete",
+    "final_turn_status": "completed",
+    "items": [
+      {
+        "thread_id": "root",
+        "turn_id": "first",
+        "item_id": "check",
+        "type": "commandExecution",
+        "status": "completed",
+        "exit_code": 0,
+        "evidence": [
+          {
+            "source": "consistent.jsonl",
+            "line": 2
+          }
+        ]
+      }
+    ],
+    "metrics": {
+      "commands_completed": 1,
+      "commands_nonzero": 0,
+      "command_outcomes_unknown": 0,
+      "help_requests": null,
+      "retries": null,
+      "repairs": null
+    },
+    "unverified": [
+      "Native command counts do not identify help, retries or repairs."
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 # 非侵入式任務合約與必要 hooks
 
-日期：2026-10-25。狀態：H01–H04 完成；H05 的 C0、C1、V1、V2、V4、V5 已通過，V3 中斷與跨 session 恢復未驗證，整體保留未完成。見 [實際行為驗收](../research/h05-agent-behavior-validation.research.md)。
+日期：2026-10-25。狀態：H01–H05 完成；C0、C1、V1–V5 均取得指定執行環境的必要證據，V3 經一次明確授權補驗通過。見 [實際行為驗收](../research/h05-agent-behavior-validation.research.md)。
 本規格承接本輪已確認決策，取代舊 coding-harness 文件對本輪產品優先順序的描述；歷史試行與結論不改寫。
 
 ## Problem Statement
@@ -116,6 +116,12 @@ Script 統一 Python 3、優先標準函式庫；首版來源使用 Python 3.10+
 Definition of Done：來源與封裝能執行上述行為、必要離線負例通過、獨立 Standards/Spec review 無未處理重大缺口，且文檔／狀態一致；H05 的 C0、C1 與 V1–V5 均取得指定執行環境的直接證據，未處理的必要缺口保留未完成。文件修訂或單次接點成功不代表 H05 完成；不再要求 Desktop 專屬驗收。
 官方依據（2026-10-25 查閱）：[Agent Skills](https://agentskills.io/specification)、[Codex 共用 harness](https://openai.com/index/unlocking-the-codex-harness/)、[Codex hooks](https://learn.chatgpt.com/docs/hooks)、[plugin 封裝](https://developers.openai.com/plugins/build/plugins)。格式、架構或 schema 文件不替代所選版本的實際行為證據。
 
-## 本輪驗收界限
+## 首輪驗收界限（歷史）
 
 已依明確授權完成固定清單可執行部分，12 session／12 次輸入且無整案補跑。V3 控制端未收到預定即時輸出事件，前景命令自然結束；未中斷就不啟動接手，不能以完成修復替代恢復證據。唯一剩餘項是修正開發端觸發並補齊該項直接證據；產品設計與 0.2.1 候選未因本輪改動。各案例限制與歷史結論保留，不新增模型比較或宿主專屬門檻。
+
+## 最終驗收（2026-10-25）
+
+使用者其後明確核准一次 V3 補驗，兩個 sessions／兩次輸入共約 242 秒。已取得原生中斷、原執行者停止、唯一合約接手保存、保留有效成果與最後整合驗證的直接證據；兩軸複核無未處理問題。七案的必要驗收完成，0.2.1 候選來源與內容未因補驗改動。
+
+原首輪 V3 未驗證結論保留，與補驗結果分開；不宣稱任意背景程序取消、全模型／全宿主保證或日常環境已安裝。詳見前述驗收報告及逐項完成對帳。

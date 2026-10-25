@@ -1,5 +1,7 @@
 # 任務合約與必要 hooks：整合驗證
 
+> 本文為 H01–H04 當時的來源／離線驗證紀錄，保留原始結論。後續已移除 Desktop 專屬門檻，0.2.1 與 H05 的最新完成狀態見 [實際行為驗收](h05-agent-behavior-validation.research.md)。
+
 日期：2026-10-25。整合分支 `codex/task-contract-hooks`。來源與離線候選完成；整套 Desktop harness 尚未完成，H05 保留必要缺口。
 
 ## 交付與直接證據
