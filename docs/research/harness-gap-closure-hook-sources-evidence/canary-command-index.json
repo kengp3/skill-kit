@@ -1,0 +1,58 @@
+[
+  {
+    "file": "rpc.jsonl",
+    "line": 104,
+    "turnId": "01a173da-e371-7841-9be9-a9fffbb30159",
+    "command": "/bin/zsh -lc 'git status --short; ls -ld docs docs/plans; rg --files -g AGENTS.md -g ledger.txt -g preserve.txt -g g06-lifecycle.task-contract.md docs .; if test -f docs/plans/g06-lifecycle.task-contract.md; then cat docs/plans/g06-lifecycle.task-contract.md; fi'",
+    "exitCode": 0
+  },
+  {
+    "file": "rpc.jsonl",
+    "line": 114,
+    "turnId": "01a173da-e371-7841-9be9-a9fffbb30159",
+    "command": "/bin/zsh -lc 'pwd; ls -ld . docs docs/plans ledger.txt preserve.txt; rg --files --hidden -g AGENTS.md -g g06-lifecycle.task-contract.md -g harness-project.json; cat preserve.txt; cat .agents/skills/task-harness/SKILL.md'",
+    "exitCode": 0
+  },
+  {
+    "file": "rpc.jsonl",
+    "line": 202,
+    "turnId": "01a173da-e371-7841-9be9-a9fffbb30159",
+    "command": "/bin/zsh -lc \"mkdir -p docs/plans\ncat > docs/plans/g06-lifecycle.task-contract.md <<'EOF'\n# 任務合約：g06-lifecycle\n\n<\"'!-- task-harness-contract:v1 -->\n```json\n{\n  \"schema_version\": 1,\n  \"task_id\": \"g06-lifecycle\",\n  \"project_root\": \"/private/tmp/g06-native-puuxg0nl/project\",\n  \"owner_session_id\": null,\n  \"status\": \"in_progress\",\n  \"objective\": \"一次 canary 寫入、單一唯讀 worker 保留檔核對，以及待後續授權的生命週期核對\",\n  \"scope\": [\"唯一合約為 docs/plans/g06-lifecycle.task-contract.md\", \"ledger.txt 只寫一次，精確為 G06_ONCE 加一個 LF\", \"保留 preserve.txt\", \"只用原生工具與模型，不使用 Python/Node/helper，不安裝套件或服務，不改設定、hooks 或全域\", \"T2 只啟動一個原生唯讀 worker，繼承主責模型，不重啟、不建立其他 agent\", \"本回合只完成 T1/T2；T3 保留 pending，等待明確續作\"],\n  \"requirements\": [\n    {\"id\": \"T1\", \"outcome\": \"ledger.txt 一次寫入精確 G06_ONCE 加一個 LF，並讀回驗收\", \"status\": \"in_progress\", \"depends_on\": [], \"evidence\": [\"寫入前原生 ls 確認 ledger.txt 不存在\"]},\n    {\"id\": \"T2\", \"outcome\": \"單一原生唯讀 worker 核對 preserve.txt，保存真實 handle 與完成結果\", \"status\": \"pending\", \"depends_on\": [\"T1\"], \"evidence\": []},\n    {\"id\": \"T3\", \"outcome\": \"後續生命週期核對，具體執行等待明確續作\", \"status\": \"pending\", \"depends_on\": [\"T1\", \"T2\"], \"evidence\": []}\n  ],\n  \"authorization\": {\"user_turn_id\": null, \"mode\": \"execute\", \"basis\": \"使用者明確啟用 task-harness 與 g06-lifecycle，授權先保存讀回合約、T1 一次寫入讀回、T2 單一唯讀 worker；T3 本回合未授權。宿主未提供可觀測 user-turn ID。\"},\n  \"recovery\": {\"next_action\": \"合約讀回成功後執行 T1 一次 canary 寫入與讀回，再派單一 T2 worker\", \"blockers\": [], \"unknown_operations\": [], \"cancellation_reason\": \"\", \"ownership_basis\": \"本對話主責；宿主 session ID 未提供，保持 null\", \"hooks\": \"已收到提示型 task-harness 提醒；載入與信任證據未提供。正常 Stop 為使用者指定的被動 {}，不產生授權。由模型主動核對邊界，不改設定，不建立假收據。\", \"execution_limits\": \"預設 exec sandbox 啟動失敗；原生 shell 升權讀取已成功。無未知產品操作。無需 Maven，驗收為檔案精確內容及 worker 原生結果。\", \"deduplication\": \"hook 重播不重做成果、不重驗未改條件、不重派 worker；未知先查原 handle。\"}\n}\n```\n<!-- /task-harness-contract -->\n\n驗收依據為本回合使用者要求。主責為唯一合約寫入者；worker 不寫檔、不派 agent。模型未指定且專案沒有模型政策，派工原生繼承主責模型與推理強度；實際模型未知時保留 null。preserve.txt 初始讀取為 G06_PRESERVE 加 LF。沒有 Git metadata，不宣稱版本提交證據。\nEOF\ncat docs/plans/g06-lifecycle.task-contract.md'",
+    "exitCode": 0
+  },
+  {
+    "file": "rpc.jsonl",
+    "line": 210,
+    "turnId": "01a173da-e371-7841-9be9-a9fffbb30159",
+    "command": "/bin/zsh -lc \"(set -o noclobber; printf 'G06_ONCE\\\\n' > ledger.txt) && od -An -tx1 ledger.txt && wc -c ledger.txt\"",
+    "exitCode": 0
+  },
+  {
+    "file": "rpc.jsonl",
+    "line": 218,
+    "turnId": "01a173da-e371-7841-9be9-a9fffbb30159",
+    "command": "/bin/zsh -lc \"sed -i '' 's/\\\"status\\\": \\\"in_progress\\\", \\\"depends_on\\\": \\\\[\\\\], \\\"evidence\\\": \\\\[\\\"寫入前原生 ls 確認 ledger.txt 不存在\\\"\\\\]/\\\"status\\\": \\\"done\\\", \\\"depends_on\\\": [], \\\"evidence\\\": [\\\"寫入前 ledger.txt 不存在；原生操作 c8f021 退出 0，noclobber 一次寫入後 od 讀回 47 30 36 5f 4f 4e 43 45 0a，wc 為 9 bytes\\\"]/' docs/plans/g06-lifecycle.task-contract.md\nsed -i '' 's/\\\"status\\\": \\\"pending\\\", \\\"depends_on\\\": \\\\[\\\"T1\\\"\\\\]/\\\"status\\\": \\\"in_progress\\\", \\\"depends_on\\\": [\\\"T1\\\"]/' docs/plans/g06-lifecycle.task-contract.md\nsed -i '' 's/合約讀回成功後執行 T1 一次 canary 寫入與讀回，再派單一 T2 worker/T1 已驗收，啟動唯一 T2 唯讀 worker 並保存真實 handle/' docs/plans/g06-lifecycle.task-contract.md\ncat docs/plans/g06-lifecycle.task-contract.md\"",
+    "exitCode": 0
+  },
+  {
+    "file": "resume/rpc.jsonl",
+    "line": 113,
+    "turnId": "01a173dc-741b-7701-888e-4e13581ad54c",
+    "command": "/bin/zsh -lc 'ls -ld docs docs/plans docs/plans/g06-lifecycle.task-contract.md ledger.txt preserve.txt\nrg --files --hidden -g AGENTS.md docs\ncat docs/plans/g06-lifecycle.task-contract.md'",
+    "exitCode": 0
+  },
+  {
+    "file": "resume/rpc.jsonl",
+    "line": 121,
+    "turnId": "01a173dc-741b-7701-888e-4e13581ad54c",
+    "command": "/bin/zsh -lc \"sed -i '' 's/本回合只完成 T1\\\\/T2；T3 保留 pending，等待明確續作/初次授權完成 T1\\\\/T2；本次續作只核對原合約、原 worker 與既有副作用，沿用證據；T3 保留 pending，等待下一次明確續作/' docs/plans/g06-lifecycle.task-contract.md\nsed -i '' 's/使用者明確啟用 task-harness 與 g06-lifecycle，授權先保存讀回合約、T1 一次寫入讀回、T2 單一唯讀 worker；T3 本回合未授權。宿主未提供可觀測 user-turn ID。/使用者明確續作同一 g06-lifecycle；本回合只授權核對原合約、原 worker 與既有 canary\\\\/副作用並保存恢復資訊。沿用 T1\\\\/T2 證據，不重寫、不派新 worker、不重驗未變條件；T3 pending 後等待下一次明確續作。這是使用者明確續作，不宣稱同 event redelivery。宿主 user-turn ID 未提供，保持 null。/' docs/plans/g06-lifecycle.task-contract.md\ncat >> docs/plans/g06-lifecycle.task-contract.md <<'EOF'\n\n## 明確續作的恢復核對\n\n本次已重新讀取 AGENTS.md、project-setting.md、task-harness 技能與參照，設定仍為 schema_version 1，無模型政策變更。原合約核心欄位、唯一狀態區塊與 T1 → T2 → T3 依賴有效；T3 同時依賴 T1/T2，無循環。沒有新增成果或合約。\n\n原 handle \"'`/root/g06_preserve` 已以原生 list_agents 的 path_prefix 查詢，回傳 agents 空陣列：目前清單未列出該 worker，不能僅據此推論程序死亡。原對話可取得其 FINAL_ANSWER，與合約中的 ff25da 成功唯讀結果一致，故沿用已完成證據，不重啟、不發 followup、不派替代 worker。\n\n原生唯讀 ls 確認 ledger.txt 與 preserve.txt 仍存在，分別列為 9 與 13 bytes，且為一般檔案；docs/plans 與合約為專案內實際路徑，沒有下層 AGENTS.md。此為恢復時核對既有副作用存在，未重讀產品內容或重跑 byte 驗收。canary 原 c8f021 一次寫入成功結果及 T2 證據保持有效；沒有已知條件變更或未決產品操作，不以未知為由重送。未對產品做任何寫入。\n\n本回合僅更新原合約恢復與授權資訊。主責仍為本對話，owner_session_id 與 user_turn_id 皆 null；原 worker 實際模型識別與強度仍未觀測。整體維持 in_progress，T1/T2 done、T3 pending；authorization.mode 為 wait，下一步僅等待明確續作。Stop 的被動 {} 與提醒不授權新工作；不宣稱同 event redelivery，也不產生 T3 成果或假 hook 收據。\nEOF\ncat docs/plans/g06-lifecycle.task-contract.md'",
+    "exitCode": 0
+  },
+  {
+    "file": "resume/rpc.jsonl",
+    "line": 349,
+    "turnId": "01a173dd-e548-7cc2-b65e-b758d04addc1",
+    "command": "/bin/zsh -lc 'ls -ld docs docs/plans docs/plans/g06-lifecycle.task-contract.md ledger.txt preserve.txt'",
+    "exitCode": 0
+  }
+]

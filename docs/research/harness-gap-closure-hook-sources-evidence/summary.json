@@ -1,0 +1,85 @@
+{
+  "root": "/private/tmp/g06-native-puuxg0nl",
+  "state": "/private/tmp/g06-native-puuxg0nl/state",
+  "phases": [
+    {
+      "phase": "startup",
+      "thread": "01a173cd-be30-7950-92b2-c494bdeb7f33",
+      "turn": {
+        "id": "01a173da-e371-7841-9be9-a9fffbb30159",
+        "rootTurnId": "01a173da-e371-7841-9be9-a9fffbb30159",
+        "items": [
+          {
+            "type": "agentMessage",
+            "id": "msg_086ae42d00de583d016ade2c23fd8c8191aadac3a32e4a6695",
+            "text": "已保存並讀回[唯一合約](docs/plans/g06-lifecycle.task-contract.md)。\n\n- T1 done：ledger.txt 僅寫入一次，讀回確認為 `G06_ONCE` 加 LF，共 9 bytes。\n- T2 done：唯一唯讀 worker `/root/g06_preserve` 已完成，確認 preserve.txt 精確保留，共 13 bytes；handle 與結果已保存。\n- T3 保持 pending，未執行，等待明確續作。\n\n未改設定、hooks 或全域；未知宿主 ID 保持 null。",
+            "phase": "final_answer",
+            "memoryCitation": null,
+            "delivery": null,
+            "questions": null
+          }
+        ],
+        "itemsView": "summary",
+        "status": "completed",
+        "error": null,
+        "startedAt": 1792945087,
+        "completedAt": 1792945189,
+        "durationMs": 102450
+      }
+    },
+    {
+      "phase": "resume",
+      "thread": "01a173cd-be30-7950-92b2-c494bdeb7f33",
+      "turn": {
+        "id": "01a173dc-741b-7701-888e-4e13581ad54c",
+        "rootTurnId": "01a173dc-741b-7701-888e-4e13581ad54c",
+        "items": [
+          {
+            "type": "agentMessage",
+            "id": "msg_086ae42d00de583d016ade2c5d9da881919b10412ade088c4b",
+            "text": "已核對並保存、讀回[原合約](/private/tmp/g06-native-puuxg0nl/project/docs/plans/g06-lifecycle.task-contract.md)的恢復資訊。\n\n沿用 T1/T2 完成證據；原 worker 目前未列於清單，保留其既有完成結果。未重寫 canary、未派 worker、未重驗內容。\n\nT3 保持 pending，授權模式為 wait，等待下一次明確續作。宿主 ID 仍為 null。",
+            "phase": "final_answer",
+            "memoryCitation": null,
+            "delivery": null,
+            "questions": null
+          }
+        ],
+        "itemsView": "summary",
+        "status": "completed",
+        "error": null,
+        "startedAt": 1792945189,
+        "completedAt": 1792945247,
+        "durationMs": 57327
+      }
+    },
+    {
+      "phase": "after-compact",
+      "thread": "01a173cd-be30-7950-92b2-c494bdeb7f33",
+      "turn": {
+        "id": "01a173dd-e548-7cc2-b65e-b758d04addc1",
+        "rootTurnId": "01a173dd-e548-7cc2-b65e-b758d04addc1",
+        "items": [
+          {
+            "type": "agentMessage",
+            "id": "msg_086ae42d00de583d016ade2cb9b2d88191a07fd3c18e29be4a",
+            "text": "已完成 T3，原[合約](/private/tmp/g06-native-puuxg0nl/project/docs/plans/g06-lifecycle.task-contract.md)已保存、讀回，整體及 T1/T2/T3 均為 `done`。\n\n沿用既有證據，未重寫 canary、未派新 agent、未重驗未變內容。原 worker 目前未列於清單，保留其完成結果；宿主 ID 維持 `null`。未建立額外成果或收據，授權依據為本次明確續作。",
+            "phase": "final_answer",
+            "memoryCitation": null,
+            "delivery": null,
+            "questions": null
+          }
+        ],
+        "itemsView": "summary",
+        "status": "completed",
+        "error": null,
+        "startedAt": 1792945284,
+        "completedAt": 1792945339,
+        "durationMs": 55182
+      }
+    }
+  ],
+  "server1_exit": 0,
+  "server2_exit": 0,
+  "fixed_unchanged": true,
+  "global_unchanged": true
+}
