@@ -6,7 +6,7 @@
 
 ## 當前驗收證據
 
-截至 2026-10-26（Asia/Taipei），[中央細分狀態與原始證據](docs/research/unified-project-settings-acceptance.research.md#g00g09-補驗唯一細分狀態表)是本輪 G00–G09 的唯一狀態入口；既有來源的[Standards／Spec 審查](docs/research/unified-project-settings-review.research.md)另列其受查版本，本輪收尾審查尚未完成。G01 demo 接入、G02 workflow 中斷恢復及 G04 指定強度分支已通過各案範圍；正常持久 hook 信任、真正未知 spawn 結果與 Desktop UI 等必要分支仍未通過，整體補驗未完成。Windows 依本輪指示排除，不計通過。
+截至 2026-10-26（Asia/Taipei），[中央細分狀態與原始證據](docs/research/unified-project-settings-acceptance.research.md#g00g09-補驗唯一細分狀態表)為本輪唯一狀態入口。G01／G02／G04 的指定範圍通過，G05／G06 部分；正常持久 hook 信任、真正 spawn 結果遺失與 Desktop UI 仍未通過，整體補驗未完成。Windows 明確排除，不計通過。既有[Standards／Spec 審查](docs/research/unified-project-settings-review.research.md)另列受查版本，本輪收尾審查尚未完成。
 
 本地 `dist/candidates/kengp3-harness-0.3.0` 是已核對的候選，[demo-002 已以 copied skills 接入並完成清潔讀回](docs/research/harness-gap-closure-demo-setup.research.md)；日常 marketplace 入口仍是 `dist/kengp3-harness` 的 0.2.1，未自動切換或更新全域安裝。各案候選指紋、載入／信任／執行資格與限制均以中央表連到的個案報告為準。
 
