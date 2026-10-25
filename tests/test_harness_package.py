@@ -21,6 +21,7 @@ class PackageTest(unittest.TestCase):
             subprocess.run([sys.executable, str(SCRIPT), str(package)], check=True,
                            capture_output=True)
             plugin = json.loads((package / '.codex-plugin/plugin.json').read_text())
+            self.assertEqual(plugin['name'], 'kengp3-harness')
             self.assertEqual(plugin['version'], '0.2.1')
             hooks = json.loads((package / plugin['hooks']).read_text())['hooks']
             self.assertEqual(set(hooks), {'SessionStart', 'UserPromptSubmit', 'Stop'})

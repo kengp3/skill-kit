@@ -1,4 +1,4 @@
-# Personal Harness
+# Kengp3 Harness
 
 透過 skill、hook 與少量工具，讓 AI agent 在原授權內完成嚴謹的多步驟開發，避免把局部成果當成整體完成。主責 agent 維護唯一任務合約，遇到真正阻礙或停止時保留可恢復狀態，跨對話續作先核對現況。使用者不必手動維護 tracker、計時或觀察。
 
@@ -23,20 +23,24 @@
 - Python 3 標準函式庫為 script runtime；3.10+ 是相容目標，開發環境 3.15 不代表最低版本已實測。不硬編碼 Homebrew、不自動安裝 runtime。
 - 設定中的 session 身分、使用者回合身分與 Stop 延續資格預設 `false`。離線 payload 或單元測試不構成真實事件證據；能力不足明示為缺口，不宣稱 hook 可選或已完整驗收。
 
-本輪已有來源、離線驗證與候選封裝；完成項目與直接證據見[整合驗證報告](docs/research/task-harness-lifecycle-validation.research.md)。實際 agent 與 hook 整合仍待 [H05](docs/plans/task-harness-lifecycle-05-desktop.plan.md) 驗收，不再要求 Desktop 專屬驗證。不要求人工監看或新增例行核准點；低負擔需觀察，普遍省時效果不能由少量案例推定。
+舊名 `personal-harness` 的 `0.2.1` 已完成 H01–H05 首版驗收，C0、C1、V1–V5 七案的直接證據見[實際行為驗收報告](docs/research/h05-agent-behavior-validation.research.md)。這些是舊 plugin 身分在指定環境的結果，不自動當作改名後的信任或實際執行證明。不要求人工監看或新增例行核准點；普遍省時效果不能由少量案例推定。
 
-合約指南與來源候選已同步為 `0.2.1`，保留凍結候選 `0.2.0` 與其歷史證據。此次來源／封裝同步的[離線驗證](docs/research/h05-package-validation.research.md)不代表 H05A 的真實接入與補救已完成；尚未執行新 trial。
+合約指南與來源候選版本為 `0.2.1`；凍結的舊名候選及歷史證據保持原狀。[來源／封裝離線驗證](docs/research/h05-package-validation.research.md)、原生接入與實際行為驗收各自保留其版本及判定，不互相代替。
+
+現行產品名稱為 Kengp3 Harness，plugin ID 為 `kengp3-harness`，本機 marketplace 為 `kengp3-harness-local`；個別 skill 名稱維持不變。舊名 `personal-harness` 的候選、歷史證據與既有安裝設定保留，改名不會自動遷移已安裝版本。新名稱已通過[隔離原生安裝與載入驗證](docs/research/kengp3-harness-native-validation-20261025.research.md)：安裝及重新啟用後讀回四個 skills 與三個 hooks，停用及移除後均無啟用項目。hooks 仍為 `untrusted`，未驗證信任及實際執行；本次沒有新的模型 trial。
 
 ## 開發端離線候選
 
 目前來源候選版本為 `0.2.1`。以既有 Python 工具建立不存在的目的地；保留原候選，以下命令只建包及驗證，不安裝或刷新宿主：
 
 ```sh
-python3 -B scripts/package_harness.py dist/candidates/personal-harness-0.2.1
-python3 -B scripts/package_harness.py --verify dist/candidates/personal-harness-0.2.1
+python3 -B scripts/package_harness.py dist/candidates/kengp3-harness-0.2.1
+python3 -B scripts/package_harness.py --verify dist/candidates/kengp3-harness-0.2.1
 ```
 
 完整包保留相依 skills、references、scripts、必要 hooks 與內容指紋；評測程式、grader、固定答案及研究留在開發 repo。更新／回退先保留可信 release 和指紋，再依明確採用授權處理來源及宿主快取；不要手改快取，也不要把某個來源版本當作目前活躍對話的載入證據。
+
+Repo 的本機 marketplace 指向 `dist/kengp3-harness`。需準備此來源時，使用同一工具另建該不存在的目錄；建包不會註冊 marketplace 或安裝 plugin。
 
 既有 [N04／N06 離線交付](docs/research/codex-harness-p1-offline-20261024.research.md)、[CLI 三組 smoke](docs/research/codex-coding-harness-smoke-20261024.research.md)與[歷史接入查核](docs/research/codex-coding-harness-implementation.research.md)只支持其當時版本及範圍。舊 CLI 成功不等於新 hooks 或完整任務生命週期已合格，也不證明普遍更省時。日常任務不承擔三組比較或 grader 回放。
 
