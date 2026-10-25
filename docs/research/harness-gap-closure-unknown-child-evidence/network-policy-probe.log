@@ -1,0 +1,22 @@
+{"at":"2026-10-25T16:06:50.979Z","pid":6961,"loopbackStatus":200,"outbound":{"connected":false,"code":"ENOTFOUND","message":"getaddrinfo ENOTFOUND api.openai.com"}}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: OS network permission denial, not provider/application response
++ actual - expected
+
++ 'ENOTFOUND'
+- 'EPERM'
+
+    at file:///private/tmp/simple-skills-gap-g05/docs/research/harness-gap-closure-unknown-child-evidence/network-policy-probe.mjs:15:8
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'ENOTFOUND',
+  expected: 'EPERM',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

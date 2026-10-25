@@ -1,0 +1,22 @@
+{
+  "purpose": "OS owned-process network policy qualification, no provider sampling",
+  "profile": "(version 1)(allow default)(deny network-outbound)(allow network-outbound (remote ip \"localhost:*\"))",
+  "attempts": [
+    {
+      "target": "api.openai.com:443",
+      "loopbackStatus": 200,
+      "observedCode": "ENOTFOUND",
+      "exit": 1,
+      "raw": "network-policy-probe.log",
+      "verdict": "DNS ambiguity; not accepted as EPERM proof"
+    },
+    {
+      "target": "192.0.2.1:443 (TEST-NET)",
+      "loopbackStatus": 200,
+      "observedCode": "EPERM",
+      "exit": 0,
+      "raw": "network-policy-probe-direct-ip.log",
+      "verdict": "OS egress deny proof only; not provider request"
+    }
+  ]
+}

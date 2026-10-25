@@ -1,0 +1,53 @@
+{
+  "thread": {
+    "id": "01a173d5-39ad-7302-a738-6ad1ea098ec1",
+    "environments": [
+      {
+        "environmentId": "local",
+        "cwd": "/private/tmp/g05-3e62e27f-7caf-4067-9749-eafaf5e6a5f1/case",
+        "runtimeWorkspaceRoots": [
+          "/private/tmp/g05-3e62e27f-7caf-4067-9749-eafaf5e6a5f1/case"
+        ]
+      }
+    ],
+    "extra": null,
+    "sessionId": "01a173d5-39ad-7302-a738-6ad1ea098ec1",
+    "forkedFromId": null,
+    "parentThreadId": null,
+    "preview": "這是已確認的專案根 /private/tmp/g05-3e62e27f-7caf-4067-9749-eafaf5e6a5f1/case；啟用 task-harness，依本地四個候選技能及 project-setting.md 保存唯一合約 docs/plans/g05-3e62e27f-7caf-4067-9749-eafaf5e6a5f1.task-contract.md。這是 G05 client transport 斷線實驗，case=g05-3e62e27f-7caf-4067-9749-eafaf5e6a5f1。唯一成果 T1：由真實 persistent 原生 child 唯讀核對 preserve.txt；只建立一個 child，名稱 g05_reader，fork_turns=none、自足輸入、繼承主責模型與強度。明確授權此次原生派工。child 工作：先用 shell 唯讀讀 preserve.txt，接著最多等待900秒直到本專案 gate.txt 出現（sleep 1 輪詢；不可寫檔、不可建立背景服務、不可再派 agent、不可執行 Node/Python/helper）；gate出現再讀 preserve.txt，最終只回報精確一行 G05_CHILD_RESULT g05-3e62e27f-7caf-4067-9749-eafaf5e6a5f1 KEEP_EXISTING_CONTENT。你保存真實 handle、T1 in_progress、原工作與查回依據後，本回合結束，不等待 child、不建立gate、不派第二個worker。後續查明前一律先query原child，不因timeout或通知遺失重派。產品模型不得執行 Node/Python/helper。hooks在本case停用，主動做相同合約檢查且不修改hook設定。",
+    "ephemeral": false,
+    "section": null,
+    "sectionEnteredAt": null,
+    "projectId": null,
+    "historyMode": "paginated",
+    "modelProvider": "openai",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "low",
+    "createdAt": 1792944716,
+    "updatedAt": 1792944794,
+    "recencyAt": 1792944716,
+    "status": {
+      "type": "idle"
+    },
+    "path": "/private/tmp/g05-3e62e27f-7caf-4067-9749-eafaf5e6a5f1/state/sessions/2026/10/26/rollout-2026-10-26T00-11-56-01a173d5-39ad-7302-a738-6ad1ea098ec1.jsonl",
+    "cwd": "/private/tmp/g05-3e62e27f-7caf-4067-9749-eafaf5e6a5f1/case",
+    "cliVersion": "0.164.0",
+    "originator": "Codex Desktop",
+    "source": "vscode",
+    "canAcceptDirectInput": true,
+    "threadSource": null,
+    "agentNickname": null,
+    "agentRole": null,
+    "gitInfo": null,
+    "name": null,
+    "daybreakEnabled": null,
+    "turns": []
+  },
+  "readState": {
+    "firstUnread": {
+      "type": "turn",
+      "turnId": "01a173d5-3a23-7b23-9099-bdeeee8cbb88"
+    },
+    "revision": "1a2d4215-1ae3-4326-a6d6-7aa64b541975"
+  }
+}
