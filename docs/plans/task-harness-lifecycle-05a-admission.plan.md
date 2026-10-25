@@ -12,7 +12,7 @@
 - [ ] 重用既有封裝／事件／控制接口，只補具體缺少的開發端接線；不將純控制狀態或離線 boundary 當模型 runner。
 - [x] 同步來源接入指南中與新規格衝突的 Desktop 專屬表述；已建立 0.2.1 候選，保留凍結 0.2.0，沒有安裝或刷新日常快取。
 - [ ] 正常載入／信任只寫本次測試範圍；無全域設定／既有快取變更、無 bypass、無私人憑證複製。不能達成即記錄阻礙，不轉向 OS 或 Desktop 工程。
-- [ ] 開發接線若有修改，先以合成事件／既有紀錄完成必要離線回歸；不把離線綠燈當真實資格。
+- [x] 已新增開發端 probe，並完成整合後 43 項必要離線回歸；不把離線綠燈當真實資格。
 - [ ] 明確允許模型執行後完成 C0；探針與產品 handler 結果分開，原 user-turn 與續作鏈可追溯，最多一次補救及重入不補發有直接證據。
 - [ ] 實際取消／結果讀回與自有 writer 收尾可用；控制端逾時會停相依試行，不要求人工監看。
 - [ ] 保存版本、候選、實際載入來源與 C0 判定；不藉此宣稱其他行為案例已通過。
@@ -44,5 +44,14 @@
 - 0.2.1 已在本 repo 的候選目錄建包並驗包；22 個內容檔，manifest SHA-256 `210664eb7b5a478997dbc8c67b323131a5f9ed62bd51e23cdbaba8bdb7a8ae5a`。來源與凍結候選分開，沒有改 0.2.0 或日常啟用版本。
 - Probe 只在開發端，以明確測試根／證據目錄接收白名單事件，整個 attempt 最多一次無害 canary；並行／跨 turn／保存失敗不會重新補發。尚未建立新的通用 runner；原生接線及實際資格仍未完成。
 - 無模型 admission 使用單獨測試設定根目錄與正常 CLI。第一次因終端輸入不是 TTY 而退出；修正終端接線後進入原生登入選單，確認未登入時尚不能審查 hooks，隨即正常退出。沒有送模型 prompt、繞過信任或讀取日常憑證。
-- 使用者已明確允許該測試目錄的 ChatGPT device login，且明示不啟動模型 trial。登入程序已啟動；完成結果須由原生程序確認，不能以使用者回報或登入頁畫面當證據。一次性代碼與 auth 檔案不封存進 repo。
+- 使用者已明確允許該測試目錄的 ChatGPT device login，且明示不啟動模型 trial。登入程序已原生回報成功並 exit 0；沒有使用畫面或使用者回報替代完成證據。一次性代碼與 auth 檔案不封存進 repo。
 - admission 前後的日常使用者 config 雜湊一致；只代表該設定檔保留，不能稱全域所有檔案已全面監測。最小接入與源碼依據見[唯讀調查](../research/h05-admission-inventory.research.md)，離線切片證據見[封裝](../research/h05-package-validation.research.md)與[探針](../research/h05-hook-probe-validation.research.md)。
+
+## 原生接入讀回與審查結果（2026-10-25）
+
+- 測試目錄的正常 `/hooks` 審查已完成，獨立 stdio app-server 的 `hooks/list` 讀回三個 project hooks 均 enabled／trusted，且 hash 與測試 config 一致、無 warnings／errors；TUI 與自有 app-server 均已退出。見[無模型接入證據](../research/h05-native-admission.research.md)。
+- 此次驗的是與 0.2.1 bytes 相同的 handler 複本接入；不代表 plugin／skill 載入或 C0 真實事件已通過。後續精確候選／probe 定義仍須正常審查；所以完整接入 checkbox 與 C0 保留未完成。
+- `27ead1b...1a08939` 的獨立 Standards 審查無發現；Spec 審查找到 H05 歷史段落仍稱「本輪只修文件」的 P2 矛盾，已由單一實作者以 `bd70dce` 修正並整合至 `0cc19b4`；獨立 Spec 複核確認問題解決，接入報告與原始讀回資料一致。沒有發現 probe 程式缺陷，兩位 reviewer 均獨立重跑 9 項 probe 測試通過。
+- 本次沒有模型 prompt 或 turn/start，沒有新模型 trial；新的模型執行仍待明確核定範圍。
+
+使用者於本輪明確選擇「先停在無模型驗證成果」。本階段到此停止，不啟動 C0 或其他模型 trial；H05A 必要成果尚未全數驗收，維持 in_progress，後續須等待明確續作及模型執行授權。測試登入資料保留在可丟棄 state 內，不封存至 repo。
