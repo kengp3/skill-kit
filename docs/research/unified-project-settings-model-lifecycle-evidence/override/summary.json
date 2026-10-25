@@ -1,0 +1,153 @@
+{
+  "case": "override",
+  "candidate_manifest_sha256": "7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e",
+  "turns": [
+    {
+      "phase": 1,
+      "thread": "01a172c7-9b29-72f1-8f1f-ed8ef5dbe37a",
+      "turn": {
+        "id": "01a172c7-a21a-7592-bcc0-083be1a355b4",
+        "rootTurnId": "01a172c7-a21a-7592-bcc0-083be1a355b4",
+        "items": [
+          {
+            "type": "agentMessage",
+            "id": "msg_085a4692f501f2a5016adde5b6d230819184ff5ba48b0e9e11",
+            "text": "T1 已完成，獨立 worker 核對 PASS：`preserve.txt` 精確為指定文字加 LF，共 22 bytes。\n\n- [T1 證據](/private/tmp/unified-model-lifecycle-6ry9llnl/project/docs/research/override-1.research.md)\n- [唯一合約](/private/tmp/unified-model-lifecycle-6ry9llnl/project/docs/plans/scoped-model.task-contract.md)：已保存真實 handle、`gpt-6-sol / low` 請求及選擇依據；實際後端模型未核實。\n- T2 保持 `pending`，授權模式為 `wait`，未派工。\n\n`preserve.txt`、專案長期設定及 hooks 均未修改。",
+            "phase": "final_answer",
+            "memoryCitation": null,
+            "delivery": null,
+            "questions": null
+          }
+        ],
+        "itemsView": "summary",
+        "status": "completed",
+        "error": null,
+        "startedAt": 1792927048,
+        "completedAt": 1792927160,
+        "durationMs": 112478
+      }
+    },
+    {
+      "phase": 2,
+      "thread": "01a172c7-9b29-72f1-8f1f-ed8ef5dbe37a",
+      "turn": {
+        "id": "01a172c9-5982-7632-9e8f-745ecda3ef52",
+        "rootTurnId": "01a172c9-5982-7632-9e8f-745ecda3ef52",
+        "items": [
+          {
+            "type": "agentMessage",
+            "id": "msg_085a4692f501f2a5016adde5ffd9fc81919c18f1efd09035b9",
+            "text": "T2 已由不同的獨立 worker 核對 PASS：指定文字加 LF，共 22 bytes。\n\n- [T2 證據](/private/tmp/unified-model-lifecycle-6ry9llnl/project/docs/research/override-2.research.md)\n- [原合約](/private/tmp/unified-model-lifecycle-6ry9llnl/project/docs/plans/scoped-model.task-contract.md) 已更新為 `done`，保留 T1。\n- 沿用任務覆寫 `gpt-6-sol / low`，已保存真實 handle 與選擇依據；後端模型未核實。\n\n`preserve.txt`、專案長期設定及 hooks 均未修改。",
+            "phase": "final_answer",
+            "memoryCitation": null,
+            "delivery": null,
+            "questions": null
+          }
+        ],
+        "itemsView": "summary",
+        "status": "completed",
+        "error": null,
+        "startedAt": 1792927160,
+        "completedAt": 1792927233,
+        "durationMs": 73156
+      }
+    },
+    {
+      "phase": 3,
+      "thread": "01a172ca-7759-7091-ad3f-4ce1204a0a8b",
+      "turn": {
+        "id": "01a172ca-7766-7070-8a6c-30768b0c493a",
+        "rootTurnId": "01a172ca-7766-7070-8a6c-30768b0c493a",
+        "items": [
+          {
+            "type": "agentMessage",
+            "id": "msg_0a2ae043590383b0016adde66cfff88191a6fdeaf531bb6df4",
+            "text": "已完成。唯一獨立 worker `/root/preserve_check` 使用 `fork_turns=none`，核對結果 PASS：`preserve.txt` 精確為 `KEEP_EXISTING_CONTENT` 加 LF，共 22 bytes。\n\n已保存並讀回：\n\n- [新任務合約](/private/tmp/unified-model-lifecycle-6ry9llnl/project/docs/plans/new-model-task.task-contract.md)\n- [研究證據](/private/tmp/unified-model-lifecycle-6ry9llnl/project/docs/research/new-model-task.research.md)\n\n依目前專案設定請求 `gpt-6.1-sol;low`，未承接舊任務覆寫；實際後端模型未揭露，已如實記錄。preserve.txt、長期設定與 hooks 均未更動。",
+            "phase": "final_answer",
+            "memoryCitation": null,
+            "delivery": null,
+            "questions": null
+          }
+        ],
+        "itemsView": "summary",
+        "status": "completed",
+        "error": null,
+        "startedAt": 1792927233,
+        "completedAt": 1792927343,
+        "durationMs": 109773
+      }
+    }
+  ],
+  "thread_start": {
+    "thread": {
+      "id": "01a172c7-9b29-72f1-8f1f-ed8ef5dbe37a",
+      "environments": [
+        {
+          "environmentId": "local",
+          "cwd": "/private/tmp/unified-model-lifecycle-6ry9llnl/project",
+          "runtimeWorkspaceRoots": [
+            "/private/tmp/unified-model-lifecycle-6ry9llnl/project"
+          ]
+        }
+      ],
+      "extra": null,
+      "sessionId": "01a172c7-9b29-72f1-8f1f-ed8ef5dbe37a",
+      "forkedFromId": null,
+      "parentThreadId": null,
+      "preview": "",
+      "ephemeral": false,
+      "section": null,
+      "sectionEnteredAt": null,
+      "projectId": null,
+      "historyMode": "paginated",
+      "modelProvider": "openai",
+      "model": "gpt-6.1-sol",
+      "reasoningEffort": "low",
+      "createdAt": 1792927048,
+      "updatedAt": 1792927048,
+      "recencyAt": 1792927048,
+      "status": {
+        "type": "idle"
+      },
+      "path": "/private/tmp/unified-model-lifecycle-6ry9llnl/state/sessions/2026/10/25/rollout-2026-10-25T19-17-28-01a172c7-9b29-72f1-8f1f-ed8ef5dbe37a.jsonl",
+      "cwd": "/private/tmp/unified-model-lifecycle-6ry9llnl/project",
+      "cliVersion": "0.164.0",
+      "originator": "Codex Desktop",
+      "source": "vscode",
+      "canAcceptDirectInput": true,
+      "threadSource": null,
+      "agentNickname": null,
+      "agentRole": null,
+      "gitInfo": null,
+      "name": null,
+      "daybreakEnabled": null,
+      "turns": []
+    },
+    "model": "gpt-6.1-sol",
+    "modelProvider": "openai",
+    "serviceTier": null,
+    "disabledPluginIds": [],
+    "cwd": "/private/tmp/unified-model-lifecycle-6ry9llnl/project",
+    "runtimeWorkspaceRoots": [
+      "/private/tmp/unified-model-lifecycle-6ry9llnl/project"
+    ],
+    "instructionSources": [],
+    "approvalPolicy": "on-request",
+    "approvalsReviewer": "auto_review",
+    "sandbox": {
+      "type": "workspaceWrite",
+      "writableRoots": [],
+      "networkAccess": false,
+      "excludeTmpdirEnvVar": false,
+      "excludeSlashTmp": false
+    },
+    "activePermissionProfile": null,
+    "reasoningEffort": "low",
+    "multiAgentMode": "explicitRequestOnly"
+  },
+  "owned_server_exit": 0,
+  "settings_unchanged": true,
+  "preserve_unchanged": true,
+  "global_unchanged": true,
+  "temporary_credentials_deleted_on_exit": true
+}

@@ -1,0 +1,128 @@
+{
+  "case": "switch",
+  "candidate_manifest_sha256": "7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e",
+  "turns": [
+    {
+      "phase": 1,
+      "thread": "01a172c7-b6b7-7363-bde3-9641b7e1713e",
+      "turn": {
+        "id": "01a172c7-bc39-7a03-b0ae-3bc06b4f626e",
+        "rootTurnId": "01a172c7-bc39-7a03-b0ae-3bc06b4f626e",
+        "items": [
+          {
+            "type": "agentMessage",
+            "id": "msg_01712c56567dd3e9016adde5a515e4819186f8cbf9f9afae2a",
+            "text": "已保存並讀回[唯一合約](docs/plans/manual-switch.task-contract.md)。\n\n- 原生 worker：`/root/old_worker`，已回報開始，宿主觀測為 `running`。\n- 使用 `fork_turns=none`，未指定模型或強度；已記錄原生繼承依據，實際後端值保留未知。\n- `T1` 維持 `in_progress`，主責授權模式已保存為 `wait`。\n- 未建立 gate、未等待完成；preserve.txt、長期設定與 hooks 均未修改。\n\n等待下一個明確續作回合。",
+            "phase": "final_answer",
+            "memoryCitation": null,
+            "delivery": null,
+            "questions": null
+          }
+        ],
+        "itemsView": "summary",
+        "status": "completed",
+        "error": null,
+        "startedAt": 1792927054,
+        "completedAt": 1792927143,
+        "durationMs": 88677
+      }
+    },
+    {
+      "phase": 2,
+      "thread": "01a172c7-b6b7-7363-bde3-9641b7e1713e",
+      "turn": {
+        "id": "01a172c9-16a4-79d2-af5d-8ae8acbfb45b",
+        "rootTurnId": "01a172c9-16a4-79d2-af5d-8ae8acbfb45b",
+        "items": [
+          {
+            "type": "agentMessage",
+            "id": "msg_01712c56567dd3e9016adde614b4588191bea8872bdfe8f739",
+            "text": "已完成同一份 `manual-switch` 任務。[合約](/private/tmp/unified-model-lifecycle-t88tei2a/project/docs/plans/manual-switch.task-contract.md)中的 T1、T2 均已驗收為 `done`，[研究紀錄](/private/tmp/unified-model-lifecycle-t88tei2a/project/docs/research/manual-switch.research.md)已保存。\n\n原 `old_worker` 在建立 gate 前確認仍在執行，釋放後回報 PASS；新建的 `new_worker` 也獨立回報 PASS。主責再次唯讀核對 [preserve.txt](/private/tmp/unified-model-lifecycle-t88tei2a/project/preserve.txt)：內容精確為 `KEEP_EXISTING_CONTENT` 加 LF，共 22 bytes。兩個真實 handle 與派工依據已留在合約；宿主未回報 worker 的實際後端模型或強度，因此這些值維持未知。",
+            "phase": "final_answer",
+            "memoryCitation": null,
+            "delivery": null,
+            "questions": null
+          }
+        ],
+        "itemsView": "summary",
+        "status": "completed",
+        "error": null,
+        "startedAt": 1792927143,
+        "completedAt": 1792927254,
+        "durationMs": 111403
+      }
+    }
+  ],
+  "thread_start": {
+    "thread": {
+      "id": "01a172c7-b6b7-7363-bde3-9641b7e1713e",
+      "environments": [
+        {
+          "environmentId": "local",
+          "cwd": "/private/tmp/unified-model-lifecycle-t88tei2a/project",
+          "runtimeWorkspaceRoots": [
+            "/private/tmp/unified-model-lifecycle-t88tei2a/project"
+          ]
+        }
+      ],
+      "extra": null,
+      "sessionId": "01a172c7-b6b7-7363-bde3-9641b7e1713e",
+      "forkedFromId": null,
+      "parentThreadId": null,
+      "preview": "",
+      "ephemeral": false,
+      "section": null,
+      "sectionEnteredAt": null,
+      "projectId": null,
+      "historyMode": "paginated",
+      "modelProvider": "openai",
+      "model": "gpt-6.1-sol",
+      "reasoningEffort": "low",
+      "createdAt": 1792927054,
+      "updatedAt": 1792927054,
+      "recencyAt": 1792927054,
+      "status": {
+        "type": "idle"
+      },
+      "path": "/private/tmp/unified-model-lifecycle-t88tei2a/state/sessions/2026/10/25/rollout-2026-10-25T19-17-34-01a172c7-b6b7-7363-bde3-9641b7e1713e.jsonl",
+      "cwd": "/private/tmp/unified-model-lifecycle-t88tei2a/project",
+      "cliVersion": "0.164.0",
+      "originator": "Codex Desktop",
+      "source": "vscode",
+      "canAcceptDirectInput": true,
+      "threadSource": null,
+      "agentNickname": null,
+      "agentRole": null,
+      "gitInfo": null,
+      "name": null,
+      "daybreakEnabled": null,
+      "turns": []
+    },
+    "model": "gpt-6.1-sol",
+    "modelProvider": "openai",
+    "serviceTier": null,
+    "disabledPluginIds": [],
+    "cwd": "/private/tmp/unified-model-lifecycle-t88tei2a/project",
+    "runtimeWorkspaceRoots": [
+      "/private/tmp/unified-model-lifecycle-t88tei2a/project"
+    ],
+    "instructionSources": [],
+    "approvalPolicy": "on-request",
+    "approvalsReviewer": "auto_review",
+    "sandbox": {
+      "type": "workspaceWrite",
+      "writableRoots": [],
+      "networkAccess": false,
+      "excludeTmpdirEnvVar": false,
+      "excludeSlashTmp": false
+    },
+    "activePermissionProfile": null,
+    "reasoningEffort": "low",
+    "multiAgentMode": "explicitRequestOnly"
+  },
+  "owned_server_exit": 0,
+  "settings_unchanged": true,
+  "preserve_unchanged": true,
+  "global_unchanged": true,
+  "temporary_credentials_deleted_on_exit": true
+}
