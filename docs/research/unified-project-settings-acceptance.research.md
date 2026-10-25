@@ -6,7 +6,9 @@
 
 ## G00–G09 補驗：唯一細分狀態表
 
-**截至 2026-10-26（Asia/Taipei）：整體補驗未完成，G09 in_progress。** [補驗規格](../specs/harness-validation-gap-closure.spec.md)與[工作圖](../plans/harness-validation-gap-closure.plan.md)已核准；G00 基準、G01 接入、G02 指定中斷恢復、G04 三分支、G05 部分查回與 G06 部分生命週期已有判定。G03 等人工精確核准、G07 UI 資格受阻，不能因文件或操作包就緒而關閉。Windows 依使用者最新指示「不考慮 windows 情境」明確排除，G08 為 **cancelled，不是 passed**。本表為唯一持續更新的缺口表；[G00 基準報告](harness-gap-closure-baseline.research.md)只保存初態，沒有回寫歷史證據。
+**截至 2026-10-26（Asia/Taipei）：整體補驗未完成；G09 證據對帳、獨立審查與入口更新 done。** [補驗規格](../specs/harness-validation-gap-closure.spec.md)與[工作圖](../plans/harness-validation-gap-closure.plan.md)已核准；G00 基準、G01 接入、G02 指定中斷恢復、G04 三分支、G05 部分查回與 G06 部分生命週期已有判定。G03 等人工精確核准、G07 UI 資格受阻，不能因文件或操作包就緒而關閉。Windows 依使用者最新指示「不考慮 windows 情境」明確排除，G08 為 **cancelled，不是 passed**。本表為唯一持續更新的缺口表；[G00 基準報告](harness-gap-closure-baseline.research.md)只保存初態，沒有回寫歷史證據。
+
+本輪[獨立 Standards／Spec 審查](harness-gap-closure-review.research.md)以 `f15338e` 為 base、`0ec9812` 為受查 head，兩軸各 **0 actionable findings**；[審查身分與結果](harness-gap-closure-review-evidence/review-results.json)已交付。G09 完成僅指本輪對帳、審查與入口收尾；G03／G05／G06／G07 必要分支仍受阻，整體補驗未完成。
 
 表內「已實作」僅指既有 0.3.0 Markdown 規則／封裝來源，未宣稱宿主具有所有故障控制能力。所有列共用候選 **C030**：manifest `7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e`；[G00 原始核對](harness-gap-closure-baseline-evidence/candidate-verification.json)與[G01 實際載入及清潔讀回](harness-gap-closure-demo-setup.research.md)分開保存。demo-002 已接入 0.3.0 copied skills，未安裝 plugin；五個 project hooks 已寫入且宿主列出，仍 untrusted。日常 marketplace 仍指向 0.2.1，未自動切換。歷史 pass 只支持原受測情境，不計本輪新增通過。
 
@@ -33,12 +35,12 @@ G05／G06 已按各案正式報告分開已測分支與宿主能力缺口；V02�
 | V07 strict 僅限制首選、有合格後續候選／G04 | 已實作限制範圍規則 | 通過（A） | C030；獨立 case 當下 metadata；真 child gpt-6-sol／low | [G04 報告](harness-gap-closure-strict-effort.research.md)、[native child context](harness-gap-closure-strict-effort-evidence/first-only/session-contexts.json)、[summary](harness-gap-closure-strict-effort-evidence/first-only/summary.json)：後續合格候選完成，唯一合約 T1 done、精確成果 21 bytes；先行 429 保留。 |
 | V07 strict 限制全部派工、無合格候選／G04 | 已實作 blocked 與無相依工作規則 | 通過（B） | C030；全部候選與預設不合格；零違規 spawn | [G04 報告](harness-gap-closure-strict-effort.research.md)、[工具請求](harness-gap-closure-strict-effort-evidence/all-agents/session-tool-records.json)、[summary](harness-gap-closure-strict-effort-evidence/all-agents/summary.json)：T1 blocked、T1 成果不存在，不相依 T2 完成精確 22 bytes；先行 429 保留。 |
 | V07 provider 非法強度 upstream 拒絕／G04 | 已實作 preflight；probe 為維護選配 | 負例通過（限該次請求） | C030；protocol 可表達、metadata 不支援的 gpt-6.1-sol／minimal | [G04 報告](harness-gap-closure-strict-effort.research.md)、[原始 RPC](harness-gap-closure-strict-effort-evidence/provider-probe/rpc.jsonl)、[判定](harness-gap-closure-strict-effort-evidence/provider-probe/provider-verdict.json)：保留先行 429；真 upstream HTTP400／unsupported_value、param reasoning.effort、willRetry=false，終態 failed。沒有用 schema／認證錯誤代測。 |
-| D02 狀態分流／G00、G09 | G00 基準完成；G09 彙整中 | 部分；G09 in_progress | C030；安裝、行為及資格分別判定 | [G00 報告](harness-gap-closure-baseline.research.md)、[G09 ticket](../plans/harness-gap-closure-09-reconcile.plan.md)。必要受阻及尚待對帳分支保留，獨立 Standards／Spec 收尾未完成。 |
+| D02 狀態分流／G00、G09 | G00 基準與 G09 本輪對帳完成 | 通過（限狀態分流／對帳／審查）；整體補驗未完成 | C030；安裝、行為及資格分別判定 | [G00 報告](harness-gap-closure-baseline.research.md)、[G09 ticket](../plans/harness-gap-closure-09-reconcile.plan.md)、[本輪審查](harness-gap-closure-review.research.md)。兩軸各 0 actionable findings；G03／G05／G06／G07 必要受阻保留，不因 G09 done 改為通過。 |
 | D01 日常安裝入口 | 舊入口保留 | 未執行（本輪不自動切換） | marketplace 仍指向 dist/kengp3-harness 0.2.1；demo copied skills 為 0.3.0 | [入口基準](harness-gap-closure-baseline-evidence/candidate-verification.json)、[G01 實際接入](harness-gap-closure-demo-setup.research.md)；專用候選／demo 接入不代表日常或全域已升級。 |
 | P01 維護 CI | 本地最小 workflow 已新增 | 本地配置／靜態／targeted 通過；remote 未執行 | macos-15；開發端選配，不是核心 runtime | [CI 報告](harness-gap-closure-ci.research.md)、[workflow](../../.github/workflows/tests.yml)、[靜態查核](harness-gap-closure-ci-evidence/static-checks.txt)。本地不是 hosted runner；不宣稱 CI 綠燈，不涵蓋真模型、人工 trust 或 UI 資格。 |
 | P02 每案資格 | 已交付案例各自核對 | G01／G02／G04／G05／G06 已交付範圍核對；其餘依各案資格 | 普通工具、初態、候選與原生終態分開核對 | 本表各案報告保存前置資格、原始失敗及正式判定；不以 G00、controller exit 0 或 timeout 代替實際產物。 |
-| P03 審查能力一致性／G09 | README 最小核對清單已補 | 部分；本輪獨立審查未完成 | 沿用既有 package tests／封裝驗證，不新增框架 | [README 維護段](../../README.md#開發端封裝與驗證)列 metadata、指南、copied-skill／plugin／assets 與已觀測能力一致性；待收尾審查及 required findings 對帳。 |
-| P04 當前證據入口／G09 | README 已連中央表及既有來源審查 | 部分；本輪審查入口待報告交付 | 當前／歷史與 local candidate／日常入口分開 | [README 證據入口](../../README.md#當前驗收證據)可直達本表及具名 raw；本輪 review 尚未交付，不建立不存在的報告連結。 |
+| P03 審查能力一致性／G09 | README 最小核對清單與本輪獨立審查完成 | 通過（限本輪來源／證據審查） | 沿用既有 package tests／封裝驗證，不新增框架 | [README 維護段](../../README.md#開發端封裝與驗證)列 metadata、指南、copied-skill／plugin／assets 與已觀測能力一致性；[本輪 Standards／Spec](harness-gap-closure-review.research.md)兩軸各 0 actionable findings。未關閉其他驗收資格缺口，不宣稱 hosted CI 通過。 |
+| P04 當前證據入口／G09 | README 已連中央表、既有來源審查及本輪審查 | 通過（限本輪導航與讀回） | 當前／歷史與 local candidate／日常入口分開 | [README 證據入口](../../README.md#當前驗收證據)可直達本表、具名證據及[本輪審查](harness-gap-closure-review.research.md)；保留各案公開 excerpt 與私有 full raw 的界線，不擴稱能力通過。 |
 
 以下各節保留 G00 以前的驗收與原始失敗／未知記錄；其中「本輪」指當時既有驗收，不代表這次 G00–G09 新跑。歷史 Windows「未驗證」敘述保留為歷史，本輪範圍以本表的明確排除為準。
 
