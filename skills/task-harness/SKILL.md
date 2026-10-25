@@ -5,7 +5,7 @@ description: Own an explicitly enabled multi-step task through verified completi
 
 # Task Harness
 
-Keep the whole agreed outcome moving within authorization. Use native execution tools, one task contract and existing project checks. Do not replace the host runtime or turn evaluation infrastructure into the daily workflow. Match the user's language.
+Keep the whole agreed outcome moving within authorization. The model reads settings, coordinates work and judges evidence using one task contract and existing host capabilities. Runtime scripts, external CLIs, MCP services and helper tools are optional; none is a prerequisite for this workflow. Development packaging and evaluation tools stay outside the daily path. Tools needed for the task's actual work or verification still require real results. Match the user's language.
 
 ## Establish one task contract
 
@@ -58,13 +58,24 @@ One conversation owns at most one unfinished harness task. Before switching, sav
 
 User Stop ends execution: do not continue merely to save or rely on a final write; wait for explicit resumption. Resume from the latest successful contract and reconcile reality. Explicit cancellation retains its basis/artifacts; restoring it needs explicit authorization. Reopen original outcome gaps under the same contract; independent new objectives do not inherit activation. Record scope/acceptance changes and their basis without full update-by-update history.
 
-## Use standard hooks without delegating judgment
+## Check the same contract at workflow boundaries
 
-Follow the [connection and contract guide](references/task-contract.md). Standard hooks prompt context recovery and reconciliation of new requirements. Confirm actual host support before claiming conditional normal-stop continuation. They do not edit the contract/product, grant permission, judge product correctness or replace host controls. When hooks cannot be restored, the main model actively performs the same workflow checks using the same contract.
+Use these checks whether a hook supplies a reminder or the main model initiates them. Do not maintain a separate fallback contract or weaker acceptance path.
 
-For each genuine user work turn, reconcile and save `authorization.user_turn_id`, mode and basis against the latest request. A progress question does not automatically pause execution; an explicit discussion-only/stop instruction does. A hook-generated continuation stays within its originating user turn and never refreshes authorization or allowance. Do not copy its generated turn ID into a fresh user authorization merely to satisfy the hook. If the host cannot reliably establish this distinction, keep qualification unresolved.
+| Boundary | Main model checks |
+| --- | --- |
+| Start or resume | Settings, current authorization, saved progress, real effects and next action |
+| Before dispatch or stage change | Accepted prerequisites, owner, selected model and permitted operations |
+| After a worker reports | Actual artifacts and verification evidence, integration and contract state |
+| Before normal closure | Every necessary outcome against current evidence; continue executable unfinished work within authorization |
 
-Missing, stale or malformed state is not approval. Never set host qualification to true just to suppress a warning. Hook timeout/absence may not stop the host; do not claim enforcement or complete readiness without direct evidence. Hook failures route to model-led checks; only genuine permission, state or task-operation gaps stop their dependent actions. No background monitor, watchdog, automatic restart or manual observer is required.
+Follow the [connection and contract guide](references/task-contract.md) to diagnose missing, failed, untrusted or unsupported hooks within the original authorization. Delegate setting changes to project-setting using the harness specification, then check the result. If repair cannot restore the connection, automatically perform the same checks actively and continue; no separate opt-in, restart or exit from task-harness is needed. Only real permission, ambiguous state or task-operation gaps pause their dependent actions. Report manual or out-of-scope setup actions without blocking unrelated authorized work.
+
+When hooks actually recover, reconcile the current contract, observed effects and worker handles before continuing. A restored or duplicate reminder does not redo completed operations, recreate the contract, reset attempts or redispatch existing workers. Resolve unknown results first; reverify only acceptance affected by changed inputs, artifacts or conditions. Record the observed connection state and active-check takeover in the same contract's recovery information at meaningful transitions.
+
+For each genuine user work turn, reconcile and save authorization mode and basis against the latest request. Save the actual user-turn ID when observable; otherwise use null and record the missing host identity, not a fabricated ID. A progress question does not automatically pause execution; an explicit discussion-only/stop instruction does. A hook-generated continuation stays within its originating user turn and never refreshes authorization or allowance. If the host cannot distinguish that continuation, do not treat it as new user authorization or claim qualified conditional continuation.
+
+Standard hooks provide reminders; they do not edit products or the contract, grant permission, judge correctness or replace host controls. Check observed loading, trust, event injection and conditional continuation separately. Static output is not a contract parser or mechanical acceptance gate. A passive Stop response does not force continuation, and an unconditional block is not a safe once-only guard. Never invent hook events, receipt files or host qualifications to make missing evidence look successful. No background monitor, watchdog, automatic restart or manual observer is required.
 
 ## Close the whole task
 
