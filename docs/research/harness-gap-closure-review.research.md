@@ -11,6 +11,8 @@
 
 初次審查後，父層最後讀回另發現總計畫仍留一條 Windows 執行步驟；同一修正 agent 已於 `097e04caa25c415b39ebfb7468820b86750aa605` 改成明確排除，不執行資格探查、接入、commandWindows、最小任務或 VM。兩名原 reviewer 再檢查 `0ec9812...097e04c` 的六檔文件差異，均無 required findings；確認本報告轉述準確、G09 done 僅指收尾，必要缺口及整體未完成仍保留。integration `eb74624888e4be2fbb4b9000f4d64f0077431c5e` 的 tree 與該 target 相同。這是增量文件審查，不是重新執行驗收。
 
+續作補記：父層讀回 G06 原始 stderr，發現個案報告「此次三回合沒有 429」不符[resume stderr 第 2 行](harness-gap-closure-hook-sources-evidence/resume/server.stderr.log)。同一修正 agent 已於 `2fc674b5d742d658636d90200432ff59b703db4a` 更正為原生 retry 1/5、約 17 秒及[同一 turn completed](harness-gap-closure-hook-sources-evidence/resume/resume-terminal.json)，未另開 turn、重派或改寫 raw／原判定。原兩名 reviewer 分別重查此單句及證據，均無 required findings；整合 commit 為 `1d7dfae2295bdb36837017b1398734cd80846a3e`。此次修正不關閉任何受阻驗收分支，也未重跑模型。
+
 ## Standards
 
 **無 actionable findings。** 受查 head 為上述 `0ec9812`。
@@ -54,6 +56,6 @@
 
 本輪沒有尚待修正的 review findings；G09 可完成證據對帳與審查收尾，但不得把其他票的受阻條件改為 done。最小解鎖條件沿用各案：G03 先取得[五項精確定義的人工核准](harness-gap-closure-persisted-trust-evidence/human-review.md)，再於正常介面重新核對定義、信任並執行兩次 invocation；G05 需主責可用的跨 root 查詢與真結果交付／sampling 故障控制；G06 需可觀測的原始來源及同邏輯事件 redelivery；G07 需允許的 Desktop 操作環境及實際畫面／宿主證據。
 
-未修改全域或日常 marketplace；demo 接入 0.3.0 不表示日常 0.2.1 入口已升級。未 push、建立 PR、執行 hosted CI 或 Windows。來源工作區原有 `.codex/config.toml` 修改、其他 untracked 及 demo 原有 dirty 內容保留。已合併且不再需要的十個 implementer worktrees 已清除，branch refs 保留；G03 人工待核准所需的工作樹及各案需留存的 state／private raw 保留。
+未修改全域或日常 marketplace；demo 接入 0.3.0 不表示日常 0.2.1 入口已升級。未 push、建立 PR、執行 hosted CI 或 Windows。來源工作區原有 `.codex/config.toml` 修改、其他 untracked 及 demo 原有 dirty 內容保留。已清除合併後不再需要的 implementer worktrees，branch refs 保留；G03 人工待核准所需的工作樹及各案需留存的 state／private raw 保留。
 
 兩軸各 0 actionable findings；兩軸均未見需攔截的新增問題。必要驗收受阻仍使整體目標未完成。

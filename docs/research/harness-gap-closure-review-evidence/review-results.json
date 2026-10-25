@@ -19,6 +19,17 @@
     "fix": "097e04caa25c415b39ebfb7468820b86750aa605",
     "result": "fixed; original two reviewers confirmed accurate reporting and incomplete overall acceptance"
   },
+  "followup_evidence_accuracy_review": {
+    "base": "7a9c7d81f2ab3b6890f899f87738bea94aa8e28d",
+    "target": "2fc674b5d742d658636d90200432ff59b703db4a",
+    "integration_merge": "1d7dfae2295bdb36837017b1398734cd80846a3e",
+    "finding": "G06 report incorrectly said no 429; original resume stderr records native retry",
+    "raw_evidence": ["../harness-gap-closure-hook-sources-evidence/resume/server.stderr.log:2", "../harness-gap-closure-hook-sources-evidence/resume/resume-terminal.json"],
+    "standards_required_findings": [],
+    "spec_required_findings": [],
+    "result": "corrected; same turn completed after native retry; raw and limited acceptance verdict unchanged",
+    "new_model_trials": false
+  },
   "parent_checks": {
     "g01": "19 bytes, done contract, 705 originals preserved",
     "g02": "raw start 369, interrupted exit143 371, resume authorization 8, three gates and only deletion 205; checker final write omitted in memory",
