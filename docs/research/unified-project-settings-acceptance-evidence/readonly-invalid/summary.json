@@ -1,0 +1,61 @@
+{
+  "case": "readonly-invalid",
+  "candidate": "/private/tmp/unified-t07-integrated-0.3.0",
+  "candidate_manifest_sha256": "2fbb0e1c421e19cbd3b7a1aad2211ec65d4493042d451f59ac10307f5cb57f0e",
+  "installed_manifest_sha256": "2fbb0e1c421e19cbd3b7a1aad2211ec65d4493042d451f59ac10307f5cb57f0e",
+  "plugin_installs": [
+    {
+      "exit_code": 0,
+      "args": [
+        "plugin",
+        "marketplace",
+        "add",
+        "/private/tmp/unified-t08-9rp5sd_4/catalog",
+        "--json"
+      ],
+      "owned_process_terminal": true
+    },
+    {
+      "exit_code": 0,
+      "args": [
+        "plugin",
+        "add",
+        "kengp3-harness@unified-t08-local",
+        "--json"
+      ],
+      "owned_process_terminal": true
+    }
+  ],
+  "result": {
+    "exit_code": 0,
+    "args": [
+      "exec",
+      "--skip-git-repo-check",
+      "--json",
+      "--approve-for-me",
+      "--dangerously-bypass-hook-trust",
+      "-m",
+      "gpt-6.1-sol",
+      "-c",
+      "model_reasoning_effort=\"low\"",
+      "使用已安裝的 task-harness 檢視這個已確認根目錄的設定與舊設定移轉可行性。這次只討論、唯讀，不得新增、修改或刪除任何檔案，也不得初始化合約。指出缺漏、重複、衝突及版本問題，說明是否能通過三項刪除門檻。不要將先前 host=true 當成新資格，不要自行選一份重複值。"
+    ],
+    "owned_process_terminal": true
+  },
+  "initial_files": {
+    "harness-project.json": "0c8625ddac704cb624e3daee4ee353c62e0727526e1a78cb1ef0e4135c1605cf",
+    "preserve.txt": "f7d8eb2e57a5bc13d10424b20bc77e50cedb38dbedd9064d13299ec3ad012ebe",
+    "project-setting.md": "3d6273f791ac04490b100dcbe6de1f641fa147236a8620d5832e21424aa9898e"
+  },
+  "final_files": {
+    "harness-project.json": "0c8625ddac704cb624e3daee4ee353c62e0727526e1a78cb1ef0e4135c1605cf",
+    "preserve.txt": "f7d8eb2e57a5bc13d10424b20bc77e50cedb38dbedd9064d13299ec3ad012ebe",
+    "project-setting.md": "3d6273f791ac04490b100dcbe6de1f641fa147236a8620d5832e21424aa9898e"
+  },
+  "global_config_auth_unchanged": true,
+  "hook_trust_bypass": true,
+  "normal_persisted_trust_verified": false,
+  "temporary_credentials_deleted_on_exit": true,
+  "state_root": "/private/tmp/unified-t08-9rp5sd_4/state",
+  "project_root": "/private/tmp/unified-t08-9rp5sd_4/project"
+}

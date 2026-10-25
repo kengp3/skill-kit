@@ -1,0 +1,83 @@
+{
+  "case": "migration-resume",
+  "candidate": "/private/tmp/unified-review-final-0.3.0",
+  "candidate_manifest_sha256": "7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e",
+  "installed_manifest_sha256": "7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e",
+  "plugin_installs": [
+    {
+      "exit_code": 0,
+      "args": [
+        "plugin",
+        "marketplace",
+        "add",
+        "/private/tmp/unified-t08-afn46ths/catalog",
+        "--json"
+      ],
+      "owned_process_terminal": true
+    },
+    {
+      "exit_code": 0,
+      "args": [
+        "plugin",
+        "add",
+        "kengp3-harness@unified-t08-local",
+        "--json"
+      ],
+      "owned_process_terminal": true
+    }
+  ],
+  "result": {
+    "exit_code": 0,
+    "args": [
+      "exec",
+      "--skip-git-repo-check",
+      "--json",
+      "--approve-for-me",
+      "--dangerously-bypass-hook-trust",
+      "-m",
+      "gpt-6.1-sol",
+      "-c",
+      "model_reasoning_effort=\"low\"",
+      "使用 task-harness 接續這個已確認根目錄的設定移轉。這是預置的部分完成狀態：新 Markdown 已寫入，但舊 harness-project.json 尚在；這不是已證明發生過的 OS 中斷。請依移轉／修復流程讀回實際狀態，只補未通過的三項門檻，不重複新增規則。確認全部成立後才刪除舊檔、不留備份。明確授權在本專案由 project-setting 操作設定；docs/plans/harness/legacy.md 與 docs/research/receipts/old.jsonl 是必須逐位元組保留的歷史產物，不得搬移、改寫或當作本次可執行合約。preserve.txt 也須保留。保存真實對帳與讀回依據；不能直接沿用 host=true，不安裝 runtime 或服務。"
+    ],
+    "owned_process_terminal": true
+  },
+  "phases": [
+    {
+      "exit_code": 0,
+      "args": [
+        "exec",
+        "--skip-git-repo-check",
+        "--json",
+        "--approve-for-me",
+        "--dangerously-bypass-hook-trust",
+        "-m",
+        "gpt-6.1-sol",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "使用 task-harness 接續這個已確認根目錄的設定移轉。這是預置的部分完成狀態：新 Markdown 已寫入，但舊 harness-project.json 尚在；這不是已證明發生過的 OS 中斷。請依移轉／修復流程讀回實際狀態，只補未通過的三項門檻，不重複新增規則。確認全部成立後才刪除舊檔、不留備份。明確授權在本專案由 project-setting 操作設定；docs/plans/harness/legacy.md 與 docs/research/receipts/old.jsonl 是必須逐位元組保留的歷史產物，不得搬移、改寫或當作本次可執行合約。preserve.txt 也須保留。保存真實對帳與讀回依據；不能直接沿用 host=true，不安裝 runtime 或服務。"
+      ],
+      "owned_process_terminal": true
+    }
+  ],
+  "initial_files": {
+    "harness-project.json": "7f922beb20fc6ddd66cc9dbe8724cc0eed579678dc096ee0f399b97503d895b0",
+    "preserve.txt": "f7d8eb2e57a5bc13d10424b20bc77e50cedb38dbedd9064d13299ec3ad012ebe",
+    "project-setting.md": "e412f37944e32bc75346d0bf37459176704fa5e65cdf7fb22977d02820e6bd2f",
+    "docs/plans/harness/legacy.md": "02964326bcc3120da1ff0aecde3e096c08ffba869d39e19f250e6e8019af2f36",
+    "docs/research/receipts/old.jsonl": "6f452b952f3029e602e742815db952d057dbb4aaf063f5ffdd53c086c7a0e040"
+  },
+  "final_files": {
+    "preserve.txt": "f7d8eb2e57a5bc13d10424b20bc77e50cedb38dbedd9064d13299ec3ad012ebe",
+    "project-setting.md": "e412f37944e32bc75346d0bf37459176704fa5e65cdf7fb22977d02820e6bd2f",
+    "docs/plans/harness/settings-migration.task-contract.md": "83f1233ad40a98bf14bb09b68ae31ec14d15e54de46662517ad2810a2733f41d",
+    "docs/plans/harness/legacy.md": "02964326bcc3120da1ff0aecde3e096c08ffba869d39e19f250e6e8019af2f36",
+    "docs/research/receipts/old.jsonl": "6f452b952f3029e602e742815db952d057dbb4aaf063f5ffdd53c086c7a0e040"
+  },
+  "global_config_auth_unchanged": true,
+  "hook_trust_bypass": true,
+  "normal_persisted_trust_verified": false,
+  "temporary_credentials_deleted_on_exit": true,
+  "state_root": "/private/tmp/unified-t08-afn46ths/state",
+  "project_root": "/private/tmp/unified-t08-afn46ths/project"
+}
