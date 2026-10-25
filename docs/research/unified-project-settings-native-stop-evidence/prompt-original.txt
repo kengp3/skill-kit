@@ -1,0 +1,3 @@
+使用 task-harness 接續同一份 docs/plans/native-stop.task-contract.md；這個 cwd 是已確認專案根目錄。本回合明確授權執行：先核對 ledger.txt 的既有一次成果與 preserve.txt，將目前授權／進度成功保存並讀回原合約。然後用原生命令工具執行下面這一個獨立前景命令，勿與任何其他命令或寫入批次合併：
+/bin/sh -c 'printf '"'"'UNIFIED_NATIVE_STOP_968b9a0cc2b447b28a84162beacce5f0\n'"'"'; /bin/sleep 20; :'
+此命令只是測試控制器的停止時窗，不是產品成果。只有它正常結束後才能產出 T2 的 stop-result.research.md 精確一行 STOP_RESUMED_OK。勿提前產出 T2。保留既有 ledger 一次寫入與 preserve，不另建合約、不派子 agent、不改全域或 hooks 設定、不安裝 runtime。此環境 hooks 刻意停用，使用模型主動檢查；使用者 Stop 必須立即服從，不為補寫合約繼續。可觀測 thread ID 為 01a172ca-a9ff-7da2-8822-6a7284b19789；其他宿主 ID 不可取得就留 null 並說明，不虛構。
