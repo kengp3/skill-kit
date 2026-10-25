@@ -1,0 +1,19 @@
+{
+  "source": "/private/tmp/g04-native-schema/v2/TurnStartParams.json",
+  "ReasoningEffort": {
+    "description": "A non-empty reasoning effort value advertised by the model.",
+    "minLength": 1,
+    "type": "string"
+  },
+  "effort": {
+    "anyOf": [
+      {
+        "$ref": "#/definitions/ReasoningEffort"
+      },
+      {
+        "type": "null"
+      }
+    ],
+    "description": "Override the reasoning effort for this turn and subsequent turns."
+  }
+}
