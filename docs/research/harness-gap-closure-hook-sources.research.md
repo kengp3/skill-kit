@@ -33,7 +33,7 @@
 | thread/compact/start | `01a173dd-5412-7382-8270-e6e96837f420` | 真 contextCompaction item `01a173dd-5430-7163-be68-541a4a851fc8` completed；不是新任務或授權 |
 | compaction 後明確續作 | `01a173dd-e548-7cc2-b65e-b758d04addc1` | 相同四項 hooks completed；同合約 T3 done、整份 done，沒有重寫 canary／重派 |
 
-唯一主責 thread 為 `01a173cd-be30-7950-92b2-c494bdeb7f33`。server1 PID 5704、server2 PID 14406，controller PID 5695，外層 exec session 36240；全部已終止。controller 在 slot 放行前保留原 thread 等候；期間沒有模型回合。compaction 的觀測視窗曾逾時，持續讀相同 handle 後取得終態，沒有重開。此次三回合沒有 429。
+唯一主責 thread 為 `01a173cd-be30-7950-92b2-c494bdeb7f33`。server1 PID 5704、server2 PID 14406，controller PID 5695，外層 exec session 36240；全部已終止。controller 在 slot 放行前保留原 thread 等候；期間沒有模型回合。compaction 的觀測視窗曾逾時，持續讀相同 handle 後取得終態，沒有重開。resume 回合確有 429，原生宿主 retry 1/5、等待約 17 秒；controller 保留同一 handle 等到 completed，沒有另開 turn 或重派，見[原始 stderr](harness-gap-closure-hook-sources-evidence/resume/server.stderr.log)第 2 行及[同回合 completed 終態](harness-gap-closure-hook-sources-evidence/resume/resume-terminal.json)。
 
 唯一產品 worker `/root/g06_preserve`，native agentThreadId `01a173db-f8b7-7b41-86f2-d02e62de4764`，subAgentActivity 真 started／completed，開始 metadata 為 gpt-6.1-sol／low。恢復後原 worker 不在當前 list，但先前完成證據仍存在；模型如實沿用而沒有重啟。另有四個原生 auto_review guardian sessions，source 與產品 thread_spawn 明確不同；不把它們算成產品派工，也不隱藏其存在。[安全來源索引](harness-gap-closure-hook-sources-evidence/session-index.json)列出所有六個 session 的來源、原 hash、保留與省略行。
 
