@@ -18,7 +18,7 @@
 
 ## 宿主、來源與隔離資格
 
-[當版 help／schema 核對](harness-gap-closure-demo-setup-evidence/host-schema-qualification.json)為 codex-cli 0.164.0。兩個自有 `app-server --stdio`，不是共享 daemon；`ephemeral=false`、workspace-write、on-request、auto_review，runtimeWorkspaceRoots 僅 demo。[初始化 thread/start](harness-gap-closure-demo-setup-evidence/thread-start.json)與[任務 thread/start](harness-gap-closure-demo-setup-evidence/thread-start-task.json)的 instructionSources 僅 demo AGENTS.md，host observed model=`gpt-6.1-sol`、reasoningEffort=`low`，與本輪 requested 相符；[session contexts](harness-gap-closure-demo-setup-evidence/session-contexts.json)保存原始 session_meta／turn_context。這是宿主觀測，不代表可查 provider weights。模型在合約把無法自行觀測的 session／user-turn ID 留 null，沒有用控制器的可見值偽裝模型知道。
+[當版 help／schema 核對](harness-gap-closure-demo-setup-evidence/host-schema-qualification.json)為 codex-cli 0.164.0。兩個自有 `app-server --stdio`，不是共享 daemon；`ephemeral=false`、workspace-write、on-request、auto_review，runtimeWorkspaceRoots 僅 demo。[初始化 thread/start](harness-gap-closure-demo-setup-evidence/thread-start.json)與[任務 thread/start](harness-gap-closure-demo-setup-evidence/thread-start-task.json)的 instructionSources 僅 demo AGENTS.md，host observed model=`gpt-6.1-sol`、reasoningEffort=`low`，與本輪 requested 相符；[session contexts](harness-gap-closure-demo-setup-evidence/session-contexts.json)保存以欄位白名單衍生的 session_meta／turn_context（保留原生身分、來源、時間與模型／強度；不含帳號欄位）。這是宿主觀測，不代表可查 provider weights。模型在合約把無法自行觀測的 session／user-turn ID 留 null，沒有用控制器的可見值偽裝模型知道。
 
 第一試發現：獨立 CODEX_HOME **仍掃描**三個 `~/.agents/skills` user skills，包含舊 project-setting；[初始 skills/list forceReload](harness-gap-closure-demo-setup-evidence/skills-list.json)原文保留，不把第一試描述為完全隔離。實際初始化與任務均用 skill input 明確 pin demo 候選路徑，RPC 的技能輸入與檔案讀取可直接核對。未改全域 user skills。
 
@@ -43,3 +43,7 @@
 [native-demo.py](harness-gap-closure-demo-setup-evidence/native-demo.py)只供維護者驗收，沿用既有 stdio/RPC 設計，不是產品 runtime。已核准 seam 是「啟用技能 → 原生宿主／模型 → 設定、合約、成果 → 讀回」。控制器先檢查根目錄、manifest、21 份候選來源、705 原檔，錯誤會 raise 而非靠 exit0 當成功；成果 checker 核對精確 bytes、唯一合約、done／空 unknown 操作與保留結果。
 
 red → green 是實際成果生命週期：[red stderr](harness-gap-closure-demo-setup-evidence/red-check.stderr)在模型寫入前因成果不存在而 exit1；模型完成後同 `--check-products` 成功並保存 green JSON。沒有製造假的產品失敗或改歷史 driver。收尾另修正控制器的重跑保護：已有 RPC／合約時在任何寫入或模型啟動前拒絕；[實際重跑拒絕](harness-gap-closure-demo-setup-evidence/replay-refusal.json)為 exit1，原 RPC／合約指紋未變。最後 compile(source) 語法檢查與完整 hooks／檔案／HEAD／global reconcile 通過。未為低風險純文字接入跑 Java/Maven；未測 Windows（本輪明確排除）、子代理事件、正常持久 hook trust 或 Desktop。G01 通過不替代其他 tickets 的必要分支。
+
+## 衍生證據輸出修正（2026-10-26）
+
+本地歷史衍生版曾帶入非必要 `creator_account_id`／`creator_user_id`；它們是帳號識別 metadata，非 bearer token。現已在兩個 G01 contexts 檔移除，driver 後續輸出採最小欄位白名單；原生 RPC、原試驗結果及 retained values 不變。這是既有證據重衍生，沒有重跑模型。詳見[輸出審查與紅綠核對](harness-gap-closure-evidence-review.research.md)及 before／after SHA 索引。既有「全域未改」敘述限當次試驗觀測，不代表日常 auth 此後不會合法更新。
