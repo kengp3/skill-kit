@@ -1,5 +1,5 @@
 """Read-only check of literal G04 behavior; native raw events remain the evidence."""
-import json
+import hashlib, json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -10,6 +10,12 @@ def check(case):
     assert summary['terminal']['status'] == 'completed', 'model turn did not complete'
     assert summary['settings_unchanged'] and summary['preserve_unchanged'] and summary['global_unchanged']
     assert summary['owned_server_exit'] == 0 and summary['credentials_removed']
+    pre = json.loads((out/'preconditions.json').read_text())
+    assert (out/'artifacts/preserve.txt').read_bytes() == b'KEEP_EXISTING_CONTENT\n'
+    assert hashlib.sha256((out/'artifacts/AGENTS.md').read_bytes()).hexdigest() == pre['demo_agents_sha256']
+    original, configured = (out/'artifacts/project-setting.md').read_bytes().rsplit(b'| model.default | ', 1)
+    assert hashlib.sha256(original).hexdigest() == pre['demo_settings_sha256']
+    assert configured == (b'[gpt-6.1-sol;minimal, gpt-6-sol;low] |\n' if case == 'first-only' else b'[gpt-6.1-sol;minimal, gpt-6-sol;minimal] |\n')
     contracts = list((out/'artifacts/docs/plans').glob('*.task-contract.md'))
     assert len(contracts) == 1, 'one original contract required'
     text = contracts[0].read_text()
@@ -22,7 +28,7 @@ def check(case):
     spawns = [e['payload'] for e in tools if e['payload'].get('type') == 'function_call' and e['payload'].get('name') == 'spawn_agent']
     if case == 'first-only':
         assert contract['task_id'] == 'g04-first-only'
-        assert requirements['T1']['status'] == 'done'
+        assert contract['status'] == 'done' and requirements['T1']['status'] == 'done'
         assert (out/'artifacts/docs/research/strict-worker.research.md').read_bytes() == b'G04_STRICT_WORKER_OK\n'
         assert len(spawns) == 1 and json.loads(spawns[0]['arguments'])['model'] == 'gpt-6-sol' and json.loads(spawns[0]['arguments'])['reasoning_effort'] == 'low'
         assert len(children) == 1, f'exactly one successful child required: {children}'
@@ -33,9 +39,10 @@ def check(case):
             if event['type'] == 'session_meta': active = event['payload']['id']
             elif active == children[0]['agentThreadId'] and event['payload'].get('model') == 'gpt-6-sol' and event['payload'].get('effort') == 'low': matched = True
         assert matched, 'actual fallback child context absent'
+        assert any(m.get('method') == 'item/completed' and m.get('params', {}).get('item', {}).get('type') == 'subAgentActivity' and m['params']['item'].get('kind') == 'completed' and m['params']['item'].get('agentThreadId') == children[0]['agentThreadId'] for m in raw), 'original child never completed'
     else:
         assert contract['task_id'] == 'g04-all-agents'
-        assert requirements['T1']['status'] == 'blocked' and requirements['T2']['status'] == 'done'
+        assert contract['status'] == 'blocked' and requirements['T1']['status'] == 'blocked' and requirements['T2']['status'] == 'done'
         assert not spawns, 'strict restriction violated by spawn request'
         assert not children, 'strict restriction violated by child start'
         assert (out/'artifacts/docs/research/independent-ready.research.md').read_bytes() == b'G04_INDEPENDENT_READY\n'
