@@ -14,6 +14,36 @@ SCRIPT = ROOT / 'scripts/package_harness.py'
 
 class PackageTest(unittest.TestCase):
     @unittest.skipUnless(os.name == 'posix', 'POSIX command replay; Windows qualification is separate')
+    def test_copied_skill_supplies_the_same_executable_hooks_as_plugin(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = root / 'project'
+            copied_skill = project / '.agents/skills/task-harness'
+            shutil.copytree(ROOT / 'skills/task-harness', copied_skill)
+            asset = copied_skill / 'assets/codex-hooks.json'
+            hooks = json.loads(asset.read_text())['hooks']
+            package = root / 'package'
+            subprocess.run([sys.executable, str(SCRIPT), str(package)], check=True,
+                           capture_output=True)
+            self.assertEqual(asset.read_bytes(), (package / 'hooks/hooks.json').read_bytes())
+            self.assertEqual(asset.read_bytes(),
+                             (package / 'skills/task-harness/assets/codex-hooks.json').read_bytes())
+            before = {p.relative_to(project): p.read_bytes()
+                      for p in project.rglob('*') if p.is_file()}
+            for event, groups in hooks.items():
+                handler = groups[0]['hooks'][0]
+                result = subprocess.run(['/bin/sh', '-c', handler['command']], cwd=project,
+                                        env={'PATH': ''}, capture_output=True, text=True,
+                                        timeout=5, check=True)
+                self.assertEqual(result.stderr, '')
+                if event == 'Stop':
+                    self.assertEqual(json.loads(result.stdout), {})
+                else:
+                    self.assertIn('task-harness', result.stdout)
+            self.assertEqual(before, {p.relative_to(project): p.read_bytes()
+                                      for p in project.rglob('*') if p.is_file()})
+
+    @unittest.skipUnless(os.name == 'posix', 'POSIX command replay; Windows qualification is separate')
     def test_static_hooks_run_without_runtime_and_do_not_mutate_project(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp).resolve()
@@ -56,13 +86,14 @@ class PackageTest(unittest.TestCase):
                                            capture_output=True).returncode, 0)
 
     def test_missing_or_linked_hooks_are_rejected(self):
-        for relative, linked in (('hooks/hooks.json', False), ('hooks/hooks.json', True),
-                                 ('hooks', True)):
+        for relative, linked in (('skills/task-harness/assets/codex-hooks.json', False),
+                                 ('skills/task-harness/assets/codex-hooks.json', True),
+                                 ('skills/task-harness/assets', True)):
             with self.subTest(relative=relative, linked=linked), tempfile.TemporaryDirectory() as temp:
                 fixture = Path(temp) / 'source'
                 for directory in ('scripts', 'packaging', 'skills'):
                     shutil.copytree(ROOT / directory, fixture / directory)
-                source = fixture / 'packaging/codex' / relative
+                source = fixture / relative
                 outside = Path(temp) / 'outside'
                 source.rename(outside)
                 if linked:

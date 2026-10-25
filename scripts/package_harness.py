@@ -39,7 +39,7 @@ def build(destination):
         raise ValueError('destination exists; use a new release directory')
     sources = [(ROOT / 'packaging/codex/.codex-plugin/plugin.json',
                 Path('.codex-plugin/plugin.json')),
-               (ROOT / 'packaging/codex/hooks/hooks.json', Path('hooks/hooks.json'))]
+               (ROOT / 'skills/task-harness/assets/codex-hooks.json', Path('hooks/hooks.json'))]
     for source in [*(source for source, _ in sources),
                    *(ROOT / 'skills' / s / 'SKILL.md' for s in SKILLS)]:
         if any(parent.is_symlink() for parent in [source, *source.parents]
