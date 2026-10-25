@@ -1,0 +1,103 @@
+{
+  "case": "exhausted",
+  "candidate_manifest_sha256": "7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e",
+  "turns": [
+    {
+      "phase": 1,
+      "thread": "01a172c7-b6b7-7e23-a81e-3530d1e7517c",
+      "turn": {
+        "id": "01a172c7-bcac-7e80-a16c-a21fe18ad8bb",
+        "rootTurnId": "01a172c7-bcac-7e80-a16c-a21fe18ad8bb",
+        "items": [
+          {
+            "type": "agentMessage",
+            "id": "msg_092cff21bb8d202e016adde5bce9b48191819367895c84f315",
+            "text": "T2 已完成並讀回，內容精確為 `READY_WORK_DONE\\n`。\n\nT1 仍未完成：`/root/t1_primary`、`/root/t1_default` 各嘗試一次，均真實回傳 `model_not_found`，已確認 `errored` 終態。未重試重複模型、未遞迴 default、未由主責替代核對。\n\n[唯一合約](/private/tmp/unified-model-lifecycle-xz6v3i0d/project/docs/plans/exhausted.task-contract.md) 已保存選擇依據、handle、失敗及次數。preserve.txt、長期設定與 hooks 均未修改。\n\n依你的要求及 [模型規則](/private/tmp/unified-model-lifecycle-xz6v3i0d/project/.agents/skills/task-harness/references/model-selection.md)「包含預設回退仍沒有可用候選時，將該項工作保留未完成並詢問所需決定」：T1 接下來要指定哪個可用替代模型，或維持未完成？",
+            "phase": "final_answer",
+            "memoryCitation": null,
+            "delivery": null,
+            "questions": null
+          }
+        ],
+        "itemsView": "summary",
+        "status": "completed",
+        "error": null,
+        "startedAt": 1792927055,
+        "completedAt": 1792927169,
+        "durationMs": 114225
+      }
+    }
+  ],
+  "thread_start": {
+    "thread": {
+      "id": "01a172c7-b6b7-7e23-a81e-3530d1e7517c",
+      "environments": [
+        {
+          "environmentId": "local",
+          "cwd": "/private/tmp/unified-model-lifecycle-xz6v3i0d/project",
+          "runtimeWorkspaceRoots": [
+            "/private/tmp/unified-model-lifecycle-xz6v3i0d/project"
+          ]
+        }
+      ],
+      "extra": null,
+      "sessionId": "01a172c7-b6b7-7e23-a81e-3530d1e7517c",
+      "forkedFromId": null,
+      "parentThreadId": null,
+      "preview": "",
+      "ephemeral": false,
+      "section": null,
+      "sectionEnteredAt": null,
+      "projectId": null,
+      "historyMode": "paginated",
+      "modelProvider": "openai",
+      "model": "gpt-6.1-sol",
+      "reasoningEffort": "low",
+      "createdAt": 1792927055,
+      "updatedAt": 1792927055,
+      "recencyAt": 1792927055,
+      "status": {
+        "type": "idle"
+      },
+      "path": "/private/tmp/unified-model-lifecycle-xz6v3i0d/state/sessions/2026/10/25/rollout-2026-10-25T19-17-35-01a172c7-b6b7-7e23-a81e-3530d1e7517c.jsonl",
+      "cwd": "/private/tmp/unified-model-lifecycle-xz6v3i0d/project",
+      "cliVersion": "0.164.0",
+      "originator": "Codex Desktop",
+      "source": "vscode",
+      "canAcceptDirectInput": true,
+      "threadSource": null,
+      "agentNickname": null,
+      "agentRole": null,
+      "gitInfo": null,
+      "name": null,
+      "daybreakEnabled": null,
+      "turns": []
+    },
+    "model": "gpt-6.1-sol",
+    "modelProvider": "openai",
+    "serviceTier": null,
+    "disabledPluginIds": [],
+    "cwd": "/private/tmp/unified-model-lifecycle-xz6v3i0d/project",
+    "runtimeWorkspaceRoots": [
+      "/private/tmp/unified-model-lifecycle-xz6v3i0d/project"
+    ],
+    "instructionSources": [],
+    "approvalPolicy": "on-request",
+    "approvalsReviewer": "auto_review",
+    "sandbox": {
+      "type": "workspaceWrite",
+      "writableRoots": [],
+      "networkAccess": false,
+      "excludeTmpdirEnvVar": false,
+      "excludeSlashTmp": false
+    },
+    "activePermissionProfile": null,
+    "reasoningEffort": "low",
+    "multiAgentMode": "explicitRequestOnly"
+  },
+  "owned_server_exit": 0,
+  "settings_unchanged": true,
+  "preserve_unchanged": true,
+  "global_unchanged": true,
+  "temporary_credentials_deleted_on_exit": true
+}
