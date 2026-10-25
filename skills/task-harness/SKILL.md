@@ -33,6 +33,8 @@ Give decomposed outcomes stable IDs and explicit dependencies; reject missing ID
 
 ## Execute and coordinate
 
+Before selecting a model or dispatching a worker, follow [model selection](references/model-selection.md): resolve the current instruction, task override and project policy; preserve the user's main conversation model; record requested settings separately from observed execution.
+
 1. Select ready work: dependencies accepted and still valid, inputs present, scope authorized, writes/resources non-conflicting. Save required start/handoff information successfully before dependent product actions. One save may include predecessor acceptance and successor next action; two separate writes are not mandatory.
 2. Keep one owner. Delegate only for a clear benefit or independent review within host authorization. Assign inputs, outcome, product/evidence ownership, acceptance and actual limits. Workers return results; the coordinator updates the contract. Preserve others' work and use actual handles, not invented identities.
 3. Check files and shared resources such as databases, ports and generated outputs before overlapping writes. Confirm previous writers stopped before replacement. A branch name or elapsed time does not prove isolation or death.
