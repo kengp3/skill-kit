@@ -30,6 +30,27 @@
     "result": "corrected; same turn completed after native retry; raw and limited acceptance verdict unchanged",
     "new_model_trials": false
   },
+  "g03_normal_trust_review": {
+    "base": "4014a65f2c298bf22c247f282a637532ec85955e",
+    "target": "0f29d11ed457adb258f9ea7e1b4936fa06bd1e9e",
+    "integration_merge": "5249774943130c342da3b9c6fe39e1e5bece807b",
+    "changed_files": 53,
+    "standards_agent": "/root/gap_standards_review",
+    "standards_required_findings": [],
+    "spec_agent": "/root/gap_spec_review",
+    "spec_required_findings": [],
+    "verdict": "G03 passed within exact reviewed five definitions, CLI 0.164.0 and dedicated state",
+    "normal_trust": "Human exact-definition approval followed by normal CLI t; no bypass or direct trust DB mutation",
+    "invocations": [
+      {"pid": 32723, "thread": "01a17442-8ea7-7173-8d1d-3a21b7321c70", "turn": "01a17442-8ec5-7e30-ba57-2be524c80925", "status": "completed", "server_exit": 0, "product_bytes": 20, "contract": "g03-invocation-1", "developer_source_lines": [12, 13, 16]},
+      {"pid": 33015, "thread": "01a17443-8f87-72b1-b14c-fb92c15907bc", "turn": "01a17443-8fa3-7af2-b8be-465ebd5b4cd4", "status": "completed", "server_exit": 0, "product_bytes": 20, "contract": "g03-invocation-2", "developer_source_lines": [12, 13, 16]}
+    ],
+    "offline_negative_controls_rejected": true,
+    "public_excerpts_equal_retained_private_lines": true,
+    "parent_auth_creator_scan": {"files": 53, "values_tested": 8, "matches": []},
+    "owned_auth_copy_removed": true,
+    "other_required_branches": "G05, G06 and G07 remain incomplete; current status belongs to central acceptance table"
+  },
   "parent_checks": {
     "g01": "19 bytes, done contract, 705 originals preserved",
     "g02": "raw start 369, interrupted exit143 371, resume authorization 8, three gates and only deletion 205; checker final write omitted in memory",
@@ -42,6 +63,7 @@
     "primary_existing_config_sha256": "d37497c3278121598a663564ab38b53f658969717f78decb661ddd11c66551ea"
   },
   "overall_acceptance": "incomplete",
+  "required_unclosed_as_of": "Initial reviewed head 0ec9812; G03 subsequently closed by g03_normal_trust_review",
   "required_unclosed": ["G03 normal persisted trust", "G05 cross-root model lookup and true spawn-result loss/provider sampling failure", "G06 raw source and native logical-event redelivery", "G07 Desktop Stop and model menu"],
   "windows": "excluded by user; G08 cancelled, not passed",
   "not_performed": ["new model trials during review", "hosted CI", "Windows", "push or PR", "global or daily marketplace upgrade"]

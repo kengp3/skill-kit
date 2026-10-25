@@ -1,6 +1,6 @@
 # Harness 補驗：獨立 Standards／Spec 審查
 
-日期：2026-10-26（Asia/Taipei）。**兩軸 actionable findings 均為 0；必要驗收仍有受阻分支，整體補驗未完成。** 本文記錄這次固定版本審查，不另建持續缺口表；目前狀態仍以[中央細分表](unified-project-settings-acceptance.research.md#g00g09-補驗唯一細分狀態表)為準。
+日期：2026-10-26（Asia/Taipei）。**兩軸 actionable findings 均為 0；G03 核准後增量驗證及審查已通過，其他必要驗收仍受阻，整體補驗未完成。** 本文保留各固定版本審查；初次受查版本中 G03 待核准的敘述屬歷史，核准後結果見末節。不另建持續缺口表，目前狀態仍以[中央細分表](unified-project-settings-acceptance.research.md#g00g09-補驗唯一細分狀態表)為準。
 
 ## 受查範圍
 
@@ -54,8 +54,30 @@
 
 ## 收尾與待解鎖
 
-本輪沒有尚待修正的 review findings；G09 可完成證據對帳與審查收尾，但不得把其他票的受阻條件改為 done。最小解鎖條件沿用各案：G03 先取得[五項精確定義的人工核准](harness-gap-closure-persisted-trust-evidence/human-review.md)，再於正常介面重新核對定義、信任並執行兩次 invocation；G05 需主責可用的跨 root 查詢與真結果交付／sampling 故障控制；G06 需可觀測的原始來源及同邏輯事件 redelivery；G07 需允許的 Desktop 操作環境及實際畫面／宿主證據。
+本輪沒有尚待修正的 review findings；G09 可完成證據對帳與審查收尾，但不得把其他票的受阻條件改為 done。初次受查版本的 G03 解鎖條件為先取得[五項精確定義的人工核准](harness-gap-closure-persisted-trust-evidence/human-review.md)，再於正常介面重新核對定義、信任並執行兩次 invocation；這項後續已完成，詳見末節。其餘條件仍沿用各案：G05 需主責可用的跨 root 查詢與真結果交付／sampling 故障控制；G06 需可觀測的原始來源及同邏輯事件 redelivery；G07 需允許的 Desktop 操作環境及實際畫面／宿主證據。
 
-未修改全域或日常 marketplace；demo 接入 0.3.0 不表示日常 0.2.1 入口已升級。未 push、建立 PR、執行 hosted CI 或 Windows。來源工作區原有 `.codex/config.toml` 修改、其他 untracked 及 demo 原有 dirty 內容保留。已清除合併後不再需要的 implementer worktrees，branch refs 保留；G03 人工待核准所需的工作樹及各案需留存的 state／private raw 保留。
+未修改全域或日常 marketplace；demo 接入 0.3.0 不表示日常 0.2.1 入口已升級。未 push、建立 PR、執行 hosted CI 或 Windows。來源工作區原有 `.codex/config.toml` 修改、其他 untracked 及 demo 原有 dirty 內容保留。已清除合併後不再需要的 implementer worktrees，branch refs 保留；各案需留存的 state／private raw 保留，實際增量驗收與審查所需工作樹在收尾前暫留。
 
 兩軸各 0 actionable findings；兩軸均未見需攔截的新增問題。必要驗收受阻仍使整體目標未完成。
+
+## G03 核准後增量審查
+
+使用者已直接回覆「已審閱，同意正常信任這五項精確定義」。增量 base 為 `4014a65f2c298bf22c247f282a637532ec85955e`，受查 target 為 `0f29d11ed457adb258f9ea7e1b4936fa06bd1e9e`，整合為 `5249774943130c342da3b9c6fe39e1e5bece807b`；53 檔只屬 G03 ticket／報告／證據，沒有產品修改。原兩名 reviewer 分別審查此固定差異，未啟動新模型或操作信任。完整驗收與原始來源見 [G03 報告](harness-gap-closure-persisted-trust.research.md)及[正常操作配對](harness-gap-closure-persisted-trust-evidence/normal-trust-operation.json)。
+
+### Standards：G03 增量
+
+**0 actionable findings；無 hard violations 或需處理的 heuristic。** 新控制器僅供維護取證；正常信任操作有授權、輸入／結果來源配對。公開 excerpts 保留省略索引與原件 hash，cleanup 限定 owned auth，沒有擴稱刪除 state。原人工審閱包及 exact hooks 未改。
+
+Reviewer 親跑兩個明確離線入口：`verify-observed.py --self-check` 拒絕缺少 developer 提醒及 failed hook；`native-persistence.py --check` 確認兩個不同程序／thread、精確成果、done 合約與 exit 0。未操作 live／trust、未啟動模型或讀取認證值；cleanup 依已交付收據核對。
+
+### Spec：G03 增量
+
+**0 actionable findings。** 符合規格第 66 行要求的來源、hash、信任狀態、實際注入及退出後同 state 新 invocation 驗證：
+
+- 正常 TUI 操作／chunk 與原文 hash 配對相符；前五項 untrusted，兩次新程序前後及清 auth 後皆同 hash trusted。
+- PID `32723`／`33015` 各一次 turn completed、20 bytes 成果與唯一 done 合約；各 RPC 第 27／28／30 行及第 513／452 行支持 hook completed，私有 session 第 12／13／16 行有 developer 提醒。
+- 兩份公開 excerpt 與私有完整 raw 逐 byte 相符，僅省 session_meta；公開 RPC 亦符合私有原件。
+
+**G03 限定通過成立。** 不外推 SubagentStart 已執行、Desktop、Windows、demo 或日常安裝已信任；G05／G06／G07 仍未通過，整體未完成。Spec reviewer 僅讀既存證據，沒有執行模型、信任或測試。
+
+父層另親跑同兩個離線入口並核對兩份 excerpt 的私有來源 bytes，均通過；對本次 53 檔以 8 個實際 credential／creator identity 值做精確比對，零匹配，沒有輸出值。已確認專用 auth 副本不存在；正常信任 state 與私有 raw 留存供覆核。
