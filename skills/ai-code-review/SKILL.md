@@ -20,7 +20,7 @@ description: Review pull requests, branches, working-tree changes, bug fixes, re
 - 只給 class：作為搜尋起點，追蹤責任、消費者與必要副作用，明示局部範圍，不宣稱全 repo 已審。
 - 缺 ref 或需求：先查可用材料；會實質改變結論且無法安全推論時才詢問。可進行的品質查核繼續；缺正式 spec 不自動阻擋所有 review，只有影響必要判斷的缺口列 UNKNOWN。
 
-記錄實際採用技能、reference、規則與工具之路徑／hash；未知模型版本不猜測。固定快照及結構化差異需要時讀 [evidence.md](references/evidence.md)，使用 `scripts/review.py`。它僅支援 committed snapshot，不執行業務程式，也不是通用缺陷偵測器；工作樹改用內容快照，明示邊界。
+記錄實際採用技能、reference、規則與工具之路徑／hash；未知模型版本不猜測。需要固定快照及結構化差異時，可選用 [evidence.md](references/evidence.md) 的 `scripts/review.py`；也可用既有檔案／版本能力取得等效證據，缺少 helper 不阻擋核心審查。無法核對的 hash 或觀測明示未知，不猜填或宣稱等效取證已完成。helper 僅支援 committed snapshot，不執行業務程式，也不是通用缺陷偵測器；工作樹改用內容快照，明示邊界。
 
 先取得完整檔案狀態及 patch，建立目標清單：固定版本、檔案舊／新路徑、增改刪／改名、差異區塊、檔案用途與分析狀態。非程式、測試、配置、生成及二進位檔亦列入；生成檔可對照生成來源／工具，不假稱已逐行審查。輸出清單及比較語意後才進入關聯分析。
 

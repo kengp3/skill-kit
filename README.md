@@ -9,7 +9,7 @@
 不需要先執行建包腳本或 Skills CLI。取得本版來源或完整候選後，可用檔案管理員把所需 skill 目錄複製到專案的 `.agents/skills/`：
 
 - 只使用文件規範：複製 `project-setting`。
-- 使用完整 harness：一起複製 `task-harness`、`project-setting`、`define-task`、`ai-code-review`，保留各自 references 與 assets。scripts 是選配輔助；缺少時仍能使用核心流程。
+- 使用完整 harness：一起複製 `task-harness`、`project-setting`、`define-task`、`ai-code-review`，保留各自 references 與 assets；task-harness 內含標準 hooks 範本與接入規格。scripts 是選配輔助；缺少時仍能使用核心流程。
 
 已有同名技能先核對來源與版本，保留既有版本後再依授權升級，不把整個範本覆蓋到既有設定。重開專案工作階段並核對技能實際載入；只複製檔案不等於已驗證載入或行為。
 
@@ -37,7 +37,7 @@
 
 ## Hooks 與模型接手
 
-[標準 hooks](packaging/codex/hooks/hooks.json)只用系統 shell 內建 `echo` 輸出固定內容，不解析事件、不讀寫設定或合約，也不執行外部 helper：
+[標準 hooks](skills/task-harness/assets/codex-hooks.json)隨 skill 提供，plugin 由同一份資源建包。它只用系統 shell 內建 `echo` 輸出固定內容，不解析事件、不讀寫設定或合約，也不執行外部 helper：
 
 | 事件 | 本版行為 |
 | --- | --- |
@@ -47,7 +47,7 @@
 
 提醒只傳遞要求，不能宣稱已機械驗證合約或保證完成。主責模型一直負責[四個檢查時點](skills/task-harness/SKILL.md#check-the-same-contract-at-workflow-boundaries)。hooks 無法使用時先診斷並嘗試修復，仍不可用則自動以同一合約主動檢查並繼續；恢復後銜接目前進度，不重做操作或重複派工。未知結果先查明，條件改變才重驗。
 
-本地 skill 安裝可請 project-setting 依提供的接入規格把對應 hooks 合併到專案設定，保留其他 handlers 並避免重複來源。Codex 的啟用與信任依宿主正常流程處理；「已寫入、已載入、已信任、已執行」分別回報。測試 automation 的單次信任略過不等於正常信任驗收。
+本地 skill 安裝可請 project-setting 依[隨附接入規格](skills/task-harness/references/project-settings.md#codex-標準-hooks-接入)把對應 hooks 合併到專案設定，保留其他 handlers 並避免重複來源；已由 plugin 提供相同事件與 handler 時沿用，不建立副本。Codex 的啟用與信任依宿主正常流程處理；「已寫入、已載入、已信任、已執行」分別回報。測試 automation 的單次信任略過不等於正常信任驗收。
 
 ## 模型分工
 
