@@ -4,6 +4,8 @@
 
 ## Problem Statement
 
+以下為 **2026-10-25 原始背景，不是目前缺口清單**。G01 接入已完成；最新產品驗收狀態與必要完成門檻見[中央 R1–R8（含 R6）](../research/unified-project-settings-acceptance.research.md#產品驗收完成門檻)，選配宿主餘項不阻擋產品交付。
+
 0.3.0 已有來源實作與 A–G 行為證據，但正常持久信任、真正未知 child 啟動、原生事件重入、移轉中斷、Desktop 操作及部分強度負例仍缺直接證據。原 tickets 的 done 未直接呈現驗證完整度。使用者指定 demo-002 作為獨立驗收目標，要求依 Matt 流程繼續實作與驗收。
 
 ## Solution
