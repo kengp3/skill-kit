@@ -44,3 +44,5 @@ Stop 後不派工、不補寫、不自動恢復，也不為製作證據再送模
 [prepare-manual-kit.py](harness-gap-closure-desktop-evidence/prepare-manual-kit.py)是維護者選配標準函式庫工具，只讀 allowlist、建立新輸出並核對 ZIP；不啟動 native server/model、UI 或 fault。[本輪 preparation-check](harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/preparation-check.json)保留 archive inventory/bytes/source 的實際讀回、小 assert 自檢及錯 hash／危險 entry／既有輸出拒絕負控。25 個來源與候選 manifest 準備前後一致；credential/private-key/trust-assignment pattern 未命中，這是指定來源與模式檢查，不是全機秘密稽核。
 
 **輸入包已備、帳號未建、名稱可用性未證、資格／UI 未跑，G07 仍 blocked。** 已知 App 真路徑 `/Applications/ChatGPT.app`、bundle `com.openai.codex`，沿用工具拒絕，不透過別名或 CLI GUI 繞過。原 raw 留測試帳號私有處；新帳號觀測者核對後只交接去敏感節錄/hash/line index，不能假定原對話可跨 UID 讀原件。
+
+維護者離線驗證已修正原工作樹絕對模板路徑依賴：manifest 舊路徑只作歷史 provenance，`--verify` 改由當前 builder 目錄的四個限定 basename 讀模板並核對原 `template_sha256`；[移至臨時 checkout 且舊路徑不存在的 red](harness-gap-closure-desktop-evidence/portable-verify-red.log) → [green／錯 hash 與越界檔名負控](harness-gap-closure-desktop-evidence/portable-verify-green.log)及[preparation-check](harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/preparation-check.json)確認來源 hash、ZIP bytes／SHA、四份 prepared prompt 與原模板均不變，沒有新增 UI／模型試驗或改變 G07 blocked。
