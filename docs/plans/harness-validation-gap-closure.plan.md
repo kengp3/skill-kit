@@ -1,6 +1,6 @@
 # Harness 驗證缺口補完計畫
 
-日期：2026-10-25；範圍修訂：2026-10-26（Asia/Taipei）。**使用者已核准收斂為產品驗收。** 驗收目標為 `/Users/kengp3/Workspaces/mine/demo-002`，產品來源為 `/Users/kengp3/Workspaces/mine/simple-skills`。G00–G09 保留工作與證據追溯，完成門檻以最新[規格 S1](../specs/harness-validation-gap-closure.spec.md#s1-唯一驗收邊界與狀態)為準；G08 Windows 仍排除。
+日期：2026-10-25；範圍修訂：2026-10-26（Asia/Taipei）。**使用者已核准收斂為產品驗收，中央 R1–R8 必要項目及增量審查已完成。** 驗收目標為 `/Users/kengp3/Workspaces/mine/demo-002`，產品來源為 `/Users/kengp3/Workspaces/mine/simple-skills`。G00–G09 保留工作與證據追溯，完成門檻以最新[規格 S1](../specs/harness-validation-gap-closure.spec.md#s1-唯一驗收邊界與狀態)為準；G08 Windows 仍排除。
 
 ## Objective（目標）
 
@@ -132,7 +132,7 @@
 
 **後續補驗完成：**
 
-- [中央產品驗收表](../research/unified-project-settings-acceptance.research.md#產品驗收完成門檻)各必要項目均有真實證據及判定；合約 I/O 負例須補足。必要產品項目未通過時維持未完成。G05／G06 的宿主專屬剩餘分支及 G07 改列選配未驗證，不改判通過；原工作包表與詳細試驗門檻保留供追溯，不再代表每個分支皆為本次必要工作。
+- [中央產品驗收表](../research/unified-project-settings-acceptance.research.md#產品驗收完成門檻)各必要項目均有真實證據及判定；[合約 I/O 負例](../research/unified-project-settings-contract-io.research.md)已補足。必要產品項目未通過時維持未完成。G05／G06 的宿主專屬剩餘分支及 G07 改列選配未驗證，不改判通過；原工作包表與詳細試驗門檻保留供追溯，不再代表每個分支皆為本次必要工作。
 - 實作、驗證、平台資格及安裝狀態分開；D01／P01 是否完成獨立回報，不與 V 項目混算。
 - 同一任務合約、原授權、Stop、無重複副作用及獨立審查條件保留；不明結果先查明，實際宿主無法提供的證據不編造。
 - demo-002 原有修改、應用程式內容、無關 handlers、產品來源及全域狀態保留；清理只處理自有且已退出的試驗程序／目錄，不刪除待恢復 state。

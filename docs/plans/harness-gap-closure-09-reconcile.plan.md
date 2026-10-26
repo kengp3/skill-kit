@@ -6,7 +6,7 @@
 
 **Blocked by:** G00, G01, G02, G03, G04, G05, G06, G07 have explicit verdicts
 
-**Status:** done — 限本輪證據對帳、審查與入口收尾；整體補驗未完成
+**Status:** done — 已依最新核准範圍完成產品驗收、證據對帳與獨立審查；選配項目仍未驗證
 
 依據：[補驗規格](../specs/harness-validation-gap-closure.spec.md)、[核准工作圖](harness-validation-gap-closure.plan.md)、[可行性研究](../research/unified-project-settings-gap-fixtures-feasibility.research.md)。使用者已核准拆分與驗收邊界；G08另經明確排除。
 
@@ -35,3 +35,9 @@ README 已加入最小來源審查清單（metadata／guide／copied-skill／plu
 G07 後續只完成[可攜輸入材料](../research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/operator.md)與[準備範圍審查](../research/harness-gap-closure-review.research.md#g07-人工輸入材料審查)：Stop／Model ZIP 為 27／26 檔，來源與維護自檢通過，父層發現的暫存模板路徑依賴已修正並複查。中央表仍維持 G07 UI 未執行、環境資格未成立，不因材料就緒關閉驗收缺口；G09 done 仍僅限對帳與審查收尾。
 
 保存候選／宿主／任務身分、expected → observed → raw → verdict及無關內容保留證據。控制器exit 0、模型自述、fixture或checker不單獨證明通過。未驗證與受阻保留，不以實作完成取代行為驗收。
+
+## 核准收斂後最終對帳
+
+中央 R1–R8 已完成受測產品驗收。唯一補案為[合約保存失敗](../research/unified-project-settings-contract-io.research.md)：真拒絕、同約讀回、未完成、無相依 canary／替代約。固定 `1936246…7787988` 的範圍審查為 Spec 0、Standards 1 P2；同一 fixer 在 `a422973` 修正歷史背景標示。最後 `7787988…a422973` 兩軸均 0 actionable findings，整合 tree 與受查 target 相同，見[增量審查](../research/harness-gap-closure-review.research.md#產品驗收收斂與合約-io-增量審查)。本次收尾只同步中央／README／計畫與審查記錄，不新增產品變更或模型試驗。
+
+G05／G06 宿主剩餘分支及 G07 仍選配未驗證，Windows 排除；日常 marketplace／全域安裝及 hosted CI 未操作。上述歷史「整體未完成」只屬舊範圍快照。

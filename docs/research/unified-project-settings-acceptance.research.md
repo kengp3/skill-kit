@@ -6,7 +6,7 @@
 
 ## 產品驗收完成門檻
 
-本表依 2026-10-26 使用者「收斂為產品驗收」決策對帳，不擴大產品能力承諾。必要項目全部通過且增量審查完成才結案；選配限制見下方細分表。
+本表依 2026-10-26 使用者「收斂為產品驗收」決策對帳，不擴大產品能力承諾。**R1–R8 已完成本次產品驗收。** 合約保存失敗負例及增量兩軸審查已完成；選配限制見下方細分表。此結論限定受測 0.3.0 候選與已核准產品範圍，不代表所有宿主能力或日常全域安裝已升級。
 
 | ID | 必要產品範圍 | 判定與直接證據 |
 | --- | --- | --- |
@@ -14,14 +14,16 @@
 | R2 | runtime／外部輔助工具選配、hooks 不可用時同規則接手與恢復 | 通過受測核心路徑。下文 D／E 及 [G06](harness-gap-closure-hook-sources.research.md)：省略 scripts 的真模型任務、同約恢復、一次成果及不重派；不宣稱模型提醒是機械攔截。 |
 | R3 | 模型優先序、清單、default 去重、強度、單次覆寫與繼承 | 通過受測政策及原生派工路徑。下文 F、[模型生命週期](unified-project-settings-model-lifecycle.research.md)及 [G04](harness-gap-closure-strict-effort.research.md)：實際 child、失敗回退、strict、舊新 worker；API 切換不代測 GUI 選單。 |
 | R4 | 無 agent 接手，獨立審查不能由自審冒充 | 通過。下文 G-disabled：原生停用 agents，主責完成無相依 T2，獨立審查 T1 保留 blocked。 |
-| R5 | 必要失敗與授權：設定 I/O／衝突、合約 I/O、未知不重派、Stop | 部分，待合約 I/O 負例。[設定 I/O](unified-project-settings-settings-faults.research.md)、[G05](harness-gap-closure-unknown-child.research.md)、[原生 Stop](unified-project-settings-native-stop.research.md)及 G02 已有直接證據；設定 I/O 不替代合約保存／讀回失敗。 |
+| R5 | 必要失敗與授權：設定 I/O／衝突、合約 I/O、未知不重派、Stop | 通過受測必要失敗路徑。[合約保存失敗](unified-project-settings-contract-io.research.md)：真 exit 1 拒絕 → 同約讀回 → 未完成／停止相依操作，原約 bytes 不變、無 canary 或替代約；未另測讀取本身失敗。[設定 I/O](unified-project-settings-settings-faults.research.md)、[G05](harness-gap-closure-unknown-child.research.md)、[原生 Stop](unified-project-settings-native-stop.research.md)及 G02 分別提供其直接證據，彼此不冒充替代。 |
 | R6 | demo-002 日常端到端與乾淨讀回 | 通過。[G01](harness-gap-closure-demo-setup.research.md)：初始化 → 唯一合約 → 精確 19 bytes 成果 → done → 新 native state 唯讀讀回。此案無 child，child 證據分列 R3。 |
 | R7 | 技能、plugin 候選及本地安裝／升級指南一致 | 通過受測 0.3.0 候選。下文[來源追溯](#候選與來源追溯)連到全新安裝及 0.2.1→0.3.0 原生載入 raw；[本地指南](../specs/codex-coding-harness-guide.html)。日常 marketplace 仍 0.2.1，不代表全域已升級。 |
-| R8 | 原有檔案／dirty 保留、相稱檢查與獨立審查 | 原保留證據通過，待本次增量審查。G01 的 705 原檔與 26 新增指紋可查；既有完整維護測試 112 項、skip 1。產品／測試來源未變，不因文件收斂重跑 full suite；歷次[審查](harness-gap-closure-review.research.md)受查版本分開記錄。 |
+| R8 | 原有檔案／dirty 保留、相稱檢查與獨立審查 | 通過。[本次增量審查](harness-gap-closure-review.research.md#產品驗收收斂與合約-io-增量審查)兩軸各 0 actionable findings；G01 的 705 原檔與 26 新增指紋可查；既有完整維護測試 112 項、skip 1。產品／測試來源未變，不因文件收斂重跑 full suite；歷次[審查](harness-gap-closure-review.research.md)受查版本分開記錄。 |
+
+本次收尾另讀回候選 manifest `7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e`、demo done 合約／19 bytes／705 原檔無差異；產品與測試來源相對完整 suite 受測 head `11233ce` 無變更。合約負例原始工具 6 行與私有原件逐 byte 相符，21 個公開檔案對 5 個認證／creator 敏感字串精確掃描為零命中；自有程序已退出、認證複本已刪。primary 原 config 與 1,332 個既有 untracked 檔案在整合前後指紋一致。
 
 ## G00–G09 補驗：唯一細分狀態表
 
-**截至 2026-10-26（Asia/Taipei）：依使用者核准收斂為產品驗收；目前僅待合約 I/O 必要負例及最後對帳。** G01 日常端到端及三項改版已有直接證據。G05／G06 已通過的未知不重派、同約恢復及一次成果行為保留；其無可控介面的宿主故障注入／原生重送剩餘分支，以及 G07 Desktop 隔離／UI 改為選配未驗證，不計通過，也不阻擋本次產品交付。Windows 仍明確排除，G08 為 **cancelled，不是 passed**。本表為唯一持續更新的狀態來源；歷史報告與原始紀錄不回寫。範圍依[補驗規格 S1](../specs/harness-validation-gap-closure.spec.md#s1-唯一驗收邊界與狀態)。
+**截至 2026-10-26（Asia/Taipei）：已依使用者核准範圍完成產品驗收，R1–R8 均有直接證據及獨立審查。** G01 日常端到端及三項改版已有直接證據。G05／G06 已通過的未知不重派、同約恢復及一次成果行為保留；其無可控介面的宿主故障注入／原生重送剩餘分支，以及 G07 Desktop 隔離／UI 改為選配未驗證，不計通過，也不阻擋本次產品交付。Windows 仍明確排除，G08 為 **cancelled，不是 passed**。本表為唯一持續更新的狀態來源；歷史報告與原始紀錄不回寫。範圍依[補驗規格 S1](../specs/harness-validation-gap-closure.spec.md#s1-唯一驗收邊界與狀態)。
 
 本輪[獨立 Standards／Spec 審查](harness-gap-closure-review.research.md)以 `f15338e` 為 base、`0ec9812` 為受查 head，兩軸各 **0 actionable findings**；[審查身分與結果](harness-gap-closure-review-evidence/review-results.json)已交付。G03 續作依下列新證據對帳，不回寫該次受查 head；受查 target `0f29d11` 的[G03 增量兩軸審查](harness-gap-closure-review.research.md#g03-核准後增量審查)亦已完成，各 0 actionable findings，支持 V01 限案通過。以上為原固定版本審查；當時 G05／G06／G07 尚屬必要分支。最新完成判定改依上方 R1–R8；選配剩餘分支保留原受阻／未驗證結果。
 

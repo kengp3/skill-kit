@@ -6,7 +6,7 @@
 
 ## 當前驗收證據
 
-截至 2026-10-26（Asia/Taipei），使用者已核准收斂為產品驗收：[中央 R1–R8](docs/research/unified-project-settings-acceptance.research.md#產品驗收完成門檻)為唯一完成判定入口。三項改版與 demo-002 日常端到端已有直接證據；必要失敗處理目前只缺合約 I/O 負例，完成後再做最後增量審查。無可控介面的宿主故障注入、同事件原生重送及 Desktop 隔離／UI 改列選配未驗證；Windows 排除，均不冒稱通過。歷次[Standards／Spec 審查](docs/research/harness-gap-closure-review.research.md)與[來源審查](docs/research/unified-project-settings-review.research.md)保留各自受查版本。
+截至 2026-10-26（Asia/Taipei），使用者已核准收斂為產品驗收：[中央 R1–R8](docs/research/unified-project-settings-acceptance.research.md#產品驗收完成門檻)為唯一完成判定入口。三項改版、demo-002 日常端到端與必要失敗處理已完成受測範圍驗收；最後合約保存失敗案例及增量 Standards／Spec 審查均通過，沒有待修正 findings。無可控介面的宿主故障注入、同事件原生重送及 Desktop 隔離／UI 改列選配未驗證；Windows 排除，均不冒稱通過。歷次[Standards／Spec 審查](docs/research/harness-gap-closure-review.research.md)與[來源審查](docs/research/unified-project-settings-review.research.md)保留各自受查版本。
 
 本地 `dist/candidates/kengp3-harness-0.3.0` 是已核對的候選，[demo-002 已以 copied skills 接入並完成清潔讀回](docs/research/harness-gap-closure-demo-setup.research.md)；日常 marketplace 入口仍是 `dist/kengp3-harness` 的 0.2.1，未自動切換或更新全域安裝。各案候選指紋、載入／信任／執行資格與限制均以中央表連到的個案報告為準。
 

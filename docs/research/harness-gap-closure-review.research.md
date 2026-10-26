@@ -1,6 +1,6 @@
 # Harness 補驗：獨立 Standards／Spec 審查
 
-日期：2026-10-26（Asia/Taipei）。**兩軸 actionable findings 均為 0；G03 核准後增量驗證及審查已通過，其他必要驗收仍受阻，整體補驗未完成。** 本文保留各固定版本審查；初次受查版本中 G03 待核准的敘述屬歷史，核准後結果見末節。不另建持續缺口表，目前狀態仍以[中央細分表](unified-project-settings-acceptance.research.md#g00g09-補驗唯一細分狀態表)為準。
+日期：2026-10-26（Asia/Taipei）。**最新產品驗收範圍已完成，最後增量 Standards／Spec 各 0 actionable findings。** 本文保留各固定版本審查；前文早期「整體未完成」屬當時範圍快照，使用者後續核准收斂及最後審查見末節。唯一目前狀態以[中央 R1–R8](unified-project-settings-acceptance.research.md#產品驗收完成門檻)為準，不另建持續缺口表。
 
 ## 受查範圍
 
@@ -103,3 +103,16 @@ Reviewer 親跑兩個明確離線入口：`verify-observed.py --self-check` 拒�
 修正後原 reviewer 再核對搬移回歸、來源限制與原 bytes：**無未解決 required findings**，只支持輸入準備就緒。帳號、實際 root/state、Desktop 資格及 UI／native 試驗仍未驗證，G07 維持 blocked。
 
 父層亦獨立讀取兩份 ZIP，逐項與固定候選／demo 白名單來源及已知 literal 比對；兩個 SHA-256 分別為 `1bc691c7d791e7c76fc4a231ff37f4b046c8f3d8edb26be2bb136e659d1757d4`、`3fed88ddf9b630e426d8efd9e114d49d88ac8a9410652da724ff2f7a7735ef14`。模擬舊 checkout 不可讀時，主工作區 verifier 已 green、未讀舊路徑；同範圍 17 個檔案與解壓內容對 4 個當前 auth 欄位值精確掃描零匹配。沒有實際刪除工作樹作故障注入，也沒有模型、server、UI 或 OS 帳號操作。
+
+## 產品驗收收斂與合約 I/O 增量審查
+
+使用者明確選擇「收斂為產品驗收」後，固定 `1936246…7787988` 僅改十份範圍／狀態文件。Spec reviewer `/root/gap_spec_review` 回報 **0**；Standards reviewer `/root/gap_standards_review` 提出 **1 項 P2**：原背景仍以「目前未接入」敘述 demo，假設仍留 Windows／宿主資格工作。此為文件現況矛盾，沒有產品缺陷。同一 fixer 已在 `a422973135466b7958f860ed89b7f6cfabec92b8` 明標歷史基準並改現行假設，不抹除原始紀錄。
+
+最後固定比較為 `git diff 7787988...a422973`，23 檔：21 個合約 I/O 報告／證據及兩處背景修正。整合 commit `2b2f4025181140e8f40e453f65e467f2b5ac3062` 的 tree 與受查 target 相同；產品 skills／scripts／tests／候選沒有改動。
+
+- **Standards：0 actionable findings，前輪 P2 已修正。** 公開工具原始行／索引、fixture 與實際授權、歷史 0644 與後續私有 0600 分開記錄；維護控制器不成為產品 runtime。reviewer 親跑唯讀 checker 的臨時複本負控制，canary 與替代約均被拒絕，還原後通過。
+- **Spec：0 actionable findings，R5 最小必要缺口已補足。** reviewer 直接讀公開工具行第 5／6 行、CLI 第 15 行及實際 case 檔案，確認真保存拒絕後同約讀回、保持未完成、停止相依 T2、原約 bytes 不變且沒有 canary／替代約。報告明示 CLI 漏列 nested 失敗，不把漏列當無錯，也不宣稱另測讀取本身失敗。
+
+父層獨立核對六條 excerpt 與私有完整原件逐 byte／SHA 相符；21 公開檔案以五個認證／creator 敏感字串精確掃描為零命中。實際 case 唯一約／原 bytes／無 canary、auth 複本不存在、自有 PID ESRCH、私有 session 現為 0600 均已讀回。兩位 reviewer 未讀 auth 或私有 metadata，未跑 driver／新模型；私有原件及敏感值核對由父層負責。完整維護 suite 仍引用來源未變的 `11233ce` 紀錄，不為純文件重跑。
+
+此結論支援中央受測產品範圍完成。G05／G06 無可控宿主分支、G07 Desktop UI 仍選配未驗證；Windows 排除，日常入口／全域未升級、hosted CI 未執行。

@@ -88,9 +88,66 @@
     "product_and_maintenance_test_sources_unchanged_since_full_suite_head": "11233cefb485bf12f821c724ddb2bedde05b29d8",
     "primary_existing_config_sha256": "d37497c3278121598a663564ab38b53f658969717f78decb661ddd11c66551ea"
   },
-  "overall_acceptance": "incomplete",
+  "overall_acceptance": "passed_product_scope",
   "required_unclosed_as_of": "Initial reviewed head 0ec9812; G03 subsequently closed by g03_normal_trust_review",
   "required_unclosed": ["G03 normal persisted trust", "G05 cross-root model lookup and true spawn-result loss/provider sampling failure", "G06 raw source and native logical-event redelivery", "G07 Desktop Stop and model menu"],
   "windows": "excluded by user; G08 cancelled, not passed",
-  "not_performed": ["new model trials during review", "hosted CI", "Windows", "push or PR", "global or daily marketplace upgrade"]
+  "not_performed": ["new model trials during review", "hosted CI", "Windows", "push or PR", "global or daily marketplace upgrade"],
+  "historical_overall_acceptance": {
+    "value": "incomplete",
+    "scope": "initial G00–G09 all-branches-required snapshot; superseded by explicit user product-scope approval"
+  },
+  "product_scope_review": {
+    "date": "2026-10-26",
+    "user_decision": "收斂為產品驗收（建議）",
+    "required": "three product changes + demo-002 minimal daily E2E + necessary failure handling",
+    "scope_delta": {
+      "base": "1936246",
+      "head": "7787988",
+      "spec_findings": 0,
+      "standards_findings": 1,
+      "standards_severity": "P2",
+      "finding": "historical baseline described as current; same fixer corrected at a422973"
+    },
+    "final_delta": {
+      "base": "7787988",
+      "head": "a422973135466b7958f860ed89b7f6cfabec92b8",
+      "integration": "2b2f4025181140e8f40e453f65e467f2b5ac3062",
+      "same_tree": true,
+      "standards_agent": "/root/gap_standards_review",
+      "spec_agent": "/root/gap_spec_review",
+      "standards_findings": 0,
+      "spec_findings": 0
+    },
+    "contract_io": "actual save denied; original contract read back; dependent canary and replacement contract absent; no separate read-denial claim",
+    "parent_checks": {
+      "public_files_scanned": 21,
+      "sensitive_leaves": 5,
+      "matches": 0,
+      "excerpt_lines_byte_verified": 6,
+      "private_source_mode_now": "0600",
+      "source_bytes_unchanged": true,
+      "unique_contract_live_bytes_verified": true,
+      "auth_copy_absent": true,
+      "owned_pid": "ESRCH",
+      "candidate_manifest": "7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e",
+      "demo": "done contract; exact 19 bytes; 705 originals unchanged",
+      "primary_original_untracked_files": 1332,
+      "primary_original_untracked_aggregate_sha256": "58d712bfe7db6452cb8a4b7cd5da4bce56a225b3c05de26882e190a44ba12d01"
+    },
+    "required_unclosed": [],
+    "optional_unverified": [
+      "G05 unsupported host injection/cross-root qualification",
+      "G06 raw input source/native logical-event redelivery",
+      "G07 isolated Desktop UI"
+    ],
+    "excluded": [
+      "Windows"
+    ],
+    "not_deployed": [
+      "daily marketplace 0.2.1 unchanged",
+      "global install unchanged",
+      "hosted CI not run"
+    ]
+  }
 }
