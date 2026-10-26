@@ -10,6 +10,8 @@
 
 2026-10-26（Asia/Taipei）：G01 正常接入與 clean readback 已通過；Desktop UI 控制仍被工具 app allowlist 拒絕，專用 Desktop state、同 chat 原生證據讀取與帳號模型資格尚未成立。沒有執行 UI 停止／選單試驗，不以 API Stop／M2 代測。詳見 [G07 資格與操作包](../research/harness-gap-closure-desktop.research.md)及[可審閱人工步驟](../research/harness-gap-closure-desktop-evidence/manual-runbook.md)。人工包就緒不等於行為驗收完成；本票維持 blocked。Windows 本輪明確排除。
 
+材料準備：依[標準帳號分階段方案](harness-g07-desktop-manual-environment.plan.md)完成 [Stop／Model 可攜輸入包與操作者入口](../research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/operator.md)。ZIP／來源及負控自檢通過，僅為輸入 readiness；帳號未建、名稱可用性未證、UI／資格未跑，G07 仍 blocked。
+
 依據：[補驗規格](../specs/harness-validation-gap-closure.spec.md)、[核准工作圖](harness-validation-gap-closure.plan.md)、[可行性研究](../research/unified-project-settings-gap-fixtures-feasibility.research.md)。使用者已核准拆分與驗收邊界；G08另經明確排除。
 
 ## 驗收條件

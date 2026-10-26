@@ -1,0 +1,62 @@
+{
+  "checked_at_utc": "2026-10-26T01:48:42.339322+00:00",
+  "kind": "offline input preparation checks, not Desktop qualification/trial evidence",
+  "self_check": {
+    "kind": "maintainer archive self-check only; no native trial",
+    "checks": [
+      "known ZIP inventory/bytes/source hashes accepted",
+      "wrong ZIP hash rejected",
+      "wrong entry hash rejected",
+      "wrong source hash rejected",
+      "unexpected inventory rejected",
+      "dangerous entry rejected: ../escape",
+      "dangerous entry rejected: /absolute",
+      "dangerous entry rejected: safe/../escape",
+      "dangerous entry rejected: safe\\escape",
+      "dangerous entry rejected: C:/escape",
+      "reader rejects malicious ZIP before inventory check",
+      "existing output directory rejected",
+      "existing output file overwrite rejected"
+    ],
+    "result": "passed"
+  },
+  "archive_source_readback": {
+    "kind": "maintainer preparation/source readback only; no native trial",
+    "result": "passed",
+    "archive_entries": {
+      "stop": 27,
+      "model": 26
+    },
+    "source_files_unchanged": 25,
+    "candidate_manifest_matches": true,
+    "prompt_template_hashes_match": true,
+    "credential_pattern_scan": "passed on allowlisted source bytes",
+    "accounts_created": false,
+    "ui_trials_executed": false
+  },
+  "actual_existing_kit_build_refused": true,
+  "local_links_checked": 50,
+  "new_material_sha256": {
+    "docs/research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/manifest.json": "d1f0a0634ba4a3270693436f086d80097393a6143581d5935a72bbeffa6c97b6",
+    "docs/research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/model-continue.prompt.txt": "a889c8c855ee5fe72367386414bf3826f4b2fd84569a4abe0321f2bcdb29b711",
+    "docs/research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/model-input.zip": "3fed88ddf9b630e426d8efd9e114d49d88ac8a9410652da724ff2f7a7735ef14",
+    "docs/research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/model-start.prompt.txt": "f6b787f0f6b77167d84bcc016e444241449d733118c2d505236be5374a8a07ea",
+    "docs/research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/observer.prompt.txt": "b395eec99264862673f4600820963ce2ffc749d9fd00e1e13fb54b5b96b8906f",
+    "docs/research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/operator.md": "b206845025d3bce105ccdfb1540adb8153558af33e4a3319e10c647d4cc32a2b",
+    "docs/research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/stop-input.zip": "1bc691c7d791e7c76fc4a231ff37f4b046c8f3d8edb26be2bb136e659d1757d4",
+    "docs/research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/stop-resume.prompt.txt": "0f977cd14e0bed1a43f73211721a27117d51119724443a9c277ca64491368325",
+    "docs/research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/stop-start.prompt.txt": "1b843ddf8e4e0d2cf8cb7ef2271f95741503b001785d8a818d01a636152b0754"
+  },
+  "maintainer_builder_sha256": "2f255e0ed3dce70191c8a74730623c02140c747f75cd17a9d7b72409db5821c0",
+  "source_scope": "21 candidate runtime files + 4 demo bases + candidate manifest; original runbook/templates/raw unchanged",
+  "not_executed": [
+    "OS account creation",
+    "Desktop UI",
+    "native server/model trials",
+    "Java/Maven",
+    "full test suite",
+    "Windows (excluded)"
+  ],
+  "new_material_credential_pattern_scan": "no matches in input text/manifest; ZIP sources scanned by allowlist verifier",
+  "portable_operator_links_all_inside_kit": true
+}

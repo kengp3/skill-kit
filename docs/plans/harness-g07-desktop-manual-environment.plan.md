@@ -48,6 +48,8 @@
 
 採用後由主責準備可攜輸入包：固定候選的四個 skills／21 個非 scripts 檔、demo 當前指示／設定快照及 manifest；不含認證或 native 私有歷史。使用者複製到新帳號的建議專案根目錄，再逐檔讀回；不能用 Git checkout 冒充包含 demo 未提交接入。
 
+**材料準備進度（2026-10-26）：** [兩份 ZIP／已填案例 prompt／唯讀觀測 prompt 與操作者入口](../research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/operator.md)已備，[manifest](../research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/manifest.json)及[離線核對／負控](../research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/preparation-check.json)可審閱。這是可攜輸入完成，不是環境完成：OS 帳號未建、名稱可用性未證，建議 root/state 仍 proposed，實際 UID/thread/session/state 未觀測；UI 未跑，G07 維持 blocked。
+
 在任何 canary 或 worker 開始前，保存一頁實測 qualification：實際 username／UID、HOME、App build、project／writable roots、有效指示與 skills/hooks/plugins 來源、實際 state／原生紀錄位置、chat/thread ID 與可見標題。先確認能讀這個 Desktop chat 的原生工具開始／終態及 model context。正常專案信任與 hook 信任分開；G07 不補授信或 bypass，五個 hook 的實際初態照實記錄。
 
 若新帳號仍連到日常 state／daemon、沒有原生紀錄讀取方式或普通工具無法執行，到此停止，保留缺項。不得另開 app-server 代測 Desktop。
