@@ -1,5 +1,7 @@
 # G06：V03 真實來源與原生重入
 
+**2026-10-26 範圍修訂（使用者已核准）：** 已通過的同約恢復、一次成果及被動 Stop 仍為必要產品證據；raw input source 與同事件 native redelivery 改列選配未驗證，不阻擋產品交付。下方 partial／blocked 與未勾項保留個別試驗判定。 依據：[最新規格 S1](../specs/harness-validation-gap-closure.spec.md#s1-唯一驗收邊界與狀態)。
+
 **What to build:** V03 真實來源與原生重入；交付完整外部行為及可核對證據。
 
 **Blocked by:** G01; observable native events

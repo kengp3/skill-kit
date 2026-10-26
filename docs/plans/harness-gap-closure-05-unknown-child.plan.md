@@ -1,5 +1,7 @@
 # G05：V02 持久 child 查回與未知啟動
 
+**2026-10-26 範圍修訂（使用者已核准）：** 已通過的 unknown 不重派／同約恢復仍為必要產品證據；真正 spawn 回應遺失、provider sampling 故障注入及跨 root 宿主查詢資格改列選配未驗證，不阻擋產品交付。下方 partial 與未勾項保留個別試驗判定，不改為 passed。 依據：[最新規格 S1](../specs/harness-validation-gap-closure.spec.md#s1-唯一驗收邊界與狀態)。
+
 **What to build:** V02 持久 child 查回與未知啟動；交付完整外部行為及可核對證據。
 
 **Blocked by:** G01; observable child and fault boundary
