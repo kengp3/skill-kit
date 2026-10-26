@@ -1,5 +1,7 @@
 # G07：V05 Desktop 停止與模型選單
 
+**2026-10-26 範圍修訂（使用者已核准）：** 本票整體改列選配補充，UI 未驗證，不阻擋產品交付。下方 blocked、未勾項與操作包僅保留歷史狀態；本輪不再建立 Desktop 隔離環境或要求人工配合。 依據：[最新規格 S1](../specs/harness-validation-gap-closure.spec.md#s1-唯一驗收邊界與狀態)。
+
 **What to build:** V05 Desktop 停止與模型選單；交付完整外部行為及可核對證據。
 
 **Blocked by:** dedicated Desktop workspace/state, allowed UI access, same-chat native evidence and model access（G01 已通過）
