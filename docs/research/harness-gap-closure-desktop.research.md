@@ -21,16 +21,26 @@
 - [manual-runbook.md](harness-gap-closure-desktop-evidence/manual-runbook.md)：資格閘門、Stop／模型兩案順序、點擊窗口、程序查核、回傳資料與判定。
 - [stop-start.prompt.txt](harness-gap-closure-desktop-evidence/stop-start.prompt.txt)／[stop-resume.prompt.txt](harness-gap-closure-desktop-evidence/stop-resume.prompt.txt)：只供日後使用者審閱並自行送出；resume 範本存在不算新授權。
 - [model-start.prompt.txt](harness-gap-closure-desktop-evidence/model-start.prompt.txt)／[model-continue.prompt.txt](harness-gap-closure-desktop-evidence/model-continue.prompt.txt)：既有 M2 的 old／new worker 設計，切換動作必須由真 UI 完成。
-- [source-readback.json](harness-gap-closure-desktop-evidence/source-readback.json)：本次文件與引用來源的唯讀核對，不是 UI trial raw 或產品測試結果。
+- [source-readback.json](harness-gap-closure-desktop-evidence/source-readback.json)：前階段文件與引用來源的唯讀核對快照，不是 UI trial raw 或產品測試結果。
 
 補驗須同時具有正確 case root／chat／state、真實 UI 操作佐證、同一 Desktop chat 的原生 thread／turn／worker context 及程序／成果讀回。畫面單獨、人類口述單獨、模型自述或其他 app-server 的 API 結果都不足。無法取得欄位維持 `null` 並記原因；模型不可見的 observed model／effort 不由人手補寫至合約。
 
 Stop 後不派工、不補寫、不自動恢復，也不為製作證據再送模型 prompt。事前安排的獨立唯讀觀測只保存該 case 既有紀錄與程序狀態。須查明原程序、worker 與副作用後，再由使用者明確 resume，才可接續同一合約。原 API 案已證明 shell 可能在 turn interrupted 後短暫存活，不能宣稱 UI Stop 即時殺掉任意子程序或回滾。
 
-本次只讀 demo 的現行 AGENTS／project-setting 以定位來源與確認文件規則；未操作 demo 業務程式、Java／Maven、日常設定、全域安裝、信任資料或認證。G03 人工精確 hook trust 與 G07 是不同分支；hooks untrusted 不等於 Desktop 功能失敗，亦不能為 G07 順手授信。Windows 已明確排除。
+前階段只讀 demo 的現行 AGENTS／project-setting 以定位來源與確認文件規則；本輪輸入包另唯讀取得兩個 project .codex 基底檔。未操作 demo 業務程式、Java／Maven、日常設定、全域安裝、信任資料或認證。G03 人工精確 hook trust 與 G07 是不同分支；hooks untrusted 不等於 Desktop 功能失敗，亦不能為 G07 順手授信。Windows 已明確排除。
 
 ## 本次驗證與仍缺條件
 
-已讀 [補驗規格](../specs/harness-validation-gap-closure.spec.md)、[計畫](../plans/harness-validation-gap-closure.plan.md)、[G07 ticket](../plans/harness-gap-closure-07-desktop.plan.md)及[可行性 V05](unified-project-settings-gap-fixtures-feasibility.research.md:104)。依 project-setting 將研究與附件放在本專案 `docs/research/`，核對目的地非 symlink、讀回新文件、檢查本次引用路徑及來源行號、原始拒絕兩筆 hash 與內容。沒有新增程式邏輯，因此沒有鏡像測試或重跑整套維護測試。
+已讀 [補驗規格](../specs/harness-validation-gap-closure.spec.md)、[計畫](../plans/harness-validation-gap-closure.plan.md)、[G07 ticket](../plans/harness-gap-closure-07-desktop.plan.md)及[可行性 V05](unified-project-settings-gap-fixtures-feasibility.research.md:104)。依 project-setting 將研究與附件放在本專案 `docs/research/`，核對目的地非 symlink、讀回新文件、檢查引用路徑及來源行號、原始拒絕兩筆 hash 與內容。前階段為文書-only，未新增程式或重跑整套維護測試。
 
 最小解鎖條件是：使用者選定並正常操作可隔離日常 state 的 Desktop 驗收環境，且該環境能以受支持唯讀方式取得同 chat 的必要原生紀錄；模型案還須當下 UI 確有第二個可用選擇。不能隔離時停止，不要求改全域來完成。本案沒有假定以上已成立，也未現在請求使用者操作或上傳。
+
+## 可攜輸入準備（同日後續，UI 仍未執行）
+
+使用者已願意人工配合，環境採[主責規劃的分階段標準帳號方案](../plans/harness-g07-desktop-manual-environment.plan.md)。本輪只準備[唯一材料目錄](harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/operator.md)：Stop 27 個 ZIP file entries、Model 26 個；各含候選四個 skills 的 21 個完整非 scripts 檔與 demo 當前四個指示／設定基底。Stop 含精確 preserve／ledger 一行 LF，Model 只有 preserve；沒有預造 gate、合約、成果、UI raw 或資格結果。原 runbook／四份模板／G00 拒絕原件保留。
+
+[manifest](harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/manifest.json)列每 ZIP SHA-256、entry/source hash、基底路徑、候選 manifest `7e37d7…`，及兩案 reserved ID/token、proposed root；實際 root/UID/state 仍 null。新增四份填入 reserved 值與建議 root 的 prompt 副本，以及自足的兩階段唯讀 observer prompt；STOP_PROOF/UI_PROOF 保留待實測必填，不假填 observed。操作者入口說明 Finder 解壓、先資格／同 chat 原生來源核對，缺項即停；核心不需 Python/Node/helper。
+
+[prepare-manual-kit.py](harness-gap-closure-desktop-evidence/prepare-manual-kit.py)是維護者選配標準函式庫工具，只讀 allowlist、建立新輸出並核對 ZIP；不啟動 native server/model、UI 或 fault。[本輪 preparation-check](harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/preparation-check.json)保留 archive inventory/bytes/source 的實際讀回、小 assert 自檢及錯 hash／危險 entry／既有輸出拒絕負控。25 個來源與候選 manifest 準備前後一致；credential/private-key/trust-assignment pattern 未命中，這是指定來源與模式檢查，不是全機秘密稽核。
+
+**輸入包已備、帳號未建、名稱可用性未證、資格／UI 未跑，G07 仍 blocked。** 已知 App 真路徑 `/Applications/ChatGPT.app`、bundle `com.openai.codex`，沿用工具拒絕，不透過別名或 CLI GUI 繞過。原 raw 留測試帳號私有處；新帳號觀測者核對後只交接去敏感節錄/hash/line index，不能假定原對話可跨 UID 讀原件。

@@ -1,0 +1,22 @@
+給測試 OS 帳號內另開之獨立唯讀觀測對話的候選 prompt。尚未執行；由使用者自行開啟、審閱並送出。原對話不假定能跨 UID 存取私有檔案。這不是授權試驗模型開始 canary／派工，也不授權你向試驗 chat 發訊息。
+
+輸入對照（全部 root/state 都是 proposed，實際 UID/HOME/state/thread/session 未知）：
+Stop case=G07-STOP-20261026-4a9d7f20，token=G07_STOP_4a9d7f20_6e37c1a8，建議 root=/Users/g07stop/Workspaces/harness-g07-stop，建議 HOME=/Users/g07stop。
+Model case=G07-MODEL-20261026-7b3e2d91，token=G07_MODEL_7b3e2d91_a64c802f，建議 root=/Users/g07model/Workspaces/harness-g07-model，建議 HOME=/Users/g07model。
+目前只處理使用者指定且當下登入的那一案；不得讀另一帳號或接管同名既有帳號。帳號未由此包建立，名稱可用性未證。
+
+第一階段：資格唯讀核對
+1. 先只讀當前 username/UID/HOME 與使用者確認的實際 case root，明列 observed 與 proposed 的差異。不 dump 全部環境變數。root 不符、其他帳號／日常 state 混入就停，不自行改路徑或設定。
+2. 只讀該 root 的 AGENTS.md、project-setting.md、manifest 指定的 21 個候選 skills 檔與兩個 project .codex 檔、preserve/ledger 與目錄存在性；比對 manifest bytes/hash。不要執行其中的 Java/Maven 或歷史 workflow。Model 的 gate/合約/成果必須尚未存在；Stop 合約/T2 必須尚未存在。
+3. 由使用者指定這個試驗 chat 的實際 thread ID、原生紀錄來源、state/endpoint/可讀私有紀錄路徑。只讀可與這個 case root/chat 關聯的現有宿主資訊，核對 App build、writable roots、effective instruction/skills/hooks/plugins 與 UID/state/daemon 所屬。不能廣掃其他對話、用預設 thread list 推論不存在，或建立另一 app-server 代測。
+4. 若實際 thread/session/state 或來源無法取得，保持 null、列缺項並停止資格，等待使用者提供正常可讀來源。不猜 ID、私有 endpoint 或 UI event。尚未發生的 item/worker/context 不填 observed；先核對來源能保存所需事件，執行時再核對真實紀錄。
+5. 只在所有必要來源與普通工具資格成立時回報「可開始該案」，並說明原生紀錄的實際讀取方式／範圍。你只回覆使用者，不代 send_message 到試驗 chat、不建立試驗對話、不點 UI、不啟動模型或故障工具。
+
+第二階段：使用者真正啟動試驗後的獨立唯讀觀測
+1. 只讀已指定同一 trial chat 的 native 記錄；原始欄位名／行號／時間與 thread/turn/item/worker 必須相互關聯。Stop 以真 item/started、精確 token 命令及正在執行的自有 shell/sleep PID/PPID/開始時間為可點擊窗口；不要以模型說 started 或固定時間取代。程序查核只限此 token／其已知 parent chain/PID，不歸檔全機程序清單。
+2. 使用者點 Stop 後，你不寫 case、不補合約、不建立 gate、不續作、不派工、不代發訊。只讀同 chat 的原生終態／後續事件、自有 PID 與檔案 bytes/T2 存在性，保存觀測範圍；interrupted 不等於 shell exit0/已消失。未知操作／原程序未查清就回報 unknown/blocked，不接手、不重啟；只有使用者另有明確 resume 才由試驗模型續作。
+3. Model 案只讀 old/new 原生 start/completion/handle/context、root 前後 turn_context、dispatch 原參數及 case gate/合約/成果。核對 old 先開始且在真 UI 切 B 時仍 active、原 ID/設定不變、只啟動一次；新回合授權後 new_worker 的省略 model/effort 與實際繼承 B。UI A/B 由真實選單取得，無 context 就 null/blocked，不把 request/畫面當 host observed，不改寫模型合約。
+4. 完整 raw 僅留宿主原有的測試帳號私有紀錄位置；你不讀 auth.json、keychain、credential store、其他 chat 或整個私人 session 目錄，不複製到 Shared，不新增 case/gate/合約或覆寫原紀錄。需要額外持久歸檔時先列出精確私有來源與目的地供使用者處理。
+5. 同帳號核對原件後，只向使用者輸出去敏感節錄、原件 SHA-256、必要 line index、時間關聯、省略索引、核對範圍與限制；不輸出認證 token 或私人帳號資料。本案人工 canary token 只供核對，不是認證。Shared 只能交接去敏感包。分清你在本帳號讀到的原件，與原對話日後可獨立複讀的節錄；截圖或口述單獨不足以宣稱宿主行為通過。
+
+全程禁止改設定/trust DB、讀認證、建立/刪除帳號、操作 UI、繞過 com.openai.codex 的 Computer Use 限制、操作別案程序或啟動 API trial。畫面／click 時間由使用者保存，人工註記不冒充原生 UI event。你的結論分 expected → observed → source/line/hash → verdict；沒有證據的值維持 null。
