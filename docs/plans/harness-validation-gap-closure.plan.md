@@ -8,6 +8,8 @@
 
 ## Background（背景）
 
+以下為 **2026-10-25 初始基準，不是目前狀態**。G01 已完成；demo-002 現況見[中央 R6 與產品驗收表](../research/unified-project-settings-acceptance.research.md#產品驗收完成門檻)，不以本節歷史盤點推定尚未接入。
+
 - 0.3.0 的原 T01–T08 來源已實作並完成獨立審查，三項 P2 已修正；既有 A–G 案例不代表所有細分分支通過。原維護測試紀錄為 112 項、略過 Windows 1 項，其餘通過。
 - 可用完整候選為 `/Users/kengp3/Workspaces/mine/simple-skills/dist/candidates/kengp3-harness-0.3.0`。manifest SHA-256：`7e37d77315faee550e3f2e1edc4b3a621da490f50ce4a8d937c78f9d71fbfd9e`。執行時仍須重新核對。
 - 原本地 marketplace 仍指向 0.2.1。補驗使用指定候選與專用安裝來源，不能從舊入口推定已載入 0.3.0。
@@ -36,7 +38,7 @@
 
 ## Assumptions（規劃假設）
 
-V01–V07 為補驗主線；D02 與 P02 是可信驗收的共同前置，P03／P04 納入收尾。D01 的日常安裝入口切換、P01 的 CI 自動化各列維護支線，互不阻擋真實行為補驗。具體 host、帳號模型、Desktop 與 Windows 資格由執行時查證，不預設已具備。
+必要產品驗收以[中央 R1–R8](../research/unified-project-settings-acceptance.research.md#產品驗收完成門檻)為主線。Windows 依使用者指示排除；G05／G06 宿主專屬剩餘分支與 G07 Desktop 為選配未驗證，不阻擋產品交付，本輪不追加宿主研究或環境佈建。D01 日常安裝入口切換、P01 CI 自動化仍各列維護支線。
 
 ## 共用驗收方式
 
