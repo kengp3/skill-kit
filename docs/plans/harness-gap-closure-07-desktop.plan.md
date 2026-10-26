@@ -6,6 +6,8 @@
 
 **Status:** blocked
 
+2026-10-26：使用者已表示願意人工配合並委託規劃。已補[本機標準帳號與分階段人工驗收方案](harness-g07-desktop-manual-environment.plan.md)；帳號／環境尚未建立，UI 試驗未開始，原通過門檻及 blocked 判定維持。
+
 2026-10-26（Asia/Taipei）：G01 正常接入與 clean readback 已通過；Desktop UI 控制仍被工具 app allowlist 拒絕，專用 Desktop state、同 chat 原生證據讀取與帳號模型資格尚未成立。沒有執行 UI 停止／選單試驗，不以 API Stop／M2 代測。詳見 [G07 資格與操作包](../research/harness-gap-closure-desktop.research.md)及[可審閱人工步驟](../research/harness-gap-closure-desktop-evidence/manual-runbook.md)。人工包就緒不等於行為驗收完成；本票維持 blocked。Windows 本輪明確排除。
 
 依據：[補驗規格](../specs/harness-validation-gap-closure.spec.md)、[核准工作圖](harness-validation-gap-closure.plan.md)、[可行性研究](../research/unified-project-settings-gap-fixtures-feasibility.research.md)。使用者已核准拆分與驗收邊界；G08另經明確排除。
