@@ -83,3 +83,23 @@ Reviewer 親跑兩個明確離線入口：`verify-observed.py --self-check` 拒�
 **G03 限定通過成立。** 不外推 SubagentStart 已執行、Desktop、Windows、demo 或日常安裝已信任；G05／G06／G07 仍未通過，整體未完成。Spec reviewer 僅讀既存證據，沒有執行模型、信任或測試。
 
 父層另親跑同兩個離線入口並核對兩份 excerpt 的私有來源 bytes，均通過；對本次 53 檔以 8 個實際 credential／creator identity 值做精確比對，零匹配，沒有輸出值。已確認專用 auth 副本不存在；正常信任 state 與私有 raw 留存供覆核。
+
+## G07 人工輸入材料審查
+
+本次只準備[可攜材料與操作者入口](harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/operator.md)。增量 base `79fc0da9aff843973acb403a15c45a294c626d59`、初審 target `ab096cf9048688ea925154570ff739437f80acb5`，兩軸各 0 actionable findings。父層另以原工作樹不可讀的模擬取得 regression red：舊 verifier 讀 manifest 中的暫存模板絕對路徑，清理 checkout 後就會失效。
+
+同一修正 agent 於 `b3eec944ee4e2815785e69554b55d43b561e70a6` 將讀取錨定目前 builder 的四個限定模板 basename，保留原 hash 核對；舊絕對路徑只作明示歷史來源。修正整合為 `ff734e19992929ea32203d6238b452f4f946cdb3`。臨時複本的實際舊 CLI 失敗、新 CLI 通過，錯 hash／越界／未知或重複模板均拒絕，見[red](harness-gap-closure-desktop-evidence/portable-verify-red.log)、[green](harness-gap-closure-desktop-evidence/portable-verify-green.log)及[小型回歸核對](harness-gap-closure-desktop-evidence/check-portable-verify.py)。ZIP、prepared prompts 與原模板 bytes 均未變。
+
+### Standards：G07 材料
+
+初審無 hard violations 或需處理的 heuristic。builder 限定來源白名單，拒絕 symlink／非正規來源、危險 ZIP 路徑及既有輸出；ZIP 含必要隱藏目錄與完整 21 個非 scripts 資源。operator 可攜連結與 observer 邊界明確，不增加核心 runtime。Reviewer 親跑離線 `--self-check --verify`，錯 hash／來源／inventory、危險 entry 與覆寫負控通過。
+
+父層模板依賴 finding 經原 reviewer 增量複查：**無未解決 required findings**。錨定 HERE 與原 hash 的驗證未減少，移植負控及離線核對通過；未執行 native／模型／UI。
+
+### Spec：G07 材料
+
+初審直接讀回 Stop 27／Model 26 項，各含 21 個候選資源、4 個 demo 基底及 2／1 個 literal；來源、bytes/hash 相符，observed root／UID／state 皆 null。四份提示保留 Stop 明確續作、實際 UI A／B、原 worker 不重派及省略 model／effort；observer 只讀同 chat，不代理試驗。符合規格的畫面與 API 不互代、必要分支未通過就保持整體未完成要求。
+
+修正後原 reviewer 再核對搬移回歸、來源限制與原 bytes：**無未解決 required findings**，只支持輸入準備就緒。帳號、實際 root/state、Desktop 資格及 UI／native 試驗仍未驗證，G07 維持 blocked。
+
+父層亦獨立讀取兩份 ZIP，逐項與固定候選／demo 白名單來源及已知 literal 比對；兩個 SHA-256 分別為 `1bc691c7d791e7c76fc4a231ff37f4b046c8f3d8edb26be2bb136e659d1757d4`、`3fed88ddf9b630e426d8efd9e114d49d88ac8a9410652da724ff2f7a7735ef14`。模擬舊 checkout 不可讀時，主工作區 verifier 已 green、未讀舊路徑；同範圍 17 個檔案與解壓內容對 4 個當前 auth 欄位值精確掃描零匹配。沒有實際刪除工作樹作故障注入，也沒有模型、server、UI 或 OS 帳號操作。

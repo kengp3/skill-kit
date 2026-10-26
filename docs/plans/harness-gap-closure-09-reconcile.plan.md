@@ -30,4 +30,6 @@ README 已加入最小來源審查清單（metadata／guide／copied-skill／plu
 
 ## 證據要求
 
+G07 後續只完成[可攜輸入材料](../research/harness-gap-closure-desktop-evidence/manual-kit-20261026-4a9d7f20/operator.md)與[準備範圍審查](../research/harness-gap-closure-review.research.md#g07-人工輸入材料審查)：Stop／Model ZIP 為 27／26 檔，來源與維護自檢通過，父層發現的暫存模板路徑依賴已修正並複查。中央表仍維持 G07 UI 未執行、環境資格未成立，不因材料就緒關閉驗收缺口；G09 done 仍僅限對帳與審查收尾。
+
 保存候選／宿主／任務身分、expected → observed → raw → verdict及無關內容保留證據。控制器exit 0、模型自述、fixture或checker不單獨證明通過。未驗證與受阻保留，不以實作完成取代行為驗收。
