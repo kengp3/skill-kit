@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/private/tmp/simple-skills-gap-review-fixes/docs/research/harness-gap-closure-desktop-evidence/check-portable-verify.py", line 28, in <module>
+    assert result.returncode == 0, f'relocated verify failed with unavailable historical paths: {result.stderr}'
+           ^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: relocated verify failed with unavailable historical paths: Traceback (most recent call last):
+  File "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/g07-relocated-verify-x5hw0g8j/another-checkout/prepare-manual-kit.py", line 243, in <module>
+    print(json.dumps(verify_prepared(HERE / KIT), ensure_ascii=False, indent=2))
+                     ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/g07-relocated-verify-x5hw0g8j/another-checkout/prepare-manual-kit.py", line 144, in verify_prepared
+    if digest(source_bytes(output / item['file'])) != item['sha256'] or digest(source_bytes(Path(item['template']))) != item['template_sha256']:
+                                                                               ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/g07-relocated-verify-x5hw0g8j/another-checkout/prepare-manual-kit.py", line 42, in source_bytes
+    raise ValueError('source must be a real file: ' + str(path))
+ValueError: source must be a real file: /var/folders/76/hd61cw513zbdlr0y7_h27dx80000gn/T/g07-relocated-verify-x5hw0g8j/removed-original-worktree/stop-start.prompt.txt

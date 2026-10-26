@@ -24,6 +24,7 @@ CASES = {
               'proposed_root': '/Users/g07model/Workspaces/harness-g07-model'},
 }
 BASE_FILES = ('AGENTS.md', 'project-setting.md', '.codex/config.toml', '.codex/hooks.json')
+PROMPTS = {'stop-start.prompt.txt', 'stop-resume.prompt.txt', 'model-start.prompt.txt', 'model-continue.prompt.txt'}
 SECRET_PATTERN = re.compile(rb'\bsk-(?:proj-|svcacct-)?[A-Za-z0-9_-]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|(?im:^\s*["\']?(?:access_token|refresh_token|client_secret|api_key|trusted_hash)["\']?\s*[:=])')
 
 
@@ -140,12 +141,16 @@ def verify_prepared(output):
         expected = case_entries(sources, kind, case)
         verify_archive((output / record['file']).read_bytes(), record, expected)
         counts[kind] = len(expected)
-    for item in manifest['prompts']:
-        if digest(source_bytes(output / item['file'])) != item['sha256'] or digest(source_bytes(Path(item['template']))) != item['template_sha256']:
+    prompts = manifest['prompts']
+    if len(prompts) != len(PROMPTS) or {item['file'] for item in prompts} != PROMPTS:
+        raise ValueError('prepared prompt inventory mismatch')
+    for item in prompts:
+        # Historical preparation paths are provenance; templates belong to this builder.
+        if digest(source_bytes(output / item['file'])) != item['sha256'] or digest(source_bytes(HERE / item['file'])) != item['template_sha256']:
             raise ValueError('prepared prompt/template changed')
     return {'kind': 'maintainer preparation/source readback only; no native trial', 'result': 'passed',
             'archive_entries': counts, 'source_files_unchanged': len(sources), 'candidate_manifest_matches': True,
-            'prompt_template_hashes_match': True, 'credential_pattern_scan': 'passed on allowlisted source bytes',
+            'prompt_template_hashes_match': True, 'prompt_templates_resolved_from': 'current builder directory; exact four expected basenames', 'credential_pattern_scan': 'passed on allowlisted source bytes',
             'accounts_created': False, 'ui_trials_executed': False}
 
 
@@ -183,6 +188,7 @@ def build(output):
                 'candidate_root': str(CANDIDATE), 'candidate_manifest_sha256': CANDIDATE_HASH,
                 'demo_base_root': str(DEMO), 'source_preservation': '25 allowlisted source files and candidate manifest unchanged across preparation',
                 'archives': records, 'prompts': prompt_sources,
+                'prompt_template_source': 'current builder directory by expected basename; prompts[*].template is historical preparation provenance only',
                 'credential_scope': 'exact allowlist plus credential/private-key/trust-assignment pattern scan; no auth/keychain/session files read',
                 'runtime_requirements': 'Finder extraction; no Python/Node/helper required by operator or core harness'}
     files['manifest.json'] = (json.dumps(manifest, ensure_ascii=False, indent=2) + '\n').encode()
